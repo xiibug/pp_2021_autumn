@@ -109,6 +109,8 @@ jobs:
       shell: cmd
     - name: Update submodules
       run: git submodule update --init --recursive
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.3
     - name: Build
       run: |
         set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
