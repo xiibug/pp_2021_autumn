@@ -5,7 +5,7 @@ int sequentialCount_V1(const int* vec, int len)
 {
 	int count = 0;
 	for (int i = 1; i < len; i++)
-		if (vec[i - 1] > 0 && vec[i] < 0 || vec[i - 1] < 0 && vec[i] > 0)
+		if ((vec[i - 1] > 0 && vec[i] < 0) || (vec[i - 1] < 0 && vec[i] > 0))
 			count++;
 	return count;
 }
@@ -25,7 +25,7 @@ void fillVecWithRandValues(int* vec, int len)
 	// https://stackoverflow.com/questions/13445688/how-to-generate-a-random-number-in-c
 	std::random_device dev;
 	std::mt19937 rng(dev());
-	std::uniform_int_distribution<std::mt19937::result_type> dist(1, UINT_MAX);
+	std::uniform_int_distribution<std::mt19937::result_type> dist(1, 0xFFFFFFFF);
 	if (vec == nullptr)
 		throw "vector is not allocated";
 	for (int i = 0; i < len; i++)
