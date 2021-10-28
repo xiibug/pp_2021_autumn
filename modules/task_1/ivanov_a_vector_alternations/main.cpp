@@ -1,6 +1,6 @@
 // Copyright 2021 Ivanov Arkadiy
-#include "./vector_alternations.h"
 #include <gtest/gtest.h>
+#include "./vector_alternations.h"
 #include <gtest-mpi-listener.hpp>
 
 
@@ -216,7 +216,7 @@ TEST(equivalense_of_sequential_count, on_rand_vect) {
     int procRank = 0;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
-        const int vecLen = 1000; 
+        const int vecLen = 1000;
         int *vec = new int[vecLen];
         fillVecWithRandValues(vec, vecLen);
         int sc_v1 = sequentialCount_V1(vec, vecLen);
@@ -286,7 +286,7 @@ int main(int argc, char** argv) {
 
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
     ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners();
-    
+
     listeners.Release(listeners.default_result_printer());
     listeners.Release(listeners.default_xml_generator());
 

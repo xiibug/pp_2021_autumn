@@ -2,9 +2,6 @@
 #ifndef MODULES_TASK_1_IVANOV_A_VECTOR_ALTERNATIONS_VECTOR_ALTERNATIONS_H_
 #define MODULES_TASK_1_IVANOV_A_VECTOR_ALTERNATIONS_VECTOR_ALTERNATIONS_H_
 
-#include <random>
-#include <mpi.h>
-
 
 // standard checking for alterations
 int sequentialCount_V1(const int* vec, int len);
