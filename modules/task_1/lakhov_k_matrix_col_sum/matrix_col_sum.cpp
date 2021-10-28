@@ -1,28 +1,27 @@
 // Copyright 2021 Lakhov Kirill
 
-#include <cstdlib>
 #include <vector>
-#include "./matrix_col_sum.h"
-using namespace std;
+#include <cstdlib>
+#include "matrix_col_sum.h"
 
-vector<int> getRandomVector(int sz) {
+std::vector<int> getRandomVector(int sz) {
     int min = -100;
     int max = 100;
-    random_device rd;
-    default_random_engine engine(rd());
-    uniform_int_distribution<int> distribution(min, max);
-    vector<int> vec(sz);
+    std::random_device rd;
+    std::default_random_engine engine(rd());
+    std::uniform_int_distribution<int> distribution(min, max);
+    std::vector<int> vec(sz);
     for (int  i = 0; i < sz; i++) { vec[i] = distribution(engine); }
     return vec;
 }
 
-vector<vector<int>> getRandomMatrix(int rows, int cols) {
-    vector<vector<int>> vec(rows);
+std::vector<std::vector<int>> getRandomMatrix(int rows, int cols) {
+    std::vector<std::vector<int>> vec(rows);
     for (int  i = 0; i < rows; i++) { vec[i] = getRandomVector(cols); }
     return vec;
 }
 
-int sequentialCalc(vector<vector<int>> vect, int rows, int cols) {
+int sequentialCalc(std::vector<std::vector<int>> vect, int rows, int cols) {
     int sum = 0;
     for (int  i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -33,10 +32,10 @@ int sequentialCalc(vector<vector<int>> vect, int rows, int cols) {
 }
 
 
-int parallelCalc(vector<vector<int>> vect, int rows, int cols) {
+int parallelCalc(std::vector<std::vector<int>> vect, int rows, int cols) {
     int proc_count = 0, proc_rank = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
-    MPI_Comm_rank(MPI_COMM_WORLD, & proc_rank);
+    MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
 
     int proc_amount_of_data = 0;
     for (int i = proc_rank; i < cols; i += proc_count) {
@@ -45,7 +44,7 @@ int parallelCalc(vector<vector<int>> vect, int rows, int cols) {
 
     if (proc_rank == 0) {
         for (int proc = 1; proc < proc_count; proc++) {
-            vector<int> flatten_vect;
+            std::vector<int> flatten_vect;
             int cols_to_proc = 0;
             for (int i = proc; i < cols; i += proc_count) {
                 for (int j = 0; j < rows; j++) {
@@ -55,12 +54,13 @@ int parallelCalc(vector<vector<int>> vect, int rows, int cols) {
             }
 
             int amount_of_data_sent = cols_to_proc*rows;
-            MPI_Send(flatten_vect.data(), amount_of_data_sent, MPI_INT, proc, 0, MPI_COMM_WORLD);
+            MPI_Send(flatten_vect.data(), amount_of_data_sent, MPI_INT,
+                        proc, 0, MPI_COMM_WORLD);
         }
     }
 
 
-    vector<int> local_vec(proc_amount_of_data);
+    std::vector<int> local_vec(proc_amount_of_data);
     if (proc_rank == 0) {
         for (int i = 0; i < cols; i += proc_count) {
             for (int j = 0; j < rows; j++) {
@@ -69,7 +69,8 @@ int parallelCalc(vector<vector<int>> vect, int rows, int cols) {
         }
     } else {
         MPI_Status status;
-        MPI_Recv(local_vec.data(), proc_amount_of_data, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+        MPI_Recv(local_vec.data(), proc_amount_of_data, MPI_INT,
+                    0, 0, MPI_COMM_WORLD, &status);
     }
 
     int partial_sum = 0;

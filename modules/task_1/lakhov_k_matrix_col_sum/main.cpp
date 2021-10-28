@@ -1,14 +1,13 @@
 // Copyright 2021 Lakhov Kirill
-#include <gtest/gtest.h>
-#include "matrix_col_sum.h"
 #include <vector>
+#include "gtest/gtest.h"
 #include <gtest-mpi-listener.hpp>
-using namespace std;
+#include "matrix_col_sum.h"
 
 TEST(Parallel_Operations_MPI, Test_Square_Matrix) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    vector<vector<int>> matrix;
+    std::vector<std::vector<int>> matrix;
     const int rows = 12;
     const int cols = 12;
 
@@ -27,7 +26,7 @@ TEST(Parallel_Operations_MPI, Test_Square_Matrix) {
 TEST(Parallel_Operations_MPI, Test_Rectangular_Matrix) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    vector<vector<int>> matrix;
+    std::vector<std::vector<int>> matrix;
     const int rows = 12;
     const int cols = 7;
 
@@ -46,7 +45,7 @@ TEST(Parallel_Operations_MPI, Test_Rectangular_Matrix) {
 TEST(Parallel_Operations_MPI, Test_Rectangular_Matrix_2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    vector<vector<int>> matrix;
+    std::vector<std::vector<int>> matrix;
     const int rows = 8;
     const int cols = 15;
 
@@ -65,7 +64,7 @@ TEST(Parallel_Operations_MPI, Test_Rectangular_Matrix_2) {
 TEST(Parallel_Operations_MPI, Test_Large_Matrix) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    vector<vector<int>> matrix;
+    std::vector<std::vector<int>> matrix;
     const int rows = 100;
     const int cols = 88;
 
@@ -84,7 +83,7 @@ TEST(Parallel_Operations_MPI, Test_Large_Matrix) {
 TEST(Parallel_Operations_MPI, Test_Large_Matrix_2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    vector<vector<int>> matrix;
+    std::vector<std::vector<int>> matrix;
     const int rows = 77;
     const int cols = 100;
 
