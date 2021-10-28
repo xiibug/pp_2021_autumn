@@ -1,8 +1,9 @@
-#ifndef _VECTOR_ALTERNATIONS_H
-#define _VECTOR_ALTERNATIONS_H
+// Copyright 2021 Ivanov Arkadiy
+#ifndef MODULES_TASK_1_IVANOV_A_VECTOR_ALTERNATIONS_VECTOR_ALTERNATIONS_H_
+#define MODULES_TASK_1_IVANOV_A_VECTOR_ALTERNATIONS_VECTOR_ALTERNATIONS_H_
 
-#include <mpi.h>
 #include <random>
+#include <mpi.h>
 
 
 // standard checking for alterations
@@ -17,4 +18,4 @@ int parallelCount(const int* vec, int len);
 // fill vector with random values (value != 0)
 void fillVecWithRandValues(int* vec, int len);
 
-#endif
+#endif  // MODULES_TASK_1_IVANOV_A_VECTOR_ALTERNATIONS_VECTOR_ALTERNATIONS_H_
