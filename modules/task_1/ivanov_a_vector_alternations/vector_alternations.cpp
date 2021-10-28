@@ -33,7 +33,6 @@ void fillVecWithRandValues(int* vec, int len) {
             vec[i] = static_cast<int>(dist(rng)) * ((static_cast<int>(dist(rng)) & 0x01) ? -1 : 1);
         } while (!vec[i]);
     }
-        
 }
 
 // parallel checking for alternations
@@ -60,7 +59,7 @@ int parallelCount(const int* vec, int len) {  // parallel code
         sendcounts = new int[procCount];
         displs = new int[procCount];
         std::fill_n(sendcounts, procCount, len / procCount);  // scnt[?,?,?,?]->[2,2,2,2]
-        for (int i = 0; i < len % procCount; ++sendcounts[i++]) {};  // scnt[2,2,2,2]->[3,3,3,2] | [2,2,2,2]->[3,3,2,2]
+        for (int i = 0; i < len % procCount; ++sendcounts[i++]) {}  // scnt[2,2,2,2]->[3,3,3,2] | [2,2,2,2]->[3,3,2,2]
         displs[0] = 0;  // dspls[0,?,?,?]
         for (int i = 1; i < procCount; i++)
             displs[i] = displs[i - 1] + sendcounts[i - 1];  // dspls[0,?,?,?]->[0,3,6,9] | [0,?,?,?]->[0,3,6,8]
