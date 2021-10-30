@@ -5,6 +5,7 @@
 
 
 TEST(seq_and_par_check_equivalence, two_elems_at_the_borders_vec_size_200) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     const int vecLen = 200;
     int* vec = nullptr;
@@ -23,6 +24,7 @@ TEST(seq_and_par_check_equivalence, two_elems_at_the_borders_vec_size_200) {
 }
 
 TEST(seq_and_par_check_equivalence, one_elem_in_the_middle_vec_size_200) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     const int vecLen = 200;
     int* vec = nullptr;
@@ -41,6 +43,7 @@ TEST(seq_and_par_check_equivalence, one_elem_in_the_middle_vec_size_200) {
 }
 
 TEST(seq_and_par_check_equivalence, negative_vec_size_200) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     const int vecLen = 200;
     int* vec = nullptr;
@@ -59,6 +62,7 @@ TEST(seq_and_par_check_equivalence, negative_vec_size_200) {
 }
 
 TEST(seq_and_par_check_equivalence, positive_vec_size_200) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     const int vecLen = 200;
     int* vec = nullptr;
@@ -77,6 +81,7 @@ TEST(seq_and_par_check_equivalence, positive_vec_size_200) {
 }
 
 TEST(seq_and_par_check_equivalence, rng_vec_size_100000) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     const int vecLen = 100000;
     int* vec = nullptr;
@@ -95,6 +100,7 @@ TEST(seq_and_par_check_equivalence, rng_vec_size_100000) {
 }
 
 TEST(seq_and_par_check_equivalence, rng_vec_size_110) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     const int vecLen = 110;
     int* vec = nullptr;
@@ -113,6 +119,7 @@ TEST(seq_and_par_check_equivalence, rng_vec_size_110) {
 }
 
 TEST(seq_and_par_check_equivalence, rng_vec_size_11) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     const int vecLen = 11;
     int* vec = nullptr;
@@ -131,6 +138,7 @@ TEST(seq_and_par_check_equivalence, rng_vec_size_11) {
 }
 
 TEST(seq_and_par_check_equivalence, rng_vec_size_8) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     const int vecLen = 8;
     int* vec = nullptr;
@@ -149,6 +157,7 @@ TEST(seq_and_par_check_equivalence, rng_vec_size_8) {
 }
 
 TEST(equivalense_of_sequential_count, two_elems_at_the_borders) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -167,6 +176,7 @@ TEST(equivalense_of_sequential_count, two_elems_at_the_borders) {
 }
 
 TEST(equivalense_of_sequential_count, one_elem_in_the_middle) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -185,6 +195,7 @@ TEST(equivalense_of_sequential_count, one_elem_in_the_middle) {
 }
 
 TEST(equivalense_of_sequential_count, on_negative_vect) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -199,6 +210,7 @@ TEST(equivalense_of_sequential_count, on_negative_vect) {
 }
 
 TEST(equivalense_of_sequential_count, on_positive_vect) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -213,6 +225,7 @@ TEST(equivalense_of_sequential_count, on_positive_vect) {
 }
 
 TEST(equivalense_of_sequential_count, on_rand_vect) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -227,6 +240,7 @@ TEST(equivalense_of_sequential_count, on_rand_vect) {
 }
 
 TEST(RNG_function_check, does_not_contain_0) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -251,6 +265,7 @@ TEST(RNG_function_check, does_not_contain_0) {
 }
 
 TEST(RNG_function_check, generate_positive_and_negative_numbers) {
+    MPI_Barrier(MPI_COMM_WORLD);
     int procRank = 0;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
