@@ -8,7 +8,6 @@
 
 
 TEST(generator_functions_test, rng_generator_has_both_positive_and_negative) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -29,7 +28,6 @@ TEST(generator_functions_test, rng_generator_has_both_positive_and_negative) {
 }
 
 TEST(generator_functions_test, rng_generator_generates_in_range) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -47,7 +45,6 @@ TEST(generator_functions_test, rng_generator_generates_in_range) {
 }
 
 TEST(generator_functions_test, rising_generator_check) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -61,7 +58,6 @@ TEST(generator_functions_test, rising_generator_check) {
 }
 
 TEST(generator_functions_test, falling_generator_check) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -75,7 +71,6 @@ TEST(generator_functions_test, falling_generator_check) {
 }
 
 TEST(generator_functions_test, jumping_generator_check) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -97,7 +92,6 @@ TEST(generator_functions_test, jumping_generator_check) {
 }
 
 TEST(matrix_class_check, default_constructor_check) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -113,7 +107,6 @@ TEST(matrix_class_check, default_constructor_check) {
 }
 
 TEST(matrix_class_check, parameterized_constructor_check) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -132,7 +125,6 @@ TEST(matrix_class_check, parameterized_constructor_check) {
 }
 
 TEST(matrix_class_check, matrix_fill_test) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -148,7 +140,6 @@ TEST(matrix_class_check, matrix_fill_test) {
 }
 
 TEST(matrix_class_check, indexation_check) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -161,7 +152,6 @@ TEST(matrix_class_check, indexation_check) {
 }
 
 TEST(matrix_class_check, copy_constructor_check) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -178,7 +168,6 @@ TEST(matrix_class_check, copy_constructor_check) {
 }
 
 TEST(matrix_class_check, operator_is_equal_check) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -190,7 +179,6 @@ TEST(matrix_class_check, operator_is_equal_check) {
 }
 
 TEST(matrix_class_check, operator_equal_check_1) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -203,7 +191,6 @@ TEST(matrix_class_check, operator_equal_check_1) {
 }
 
 TEST(matrix_class_check, operator_equal_check_2) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -216,7 +203,6 @@ TEST(matrix_class_check, operator_equal_check_2) {
 }
 
 TEST(matrix_class_check, operator_multiply_check_1) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -233,7 +219,6 @@ TEST(matrix_class_check, operator_multiply_check_1) {
 }
 
 TEST(matrix_class_check, operator_multiply_check_2) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
@@ -249,7 +234,6 @@ TEST(matrix_class_check, operator_multiply_check_2) {
 }
 
 TEST(parallel_multiplication_test, can_multiply_vectors) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     matrix<int> a, b;
@@ -266,7 +250,6 @@ TEST(parallel_multiplication_test, can_multiply_vectors) {
 }
 
 TEST(parallel_multiplication_test, vector_on_matrix) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     matrix<int> a, b;
@@ -283,7 +266,6 @@ TEST(parallel_multiplication_test, vector_on_matrix) {
 }
 
 TEST(parallel_multiplication_test, matrix_on_vector) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     matrix<int> a, b;
@@ -300,7 +282,6 @@ TEST(parallel_multiplication_test, matrix_on_vector) {
 }
 
 TEST(parallel_multiplication_test, matrix_on_matrix) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     matrix<int> a, b;
@@ -317,7 +298,6 @@ TEST(parallel_multiplication_test, matrix_on_matrix) {
 }
 
 TEST(parallel_multiplication_test, can_work_with_double_matrix) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     matrix<double> a, b;
@@ -334,7 +314,6 @@ TEST(parallel_multiplication_test, can_work_with_double_matrix) {
 }
 
 TEST(parallel_multiplication_test, can_work_with_float_matrix) {
-    MPI_Barrier(MPI_COMM_WORLD);
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     matrix<float> a, b;
