@@ -6,7 +6,7 @@
 #include <mpi.h>
 #include <iostream>
 
-#define UINT64_T unsigned long long int
+#define UINT64_T unsigned long long
 
 template<class T>
 class matrix {

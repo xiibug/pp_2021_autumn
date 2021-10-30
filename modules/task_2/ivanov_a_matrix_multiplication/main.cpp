@@ -96,9 +96,9 @@ TEST(matrix_class_check, default_constructor_check) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
         matrix<int> a;
-        if (a.data() != nullptr)
+        if ((a.data()) != nullptr)
             ASSERT_TRUE(false);
-        if (a.getNumColums() != 0 || a.getNumRows() != 0)
+        if (((a.getNumColums()) != 0) || ((a.getNumRows()) != 0))
             ASSERT_TRUE(false);
         ASSERT_TRUE(true);
     }
@@ -109,9 +109,9 @@ TEST(matrix_class_check, parameterized_constructor_check) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
         matrix<int> a(2, 4);
-        if (a.getNumRows() != 2)
+        if ((a.getNumRows()) != 2)
             ASSERT_TRUE(false);
-        if (a.getNumColums() != 4)
+        if ((a.getNumColums()) != 4)
             ASSERT_TRUE(false);
         ASSERT_NO_THROW({
             int* matrixData = a.data();
@@ -206,7 +206,7 @@ TEST(matrix_class_check, operator_multiply_check_1) {
         a.fillMatrix(generateRisingValue, 0, 0, 0);
         b.fillMatrix(generateFallingValue, 0, 15, 0);
         matrix<int> c = a * b;
-        if (c.getNumRows() != 2 && c.getNumColums() != 2)
+        if (((c.getNumRows()) != 2) && ((c.getNumColums()) != 2))
             ASSERT_TRUE(false);
         ASSERT_TRUE(c[0][0] == 62 && c[0][1] == 56
             && c[1][0] == 254 && c[1][1] == 232);
@@ -221,7 +221,7 @@ TEST(matrix_class_check, operator_multiply_check_2) {
         a.fillMatrix(generateRisingValue, 0, 0, 0);
         b.fillMatrix(generateFallingValue, 0, 15, 0);
         matrix<int> c = a * b;
-        if (c.getNumRows() != 2 && c.getNumColums() != 1)
+        if (((c.getNumRows()) != 2) && ((c.getNumColums()) != 1))
             ASSERT_TRUE(false);
         ASSERT_TRUE(c[0][0] == 76 && c[1][0] == 292);
     }
