@@ -5,8 +5,9 @@
 
 #include <mpi.h>
 #include <iostream>
+#include <cstdint>
 
-#define UINT64_T unsigned long long
+#define UINT64_T uint64_t
 
 template<class T>
 class matrix {
