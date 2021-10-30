@@ -36,12 +36,12 @@ int UniqueCharsSequential(const std::string& str1, const std::string& str2) {
 
 void DistributeJobs(int local_rank, int local_size, int jobs, int& pos, int& substr_size) {
     substr_size = jobs / local_size;
-    int first_step = (jobs % local_size == 0) ? substr_size : substr_size + jobs % local_size;
-    if (local_rank == 0) {
-        pos = 0;
-        substr_size = first_step;
+    int rest = jobs % local_size;
+    if (local_rank < rest) {
+        substr_size ++;
+        pos = substr_size * local_rank;
     } else {
-        pos = first_step + (local_rank - 1) * substr_size;
+        pos = (substr_size + 1) * rest + substr_size * (local_rank - rest);
     }
 }
 
