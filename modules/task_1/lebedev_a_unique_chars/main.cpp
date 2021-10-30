@@ -3,106 +3,110 @@
 #include "unique_chars.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(Parallel_Operations_MPI, Test_Sequential) {
-    std::string str1 = "apple";
-    std::string str2 = "orange";
-    ASSERT_EQ(UniqueCharsSequential(str1, str2), 6);
 
-    str1 = "";
-    str2 = "apple";
-    ASSERT_EQ(UniqueCharsSequential(str1, str2), 4);
+class UniqueCharsTEST : public ::testing::Test
+{
+protected:
+	void SetUp() override {
+		strs1 = {"apple", "", "", "orange", "kkk"};
+        strs2 = {"orange", "apple", "", "orange", "mmm"};
+        answers = {6, 4, 0, 0, 2};
+	}
 
-    str1 = "";
-    str2 = "";
-    ASSERT_EQ(UniqueCharsSequential(str1, str2), 0);
+    std::vector<std::string> strs1;
+    std::vector<std::string> strs2;
+    std::vector<int> answers;
+    const static int MAXSIZE = 200;
+    const static int STEP = 20;
+};
 
-    str1 = "orange";
-    str2 = "orange";
-    ASSERT_EQ(UniqueCharsSequential(str1, str2), 0);
 
-    str1 = "kkk";
-    str2 = "mmm";
-    ASSERT_EQ(UniqueCharsSequential(str1, str2), 2);
+TEST_F(UniqueCharsTEST, Test_Sequential) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if (rank == 0) {
+        int global_count;
+        for (size_t i = 0; i < answers.size(); i++) {
+            global_count = UniqueCharsSequential(strs1[i], strs2[i]);
+            ASSERT_EQ(global_count, answers[i]);
+        }
+    }
 }
 
-TEST(Parallel_Operations_MPI, Test_Parallel) {
+TEST_F(UniqueCharsTEST, Test_Parallel) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    std::string str1, str2;
+    int global_count;
+
+    for (size_t i = 0; i < answers.size(); i++) {
+        if (rank == 0) {
+            str1 = strs1[i];
+            str2 = strs2[i];
+        }
+
+        global_count = UniqueCharsParallel(str1, str2);
+
+        if(rank == 0) {
+            ASSERT_EQ(global_count, answers[i]);
+        }
+    }
+}
+
+TEST_F(UniqueCharsTEST, Test_Parallel_Random_Data_Same_Size) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string str1, str2;
     int global_count;
+    for(size_t data_size = 0; data_size < MAXSIZE; data_size += STEP) {
+        if (rank == 0){
+            str1 = getRandomString(data_size);
+            str2 = getRandomString(data_size);
+        }
 
-    if(rank == 0) {
-        str1 = "apple";
-        str2 = "orange";
-    }
+        global_count = UniqueCharsParallel(str1, str2);
 
-    global_count = UniqueCharsParallel(str1, str2);
-
-    if(rank == 0) {
-        ASSERT_EQ(global_count, 6);
-    }
-
-    if(rank == 0) {
-        str1 = "";
-        str2 = "apple";
-    }
-
-    global_count = UniqueCharsParallel(str1, str2);
-
-    if(rank == 0) {
-        ASSERT_EQ(global_count, 4);
-    }
-
-    if(rank == 0) {
-        str1 = "";
-        str2 = "";
-    }
-
-    global_count = UniqueCharsParallel(str1, str2);
-
-    if(rank == 0) {
-        ASSERT_EQ(global_count, 0);
-    }
-
-    if(rank == 0) {
-        str1 = "orange";
-        str2 = "orange";
-    }
-
-    global_count = UniqueCharsParallel(str1, str2);
-
-    if(rank == 0) {
-        ASSERT_EQ(global_count, 0);
-    }
-
-    if(rank == 0) {
-        str1 = "kkk";
-        str2 = "mmm";
-    }
-
-    global_count = UniqueCharsParallel(str1, str2);
-
-    if(rank == 0) {
-        ASSERT_EQ(global_count, 2);
+        if(rank == 0) {
+            ASSERT_EQ(global_count, UniqueCharsSequential(str1, str2));
+        }
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Sum3) {
-    std::string str1 = "huie";
-    std::string str2 = "hjkl";
-    ASSERT_EQ(UniqueCharsSequential(str1, str2), 6);
+TEST_F(UniqueCharsTEST, Test_Parallel_Random_Data_Different_Size) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::string str1, str2;
+    int global_count;
+    for(size_t data_size = 0; data_size < MAXSIZE; data_size += STEP) {
+        if (rank == 0){
+            str1 = getRandomString(data_size);
+            str2 = getRandomString(MAXSIZE - data_size);
+        }
+
+        global_count = UniqueCharsParallel(str1, str2);
+
+        if(rank == 0) {
+            ASSERT_EQ(global_count, UniqueCharsSequential(str1, str2));
+        }
+    }
 }
 
-TEST(Parallel_Operations_MPI, Test_Sum4) {
-    std::string str1 = "huie";
-    std::string str2 = "hjkl";
-    ASSERT_EQ(UniqueCharsSequential(str1, str2), 6);
-}
+TEST_F(UniqueCharsTEST, Test_Parallel_Random_Data_Random_Size) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::string str1, str2;
+    int global_count;
+    if (rank == 0){
+        str1 = getRandomString(rand() % MAXSIZE);
+        str2 = getRandomString(rand() % MAXSIZE);
+    }
 
-TEST(Parallel_Operations_MPI, Test_Sum5) {
-    std::string str1 = "huie";
-    std::string str2 = "hjkl";
-    ASSERT_EQ(UniqueCharsSequential(str1, str2), 6);
+    global_count = UniqueCharsParallel(str1, str2);
+
+    if(rank == 0) {
+        ASSERT_EQ(global_count, UniqueCharsSequential(str1, str2));
+    }
 }
 
 

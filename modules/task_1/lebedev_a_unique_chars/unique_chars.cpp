@@ -34,9 +34,9 @@ int UniqueCharsSequential(const std::string& str1, const std::string& str2) {
     return CountUnique(str1, 0, str1.size(), str2) + CountUnique(str2, 0, str2.size(), str1);
 }
 
-void DistributeJobs(int local_rank, int jobs, int total_size, int& pos, int& substr_size) {
-    substr_size = total_size / jobs;
-    int first_step = (total_size % jobs == 0) ? substr_size : substr_size + 1;
+void DistributeJobs(int local_rank, int local_size, int jobs, int& pos, int& substr_size) {
+    substr_size = jobs / local_size;
+    int first_step = (jobs % local_size == 0) ? substr_size : substr_size + jobs % local_size;
     if (local_rank == 0) {
         pos = 0;
         substr_size = first_step;
@@ -45,13 +45,33 @@ void DistributeJobs(int local_rank, int jobs, int total_size, int& pos, int& sub
     }
 }
 
+int SplitComm(int global_size, int str1_size, int str2_size) {
+    if (str1_size == 0 || str2_size == 0) {
+        return 1;
+    } else {
+        int local_size = (std::max(str1_size, str2_size) * global_size) / (str1_size + str2_size);
+        if (local_size == 0) {
+            return 1;
+        } else {
+            return local_size;
+        }
+    }
+}
+
 int UniqueCharsParallel(const std::string& str1, const std::string& str2) {
     int global_size, global_rank;
     MPI_Comm_size(MPI_COMM_WORLD, &global_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &global_rank);
 
+    int color;
+    int split_rang;
     MPI_Comm local_comm;
-    MPI_Comm_split(MPI_COMM_WORLD, global_rank % 2, global_rank, &local_comm);
+    if (global_rank == 0) {
+        split_rang = SplitComm(global_size, str1.size(), str2.size());
+    }
+    MPI_Bcast(&split_rang, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    color = (global_rank < split_rang) ? 0 : 1;
+    MPI_Comm_split(MPI_COMM_WORLD, color, global_rank, &local_comm);
 
     int local_size, local_rank;
     MPI_Comm_size(local_comm, &local_size);
@@ -64,15 +84,16 @@ int UniqueCharsParallel(const std::string& str1, const std::string& str2) {
     }
 
     if (global_rank == 0) {
-        str1_local = str1;
-        str2_local = str2;
-        if (global_size > 1) {
+        str1_local = (str1.size() > str2.size()) ? str1 : str2;
+        str2_local = (str1.size() > str2.size()) ? str2 : str1;
+
+        if (global_size > local_size) {
             int dst_pid;
             MPI_Status status;
             MPI_Recv(&dst_pid, 1, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
 
-            MPI_Send(str2.c_str(), str2.size(), MPI_CHAR, dst_pid, 1, MPI_COMM_WORLD);
-            MPI_Send(str1.c_str(), str1.size(), MPI_CHAR, dst_pid, 2, MPI_COMM_WORLD);
+            MPI_Send(str2_local.c_str(), str2_local.size(), MPI_CHAR, dst_pid, 1, MPI_COMM_WORLD);
+            MPI_Send(str1_local.c_str(), str1_local.size(), MPI_CHAR, dst_pid, 2, MPI_COMM_WORLD);
         }
     }
     else if (local_rank == 0) {
@@ -109,13 +130,14 @@ int UniqueCharsParallel(const std::string& str1, const std::string& str2) {
     DistributeJobs(local_rank, local_size, str1_size, pos, substr_size);
     int local_count = CountUnique(str1_local, pos, substr_size, str2_local);
 
-    if(global_size == 1) {
+    if(global_size == local_size) {
         DistributeJobs(local_rank, local_size, str2_size, pos, substr_size);
         local_count += CountUnique(str2_local, pos, substr_size, str1_local);
     }
 
     int global_count = 0;
     MPI_Reduce(&local_count, &global_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Comm_free(&local_comm);
 
     return global_count;
 }
