@@ -1,19 +1,20 @@
 // Copyright 2021 Ivanov Arkadiy
-#ifndef MODULES_TASK_1_IVANOV_A_MATRIX_MULTIPLICATION_MATRIX_MULTIPLICATION_H_
-#define MODULES_TASK_1_IVANOV_A_MATRIX_MULTIPLICATION_MATRIX_MULTIPLICATION_H_
+#ifndef MODULES_TASK_2_IVANOV_A_MATRIX_MULTIPLICATION_MATRIX_MULTIPLICATION_H_
+#define MODULES_TASK_2_IVANOV_A_MATRIX_MULTIPLICATION_MATRIX_MULTIPLICATION_H_
 
 
-#include <iostream>
 #include <mpi.h>
+#include <iostream>
 
+#define UINT64_T unsigned long long int
 
 template<class T>
 class matrix {
-private:
+ private:
     T* m;
     int numRows, numColums;
 
-public:
+ public:
     matrix();
     matrix(const matrix<T>& c);
     matrix(const int _numRows, const int _numColums);
@@ -24,7 +25,7 @@ public:
     matrix<T> operator*(const matrix<T>& c);
     matrix<T>& operator=(const matrix<T>& c);
     bool operator==(const matrix<T>& c);
-    template<class T> friend std::ostream& operator<< (std::ostream& o, const matrix<T>& c);
+    template<class T2> friend std::ostream& operator<< (std::ostream& o, const matrix<T2>& c);
 
     void fillMatrix(int (*generateFunciton)(int, int, int*),
         int value1, int value2, int baseFeedbackValue);
@@ -33,7 +34,6 @@ public:
     T* data() { return m; }
     /*const*/ T* data() const { return /*reinterpret_cast<const T*>(*/m/*)*/; }
     void prepareSpace(int _numRows, int _numColums);
-
 };
 
 template<class T>
@@ -48,9 +48,8 @@ matrix<T>::matrix(const matrix<T>& c) {
     numColums = c.numColums;
     if (numRows * numColums == 0) {
         m = nullptr;
-    }
-    else {
-        m = new T[static_cast<unsigned __int64>(numRows) * numColums];  //C26451
+    } else {
+        m = new T[static_cast<UINT64_T>(numRows) * numColums];  // C26451
         for (int i = 0; i < numRows * numColums; i++)
             m[i] = c.m[i];
     }
@@ -62,7 +61,7 @@ matrix<T>::matrix(const int _numRows, const int _numColumns) {
         throw "Can't create matrix with 0 column numbers or rows";
     numRows = _numRows;
     numColums = _numColumns;
-    m = new T[static_cast<unsigned __int64>(numRows) * numColums];  //C26451
+    m = new T[static_cast<UINT64_T>(numRows) * numColums];  // C26451
     // for (int i = 0; i < numRows * numColums; m[i++] = 0) {}
 }
 
@@ -79,14 +78,14 @@ template<class T>
 T* matrix<T>::operator[](const int i) {
     if (i >= numRows)
         throw "Unacceptable row number";
-    return m + static_cast<unsigned __int64>(i) * numColums;  //C26451
+    return m + static_cast<UINT64_T>(i) * numColums;  // C26451
 }
 
 template<class T>
 const T* matrix<T>::operator[](const int i) const {
     if (i >= numRows)
         throw "Unacceptable row number";
-    return reinterpret_cast<const T*>(m + static_cast<unsigned __int64>(i) * numColums);  //C26451
+    return reinterpret_cast<const T*>(m + static_cast<UINT64_T>(i) * numColums);  // C26451
 }
 
 template<class T>
@@ -113,7 +112,7 @@ matrix<T>& matrix<T>::operator=(const matrix<T>& c) {
         delete[] m;
     numRows = c.numRows;
     numColums = c.numColums;
-    m = new T[static_cast<unsigned __int64>(numRows) * numColums];  //C26451
+    m = new T[static_cast<UINT64_T>(numRows) * numColums];  // C26451
     for (int i = 0; i < numRows * numColums; i++)
         m[i] = c.m[i];
     return *this;
@@ -154,7 +153,7 @@ void matrix<T>::prepareSpace(int _numRows, int _numColums) {
     m = nullptr;
     numRows = _numRows;
     numColums = _numColums;
-    m = new T[static_cast<unsigned __int64>(numRows) * numColums];  //C26451
+    m = new T[static_cast<UINT64_T>(numRows) * numColums];  // C26451
 }
 
 // can generate in range [-maxValue, -minValue] && [minValue, maxValue] IN: minValue, maxValue > 0
@@ -200,10 +199,10 @@ matrix<T> parallelMultiplication(const matrix<T>* A, const matrix<T>* B, MPI_Dat
     // 3 lines 5 colums 4 proc. | 6 lines 5 colums 4 proc. <= matrix A
     int linesToProcess = matrixSizes[0] / procCount;  // [0,0,0,0] | [1,1,1,1]
     if (procRank < matrixSizes[0] % procCount)
-        linesToProcess++; // [0,0,0,0] -> [1,1,1,0] | [1,1,1,1] -> [2,2,1,1]
+        linesToProcess++;  // [0,0,0,0] -> [1,1,1,0] | [1,1,1,1] -> [2,2,1,1]
     // now all processes now how many lines they have to process
     if (linesToProcess) {  // if there is lines to process
-        a.prepareSpace(linesToProcess, matrixSizes[1]); // preparing space
+        a.prepareSpace(linesToProcess, matrixSizes[1]);  // preparing space
     }
 
     // now root process have to compute, whom to send data. SCATTERING
@@ -220,7 +219,7 @@ matrix<T> parallelMultiplication(const matrix<T>* A, const matrix<T>* B, MPI_Dat
         for (int i = 0; i < procCount; i++)
             sendcounts[i] *= matrixSizes[1];
         // counting displacement
-        std::fill_n(displs, procCount, 0);  //displs[0] = 0;
+        std::fill_n(displs, procCount, 0);  // displs[0] = 0;
         // [0,0,0,0] -> [0,5,10,0] | [0,0,0,0] -> [0,10,20,25]
         for (int i = 1; i < procCount; i++)
             if (sendcounts[i])
@@ -232,25 +231,26 @@ matrix<T> parallelMultiplication(const matrix<T>* A, const matrix<T>* B, MPI_Dat
     if (procRank == 0) {
         MPI_Scatterv(reinterpret_cast<const void*>(A->data()), sendcounts, displs,
             matrixDatatype, a.data(), linesToProcess * matrixSizes[1], matrixDatatype, 0, MPI_COMM_WORLD);
-    }
-    else {
+    } else {
         MPI_Scatterv(nullptr, nullptr, nullptr, matrixDatatype, a.data(), linesToProcess * matrixSizes[1],
             matrixDatatype, 0, MPI_COMM_WORLD);
     }
 
     // sending matrix B
     if (procRank == 0)   // for root process
-        MPI_Bcast(reinterpret_cast<void*>(B->data()), matrixSizes[2] * matrixSizes[3], matrixDatatype, 0, MPI_COMM_WORLD);
+        MPI_Bcast(reinterpret_cast<void*>(B->data()),
+            matrixSizes[2] * matrixSizes[3], matrixDatatype, 0, MPI_COMM_WORLD);
     else  // for !root process
-        MPI_Bcast(reinterpret_cast<void*>(b.data()), matrixSizes[2] * matrixSizes[3], matrixDatatype, 0, MPI_COMM_WORLD);
+        MPI_Bcast(reinterpret_cast<void*>(b.data()),
+            matrixSizes[2] * matrixSizes[3], matrixDatatype, 0, MPI_COMM_WORLD);
 
     // Now root process have part of A matrix in matrix a and matrix B to operate (b empty)
     // !root processes have their own parts of A (but not everyone) in matrix a and matrix B in b
-    matrix<T> c;  // this matrix will be result of a*B (for root) and a*b (for !root) and will be empty for linesToProcess == 0
+    // this matrix will be result of a*B (for root) and a*b (for !root) and will be empty for linesToProcess == 0
+    matrix<T> c;
     if (procRank == 0) {
         c = a * (*B);
-    }
-    else {
+    } else {
         if (linesToProcess) {
             c = a * b;
         }
@@ -267,12 +267,11 @@ matrix<T> parallelMultiplication(const matrix<T>* A, const matrix<T>* B, MPI_Dat
         }
         std::fill_n(displs, procCount, 0);
         for (int i = 1; i < procCount; i++)  // (POTENTIAL ERROR FOR 3l 5c 4p dspls[3]=6???) fixed
-            if (sendcounts[i])
-                displs[i] = displs[i - 1] + sendcounts[i - 1];  // [0,5,10,15] -> [0,2,4,6] | [0,10,20,25] -> [0,4,8,10]
+            if (sendcounts[i])  // [0,5,10,15] -> [0,2,4,6] | [0,10,20,25] -> [0,4,8,10]
+                displs[i] = displs[i - 1] + sendcounts[i - 1];
         MPI_Gatherv(reinterpret_cast<const void*>(c.data()), linesToProcess * matrixSizes[3], matrixDatatype,
             reinterpret_cast<void*>(ans.data()), sendcounts, displs, matrixDatatype, 0, MPI_COMM_WORLD);
-    }
-    else {
+    } else {
         MPI_Gatherv(reinterpret_cast<const void*>(c.data()), linesToProcess * matrixSizes[3], matrixDatatype,
             nullptr, nullptr, nullptr, matrixDatatype, 0, MPI_COMM_WORLD);
     }
@@ -284,4 +283,4 @@ matrix<T> parallelMultiplication(const matrix<T>* A, const matrix<T>* B, MPI_Dat
     return ans;
 }
 
-#endif  // MODULES_TASK_1_IVANOV_A_MATRIX_MULTIPLICATION_MATRIX_MULTIPLICATION_H_
+#endif  // MODULES_TASK_2_IVANOV_A_MATRIX_MULTIPLICATION_MATRIX_MULTIPLICATION_H_

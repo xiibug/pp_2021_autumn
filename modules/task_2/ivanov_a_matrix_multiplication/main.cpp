@@ -1,8 +1,8 @@
 // Copyright 2021 Ivanov Arkadiy
-#include <iostream>
-#include <cmath>
 #include <gtest/gtest.h>
 #include <mpi.h>
+#include <iostream>
+#include <cmath>
 #include "./matrix_multiplication.h"
 #include <gtest-mpi-listener.hpp>
 
@@ -82,8 +82,7 @@ TEST(generator_functions_test, jumping_generator_check) {
             if (i % 2 == 0) {
                 if (value != v1)
                     ok = false;
-            }
-            else {
+            } else {
                 if (value != v2)
                     ok = false;
             }
