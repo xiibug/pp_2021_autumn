@@ -16,6 +16,7 @@ std::string getRandomString(size_t size) {
     return random_str;
 }
 
+// calculates the number of characters in a substring of str that are not included in compare_str
 int CountUnique(const std::string& str, size_t pos, size_t substr_size, const std::string& compare_str) {
     int result = 0;
     for (size_t i = pos; i < pos + substr_size; i++) {
@@ -32,6 +33,7 @@ int UniqueCharsSequential(const std::string& str1, const std::string& str2) {
     return CountUnique(str1, 0, str1.size(), str2) + CountUnique(str2, 0, str2.size(), str1);
 }
 
+// distribute substrings between processes
 void DistributeJobs(int local_rank, int local_size, int jobs, int& pos, int& substr_size) {
     substr_size = jobs / local_size;
     int rest = jobs % local_size;
@@ -43,6 +45,7 @@ void DistributeJobs(int local_rank, int local_size, int jobs, int& pos, int& sub
     }
 }
 
+// determine the number of processes which will process the largest string
 int SplitComm(int global_size, int str1_size, int str2_size) {
     if (str1_size == 0 || str2_size == 0) {
         return 1;
@@ -77,14 +80,17 @@ int UniqueCharsParallel(const std::string& str1, const std::string& str2) {
 
     std::string str1_local, str2_local;
 
+    // define the root in the second communicator if it exists
     if (global_rank != 0 && local_rank == 0) {
         MPI_Send(&global_rank, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
     }
 
     if (global_rank == 0) {
+        // communicator containing the global root will process the largest string
         str1_local = (str1.size() > str2.size()) ? str1 : str2;
         str2_local = (str1.size() > str2.size()) ? str2 : str1;
 
+        // share the data to the second root if there are two communicators
         if (global_size > local_size) {
             int dst_pid;
             MPI_Status status;
@@ -109,6 +115,8 @@ int UniqueCharsParallel(const std::string& str1, const std::string& str2) {
         MPI_Recv(&str2_local[0], str_size, MPI_INT, 0, 2, MPI_COMM_WORLD, &status);
     }
 
+    // all rootes have their own copy of str1 and str2 hear and they can broadcast it inside the communicator
+
     int str1_size, str2_size;
     if (local_rank == 0) {
         str1_size = str1_local.size();
@@ -128,6 +136,7 @@ int UniqueCharsParallel(const std::string& str1, const std::string& str2) {
     DistributeJobs(local_rank, local_size, str1_size, pos, substr_size);
     int local_count = CountUnique(str1_local, pos, substr_size, str2_local);
 
+    // if here is only one process or the second string is empty
     if (global_size == local_size) {
         DistributeJobs(local_rank, local_size, str2_size, pos, substr_size);
         local_count += CountUnique(str2_local, pos, substr_size, str1_local);
