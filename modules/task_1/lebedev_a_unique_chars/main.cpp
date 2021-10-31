@@ -8,12 +8,11 @@
 class UniqueCharsTEST : public ::testing::Test
 {
 protected:
-	void SetUp() override {
-		strs1 = {"apple", "", "", "orange", "kkk"};
+    void SetUp() override {
+        strs1 = {"apple", "", "", "orange", "kkk"};
         strs2 = {"orange", "apple", "", "orange", "mmm"};
         answers = {6, 4, 0, 0, 2};
-	}
-
+    }
     std::vector<std::string> strs1;
     std::vector<std::string> strs2;
     std::vector<int> answers;
