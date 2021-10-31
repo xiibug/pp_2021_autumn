@@ -1,6 +1,7 @@
 // Copyright 2021 Lebedev Alexey
 #include <gtest/gtest.h>
 #include <string>
+#include <random>
 #include "./unique_chars.h"
 #include <gtest-mpi-listener.hpp>
 
@@ -97,11 +98,11 @@ TEST_F(UniqueCharsTEST, Test_Parallel_Random_Data_Random_Size) {
     std::string str1, str2;
     int global_count;
     if (rank == 0) {
-        unsigned int str_size;
-        rand_r(&str_size);
-        str1 = getRandomString(str_size % MAXSIZE);
-        rand_r(&str_size);
-        str2 = getRandomString(str_size % MAXSIZE);
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(0, MAXSIZE);
+        str1 = getRandomString(distrib(gen));
+        str2 = getRandomString(distrib(gen));
     }
 
     global_count = UniqueCharsParallel(str1, str2);
