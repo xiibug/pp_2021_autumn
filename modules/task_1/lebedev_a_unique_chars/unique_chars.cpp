@@ -1,7 +1,7 @@
 // Copyright 2021 Lebedev Alexey
-#include <algorithm>
-#include <random>
 #include <mpi.h>
+#include <random>
+#include <algorithm>
 #include "../../../modules/task_1/lebedev_a_unique_chars/unique_chars.h"
 
 std::string getRandomString(size_t size) {
@@ -22,7 +22,7 @@ int CountUnique(const std::string& str, size_t pos, size_t substr_size, const st
     for (size_t i = pos; i < pos + substr_size; i++) {
         if (compare_str.find(str[i]) == std::string::npos) {
             if (str.find_first_of(str[i]) == i) {
-                result ++;
+                result++;
             }
         }
     }
@@ -34,14 +34,14 @@ int UniqueCharsSequential(const std::string& str1, const std::string& str2) {
 }
 
 // distribute substrings between processes
-void DistributeJobs(int local_rank, int local_size, int jobs, int& pos, int& substr_size) {
-    substr_size = jobs / local_size;
+void DistributeJobs(int local_rank, int local_size, int jobs, int* pos, int* substr_size) {
+    *substr_size = jobs / local_size;
     int rest = jobs % local_size;
     if (local_rank < rest) {
-        substr_size ++;
-        pos = substr_size * local_rank;
+        (*substr_size)++;
+        *pos = *substr_size * local_rank;
     } else {
-        pos = (substr_size + 1) * rest + substr_size * (local_rank - rest);
+        *pos = (*substr_size + 1) * rest + *substr_size * (local_rank - rest);
     }
 }
 
@@ -99,8 +99,7 @@ int UniqueCharsParallel(const std::string& str1, const std::string& str2) {
             MPI_Send(str2_local.c_str(), str2_local.size(), MPI_CHAR, dst_pid, 1, MPI_COMM_WORLD);
             MPI_Send(str1_local.c_str(), str1_local.size(), MPI_CHAR, dst_pid, 2, MPI_COMM_WORLD);
         }
-    }
-    else if (local_rank == 0) {
+    } else if (local_rank == 0) {
         MPI_Status status;
         int str_size;
 
@@ -133,12 +132,12 @@ int UniqueCharsParallel(const std::string& str1, const std::string& str2) {
     MPI_Bcast(&str2_local[0], str2_size, MPI_CHAR, 0, local_comm);
 
     int pos, substr_size;
-    DistributeJobs(local_rank, local_size, str1_size, pos, substr_size);
+    DistributeJobs(local_rank, local_size, str1_size, &pos, &substr_size);
     int local_count = CountUnique(str1_local, pos, substr_size, str2_local);
 
     // if here is only one process or the second string is empty
     if (global_size == local_size) {
-        DistributeJobs(local_rank, local_size, str2_size, pos, substr_size);
+        DistributeJobs(local_rank, local_size, str2_size, &pos, &substr_size);
         local_count += CountUnique(str2_local, pos, substr_size, str1_local);
     }
 

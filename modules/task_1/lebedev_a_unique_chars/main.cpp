@@ -5,19 +5,18 @@
 #include <gtest-mpi-listener.hpp>
 
 
-class UniqueCharsTEST : public ::testing::Test
-{
-protected:
-    void SetUp() override {
-        strs1 = {"apple", "", "", "orange", "kkk"};
-        strs2 = {"orange", "apple", "", "orange", "mmm"};
-        answers = {6, 4, 0, 0, 2};
-    }
-    std::vector<std::string> strs1;
-    std::vector<std::string> strs2;
-    std::vector<int> answers;
-    const static int MAXSIZE = 200;
-    const static int STEP = 20;
+class UniqueCharsTEST : public ::testing::Test {
+    protected:
+        void SetUp() override {
+            strs1 = {"apple", "", "", "orange", "kkk"};
+            strs2 = {"orange", "apple", "", "orange", "mmm"};
+            answers = {6, 4, 0, 0, 2};
+        }
+        static const int MAXSIZE = 200;
+        static const int STEP = 20;
+        std::vector<std::string> strs1;
+        std::vector<std::string> strs2;
+        std::vector<int> answers;
 };
 
 
@@ -78,7 +77,7 @@ TEST_F(UniqueCharsTEST, Test_Parallel_Random_Data_Different_Size) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string str1, str2;
     int global_count;
-    for(size_t data_size = 0; data_size < MAXSIZE; data_size += STEP) {
+    for (size_t data_size = 0; data_size < MAXSIZE; data_size += STEP) {
         if (rank == 0) {
             str1 = getRandomString(data_size);
             str2 = getRandomString(MAXSIZE - data_size);
@@ -86,7 +85,7 @@ TEST_F(UniqueCharsTEST, Test_Parallel_Random_Data_Different_Size) {
 
         global_count = UniqueCharsParallel(str1, str2);
 
-        if(rank == 0) {
+        if (rank == 0) {
             ASSERT_EQ(global_count, UniqueCharsSequential(str1, str2));
         }
     }
