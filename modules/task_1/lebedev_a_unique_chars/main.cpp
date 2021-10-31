@@ -6,17 +6,17 @@
 
 
 class UniqueCharsTEST : public ::testing::Test {
-    protected:
-        void SetUp() override {
-            strs1 = {"apple", "", "", "orange", "kkk"};
-            strs2 = {"orange", "apple", "", "orange", "mmm"};
-            answers = {6, 4, 0, 0, 2};
-        }
-        static const int MAXSIZE = 200;
-        static const int STEP = 20;
-        std::vector<std::string> strs1;
-        std::vector<std::string> strs2;
-        std::vector<int> answers;
+ protected:
+    void SetUp() override {
+        strs1 = {"apple", "", "", "orange", "kkk"};
+        strs2 = {"orange", "apple", "", "orange", "mmm"};
+        answers = {6, 4, 0, 0, 2};
+    }
+    static const int MAXSIZE = 200;
+    static const int STEP = 20;
+    std::vector<std::string> strs1;
+    std::vector<std::string> strs2;
+    std::vector<int> answers;
 };
 
 
@@ -97,8 +97,11 @@ TEST_F(UniqueCharsTEST, Test_Parallel_Random_Data_Random_Size) {
     std::string str1, str2;
     int global_count;
     if (rank == 0) {
-        str1 = getRandomString(rand() % MAXSIZE);
-        str2 = getRandomString(rand() % MAXSIZE);
+        unsigned int str_size;
+        rand_r(&str_size);
+        str1 = getRandomString(str_size % MAXSIZE);
+        rand_r(&str_size);
+        str2 = getRandomString(str_size % MAXSIZE);
     }
 
     global_count = UniqueCharsParallel(str1, str2);
