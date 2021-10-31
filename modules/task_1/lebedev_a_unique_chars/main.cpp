@@ -1,6 +1,7 @@
+// Copyright 2021 Lebedev Alexey
 #include <gtest/gtest.h>
 #include <string>
-#include "unique_chars.h"
+#include "./unique_chars.h"
 #include <gtest-mpi-listener.hpp>
 
 
@@ -48,7 +49,7 @@ TEST_F(UniqueCharsTEST, Test_Parallel) {
 
         global_count = UniqueCharsParallel(str1, str2);
 
-        if(rank == 0) {
+        if (rank == 0) {
             ASSERT_EQ(global_count, answers[i]);
         }
     }
@@ -59,15 +60,15 @@ TEST_F(UniqueCharsTEST, Test_Parallel_Random_Data_Same_Size) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string str1, str2;
     int global_count;
-    for(size_t data_size = 0; data_size < MAXSIZE; data_size += STEP) {
-        if (rank == 0){
+    for (size_t data_size = 0; data_size < MAXSIZE; data_size += STEP) {
+        if (rank == 0) {
             str1 = getRandomString(data_size);
             str2 = getRandomString(data_size);
         }
 
         global_count = UniqueCharsParallel(str1, str2);
 
-        if(rank == 0) {
+        if (rank == 0) {
             ASSERT_EQ(global_count, UniqueCharsSequential(str1, str2));
         }
     }
@@ -79,7 +80,7 @@ TEST_F(UniqueCharsTEST, Test_Parallel_Random_Data_Different_Size) {
     std::string str1, str2;
     int global_count;
     for(size_t data_size = 0; data_size < MAXSIZE; data_size += STEP) {
-        if (rank == 0){
+        if (rank == 0) {
             str1 = getRandomString(data_size);
             str2 = getRandomString(MAXSIZE - data_size);
         }
@@ -97,14 +98,14 @@ TEST_F(UniqueCharsTEST, Test_Parallel_Random_Data_Random_Size) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string str1, str2;
     int global_count;
-    if (rank == 0){
+    if (rank == 0) {
         str1 = getRandomString(rand() % MAXSIZE);
         str2 = getRandomString(rand() % MAXSIZE);
     }
 
     global_count = UniqueCharsParallel(str1, str2);
 
-    if(rank == 0) {
+    if (rank == 0) {
         ASSERT_EQ(global_count, UniqueCharsSequential(str1, str2));
     }
 }

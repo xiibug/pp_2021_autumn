@@ -1,10 +1,8 @@
+// Copyright 2021 Lebedev Alexey
 #include <algorithm>
 #include <random>
-#include <memory>
-#include <cstring>
-#include <iostream>
 #include <mpi.h>
-#include "unique_chars.h"
+#include "../../../modules/task_1/lebedev_a_unique_chars/unique_chars.h"
 
 std::string getRandomString(size_t size) {
     std::string random_str;
@@ -12,7 +10,7 @@ std::string getRandomString(size_t size) {
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(97, 122);
 
-    for(size_t i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++) {
         random_str.push_back(distrib(gen));
     }
     return random_str;
@@ -20,9 +18,9 @@ std::string getRandomString(size_t size) {
 
 int CountUnique(const std::string& str, size_t pos, size_t substr_size, const std::string& compare_str) {
     int result = 0;
-    for(size_t i = pos; i < pos + substr_size; i++) {
-        if(compare_str.find(str[i]) == std::string::npos) {
-            if(str.find_first_of(str[i]) == i){
+    for (size_t i = pos; i < pos + substr_size; i++) {
+        if (compare_str.find(str[i]) == std::string::npos) {
+            if (str.find_first_of(str[i]) == i) {
                 result ++;
             }
         }
@@ -130,7 +128,7 @@ int UniqueCharsParallel(const std::string& str1, const std::string& str2) {
     DistributeJobs(local_rank, local_size, str1_size, pos, substr_size);
     int local_count = CountUnique(str1_local, pos, substr_size, str2_local);
 
-    if(global_size == local_size) {
+    if (global_size == local_size) {
         DistributeJobs(local_rank, local_size, str2_size, pos, substr_size);
         local_count += CountUnique(str2_local, pos, substr_size, str1_local);
     }
