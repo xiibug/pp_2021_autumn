@@ -2,13 +2,12 @@
 #ifndef MODULES_TASK_1_GORDEEV_V_MATRIX_MIN_LINE_MATRIX_MIN_LINE_MPI_H_
 #define MODULES_TASK_1_GORDEEV_V_MATRIX_MIN_LINE_MATRIX_MIN_LINE_MPI_H_
 
-#include <vector>
 #include <string>
 
-int* getRandomVector(int rows, int columns);
-int* getSequentialMatrixMinLine(int* vec,
+void getRandomVector(int* vec, int rows, int columns);
+void getSequentialMatrixMinLine(const int* vec, int* res,
     int count_rows_vector, int count_columns_vector);
-int* getParallelMatrixMinLine(int* global_vec,
+void getParallelMatrixMinLine(const int* global_vec, int* res_vec,
     int count_rows_vector, int count_columns_vector);
 int minSearch(int a, int b);
 
