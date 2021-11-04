@@ -1,7 +1,7 @@
 // Copyright 2018 Nesterov Alexander
 #include <gtest/gtest.h>
 #include <vector>
-#include "./min_matrix.h"
+#include "../../../modules/task_1/bakalina_d_min_matrix/min_matrix.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, parallel_search_min_in_matrix_with_size_10_x_10) {

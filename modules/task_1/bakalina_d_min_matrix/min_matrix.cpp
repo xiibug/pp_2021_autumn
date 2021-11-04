@@ -3,29 +3,28 @@
 #include <mpi.h>
 #include <iostream>
 #include <random>
-#include "./min_matrix.h"
+#include "../../../modules/task_1/bakalina_d_min_matrix/min_matrix.h"
 
 
 int lin_search(const int* v, const int len) {
-    int min;
+    int min = v[0];
     if (len > 0) {
-        min = v[0];
         for (int i = 0; i < len; ++i) {
             if (min > v[i])
                 min = v[i];
         }
-    }
-    else {
+    } else 
+    {
         throw "wrong size";
     }
     return min;
 }
 
-void create_random_matrix(int*& mtrx,const int& size_n,const int& size_m) {
+void create_random_matrix(int*& mtrx, const int& size_n, const int& size_m) {
     std::random_device dev;
     std::mt19937 gen(dev());
     mtrx = new int[size_n * size_m];
-    for (unsigned int i = 0; i < size_n * size_m; i++) {
+    for (int i = 0; i < size_n * size_m; i++) {
         mtrx[i] = gen() % 1000;
     }
 }
