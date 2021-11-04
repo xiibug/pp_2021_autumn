@@ -1,6 +1,6 @@
 // Copyright 2021 Zarubin Mikhail
-#ifndef MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
-#define MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
+#ifndef MODULES_TASK_1_ZARUBIN_M_SUM_VALUES_ON_ROWS_MATRIX_SUM_VALUES_ON_ROWS_MATRIX_H_
+#define MODULES_TASK_1_ZARUBIN_M_SUM_VALUES_ON_ROWS_MATRIX_SUM_VALUES_ON_ROWS_MATRIX_H_
 
 #include <vector>
 
@@ -9,4 +9,4 @@ std::vector<int> transposeMatrix(const std::vector<int>& matrix, std::vector<int
 std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column);
 std::vector<int> getSequentialOperations(const std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column);
 
-#endif  // MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
+#endif  // MODULES_TASK_1_ZARUBIN_M_SUM_VALUES_ON_ROWS_MATRIX_SUM_VALUES_ON_ROWS_MATRIX_H_

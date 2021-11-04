@@ -1,8 +1,9 @@
 // Copyright 2021 Zarubin Mikhail
-#include <algorithm>
 #include <mpi.h>
-#include <random>
 #include <vector>
+#include <string>
+#include <random>
+#include <algorithm>
 #include "../../../modules/task_1/zarubin_m_sum_values_on_rows_matrix/sum_values_on_rows_matrix.h"
 
 

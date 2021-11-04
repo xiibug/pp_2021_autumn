@@ -4,6 +4,7 @@
 #include "./sum_values_on_rows_matrix.h"
 #include <gtest-mpi-listener.hpp>
 
+
 TEST(GENERATE_MATRIX, can_generate_random_matrix) {
     std::vector<int> matrix(3 * 3);
     ASSERT_NO_THROW(generateRandomMatrix(matrix, 3, 3));
