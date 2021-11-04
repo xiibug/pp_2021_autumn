@@ -53,8 +53,7 @@ TEST(Parallel_Operations_MPI, parallel_search_works_in_large_matrix) {
     int* mtrx = 0;
     int ph_min = 0;
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
-    if (ProcRank == 0)
-    {
+    if (ProcRank == 0) {
         mtrx = new int[n * m];
         for (unsigned int i = 0; i < n * m; i++) {
              mtrx[i] = i + 1;
@@ -83,7 +82,7 @@ TEST(Parallel_Operations_MPI, parallel_search_on_random_matrix_with_small_size) 
         lin_min = lin_search(mtrx, n * m);
         delete[] mtrx;
         ASSERT_EQ(ph_min, lin_min);
-	}
+    }
 }
 
 TEST(Parallel_Operations_MPI, parallel_search_on_random_matrix_with_large_size) {
