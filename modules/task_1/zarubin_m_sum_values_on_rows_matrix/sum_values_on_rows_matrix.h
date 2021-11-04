@@ -4,7 +4,7 @@
 
 #include <vector>
 
-void getRandomMatrix(std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column);
+void generateRandomMatrix(std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column);
 std::vector<int> transposeMatrix(const std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column);
 std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column);
 std::vector<int> getSequentialOperations(const std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column);

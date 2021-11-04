@@ -6,7 +6,7 @@
 #include "../../../modules/task_1/zarubin_m_sum_values_on_rows_matrix/sum_values_on_rows_matrix.h"
 
 
-void getRandomMatrix(std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column) {
+void generateRandomMatrix(std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column) {
     std::random_device dev;
     std::mt19937 gen(dev());
     for (std::vector<int>::size_type i = 0; i < count_row; i++) {
