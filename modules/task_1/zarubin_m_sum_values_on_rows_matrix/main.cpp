@@ -7,7 +7,7 @@
 
 TEST(GENERATE_MATRIX, can_generate_random_matrix) {
     std::vector<int> matrix(3 * 3);
-    ASSERT_NO_THROW(generateRandomMatrix(matrix, 3, 3));
+    ASSERT_NO_THROW(generateRandomMatrix(&matrix, 3, 3));
 }
 
 TEST(TRANSPOSE_MATRIX, can_transpose_matrix) {
@@ -50,7 +50,7 @@ TEST(TRANSPOSE_MATRIX, correct_work_on_rectangular_matrix_which_more_columns_tha
 
 TEST(SEQUENTIAL_OPERATIONS, can_run_sequential_operations) {
     std::vector<int> matrix(3 * 3);
-    generateRandomMatrix(matrix, 3, 3);
+    generateRandomMatrix(&matrix, 3, 3);
     ASSERT_NO_THROW(getSequentialOperations(matrix, 3, 3));
 }
 
@@ -58,7 +58,7 @@ TEST(SEQUENTIAL_OPERATIONS, correct_work_on_square_matrix) {
     std::vector<int> matrix{ 1, 2, 3,
                              7, 4, 8,
                              3, 5, 6 };
-    std::vector<int> expected_result{ 6,19,14 };
+    std::vector<int> expected_result{ 6, 19, 14 };
     std::vector<int> result = getSequentialOperations(matrix, 3, 3);
     ASSERT_EQ(result, expected_result);
 }
@@ -89,7 +89,7 @@ TEST(PARALLEL_OPERATIONS, can_run_parallel_operations) {
     std::vector<int> matrix(count_row * count_column);
 
     if (rank == 0) {
-        generateRandomMatrix(matrix, count_row, count_column);
+        generateRandomMatrix(&matrix, count_row, count_column);
     }
 
     ASSERT_NO_THROW(getParallelOperations(matrix, count_row, count_column));
@@ -103,7 +103,7 @@ TEST(PARALLEL_OPERATIONS, correct_work_on_square_matrix_var_1) {
     std::vector<int> matrix(count_row * count_column);
 
     if (rank == 0) {
-        generateRandomMatrix(matrix, count_row, count_column);
+        generateRandomMatrix(&matrix, count_row, count_column);
     }
 
     std::vector<int> result = getParallelOperations(matrix, count_row, count_column);
@@ -122,7 +122,7 @@ TEST(PARALLEL_OPERATIONS, correct_work_on_square_matrix_var_2) {
     std::vector<int> matrix(count_row * count_column);
 
     if (rank == 0) {
-        generateRandomMatrix(matrix, count_row, count_column);
+        generateRandomMatrix(&matrix, count_row, count_column);
     }
 
     std::vector<int> result = getParallelOperations(matrix, count_row, count_column);
@@ -141,7 +141,7 @@ TEST(PARALLEL_OPERATIONS, correct_work_on_rectangular_matrix_which_more_rows_tha
     std::vector<int> matrix(count_row * count_column);
 
     if (rank == 0) {
-        generateRandomMatrix(matrix, count_row, count_column);
+        generateRandomMatrix(&matrix, count_row, count_column);
     }
 
     std::vector<int> result = getParallelOperations(matrix, count_row, count_column);
@@ -160,7 +160,7 @@ TEST(PARALLEL_OPERATIONS, correct_work_on_rectangular_matrix_which_more_rows_tha
     std::vector<int> matrix(count_row * count_column);
 
     if (rank == 0) {
-        generateRandomMatrix(matrix, count_row, count_column);
+        generateRandomMatrix(&matrix, count_row, count_column);
     }
 
     std::vector<int> result = getParallelOperations(matrix, count_row, count_column);
@@ -179,7 +179,7 @@ TEST(PARALLEL_OPERATIONS, correct_work_on_rectangular_matrix_which_more_columns_
     std::vector<int> matrix(count_row * count_column);
 
     if (rank == 0) {
-        generateRandomMatrix(matrix, count_row, count_column);
+        generateRandomMatrix(&matrix, count_row, count_column);
     }
 
     std::vector<int> result = getParallelOperations(matrix, count_row, count_column);
@@ -198,7 +198,7 @@ TEST(PARALLEL_OPERATIONS, correct_work_on_rectangular_matrix_which_more_columns_
     std::vector<int> matrix(count_row * count_column);
 
     if (rank == 0) {
-        generateRandomMatrix(matrix, count_row, count_column);
+        generateRandomMatrix(&matrix, count_row, count_column);
     }
 
     std::vector<int> result = getParallelOperations(matrix, count_row, count_column);

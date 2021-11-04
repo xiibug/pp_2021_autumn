@@ -7,17 +7,19 @@
 #include "../../../modules/task_1/zarubin_m_sum_values_on_rows_matrix/sum_values_on_rows_matrix.h"
 
 
-void generateRandomMatrix(std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column) {
+void generateRandomMatrix(std::vector<int>* matrix,
+    std::vector<int>::size_type count_row, std::vector<int>::size_type count_column) {
     std::random_device dev;
     std::mt19937 gen(dev());
     for (std::vector<int>::size_type i = 0; i < count_row; i++) {
         for (std::vector<int>::size_type j = 0; j < count_column; j++) {
-            matrix[i * count_column + j] = gen() % 100;
-        } 
+            (*matrix)[i * count_column + j] = gen() % 100;
+        }
     }
 }
 
-std::vector<int> transposeMatrix(const std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column) {
+std::vector<int> transposeMatrix(const std::vector<int>& matrix,
+    std::vector<int>::size_type count_row, std::vector<int>::size_type count_column) {
     std::vector<int> transposed_matrix(count_row * count_column);
     for (std::vector<int>::size_type i = 0; i < count_column; i++) {
         for (std::vector<int>::size_type j = 0; j < count_row; j++) {
@@ -27,7 +29,8 @@ std::vector<int> transposeMatrix(const std::vector<int>& matrix, std::vector<int
     return transposed_matrix;
 }
 
-std::vector<int> getSequentialOperations(const std::vector<int>& matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column) {
+std::vector<int> getSequentialOperations(const std::vector<int>& matrix,
+    std::vector<int>::size_type count_row, std::vector<int>::size_type count_column) {
     std::vector<int> result(count_row);
     for (std::vector<int>::size_type i = 0; i < count_row; i++) {
         for (std::vector<int>::size_type j = 0; j < count_column; j++) {
@@ -37,7 +40,8 @@ std::vector<int> getSequentialOperations(const std::vector<int>& matrix, std::ve
     return result;
 }
 
-std::vector<int> getParallelOperations(const std::vector<int>& global_matrix, std::vector<int>::size_type count_row, std::vector<int>::size_type count_column) {
+std::vector<int> getParallelOperations(const std::vector<int>& global_matrix,
+    std::vector<int>::size_type count_row, std::vector<int>::size_type count_column) {
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -76,13 +80,7 @@ std::vector<int> getParallelOperations(const std::vector<int>& global_matrix, st
     std::vector<int> global_sum(count_row);
     std::vector<int> local_sum = getSequentialOperations(local_matrix, count_row, count_proc_column);
 
-    /*printf("ProcNum = %i, LocalSum\n", rank);
-    for (auto i : local_sum)
-    {
-        printf("%i ", i);
-    }
-    printf("\n");*/
-
-    MPI_Reduce(local_sum.data(), global_sum.data(), static_cast<int>(local_sum.size()), MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(local_sum.data(), global_sum.data(), static_cast<int>(local_sum.size()), 
+        MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     return global_sum;
 }
