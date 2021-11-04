@@ -51,15 +51,6 @@ TEST(PARALLEL_OPERATIONS, can_run_parallel_operations) {
 
     if (rank == 0) {
         getRandomMatrix(matrix, count_row, count_column);
-        for (int proc = 1; proc < size; proc++) {
-            MPI_Send(matrix.data(), static_cast<int>(count_row * count_column),
-                MPI_INT, proc, 0, MPI_COMM_WORLD);
-        }
-    }
-    else {
-        MPI_Status status;
-        MPI_Recv(matrix.data(), static_cast<int>(count_row * count_column),
-            MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
 
     ASSERT_NO_THROW(getParallelOperations(matrix, count_row, count_column));
@@ -74,15 +65,6 @@ TEST(PARALLEL_OPERATIONS, correct_work_on_square_matrix) {
 
     if (rank == 0) {
         getRandomMatrix(matrix, count_row, count_column);
-        for (int proc = 1; proc < size; proc++) {
-            MPI_Send(matrix.data(), static_cast<int>(count_row * count_column),
-                MPI_INT, proc, 0, MPI_COMM_WORLD);
-        }
-    }
-    else {
-        MPI_Status status;
-        MPI_Recv(matrix.data(), static_cast<int>(count_row * count_column),
-            MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
 
     std::vector<int> result = getParallelOperations(matrix, count_row, count_column);
@@ -102,15 +84,6 @@ TEST(PARALLEL_OPERATIONS, correct_work_on_rectangular_matrix_which_more_rows_tha
 
     if (rank == 0) {
         getRandomMatrix(matrix, count_row, count_column);
-        for (int proc = 1; proc < size; proc++) {
-            MPI_Send(matrix.data(), static_cast<int>(count_row * count_column),
-                MPI_INT, proc, 0, MPI_COMM_WORLD);
-        }
-    }
-    else {
-        MPI_Status status;
-        MPI_Recv(matrix.data(), static_cast<int>(count_row * count_column),
-            MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
 
     std::vector<int> result = getParallelOperations(matrix, count_row, count_column);
@@ -130,15 +103,6 @@ TEST(PARALLEL_OPERATIONS, correct_work_on_rectangular_matrix_which_more_columns_
 
     if (rank == 0) {
         getRandomMatrix(matrix, count_row, count_column);
-        for (int proc = 1; proc < size; proc++) {
-            MPI_Send(matrix.data(), static_cast<int>(count_row * count_column),
-                MPI_INT, proc, 0, MPI_COMM_WORLD);
-        }
-    }
-    else {
-        MPI_Status status;
-        MPI_Recv(matrix.data(), static_cast<int>(count_row * count_column),
-            MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
 
     std::vector<int> result = getParallelOperations(matrix, count_row, count_column);

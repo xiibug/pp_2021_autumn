@@ -40,10 +40,11 @@ std::vector<int> getParallelOperations(const std::vector<int>& global_matrix, st
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int> transposed_matrix = transposeMatrix(global_matrix, count_row, count_column);
+    std::vector<int> transposed_matrix(count_row * count_column);
     std::vector<int>::size_type count_proc_column = count_column / size;
 
     if (rank == 0) {
+        transposed_matrix = transposeMatrix(global_matrix, count_row, count_column);
         for (int proc = 1; proc < size; proc++) {
             std::vector<int>::size_type step = proc * count_proc_column * count_row;
             if (count_column % size != 0) {
