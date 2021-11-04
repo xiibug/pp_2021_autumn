@@ -11,25 +11,27 @@ int lin_search(const int* v, const int len) {
     if (len > 0) {
         min = v[0];
         for (int i = 0; i < len; ++i) {
-             if (min > v[i])
-                 min = v[i];
+            if (min > v[i])
+                min = v[i];
         }
+    }
+    else {
+        throw "wrong size";
     }
     return min;
 }
 
-void create_random_matrix(const int* mtrx, const int size_n, const int size_m) {
+void create_random_matrix(int*& mtrx,const int& size_n,const int& size_m) {
     std::random_device dev;
     std::mt19937 gen(dev());
     mtrx = new int[size_n * size_m];
     for (unsigned int i = 0; i < size_n * size_m; i++) {
         mtrx[i] = gen() % 1000;
-        // mtrx[i] = rand() % 10000;
     }
 }
 
 int pharal_search(int* mtrx, int size_n, int size_m) {
-    int ProcNum, ProcRank;
+    int ProcNum = 0, ProcRank = 0;
     int quotient, resd;
     int* rcvbufF, * sd_counts, * disp;
     int min = 0, glMin = 0;
