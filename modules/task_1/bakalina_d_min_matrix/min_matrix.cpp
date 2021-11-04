@@ -26,7 +26,7 @@ void create_random_matrix(int*& mtrx, const unsigned int& size_n, const unsigned
 	mtrx = new int[size_n * size_m];
 	for (unsigned int i = 0; i < size_n * size_m; i++) {
 		mtrx[i] = gen() % 1000;
-		//mtrx[i] = rand() % 10000;
+		// mtrx[i] = rand() % 10000;
 	}
 }
 
@@ -39,9 +39,6 @@ int pharal_search(int* mtrx, int size_n, int size_m) {
 	MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
 	MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
 
-	if (size_n == NULL && size_m == NULL)
-		throw "wrong size";
-
 	quotient = size_n * size_m / ProcNum;
 	resd = size_n * size_m % ProcNum;   
 
@@ -49,7 +46,6 @@ int pharal_search(int* mtrx, int size_n, int size_m) {
 	sd_counts = new int[ProcNum];
 	disp = new int[ProcNum];
 
-	// разделение всего объема работы на одинаковые части
 	for (int i = 0; i < ProcNum; i++) {
 		sd_counts[i] = quotient;
 		disp[i] = i * quotient;

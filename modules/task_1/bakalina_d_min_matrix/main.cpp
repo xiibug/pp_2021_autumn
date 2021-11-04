@@ -19,8 +19,7 @@ TEST(Parallel_Operations_MPI, parallel_search_min_in_matrix_with_size_10_x_10) {
 		}
 	}
 	ph_min = pharal_search(mtrx, n, m);
-	if (ProcRank == 0)
-	{
+	if (ProcRank == 0) {
 		delete[] mtrx;
 		ASSERT_EQ(ph_min, 1);
 	}
@@ -58,14 +57,12 @@ TEST(Parallel_Operations_MPI, parallel_search_works_in_large_matrix) {
 	if (ProcRank == 0)
 	{
 		mtrx = new int[n * m];
-		for (unsigned int i = 0; i < n * m; ++i)
-		{
+		for (unsigned int i = 0; i < n * m; i++) {
 			mtrx[i] = i + 1;
 		}
 	}
 	ph_min = pharal_search(mtrx, n, m);
-	if (ProcRank == 0)
-	{
+	if (ProcRank == 0) {
 		delete[] mtrx;
 		ASSERT_EQ(ph_min, 1);
 	}
