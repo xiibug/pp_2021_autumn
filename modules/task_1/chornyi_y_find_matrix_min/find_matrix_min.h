@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef FIND_MINIMUM_IN_MATRIX
-#define FIND_MINIMUM_IN_MATRIX
+#ifndef FIND_MATRIX_MIN
+#define FIND_MATRIX_MIN
 
 #include <vector>
 
@@ -10,4 +10,4 @@ int singleFindMinimum(std::vector<std::vector<int>> matrix);
 
 int parallelFindMinimum(std::vector<std::vector<int>> matrix);
 
-#endif //FIND_MINIMUM_IN_MATRIX
+#endif //FIND_MATRIX_MIN

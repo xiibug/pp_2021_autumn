@@ -1,11 +1,8 @@
 #include <mpi.h>
-
 #include <cstdio>
 #include <random>
 #include <ctime>
-
 #include "../../../modules/task_1/chornyi_y_find_matrix_min/find_matrix_min.h"
-
 
 std::vector<std::vector<int>> fillMatrixWithRandom(const int numberOfRows, const int numberOfColumns) {
     std::srand(std::time(0));
