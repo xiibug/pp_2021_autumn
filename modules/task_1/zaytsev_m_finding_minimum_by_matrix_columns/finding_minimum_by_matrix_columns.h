@@ -1,4 +1,5 @@
 // Copyright 2021 Zaytsev Mikhail
+
 #pragma once
 
 #ifndef FINDING_MINIMUM_BY_MATRIX_COLUMNS_
