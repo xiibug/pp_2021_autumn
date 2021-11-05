@@ -40,7 +40,7 @@ int parallelMax(const int* matrix, int len) {
 
     // scattering the matrix
     int elemsForProc = len / procCount + (procRank < len % procCount ? 1 : 0);
-    
+
     int* scnts = nullptr, * displs = nullptr;
     int* rcount = new int[elemsForProc];
     if (procRank == 0) {

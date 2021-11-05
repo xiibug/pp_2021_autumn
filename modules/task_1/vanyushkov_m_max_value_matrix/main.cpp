@@ -8,7 +8,7 @@ TEST(seq_and_par_check_equivalence, all_elements_equal_value15_matrix_size_10) {
     const int matrixLen = 10;
     int* matrix = nullptr;
     int value = 15;
-    
+
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
         matrix = new int[matrixLen];
@@ -103,10 +103,10 @@ int main(int argc, char** argv) {
 
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
     ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners();
-    
+
     listeners.Release(listeners.default_result_printer());
     listeners.Release(listeners.default_xml_generator());
-    
+
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
     return RUN_ALL_TESTS();
 }
