@@ -11,5 +11,4 @@ int singleFindMinimum(std::vector<std::vector<int>> matrix);
 
 int parallelFindMinimum(std::vector<std::vector<int>> matrix);
 
-#endif  //FIND_MATRIX_MIN
-
+#endif  // FIND_MATRIX_MIN

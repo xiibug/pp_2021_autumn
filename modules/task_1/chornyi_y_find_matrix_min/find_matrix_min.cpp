@@ -26,7 +26,7 @@ int singleFindMinimum(std::vector<std::vector<int>> matrix) {
 
     for (int i = 0; i < numberOfRows; ++i) {  // Find minimum in the whole matrix
         for (int j = 0; j < numberOfColumns; ++j) {
-            if (minimum > matrix[i][j]) minimum = matrix[i][j]; 
+            if (minimum > matrix[i][j]) minimum = matrix[i][j];
         }
     }
 
@@ -45,18 +45,18 @@ int parallelFindMinimum(std::vector<std::vector<int>> matrix) {
 
     if (currentRank == 0) {
         // Receving main information about matrix
-        numberOfRows = matrix.size(), numberOfColumns = matrix[0].size();  
+        numberOfRows = matrix.size(), numberOfColumns = matrix[0].size();
 
         // Calculating the amount of data that the root process will leave
-        excessData = numberOfRows % numberOfProcess; 
+        excessData = numberOfRows % numberOfProcess;
         // Calculating the amount of data that is distributed between the process
-        dataPackage = numberOfRows / numberOfProcess;  
+        dataPackage = numberOfRows / numberOfProcess;
 
         // Sending data packages
         for (int i = 1; i < numberOfProcess; ++i) {
             int counterOfRows = excessData + (dataPackage * i);
             for (int j = counterOfRows; j < (counterOfRows + dataPackage); ++j) {
-                MPI_Send(matrix[j].data(), numberOfColumns, MPI_INT, i, 0, MPI_COMM_WORLD);  
+                MPI_Send(matrix[j].data(), numberOfColumns, MPI_INT, i, 0, MPI_COMM_WORLD);
             }
         }
     }
@@ -66,7 +66,7 @@ int parallelFindMinimum(std::vector<std::vector<int>> matrix) {
     dataPackage = numberOfRows / numberOfProcess;
 
     // Allocating memory for the local matrix at each process
-    std::vector<std::vector<int>> localMatrix(dataPackage);  
+    std::vector<std::vector<int>> localMatrix(dataPackage);
 
     if (currentRank != 0) {
         for (int i = 0; i < dataPackage; ++i) {
@@ -75,14 +75,15 @@ int parallelFindMinimum(std::vector<std::vector<int>> matrix) {
 
         // Receving data packages
         MPI_Status status;
-        for (int i = 0; i < dataPackage; ++i) {  
+        for (int i = 0; i < dataPackage; ++i) {
             MPI_Recv(localMatrix[i].data(), numberOfColumns, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD,
-                     &status);  
+                     &status);
         }
-    }
-    else {
-        if (excessData) {  // Re-allocate memory for the local matrix, 
-            localMatrix.resize(dataPackage + excessData);  // if there are additional data packets on root process                                                  
+    }else {
+        // Re-allocate memory for the local matrix,
+        // if there are additional data packets on root process
+        if (excessData) {
+            localMatrix.resize(dataPackage + excessData);                                           
         }
         localMatrix = std::vector<std::vector<int>>(matrix.begin(), matrix.begin() + dataPackage + excessData);
     }
@@ -90,7 +91,7 @@ int parallelFindMinimum(std::vector<std::vector<int>> matrix) {
     localMinimum = singleFindMinimum(localMatrix);  // Calculating minimum at each process
 
     // Collect the result for each process in the root process
-    MPI_Reduce(&localMinimum, &globalMinimum, 1, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);  
+    MPI_Reduce(&localMinimum, &globalMinimum, 1, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
 
     return globalMinimum;
 }
