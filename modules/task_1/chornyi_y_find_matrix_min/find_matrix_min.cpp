@@ -83,7 +83,7 @@ int parallelFindMinimum(std::vector<std::vector<int>> matrix) {
         // Re-allocate memory for the local matrix,
         // if there are additional data packets on root process
         if (excessData) {
-            localMatrix.resize(dataPackage + excessData);                                     
+            localMatrix.resize(dataPackage + excessData);
         }
         localMatrix = std::vector<std::vector<int>>(matrix.begin(), matrix.begin() + dataPackage + excessData);
     }
