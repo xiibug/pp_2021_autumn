@@ -83,7 +83,6 @@ TEST(Finding_Minimum_By_Matrix_Columns, minimum_elements_at_the_beginning_of_col
 
     if (currentRank == 0) {
         matrix = fillMatrix(rows, columns);
-        
         for (int i = 0; i < columns; ++i) {
             matrix[0][i] = -1000000;
         }

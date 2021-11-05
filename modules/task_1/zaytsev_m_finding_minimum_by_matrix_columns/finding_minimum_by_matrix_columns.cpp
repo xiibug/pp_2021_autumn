@@ -1,4 +1,4 @@
-﻿//  Copyright 2021 Zaytsev Mikhail
+﻿// Copyright 2021 Zaytsev Mikhail
 #include <mpi.h>
 #include "../../../modules/task_1/zaytsev_m_finding_minimum_by_matrix_columns/finding_minimum_by_matrix_columns.h"
 
