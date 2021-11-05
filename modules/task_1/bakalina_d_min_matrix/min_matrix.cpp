@@ -12,17 +12,14 @@ int lin_search(const int* v, const int len) {
             if (min > v[i])
                 min = v[i];
         }
-    } else 
-    {
-        throw "wrong size";
-    }
+    } else { throw "wrong size"; }
     return min;
 }
 
 void create_random_matrix(int* mtrx, const int& size_n, const int& size_m) {
     std::random_device dev;
     std::mt19937 gen(dev());
-    //mtrx = new int[size_n * size_m];
+    // mtrx = new int[size_n * size_m];
     for (int i = 0; i < size_n * size_m; i++) {
         mtrx[i] = gen() % 1000;
     }
