@@ -1,3 +1,5 @@
+// Copyright 2021 Chornyi Yurii
+
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
 #include "mpi.h"
@@ -89,7 +91,7 @@ TEST(Parallel_Find_Minimum_In_Matrix, Minimum_At_The_Beginning_Of_The_Matrix) {
     // Act
     if (currentRank == 0) {
         globalMatrix = fillMatrixWithRandom(numberOfRows, numberOfColumns);
-        globalMatrix[0][0] = -100000;
+        globalMatrix[0][0] = -10000000;
 
         singleMinimum = singleFindMinimum(globalMatrix);
     }
@@ -114,7 +116,7 @@ TEST(Parallel_Find_Minimum_In_Matrix, Minimum_At_The_End_Of_The_Matrix) {
     // Act
     if (currentRank == 0) {
         globalMatrix = fillMatrixWithRandom(numberOfRows, numberOfColumns);
-        globalMatrix[numberOfRows - 1][numberOfColumns - 1] = -100000;
+        globalMatrix[numberOfRows - 1][numberOfColumns - 1] = -10000000;
 
         singleMinimum = singleFindMinimum(globalMatrix);
     }

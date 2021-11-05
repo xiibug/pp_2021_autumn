@@ -1,3 +1,5 @@
+// Copyright 2021 Chornyi Yurii
+
 #pragma once
 
 #ifndef FIND_MATRIX_MIN
