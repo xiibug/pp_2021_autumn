@@ -56,7 +56,6 @@ std::vector<int> singleFindingMinimum(const std::vector<std::vector<int>>& matri
 }
 
 std::vector<int> parallelFindingMinimum(const std::vector<std::vector<int>>& matrix) {
-
     int rows = 0, columns = 0, lossElement = 0, portionData = 0;
     std::vector<std::vector<int>> localMatrix;
     std::vector<int> globalMin, localMin;
