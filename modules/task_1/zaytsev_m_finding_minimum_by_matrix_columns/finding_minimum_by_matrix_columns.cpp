@@ -1,5 +1,4 @@
-﻿// Copyright 2021 Zaytsev Mikhail
-#include <mpi.h>
+﻿#include <mpi.h>
 #include "../../../modules/task_1/zaytsev_m_finding_minimum_by_matrix_columns/finding_minimum_by_matrix_columns.h"
 
 std::vector<std::vector<int>> fillMatrix(const int rows, const int columns) {
@@ -15,7 +14,7 @@ std::vector<std::vector<int>> fillMatrix(const int rows, const int columns) {
     return matrix;
 }
 
-void printMatrix(const std::vector<std::vector<int>>& matrix) {
+void printMatrix(const std::vector<std::vector<int>>& matrix) {  // Print matrix
     int rows = matrix.size(), columns = matrix[0].size();
 
     for (int i = 0; i < rows; ++i) {
@@ -27,7 +26,7 @@ void printMatrix(const std::vector<std::vector<int>>& matrix) {
     printf("\n");
 }
 
-std::vector<std::vector<int>> transponseMatrix(const std::vector<std::vector<int>>& matrix) {
+std::vector<std::vector<int>> transponseMatrix(const std::vector<std::vector<int>>& matrix) {  // Transponse matrix 
     int rows = matrix.size(), columns = matrix[0].size();
     std::vector<std::vector<int>> buff(columns);
 
@@ -41,7 +40,7 @@ std::vector<std::vector<int>> transponseMatrix(const std::vector<std::vector<int
     return buff;
 }
 
-std::vector<int> singleFindingMinimum(const std::vector<std::vector<int>>& matrix) {
+std::vector<int> singleFindingMinimum(const std::vector<std::vector<int>>& matrix) {  // One process find minimum fucntion
     int rows = matrix.size(), columns = matrix[0].size();
     std::vector<int> minimum(columns);
 

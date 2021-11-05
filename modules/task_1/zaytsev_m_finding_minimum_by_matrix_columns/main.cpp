@@ -1,5 +1,4 @@
-﻿// Copyright 2021 Zaytsev Mikhail
-#include <gtest/gtest.h>
+﻿#include <gtest/gtest.h>
 #include "./finding_minimum_by_matrix_columns.h"
 #include <gtest-mpi-listener.hpp>
 
