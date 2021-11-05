@@ -79,11 +79,11 @@ int parallelFindMinimum(std::vector<std::vector<int>> matrix) {
             MPI_Recv(localMatrix[i].data(), numberOfColumns, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD,
                      &status);
         }
-    }else {
+    } else {
         // Re-allocate memory for the local matrix,
         // if there are additional data packets on root process
         if (excessData) {
-            localMatrix.resize(dataPackage + excessData);                                           
+            localMatrix.resize(dataPackage + excessData);                                        
         }
         localMatrix = std::vector<std::vector<int>>(matrix.begin(), matrix.begin() + dataPackage + excessData);
     }
