@@ -43,7 +43,7 @@ int get_max_element(std::vector<int>& vec, std::size_t size) {
     int global_max = INT_MIN;
     int local_max = INT_MIN;
     // situation when proc_num > input size
-    if(!receive_data.empty())
+    if (!receive_data.empty())
         local_max = *std::max_element(receive_data.begin(), receive_data.end());
     MPI_Reduce(reinterpret_cast<void*>(&local_max), reinterpret_cast<void*>(&global_max), 1, MPI_INT,
                MPI_MAX, 0, MPI_COMM_WORLD);
