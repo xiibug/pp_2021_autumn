@@ -80,7 +80,7 @@ std::vector<int> getParallelOperations(const std::vector<int>& global_matrix,
     std::vector<int> global_sum(count_row);
     std::vector<int> local_sum = getSequentialOperations(local_matrix, count_row, count_proc_column);
 
-    MPI_Reduce(local_sum.data(), global_sum.data(), static_cast<int>(local_sum.size()), 
+    MPI_Reduce(local_sum.data(), global_sum.data(), static_cast<int>(local_sum.size()),
         MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     return global_sum;
 }
