@@ -1,5 +1,4 @@
 // Copyright 2021 Chornyi Yurii
-
 #pragma once
 
 #ifndef FIND_MATRIX_MIN
@@ -12,4 +11,5 @@ int singleFindMinimum(std::vector<std::vector<int>> matrix);
 
 int parallelFindMinimum(std::vector<std::vector<int>> matrix);
 
-#endif //FIND_MATRIX_MIN
+#endif  //FIND_MATRIX_MIN
+

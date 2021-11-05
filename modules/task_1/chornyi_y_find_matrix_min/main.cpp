@@ -1,10 +1,10 @@
 // Copyright 2021 Chornyi Yurii
-
+#include "./find_matrix_min.h"
+#include <vector>
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
-#include "mpi.h"
-#include <vector>
-#include "./find_matrix_min.h"
+
+
 
 
 TEST(Parallel_Find_Minimum_In_Matrix, Rows_Equal_Columns) {
