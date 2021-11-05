@@ -1,4 +1,4 @@
-// Copyright 2018 Nesterov Alexander
+// Copyright 2021 Bakalina Darya
 #include <gtest/gtest.h>
 #include <vector>
 #include "../../../modules/task_1/bakalina_d_min_matrix/min_matrix.h"
@@ -14,7 +14,7 @@ TEST(Parallel_Operations_MPI, parallel_search_min_in_matrix_with_size_10_x_10) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
         mtrx = new int[n * m];
-        for (unsigned int i = 0; i < n * m; i++) {
+        for (int i = 0; i < n * m; i++) {
              mtrx[i] = 1;
         }
     }
@@ -35,7 +35,7 @@ TEST(Parallel_Operations_MPI, parallel_search_min_in_matrix_with_size_100_x_100)
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
         mtrx = new int[n * m];
-        for (unsigned int i = 0; i < n * m; i++) {
+        for (int i = 0; i < n * m; i++) {
              mtrx[i] = i + 1;
         }
     }
@@ -55,7 +55,7 @@ TEST(Parallel_Operations_MPI, parallel_search_works_in_large_matrix) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
         mtrx = new int[n * m];
-        for (unsigned int i = 0; i < n * m; i++) {
+        for (int i = 0; i < n * m; i++) {
              mtrx[i] = i + 1;
         }
     }
@@ -75,7 +75,8 @@ TEST(Parallel_Operations_MPI, parallel_search_on_random_matrix_with_small_size) 
 
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
-    create_random_matrix(mtrx, n, m);
+        mtrx = new int[n * m];
+        create_random_matrix(mtrx, n, m);
     }
     ph_min = pharal_search(mtrx, n, m);
     if (ProcRank == 0) {
@@ -94,6 +95,7 @@ TEST(Parallel_Operations_MPI, parallel_search_on_random_matrix_with_large_size) 
 
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
+        mtrx = new int[n * m];
         create_random_matrix(mtrx, n, m);
     }
     ph_min = pharal_search(mtrx, n, m);
