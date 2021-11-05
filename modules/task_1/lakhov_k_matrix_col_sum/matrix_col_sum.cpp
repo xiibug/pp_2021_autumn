@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <cstdlib>
-#include "matrix_col_sum.h"
+#include "../../../modules/task_1/lakhov_k_matrix_col_sum/matrix_col_sum.h"
 
 std::vector<int> getRandomVector(int sz) {
     int min = -100;

@@ -1,8 +1,8 @@
 // Copyright 2021 Lakhov Kirill
+#include <gtest/gtest.h>
 #include <vector>
-#include "gtest/gtest.h"
+#include "./matrix_col_sum.h"
 #include <gtest-mpi-listener.hpp>
-#include "matrix_col_sum.h"
 
 TEST(Parallel_Operations_MPI, Test_Square_Matrix) {
     int rank;
