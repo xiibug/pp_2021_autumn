@@ -1,13 +1,13 @@
-#include <gtest-mpi-listener.hpp>
+// Copyright 2021 Kruglov Aleksei
 #include <gtest/gtest.h>
 #include <vector>
-#include "max_elem.h"
 #include <algorithm>
+#include "./max_elem.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Max_element_test, 1) {
     // test parameters
     std::size_t size = 100;
-    int max_possible = 200;
 
     int proc_rank;
     std::vector<int> vec;
@@ -15,6 +15,7 @@ TEST(Max_element_test, 1) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
     if (proc_rank == 0) {
+        int max_possible = 200;
         vec = get_random_vector(size, max_possible);
         reference_max = *std::max_element(vec.begin(), vec.end());
     }
@@ -27,7 +28,6 @@ TEST(Max_element_test, 1) {
 TEST(Max_element_test, 2) {
     // test parameters
     std::size_t size = 50;
-    int max_possible = 200;
 
     int proc_rank;
     std::vector<int> vec;
@@ -35,6 +35,7 @@ TEST(Max_element_test, 2) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
     if (proc_rank == 0) {
+        int max_possible = 200;
         vec = get_random_vector(size, max_possible);
         reference_max = *std::max_element(vec.begin(), vec.end());
     }
@@ -47,7 +48,6 @@ TEST(Max_element_test, 2) {
 TEST(Max_element_test, 3) {
     // test parameters
     std::size_t size = 200;
-    int max_possible = 1000;
 
     int proc_rank;
     std::vector<int> vec;
@@ -55,6 +55,7 @@ TEST(Max_element_test, 3) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
     if (proc_rank == 0) {
+        int max_possible = 1000;
         vec = get_random_vector(size, max_possible);
         reference_max = *std::max_element(vec.begin(), vec.end());
     }
@@ -67,7 +68,6 @@ TEST(Max_element_test, 3) {
 TEST(Max_element_test, 4) {
     // test parameters
     std::size_t size = 200;
-    int max_possible = 150000;
 
     int proc_rank;
     std::vector<int> vec;
@@ -75,6 +75,7 @@ TEST(Max_element_test, 4) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
     if (proc_rank == 0) {
+        int max_possible = 150000;
         vec = get_random_vector(size, max_possible);
         reference_max = *std::max_element(vec.begin(), vec.end());
     }
@@ -87,7 +88,6 @@ TEST(Max_element_test, 4) {
 TEST(Max_element_test, 5) {
     // test parameters
     std::size_t size = 100000;
-    int max_possible = 150000;
 
     int proc_rank;
     std::vector<int> vec;
@@ -95,6 +95,7 @@ TEST(Max_element_test, 5) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
     if (proc_rank == 0) {
+        int max_possible = 150000;
         vec = get_random_vector(size, max_possible);
         reference_max = *std::max_element(vec.begin(), vec.end());
     }
@@ -107,7 +108,6 @@ TEST(Max_element_test, 5) {
 TEST(Max_element_test, 6) {
     // test parameters
     std::size_t size = 5;
-    int max_possible = 100;
 
     int proc_rank;
     std::vector<int> vec;
@@ -115,6 +115,7 @@ TEST(Max_element_test, 6) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
     if (proc_rank == 0) {
+        int max_possible = 100;
         vec = get_random_vector(size, max_possible);
         reference_max = *std::max_element(vec.begin(), vec.end());
     }
