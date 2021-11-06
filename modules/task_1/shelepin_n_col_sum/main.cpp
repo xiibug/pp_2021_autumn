@@ -8,11 +8,10 @@ TEST(Columns_sums_MPI, Zero_matrix) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int rows = 0, cols = 123;
-    int* matrix = nullptr;
 
     if (rank == 0)
     {
-        ASSERT_ANY_THROW(matrix = randomMatrix(rows, cols));
+        ASSERT_ANY_THROW(int* matrix = randomMatrix(rows, cols));
     }
 }
 
