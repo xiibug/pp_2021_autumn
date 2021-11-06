@@ -1,24 +1,23 @@
 // Copyright 2021 Shelepin Nikita
+#include "col_sum.h"
 #include <mpi.h>
 #include <cstdlib>
 #include <iostream>
 #include <ctime>
 
-int* randomMatrix(int rows, int cols)
-{
+int* randomMatrix(int rows, int cols) {
     if (rows <= 0 || cols <= 0)
         throw - 1;
 
     int* a = new int[rows * cols];
 
     for (int i = 0; i < rows * cols; i++)
-        a[i] = ((double)std::rand() / RAND_MAX) * 10 + 1;
+        a[i] = (static_cast<double>(std::rand()) / RAND_MAX) * 10 + 1;
 
     return a;
 }
 
-int* sequentialSum(int* matrix, int rows, int cols)
-{
+int* sequentialSum(int* matrix, int rows, int cols) {
     int* answer = new int[cols];
     for (int i = 0; i < cols; i++)
         answer[i] = 0;
@@ -45,8 +44,7 @@ int* parallelSum(int* initial_matrix, int n, int m)
     int world_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
-    if (world_rank == 0)
-    {
+    if (world_rank == 0) {
         int empty = 0;
         if (n % world_size != 0)
             empty = (n / world_size + 1) * world_size - n;
