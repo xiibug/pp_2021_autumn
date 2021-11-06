@@ -11,7 +11,7 @@ TEST(Columns_sums_MPI, Zero_matrix) {
 
     if (rank == 0)
     {
-        ASSERT_ANY_THROW(int* matrix = randomMatrix(rows, cols));
+        ASSERT_ANY_THROW(randomMatrix(rows, cols));
     }
 }
 
