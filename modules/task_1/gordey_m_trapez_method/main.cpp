@@ -1,15 +1,14 @@
 // Copyright 2021 Gordey  Maria
 #include <gtest/gtest.h>
-#include "./trapez_method.h"
 #include <functional>
+#include "./trapez_method.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, x_squared) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    
     int a = 0, b = 10, n = 100;
-    const std::function<double(double)> f = [](double x) { return x*x; };
+    const std::function<double(double)> f = [](double x) { return x * x; };
 
     double global_sum = getParallelOperations(a, b, n, f);
 
@@ -51,7 +50,8 @@ TEST(Parallel_Operations_MPI, x_polynom) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     int a = 0, b = 10, n = 100;
-    const std::function<double(double)> f = [](double x) { return x * x - 5 * x + 4; };
+    const std::function<double(double)> f =
+        [](double x) { return x * x - 5 * x + 4; };
 
     double global_sum = getParallelOperations(a, b, n, f);
 

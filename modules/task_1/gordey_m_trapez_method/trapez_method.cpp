@@ -1,8 +1,10 @@
 // Copyright 2021 Gordey  Maria
 #include <mpi.h>
 #include <functional>
+#include "../../../modules/task_1/gordey_m_trapez_method/trapez_method.h"
 
-double getSequentialOperations(double a, double b, int n, const std::function<double(double)>& f) {
+double getSequentialOperations(double a, double b, int n,
+    const std::function<double(double)>& f) {
     const double width = (b - a) / n;
 
     double trapezoidal_integral = 0;
@@ -16,8 +18,8 @@ double getSequentialOperations(double a, double b, int n, const std::function<do
     return trapezoidal_integral;
 }
 
-double getParallelOperations(double a, double b, int n, const std::function<double(double)>& f) {
-
+double getParallelOperations(double a, double b, int n,
+    const std::function<double(double)>& f) {
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
