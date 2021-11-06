@@ -8,17 +8,19 @@ TEST(Columns_sums_MPI, Zero_matrix) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int rows = 0, cols = 123;
-    int* matrix = { 0 };
+    int* matrix = nullptr;
 
     if (rank == 0)
+    {
         ASSERT_ANY_THROW(matrix = randomMatrix(rows, cols));
+    }
 }
 
 TEST(Columns_sums_MPI, Matrix_3x3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int rows = 3, cols = 3;
-    int* matrix = { 0 };
+    int* matrix = nullptr;
 
     if (rank == 0)
         matrix = randomMatrix(rows, cols);
@@ -40,7 +42,7 @@ TEST(Columns_sums_MPI, Matrix_25x50) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int rows = 25, cols = 50;
-    int* matrix = { 0 };
+    int* matrix = nullptr;
 
     if (rank == 0)
         matrix = randomMatrix(rows, cols);
@@ -84,7 +86,7 @@ TEST(Columns_sums_MPI, Matrix_100x100) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int rows = 100, cols = 100;
-    int* matrix = { 0 };
+    int* matrix = nullptr;
 
     if (rank == 0)
         matrix = randomMatrix(rows, cols);
