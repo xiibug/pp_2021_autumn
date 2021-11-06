@@ -1,5 +1,5 @@
 // Copyright 2021 Shelepin Nikita
-#include "col_sum.h"
+#include "../../../modules/task_1/shelepin_n_col_sum/col_sum.h"
 #include <mpi.h>
 #include <cstdlib>
 #include <iostream>
@@ -29,8 +29,7 @@ int* sequentialSum(int* matrix, int rows, int cols) {
     return answer;
 }
 
-int* parallelSum(int* initial_matrix, int n, int m)
-{
+int* parallelSum(int* initial_matrix, int n, int m) {
     if (n <= 0 || m <= 0)
         throw - 1;
 
@@ -66,7 +65,8 @@ int* parallelSum(int* initial_matrix, int n, int m)
     rows = rows / world_size;
     buffer = new int[rows * cols];
 
-    MPI_Scatter(matrix, rows * cols, MPI_INT, buffer, rows * cols, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatter(matrix, rows * cols, MPI_INT,
+        buffer, rows * cols, MPI_INT, 0, MPI_COMM_WORLD);
 
     sum_all = new int[cols];
     sum = sequentialSum(buffer, rows, cols);

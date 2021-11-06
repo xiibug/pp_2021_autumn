@@ -9,8 +9,7 @@ TEST(Columns_sums_MPI, Zero_matrix) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int rows = 0, cols = 123;
 
-    if (rank == 0)
-    {
+    if (rank == 0) {
         ASSERT_ANY_THROW(randomMatrix(rows, cols));
     }
 }
@@ -29,10 +28,8 @@ TEST(Columns_sums_MPI, Matrix_3x3) {
     if (rank == 0) {
         int* reference_sum = sequentialSum(matrix, rows, cols);
 
-        for (int i = 0; i < cols; i++)
-        {
+        for (int i = 0; i < cols; i++) {
             ASSERT_EQ(reference_sum[i], sum[i]);
-            //printf_s("%d \n", sum[i]);
         }
     }
 }
@@ -51,10 +48,8 @@ TEST(Columns_sums_MPI, Matrix_25x50) {
     if (rank == 0) {
         int* reference_sum = sequentialSum(matrix, rows, cols);
 
-        for (int i = 0; i < cols; i++)
-        {
+        for (int i = 0; i < cols; i++) {
             ASSERT_EQ(reference_sum[i], sum[i]);
-            //printf_s("%d \n", sum[i]);
         }
     }
 }
@@ -73,10 +68,8 @@ TEST(Columns_sums_MPI, Matrix_50x25) {
     if (rank == 0) {
         int* reference_sum = sequentialSum(matrix, rows, cols);
 
-        for (int i = 0; i < cols; i++)
-        {
+        for (int i = 0; i < cols; i++) {
             ASSERT_EQ(reference_sum[i], sum[i]);
-            //printf_s("%d \n", sum[i]);
         }
     }
 }
@@ -95,10 +88,8 @@ TEST(Columns_sums_MPI, Matrix_100x100) {
     if (rank == 0) {
         int* reference_sum = sequentialSum(matrix, rows, cols);
 
-        for (int i = 0; i < cols; i++)
-        {
+        for (int i = 0; i < cols; i++) {
             ASSERT_EQ(reference_sum[i], sum[i]);
-            //printf_s("%d \n", sum[i]);
         }
     }
 }
