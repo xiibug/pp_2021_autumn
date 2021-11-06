@@ -40,33 +40,49 @@ std::vector<int> maxValuesInColumnsSequential(std::vector<std::vector<int>> matr
 
 std::vector<int> maxValuesInColumnsParallel(std::vector<std::vector<int>> matrix, int rows, int cols)
 {
-	int proc_count = 0, proc_rank = 0;
-	MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
-	MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
+	int size = 0, rank = 0;
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-	std::vector<int> localResult(cols);
-	std::vector<int> globalResult(cols);
-
-	std::cout << "proc"<<proc_rank<<"\n";
-
-
-	int row_per_proc = rows / proc_count;
-	std::vector<std::vector<int>> proc_matrix;
-	for (int i = 0; i < row_per_proc; i++)
-	{
-		proc_matrix.push_back(matrix[i]);
+	int rowsByProc = rows / size;
+	if (rank == 0) {
+		for (int proc = 1; proc < size; proc++) {
+			for (int i = 0; i < rowsByProc; i++)
+			{
+				MPI_Send(matrix[proc * rowsByProc + i].data(), cols, MPI_INT, proc, 0, MPI_COMM_WORLD);
+			}
+		}
 	}
-	localResult = maxValuesInColumnsSequential(proc_matrix);
 
-	MPI_Reduce(localResult.data(), globalResult.data(), cols, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
-
-	if (proc_rank == 0) {
-		MPI_Reduce(localResult.data(), globalResult.data(), cols, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
-		return globalResult;
+	std::vector<int> local_vec(cols);
+	std::vector<std::vector<int>> local_matrix;
+	std::vector<int> global_vec(cols);
+	if (rank == 0) {
+		for (int i = 0; i < rowsByProc; i++)
+		{
+			local_matrix.push_back(matrix[i]);
+		}
+		if (rows % size != 0)
+		{
+			for (int i = matrix.size() - rows % size; i < matrix.size(); i++)
+			{
+				local_matrix.push_back(matrix[i]);
+			}
+		}
+		local_vec = maxValuesInColumnsSequential(local_matrix);
 	}
-	
+	else {
+		MPI_Status status;
+		for (int i = 0; i < rowsByProc; i++)
+		{
+			MPI_Recv(local_vec.data(), cols, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+			local_matrix.push_back(local_vec);
+		}
+		local_vec = maxValuesInColumnsSequential(local_matrix);
+	}
 
-	
+	MPI_Reduce(local_vec.data(), global_vec.data(), cols, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
+	return global_vec;
 }
 
 void printVector(std::vector<int> vector)
