@@ -1,6 +1,7 @@
 // Copyright 2021 Gordey  Maria
 #include <gtest/gtest.h>
 #include <functional>
+#include <cmath>
 #include "./trapez_method.h"
 #include <gtest-mpi-listener.hpp>
 
