@@ -126,3 +126,27 @@ jobs:
       run: |
         set OMP_NUM_THREADS=4
         scripts/run.bat
+  style-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup environment
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install g++-9
+          sudo apt-get install cppcheck
+          sudo apt-get install mpich libmpich-dev
+          sudo apt-get install libomp-9-dev libtbb-dev
+          sudo apt-get install python3-pip
+          sudo python3 -m pip install --upgrade pip
+          sudo python3 -m pip install setuptools cpplint
+          sudo apt-get install valgrind
+      - name: Update submodules
+        run: git submodule update --init --recursive
+      - name: Build
+        run: |
+          mkdir build
+          cd build
+          cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_STYLE_CHECKER=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+          make -j4
