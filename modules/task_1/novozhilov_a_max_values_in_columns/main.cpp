@@ -8,6 +8,9 @@
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
+    auto matrix = getRandomMatrix(2, 5);
+    std::vector<int> result1;
+    std::vector<int> result2;
     MPI_Init(&argc, &argv);
 
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
@@ -18,5 +21,16 @@ int main(int argc, char** argv) {
     listeners.Release(listeners.default_xml_generator());
 
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
-    return RUN_ALL_TESTS();
+    
+    
+    result1 = maxValuesInColumnsParallel(matrix, 2, 5);
+    
+    //return RUN_ALL_TESTS();
+    
+    result2 = maxValuesInColumnsSequential(matrix);
+    printMatrix(matrix);
+    printVector(result1);
+    printVector(result2);
+
+    return 0;
 }
