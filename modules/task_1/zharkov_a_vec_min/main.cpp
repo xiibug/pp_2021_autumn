@@ -1,3 +1,4 @@
+// Copyright 2021 Zharkov Andrey
 #include <gtest/gtest.h>
 #include "./vec_min.h"
 #include <gtest-mpi-listener.hpp>

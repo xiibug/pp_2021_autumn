@@ -1,3 +1,4 @@
+// Copyright 2021 Zharkov Andrey
 #include <mpi.h>
 #include <random>
 #include "../../../modules/task_1/zharkov_a_vec_min/vec_min.h"
@@ -38,10 +39,10 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     if (rank == 0) {
         local_vec = std::vector<int>(global_vec.begin(),
             global_vec.begin() + delta);
-    }
-    else {
+    } else {
         MPI_Status status;
-        MPI_Recv(local_vec.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+        MPI_Recv(local_vec.data(), delta, MPI_INT, 0, 0,
+            MPI_COMM_WORLD, &status);
     }
 
     int global_min = 0;
