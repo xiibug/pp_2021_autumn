@@ -44,12 +44,12 @@ std::vector<int> maxValuesInColumnsParallel(std::vector<std::vector<int>> matrix
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-	int rowsByProc = rows / size;
+	int rows_per_proc = rows / size;
 	if (rank == 0) {
 		for (int proc = 1; proc < size; proc++) {
-			for (int i = 0; i < rowsByProc; i++)
+			for (int i = 0; i < rows_per_proc; i++)
 			{
-				MPI_Send(matrix[proc * rowsByProc + i].data(), cols, MPI_INT, proc, 0, MPI_COMM_WORLD);
+				MPI_Send(matrix[proc * rows_per_proc + i].data(), cols, MPI_INT, proc, 0, MPI_COMM_WORLD);
 			}
 		}
 	}
@@ -58,7 +58,7 @@ std::vector<int> maxValuesInColumnsParallel(std::vector<std::vector<int>> matrix
 	std::vector<std::vector<int>> local_matrix;
 	std::vector<int> global_vec(cols);
 	if (rank == 0) {
-		for (int i = 0; i < rowsByProc; i++)
+		for (int i = 0; i < rows_per_proc; i++)
 		{
 			local_matrix.push_back(matrix[i]);
 		}
@@ -73,7 +73,7 @@ std::vector<int> maxValuesInColumnsParallel(std::vector<std::vector<int>> matrix
 	}
 	else {
 		MPI_Status status;
-		for (int i = 0; i < rowsByProc; i++)
+		for (int i = 0; i < rows_per_proc; i++)
 		{
 			MPI_Recv(local_vec.data(), cols, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
 			local_matrix.push_back(local_vec);
