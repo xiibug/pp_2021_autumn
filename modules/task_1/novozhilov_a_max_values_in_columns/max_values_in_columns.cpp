@@ -24,9 +24,9 @@ std::vector<std::vector<int>> getRandomMatrix(int rows, int cols) {
 
 std::vector<int> maxValuesInColumnsSequential(std::vector<std::vector<int>> matrix) {
     std::vector<int> result;
-    for (size_t i = 0; i < matrix[0].size(); i++) {
+    for (int i = 0; i < (int)matrix[0].size(); i++) {
         int max = matrix[0][i];
-        for (size_t j = 0; j < matrix.size(); j++) {
+        for (int j = 0; j < (int)matrix.size(); j++) {
             if (matrix[j][i] > max) {
                 max = matrix[j][i];
             }
@@ -56,14 +56,14 @@ std::vector<int> maxValuesInColumnsParallel(std::vector<std::vector<int>> matrix
             local_matrix.push_back(matrix[i]);
         }
         if (rows % size != 0) {
-            for (size_t i = matrix.size() - rows % size; i < matrix.size(); i++) {
+            for (int i = (int)matrix.size() - rows % size; i < (int)matrix.size(); i++) {
                 local_matrix.push_back(matrix[i]);
             }
         }
         local_vec = maxValuesInColumnsSequential(local_matrix);
     } else {
         MPI_Status status;
-        for (size_t i = 0; i < rows_per_proc; i++) {
+        for (int i = 0; i < rows_per_proc; i++) {
             MPI_Recv(local_vec.data(), cols, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
             local_matrix.push_back(local_vec);
         }
@@ -74,7 +74,7 @@ std::vector<int> maxValuesInColumnsParallel(std::vector<std::vector<int>> matrix
 }
 
 void printVector(std::vector<int> vector) {
-    for (size_t i = 0; i < vector.size(); i++) {
+    for (int i = 0; i < (int)vector.size(); i++) {
         std::cout << vector[i] << " ";
     }
     std::cout << std::endl;
