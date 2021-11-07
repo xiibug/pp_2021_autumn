@@ -24,10 +24,10 @@ std::vector<std::vector<int>> getRandomMatrix(int rows, int cols) {
 
 std::vector<int> maxValuesInColumnsSequential(std::vector<std::vector<int>> matrix) {
 	std::vector<int> result;
-	for (int i = 0; i < matrix[0].size(); i++)
+	for (long unsigned int i = 0; i < matrix[0].size(); i++)
 	{
 		int max = matrix[0][i];
-		for (int j = 0; j < matrix.size(); j++)
+		for (long unsigned int j = 0; j < matrix.size(); j++)
 		{
 			if (matrix[j][i] > max) {
 				max = matrix[j][i];
@@ -64,7 +64,7 @@ std::vector<int> maxValuesInColumnsParallel(std::vector<std::vector<int>> matrix
 		}
 		if (rows % size != 0)
 		{
-			for (int i = matrix.size() - rows % size; i < matrix.size(); i++)
+			for (long unsigned int i = matrix.size() - rows % size; i < matrix.size(); i++)
 			{
 				local_matrix.push_back(matrix[i]);
 			}
@@ -87,7 +87,7 @@ std::vector<int> maxValuesInColumnsParallel(std::vector<std::vector<int>> matrix
 
 void printVector(std::vector<int> vector)
 {
-	for (int i = 0; i < vector.size(); i++)
+	for (long unsigned int i = 0; i < vector.size(); i++)
 	{
 		std::cout << vector[i] << " ";
 	}
