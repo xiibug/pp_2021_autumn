@@ -16,7 +16,7 @@ TEST(func_max_column_matrix, check_with_static_matrix) {
                        3, 4, 5, 6, 7 };
     int* bigmas = nullptr;
     int* resbuf = nullptr;
-    int proverka[5] = { 7,8,9,9,7 };
+    int proverka[5] = { 7, 8, 9, 9, 7 };
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
     bigmas = new int[str * col];
@@ -138,10 +138,10 @@ TEST(func_max_column_matrix, check_with_negative_positive_matrix) {
     int procRank = 0;
     int* bigmas = 0;
     int* resbuf = 0;
-    int mas[5 * 5] = { 1, 2,-3, 4, -5,
-                      -6, -7, -8, -9, 1,
-                       2, -3, 0, -5, -6,
-                       0, -8, 9, -1, -2,
+    int mas[5 * 5] = { 1, 2, -3, 4, -5, 
+                      -6, -7, -8, -9, 1, 
+                       2, -3, 0, -5, -6, 
+                       0, -8, 9, -1, -2, 
                       -3, -4, 5, -6, 7 };
     int proverka[5];
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
