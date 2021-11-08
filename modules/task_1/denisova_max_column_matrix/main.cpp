@@ -1,5 +1,5 @@
 // Copyright 2021 Denisova Julia
-#include <iostream>
+
 #include <gtest/gtest.h>
 #include "../../../modules/task_1/denisova_max_column_matrix/max_column_matrix.h"
 #include <gtest-mpi-listener.hpp>
