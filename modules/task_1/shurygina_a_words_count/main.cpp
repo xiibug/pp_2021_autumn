@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <gtest-mpi-listener.hpp>
-#include "./word_count.h"
+#include "./words_count.h"
 
 
 TEST(Words_Count_MPI, Just_Count) {

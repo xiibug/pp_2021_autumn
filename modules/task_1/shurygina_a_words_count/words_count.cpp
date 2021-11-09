@@ -6,7 +6,7 @@
 #include <iostream>
 #include <ctime>
 #include <algorithm>
-#include "../../../modules/task_1/shurygina_a_words_count/word_count.h"
+#include "../../../modules/task_1/shurygina_a_words_count/words_count.h"
 
 int SimpleCount(const std::string str) {
     if (str.empty()) {
