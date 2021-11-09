@@ -8,6 +8,12 @@ void generateRandomVector(std::vector<int>* vector,
     std::vector<int>::size_type size);
 void getSequentialOperations(std::vector<int>::iterator begin,
     std::vector<int>::iterator end);
+std::vector<int>::size_type calculate_begin(int rank,
+    std::vector<int>::size_type local_size,
+    std::vector<int>::size_type remains);
+std::vector<int>::size_type calculate_end(int rank,
+    std::vector<int>::size_type local_size,
+    std::vector<int>::size_type remains);
 std::vector<int> getParallelOperations(const std::vector<int>& vector,
     std::vector<int>::size_type size); 
 

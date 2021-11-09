@@ -48,6 +48,18 @@ void getSequentialOperations(std::vector<int>::iterator begin,
     }
 }
 
+std::vector<int>::size_type calculate_begin(int rank,
+    std::vector<int>::size_type local_size,
+    std::vector<int>::size_type remains) {
+    return rank == 0 ? 0 : local_size * rank + remains;
+}
+
+std::vector<int>::size_type calculate_end(int rank,
+    std::vector<int>::size_type local_size,
+    std::vector<int>::size_type remains) {
+    return rank == 0 ? local_size + remains : calculate_begin(rank, local_size, remains) + local_size;
+}
+
 std::vector<int> getParallelOperations(const std::vector<int>& global_vector,
     std::vector<int>::size_type global_size) {
     int size, rank;
@@ -69,8 +81,8 @@ std::vector<int> getParallelOperations(const std::vector<int>& global_vector,
     }
 
     std::vector<int> local_vector(global_size, 0);
-    std::vector<int>::size_type local_begin = rank == 0 ? 0 : local_size * rank + remains_size;
-    std::vector<int>::size_type local_end = local_begin + local_size;
+    std::vector<int>::size_type local_begin = calculate_begin(rank, local_size, remains_size);
+    std::vector<int>::size_type local_end = calculate_end(rank, local_size, remains_size);
 
     if (rank == 0) {
         for (std::vector<int>::size_type i = 0; i < local_size + remains_size; i++) {
@@ -90,14 +102,20 @@ std::vector<int> getParallelOperations(const std::vector<int>& global_vector,
 
     std::vector<int>::size_type sort_size = local_size;
     int required_rank = size / 2;
+    
+    if (size % 2)
+        remains_size += local_size;
 
     while (sort_size + remains_size != global_size && rank < required_rank) {
         local_size *= 2;
 
-        std::vector<int>::size_type sort_begin = rank == 0 ? 0 : local_size * rank + remains_size;
-        std::vector<int>::size_type sort_end = sort_begin + local_size;
+        std::vector<int>::size_type sort_begin = calculate_begin(rank, local_size, remains_size);
+        std::vector<int>::size_type sort_end = calculate_end(rank, local_size, remains_size);
 
         getSequentialOperations(result.begin() + sort_begin, result.begin() + sort_end);
+
+        if (required_rank % 2 != 0)
+            remains_size += local_size;
 
         sort_size *= 2;
         required_rank /= 2;

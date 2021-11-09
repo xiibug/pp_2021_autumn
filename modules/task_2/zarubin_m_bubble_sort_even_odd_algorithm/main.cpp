@@ -36,6 +36,86 @@ TEST(PARALLEL_OPERATIONS, can_run_parallel_operations)
     ASSERT_NO_THROW(getParallelOperations(vector, 5));
 }
 
+TEST(PARALLEL_OPERATIONS, correct_work_on_vector_even_size_v1)
+{
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int>::size_type size = 100;
+    std::vector<int> vector(size, 0);
+
+    if (rank == 0) {
+        generateRandomVector(&vector, size);
+    }
+
+    std::vector<int> result = getParallelOperations(vector, size);
+
+    if (rank == 0)
+    {
+        getSequentialOperations(vector.begin(), vector.end());
+        ASSERT_EQ(vector, result);
+    }
+}
+
+TEST(PARALLEL_OPERATIONS, correct_work_on_vector_even_size_v2)
+{
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int>::size_type size = 64;
+    std::vector<int> vector(size, 0);
+
+    if (rank == 0) {
+        generateRandomVector(&vector, size);
+    }
+
+    std::vector<int> result = getParallelOperations(vector, size);
+
+    if (rank == 0)
+    {
+        getSequentialOperations(vector.begin(), vector.end());
+        ASSERT_EQ(vector, result);
+    }
+}
+
+TEST(PARALLEL_OPERATIONS, correct_work_on_vector_odd_size_v1)
+{
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int>::size_type size = 101;
+    std::vector<int> vector(size, 0);
+
+    if (rank == 0) {
+        generateRandomVector(&vector, size);
+    }
+
+    std::vector<int> result = getParallelOperations(vector, size);
+
+    if (rank == 0)
+    {
+        getSequentialOperations(vector.begin(), vector.end());
+        ASSERT_EQ(vector, result);
+    }
+}
+
+TEST(PARALLEL_OPERATIONS, correct_work_on_vector_odd_size_v2)
+{
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int>::size_type size = 63;
+    std::vector<int> vector(size, 0);
+
+    if (rank == 0) {
+        generateRandomVector(&vector, size);
+    }
+
+    std::vector<int> result = getParallelOperations(vector, size);
+
+    if (rank == 0)
+    {
+        getSequentialOperations(vector.begin(), vector.end());
+        ASSERT_EQ(vector, result);
+    }
+}
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
