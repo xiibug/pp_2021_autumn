@@ -5,8 +5,7 @@
 #include "../../../modules/task_1/kim_n_vector_monotony/vector_monotony.h"
 
 
-std::vector<int> getRandomVector(int size)
-{
+std::vector<int> getRandomVector(int size) {
   std::random_device dev;
   std::mt19937 gen(dev());
   std::vector<int> res(size);
@@ -15,8 +14,7 @@ std::vector<int> getRandomVector(int size)
   return res;
 }
 
-int getNumNonMonotonyElems(std::vector<int> input_vec, int size, int direction)
-{
+int getNumNonMonotonyElems(std::vector<int> input_vec, int size, int direction) {
   int count = 0;
   for (int i = 1; i < size; i++)
     if ((input_vec[i] - input_vec[i - 1]) * direction < 0)
@@ -24,8 +22,7 @@ int getNumNonMonotonyElems(std::vector<int> input_vec, int size, int direction)
   return count;
 }
 
-int getNumNonMonotonyElemsParall(std::vector<int> input_vec, int size, int direction)
-{
+int getNumNonMonotonyElemsParall(std::vector<int> input_vec, int size, int direction) {
   int proc_num, proc_rank;
   int global_count = 0, local_count = 0;
   std::vector<int> local_vec(size);
@@ -38,14 +35,11 @@ int getNumNonMonotonyElemsParall(std::vector<int> input_vec, int size, int direc
     end = size;
   else
     end = proc_rank * (range - 1) + range;
-  if (proc_rank == 0)
-  {
+  if (proc_rank == 0) {
     for (int i = 1; i < proc_num; i++)
       MPI_Send(input_vec.data(), size, MPI_INT, i, 0, MPI_COMM_WORLD);
     local_vec = input_vec;
-  }
-  else
-  {
+  } else {
     MPI_Status status;
     MPI_Recv(local_vec.data(), size, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
   }
