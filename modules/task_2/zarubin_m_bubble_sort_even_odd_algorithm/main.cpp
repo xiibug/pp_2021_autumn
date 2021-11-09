@@ -13,21 +13,27 @@ TEST(GENERATE_VECTOR, can_generate_random_vector) {
 TEST(SEQUENTIAL_OPERATIONS, can_run_sequential_operations) {
     std::vector<int> vector(5);
     generateRandomVector(&vector, 5);
-    ASSERT_NO_THROW(getSequentialOperations(vector, 5));
+    ASSERT_NO_THROW(getSequentialOperations(vector.begin(), vector.end()));
 }
 
 TEST(SEQUENTIAL_OPERATIONS, correct_work_on_vector_even_size) {
     std::vector<int> vector{ 3, 2, 5, 0, 4, 2 };
     std::vector<int> expected_result{ 0, 2, 2, 3, 4, 5 };
-    std::vector<int> result = getSequentialOperations(vector, 6);
-    ASSERT_EQ(result, expected_result);
+    getSequentialOperations(vector.begin(), vector.end());
+    ASSERT_EQ(vector, expected_result);
 }
 
 TEST(SEQUENTIAL_OPERATIONS, correct_work_on_vector_odd_size) {
     std::vector<int> vector{ 3, 2, 5, 0, 4 };
     std::vector<int> expected_result{ 0, 2, 3, 4, 5 };
-    std::vector<int> result = getSequentialOperations(vector, 5);
-    ASSERT_EQ(result, expected_result);
+    getSequentialOperations(vector.begin(), vector.end());
+    ASSERT_EQ(vector, expected_result);
+}
+
+TEST(PARALLEL_OPERATIONS, can_run_parallel_operations)
+{
+    std::vector<int> vector{ 3, 2, 5, 4, 0 };
+    ASSERT_NO_THROW(getParallelOperations(vector, 5));
 }
 
 int main(int argc, char** argv) {
