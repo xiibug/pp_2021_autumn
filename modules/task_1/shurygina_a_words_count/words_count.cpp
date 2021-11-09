@@ -71,7 +71,8 @@ int ParallelCount(const std::string inputString) {
         deltaCountProcesses++;
     }
     // Reduction of data of all processes
-    MPI_Reduce(&deltaCountProcesses, &resultCount, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&deltaCountProcesses, &resultCount,
+        1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     return resultCount;
 }
 

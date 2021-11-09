@@ -12,4 +12,4 @@ int ParallelCount(const std::string);
 int DeltaProcessCount(const std::string);
 std::string getLongString(int size);
 
-#endif // MODULES_TASK_1_SHURYGINA_A_WORDS_COUNT_WORDS_COUNT_H_
+#endif  // MODULES_TASK_1_SHURYGINA_A_WORDS_COUNT_WORDS_COUNT_H_

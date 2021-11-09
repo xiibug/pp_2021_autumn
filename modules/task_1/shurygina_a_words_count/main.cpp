@@ -60,7 +60,8 @@ int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
 
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-    ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners();
+    ::testing::TestEventListeners& listeners =
+        ::testing::UnitTest::GetInstance()->listeners();
     listeners.Release(listeners.default_result_printer());
     listeners.Release(listeners.default_xml_generator());
 
