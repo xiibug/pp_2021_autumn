@@ -2,15 +2,15 @@
 #include "../../../modules/task_2/nazarov_n_star_topology/star_topology.h"
 
 MPI_Comm Star(const MPI_Comm comm) {
-	int ProcNum, ProcRank;
-	MPI_Comm star;
+    int ProcNum, ProcRank;
+    MPI_Comm star;
 
-	MPI_Comm_size(comm, &ProcNum);
-	MPI_Comm_rank(comm, &ProcRank);
-    
+    MPI_Comm_size(comm, &ProcNum);
+    MPI_Comm_rank(comm, &ProcRank);
+
     std::vector<int> index(ProcNum);
     std::vector<int> edges((ProcNum - 1) * 2);
-	
+
     index[0] = ProcNum - 1;
     for (int i = 1; i < ProcNum; i++) {
         index[i] = index[i - 1] + 1;
@@ -28,7 +28,7 @@ MPI_Comm Star(const MPI_Comm comm) {
     return star;
 }
 
-bool IsStar(MPI_Comm star) {
+bool IsStar(const MPI_Comm star) {
     int test;
     MPI_Topo_test(star, &test);
     if (test != MPI_GRAPH) {

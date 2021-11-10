@@ -8,4 +8,4 @@
 MPI_Comm Star(const MPI_Comm comm);
 bool IsStar(const MPI_Comm star);
 
-#endif //  MODULES_TASK_2_NAZAROV_N_STAR_TOPOLOGY_STAR_TOPOLOGY_H_
+#endif  //  MODULES_TASK_2_NAZAROV_N_STAR_TOPOLOGY_STAR_TOPOLOGY_H_

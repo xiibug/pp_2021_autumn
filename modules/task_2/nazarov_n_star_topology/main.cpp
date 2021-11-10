@@ -1,4 +1,6 @@
-﻿//  Copyright 2021 Nazarov Nikita
+﻿ //  Copyright 2021 Nazarov Nikita
+
+
 #include <gtest/gtest.h>
 #include "./star_topology.h"
 #include <gtest-mpi-listener.hpp>
