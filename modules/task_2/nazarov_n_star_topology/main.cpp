@@ -1,6 +1,4 @@
-﻿ //  Copyright 2021 Nazarov Nikita
-
-
+﻿ /*Copyright 2021 Nazarov Nikita*/
 #include <gtest/gtest.h>
 #include "./star_topology.h"
 #include <gtest-mpi-listener.hpp>
@@ -60,7 +58,7 @@ TEST(star_topology_MPI, test6_return_false_with_not_star_topology) {
     std::vector<int> edges(ProcNum);
     for (int i = 0; i < ProcNum; i++) {
         index[i] = i + 1;
-        edges[i] = (i + 1) % ProcNum;
+        edges[i] = i + 1;
     }
 
     MPI_Graph_create(MPI_COMM_WORLD, ProcNum, index.data(), edges.data(), false, &star);
