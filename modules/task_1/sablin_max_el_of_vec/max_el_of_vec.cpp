@@ -1,4 +1,5 @@
-﻿#include <iostream>
+﻿// Copyright 2021 Sablin Alexander
+#include <iostream>
 #include "mpi.h"
 #include <stdio.h>
 #include "../../../modules/task_1/sablin_max_el_of_vec/max_el_of_vec.h"
