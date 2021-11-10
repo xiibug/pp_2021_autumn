@@ -1,4 +1,4 @@
-// Copyright 2021
+// Copyright 2021 Olynin Alexandr
 
 #ifndef COUNT_WORDS_IN_A_LINE
 #define COUNT_WORDS_IN_A_LINE
