@@ -76,11 +76,11 @@ TEST(Parallel_Tests, Parallel_count_of_words_in_a_line_test_key_0_and_1)
         char tmp[10000];
         const char* part_1 = GetReadyText(0);
         const char* part_2 = GetReadyText(1);
-        strcpy_s(tmp, 10000, part_1);
+        memcpy(tmp, part_1, 10000);
         strcat_s(tmp, 10000, "\n");
         strcat_s(tmp, 10000, part_2);
-        my_text = new char[strlen(tmp) + 1];
-        strcpy_s(my_text, strlen(tmp) + 1, tmp);
+        my_text = (char*)malloc((strlen(tmp) + 1)* sizeof(char));
+        memcpy(my_text, tmp, strlen(tmp) + 1);
     }
     
     int expected_count = ParallelCountWordsInALine(my_text);

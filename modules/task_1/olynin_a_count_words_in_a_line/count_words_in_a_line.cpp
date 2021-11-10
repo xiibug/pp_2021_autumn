@@ -1,9 +1,7 @@
 // Copyright 2021 Olynin Alexandr
-
-#include <cstring> // Contains the functions: strlen, strcpy_s, strchr, strcat_s
+# include <string.h>
 #include <malloc.h>
 #include <mpi.h>
-#include <stdio.h>
 #include "../../../modules/task_1/olynin_a_count_words_in_a_line/count_words_in_a_line.h"
 
 char tokens[8] = {'\n', '-',',','.','!', ':', '?', ';'};
@@ -11,14 +9,16 @@ char tokens[8] = {'\n', '-',',','.','!', ':', '?', ';'};
 int SequentialCountWordsInALine(const char* tmp)
 {
     char* str = (char*)malloc((strlen(tmp) + 1) * sizeof(char));
-	strcpy_s(str, (strlen(tmp) + 1), tmp);
+	memcpy(str, tmp, strlen(tmp) + 1);
     str[strlen(tmp)] = ' ';
 	str[strlen(tmp) + 1] = '\0';
     int l = 0; 
 	int count = 0;
-	for (int i = 0; i < strlen(str) + 1; i++)
+    char* is_token = nullptr;
+    int len = strlen(str) + 1;
+	for (int i = 0; i < len; i++)
 	{
-		char* is_token = strchr(tokens, (int)(str[i]));
+		is_token = strchr(tokens, (int)(str[i]));
 		if (is_token == nullptr)
 		{
 			if (str[i] != ' ')
@@ -38,7 +38,6 @@ int ParallelCountWordsInALine(const char* tmp)
     char* str = nullptr;
 	char* local_str = nullptr;
 	int inaccuracy = 0;
-	char* is_token = nullptr;
 
 	int* send_counts = nullptr;
 	int* offset = nullptr;
@@ -54,7 +53,7 @@ int ParallelCountWordsInALine(const char* tmp)
 	if (ProcRank == 0)
 	{
 		str = (char*)malloc((strlen(tmp) + 1) * sizeof(char));
-		strcpy_s(str, (strlen(tmp) + 1), tmp);
+		memcpy(str, tmp, strlen(tmp) + 1);
 		int sum = 0;
 		int ost = strlen(str) % ProcNum;
 		for (int i = 0; i < ProcNum; i++)
@@ -90,9 +89,10 @@ int ParallelCountWordsInALine(const char* tmp)
 	local_str[send_counts[ProcRank] + 1] = '\0';
 	int l = 0;
 	int count = 0;
+    char* is_token = nullptr;
 	for (int i = 0; i < send_counts[ProcRank] + 1; i++)
 	{
-		char* is_token = strchr(tokens, (int)(local_str[i]));
+		is_token = strchr(tokens, (int)(local_str[i]));
 		if (is_token == nullptr)
 		{
 			if (local_str[i] != ' ')
@@ -122,4 +122,5 @@ const char* GetReadyText(int key)
         return "Amidst a wild flat meadow encircled by an Edenic lush forest, a couple have cocooned themselves in a secluded mansion that was not so long ago burned to the ground, devotedly restored by the supportive wife. Within this safe environment, the once famous middle-aged poet husband is desirous of creating his magnum opus; however, he seems unable to break out of the persistent creative rut that haunts him. Then, unexpectedly, a knock at the door, the sudden arrival of a cryptic late-night visitor and his intrusive wife will stimulate the writer's stagnant imagination. Little by little, much to the perplexed wife's surprise, the more chaos he lets in their haven, the better for his punctured male ego. In the end, will this incremental mess blemish, irreparably, the couple's inviolable sanctuary?";
     if (key == 1)
         return "The Emergency Code for a plane hijacking is 7500: a tense, intense thriller, told from the cockpit. A flight from Berlin to Paris. Everyday routine in the cockpit of an Airbus A319. Co-pilot Tobias Ellis is preparing the plane for take-off, which then follows without incident. Then we hear shouting in the passenger cabin. A group of young men try and storm the cockpit, among them 18-year old Vedat. A fight begins between crew and attackers, with the desire on the one hand to save individual lives and on the other to avert an even bigger catastrophe. The cockpit door becomes a battleground - and Tobias ends up being the arbiter over life and death.";
+    return "error";
 }
