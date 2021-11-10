@@ -38,6 +38,12 @@ void printVector(std::vector<double> m, int size){
     }
     std::cout << std::endl;
 }
+void printVector(std::vector<int> m, int size){
+    for(int i=0; i<size; i++){
+        std::cout << m[i]<<" ";
+    }
+    std::cout << std::endl;
+}
 
 
 /*
@@ -83,7 +89,7 @@ std::vector<double> sequentialCalc(std::vector<std::vector<double>> coefficients
     std::vector<double> next_x = free_members;
     double epsilon = 0.0001;
     bool stop = false;
-    // int step = 1;
+    int step = 1;
     while(!stop){
         for(int i=0; i<size; i++){
             x[i] = next_x[i];
@@ -92,8 +98,14 @@ std::vector<double> sequentialCalc(std::vector<std::vector<double>> coefficients
         for(int i = 0; i<size; i++){
             for(int j=0; j<size; j++){
                 next_x[i] += coefficients[i][j]*x[j];
+                if(step == 1 && i==0){
+                    std::cout<<coefficients[i][j]<<"*"<<x[j]<<"="<<next_x[i]<<"   ";
+                }
             }
             next_x[i] += free_members[i];
+            if(step == 1 && i==0){
+                std::cout<<free_members[i]<<"+="<<next_x[i]<<"   ";
+            }
         }
 
         stop = true;
@@ -103,7 +115,7 @@ std::vector<double> sequentialCalc(std::vector<std::vector<double>> coefficients
             }
         }
         // std::cout<<"step: "<<step<<std::endl;
-        // step++;
+        step++;
         // printVector(x, size);
         // printVector(next_x, size);
         // if(step>10){
@@ -151,21 +163,20 @@ int parallelCalc(std::vector<std::vector<double>> matrix, std::vector<double> fr
             send_offsets[i] = send_offsets[i - 1] + send_counts[i - 1];
     }
     MPI_Scatterv(raw_data.data(), send_counts.data(), send_offsets.data(),
-                MPI_DOUBLE, proc_data.data(), amount_of_elems_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    std::cout<<"proc #"<<proc_rank<<std::endl;
-    printVector(proc_data, current_amount_of_elems);
+                MPI_DOUBLE, proc_data.data(), current_amount_of_elems, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
 
     int start_x_index = rows_per_proc*proc_rank+std::min(proc_rank, excess_rows);
     int x_index = start_x_index;
     int row_size = size + 1;
     for(int i = 0; i < current_amount_of_elems; i += row_size){
-        double coeff = proc_data[x_index + i*row_size];
+        double coeff = proc_data[x_index + i];
         bool coeff_is_negative = coeff < 0;
-        int free_member_index = (i+1)*row_size - 1;
+        int free_member_index = i + row_size - 1;
         proc_data[free_member_index] /= coeff_is_negative ? -coeff : coeff;
         // handle everything except last number that is not a coefficient
         for(int j = i; j < i + row_size - 1; j++){
-            if(j != x_index + i * row_size){
+            if(j != x_index + i){
                 proc_data[j] /= coeff_is_negative ? coeff : -coeff;
             }else{
                 proc_data[j] = 0;
@@ -173,22 +184,84 @@ int parallelCalc(std::vector<std::vector<double>> matrix, std::vector<double> fr
         }
         x_index++;
     }
-    std::cout<<"proc #"<<proc_rank<<std::endl;
-    printVector(proc_data, current_amount_of_elems);
-
     std::vector<double> x(size);
+    std::vector<double> old_x(size);
     std::vector<double> this_x;
+
     for(int i = 0; i < current_amount_of_elems; i += row_size){
-        int free_member_index = (i+1)*row_size - 1;
+        int free_member_index = i + row_size - 1;
         this_x.push_back(proc_data[free_member_index]);
     }
 
-    send_counts.assign()
-    MPI_Allgatherv(this_x.data(), (int)(this_x.size()), MPI_DOUBLE, x.data(), size, MPI_DOUBLE,
-                MPI_COMM_WORLD);
+    send_counts.assign(proc_count, rows_per_proc);
+    for (int i = 0; i < excess_rows; i++)
+        send_counts[i]++;
+    send_offsets.assign(proc_count, 0);
+    for (int i = 1; i < proc_count; i++)
+        send_offsets[i] = send_offsets[i - 1] + send_counts[i - 1];
     if(proc_rank==0){
-        std::cout<<"gather #0"<<proc_rank<<std::endl;
+        std::cout<<"sendcounts"<<proc_rank<<std::endl;
+        printVector(send_counts, proc_count);
+        std::cout<<"sendoffsets"<<proc_rank<<std::endl;
+        printVector(send_offsets, proc_count);
+    }
+
+    MPI_Allgatherv(this_x.data(), this_x.size(), MPI_DOUBLE, x.data(), send_counts.data(), send_offsets.data(),
+        MPI_DOUBLE, MPI_COMM_WORLD);
+    if(proc_rank==0){
+        std::cout<<"gather #"<<proc_rank<<std::endl;
         printVector(x, size);
+    }
+    old_x = x;
+    double epsilon = 0.0001;
+    bool global_stop = false;
+    bool local_stop = false;
+    int step = 0;
+    while(!global_stop){
+        if(step>0){
+            MPI_Allgatherv(this_x.data(), this_x.size(), MPI_DOUBLE, x.data(), send_counts.data(), send_offsets.data(),
+                MPI_DOUBLE, MPI_COMM_WORLD);
+            global_stop = true;
+            for(int i = 0; i < size - 1; i++){
+                if(std::abs(old_x[i] - x[i]) > epsilon){
+                    global_stop = false;
+                }
+            }
+            if(proc_rank==0){
+                std::cout<<"gather #step"<<step<<std::endl;
+                printVector(x, size);
+            }
+            old_x = x;
+        }
+
+        if(!global_stop && !local_stop){
+            this_x.assign(send_counts[proc_rank], 0);
+            for(int i = 0; i<send_counts[proc_rank]; i++){
+                for(int j=i*row_size, x_index=0; j<i*row_size+row_size-1; j++, x_index++){
+                    this_x[i] += proc_data[j]*x[x_index];
+                    if(proc_rank==0 && step == 0){
+                        std::cout<<proc_data[j]<<"*"<<x[x_index]<<"="<<this_x[i]<<"   ";
+                    }
+                }
+                this_x[i] += proc_data[i*row_size+row_size - 1];
+                if(proc_rank==0 && step == 0){
+                    std::cout<<proc_data[i*row_size+row_size - 1]<<"+="<<this_x[i]<<"   ";
+                }
+            }
+            // if(proc_rank==0){
+            //     std::cout<<"calc #step"<<step<<std::endl;
+            //     printVector(this_x, send_counts[proc_rank]);
+            // }
+            for(int i = send_offsets[proc_rank]; i < send_counts[proc_rank]; i++){
+                if(std::abs(old_x[i] - this_x[i]) > epsilon){
+                    local_stop = false;
+                }
+            }
+        }
+        step++;
+        if(step>20){
+            break;
+        }
     }
     return 1;
 }
