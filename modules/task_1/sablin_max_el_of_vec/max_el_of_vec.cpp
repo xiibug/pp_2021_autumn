@@ -1,8 +1,7 @@
 ﻿// Copyright 2021 Sablin Alexander
-#include <iostream>
-#include "mpi.h"
-#include <stdio.h>
 #include "../../../modules/task_1/sablin_max_el_of_vec/max_el_of_vec.h"
+#include <iostream>
+#include <mpi.h>
 #include <random>
 
 double* getRandomVector(double* rand_vec, int n, int dia) {
@@ -17,8 +16,7 @@ double* getRandomVector(double* rand_vec, int n, int dia) {
 double CalcMaxNumber(double* calc_vec, int n)
 {
     double max = calc_vec[0];
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         if (calc_vec[i] > max)
             max = calc_vec[i];
     }
@@ -36,19 +34,16 @@ double DoParallelComputing(double* a, int n)
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank); //Ранк процесса
 
     //Вход в код корневого процесса
-    if (ProcRank == 0)
-    {
+    if (ProcRank == 0) {
         //Выделение динамической памяти для массивов соответствия кол-ва обрабатываемых процессом элементов и для массивов сдвигов
         sendcounts = new int[ProcNum];
         displs = new int[ProcNum];
         //Заполнение массивов, в которых будет расположена информация о распределении элементов по процессам
         int ost = n % ProcNum;
         int sum = 0;
-        for (int i = 0; i < ProcNum; i++)
-        {
+        for (int i = 0; i < ProcNum; i++) {
             sendcounts[i] = (n / ProcNum);
-            if (ost > 0)
-            {
+            if (ost > 0) {
                 sendcounts[i] += 1;
                 ost--;
             }
@@ -72,13 +67,12 @@ double DoParallelComputing(double* a, int n)
     MPI_Reduce(&max, &max_all, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
     //Вывод максимального элемента вектора - max_all
-    if (ProcRank == 0)
-    {
+    if (ProcRank == 0) {
         //Освобождаем память
         delete[] displs;
         delete[] sendcounts;
         //Выводим max_all
-        std::cout << "\nmax_all = " << max_all << std::endl;
+        //std::cout << "\nmax_all = " << max_all << std::endl;
     }
 
     //Освобождаем память

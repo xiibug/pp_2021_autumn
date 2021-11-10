@@ -1,21 +1,17 @@
 // Copyright 2021 Sablin Alexander
 #include <gtest/gtest.h>
-#include <vector>
-#include <algorithm>
 #include "./max_el_of_vec.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Max_element_test, 1) {
     // test parameters
-    int ProcRank, dia;
+    int ProcRank, dia, ref_max, calc_max;
     int n = 50;
     double* a = nullptr;
 
-    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank); //Ранк процесса
-    int ref_max, calc_max;
-    if (ProcRank == 0)
-    {
-        dia = 200
+    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+    if (ProcRank == 0){
+        dia = 200;
         a = getRandomVector(a, n, dia);
         ref_max = CalcMaxNumber(a, n);
     }
@@ -23,20 +19,19 @@ TEST(Max_element_test, 1) {
     calc_max = DoParallelComputing(a, n);
     delete[] a;
 
-    if (ProcRank == 0)
-        ASSERT_EQ(reference_max, calculated_max);
+    if (ProcRank == 0) {
+        ASSERT_EQ(ref_max, calc_max);
+    }
 }
 
 TEST(Max_element_test, 2) {
     // test parameters
-    int ProcRank, dia;
+    int ProcRank, dia, ref_max, calc_max;
     int n = 200;
     double* a = nullptr;
 
-    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank); //Ранк процесса
-    int ref_max, calc_max;
-    if (ProcRank == 0)
-    {
+    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+    if (ProcRank == 0) {
         dia = 200;
         a = getRandomVector(a, n);
         ref_max = CalcMaxNumber(a, n);
@@ -45,20 +40,19 @@ TEST(Max_element_test, 2) {
     calc_max = DoParallelComputing(a, n); 
     delete[] a;
 
-    if (ProcRank == 0)
-        ASSERT_EQ(reference_max, calculated_max);
+    if (ProcRank == 0) {
+        ASSERT_EQ(ref_max, calc_max);
+    }
 }
 
 TEST(Max_element_test, 3) {
     // test parameters
-    int ProcRank, dia;
+    int ProcRank, dia, ref_max, calc_max;
     int n = 200;
     double* a = nullptr;
 
-    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank); //Ранк процесса
-    int ref_max, calc_max;
-    if (ProcRank == 0)
-    {
+    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+    if (ProcRank == 0) {
         dia = 1000;
         a = getRandomVector(a, n);
         ref_max = CalcMaxNumber(a, n);
@@ -67,20 +61,19 @@ TEST(Max_element_test, 3) {
     calс_max = DoParallelComputing(a, n);
     delete[] a;
 
-    if (ProcRank == 0)
-        ASSERT_EQ(reference_max, calculated_max);
+    if (ProcRank == 0) {
+        ASSERT_EQ(ref_max, calc_max);
+    }
 }
 
 TEST(Max_element_test, 4) {
     // test parameters
-    int ProcRank, dia;
+    int ProcRank, dia, ref_max, calc_max;
     int n = 200;
     double* a = nullptr;
 
-    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank); //Ранк процесса
-    int ref_max, calc_max;
-    if (ProcRank == 0)
-    {
+    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+    if (ProcRank == 0) {
         dia = 150000;
         a = getRandomVector(a, n);
         ref_max = CalcMaxNumber(a, n);
@@ -89,20 +82,19 @@ TEST(Max_element_test, 4) {
     calc_max = DoParallelComputing(a, n);
     delete[] a;
 
-    if (ProcRank == 0)
-        ASSERT_EQ(reference_max, calculated_max);
+    if (ProcRank == 0) {
+        ASSERT_EQ(ref_max, calc_max);
+    }
 }
 
 TEST(Max_element_test, 5) {
     // test parameters
-    int ProcRank, dia;
+    int ProcRank, dia, ref_max, calc_max;
     int n = 100000;
     double* a = nullptr;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank); //Ранк процесса
-    int ref_max, calc_max;
-    if (ProcRank == 0)
-    {
+    if (ProcRank == 0) {
         dia = 150000;
         a = getRandomVector(a, n);
         ref_max = CalcMaxNumber(a, n);
@@ -111,20 +103,19 @@ TEST(Max_element_test, 5) {
     calc_max = DoParallelComputing(a, n);
     delete[] a;
 
-    if (ProcRank == 0)
-        ASSERT_EQ(reference_max, calculated_max);
+    if (ProcRank == 0) {
+        ASSERT_EQ(ref_max, calc_max);
+    }
 }
 
 TEST(Max_element_test, 6) {
     // test parameters
-    int ProcRank, dia;
+    int ProcRank, dia, ref_max, calc_max;
     int n = 200;
     double* a = nullptr;
 
-    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank); //Ранк процесса
-    int ref_max, calc_max;
-    if (ProcRank == 0)
-    {
+    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+    if (ProcRank == 0) {
         dia = 150000;
         a = getRandomVector(a, n);
         ref_max = CalcMaxNumber(a, n);
@@ -133,8 +124,9 @@ TEST(Max_element_test, 6) {
     calc_max = DoParallelComputing(a, n);
     delete[] a;
 
-    if (ProcRank == 0)
-        ASSERT_EQ(reference_max, calculated_max);
+    if (ProcRank == 0) {
+        ASSERT_EQ(ref_max, calc_max);
+    }
 }
 
 int main(int argc, char** argv) {
