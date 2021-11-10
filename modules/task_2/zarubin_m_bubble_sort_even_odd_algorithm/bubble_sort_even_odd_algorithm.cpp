@@ -28,8 +28,7 @@ void getSequentialOperations(std::vector<int>::iterator begin,
         if (current_iter % 2) {
             stop_flag = 0;
             start_value = 0;
-        }
-        else {
+        } else {
             start_value = 1;
         }
 
@@ -68,8 +67,7 @@ std::vector<int> getParallelOperations(const std::vector<int>& global_vector,
     std::vector<int>::size_type local_size = global_size / size;
     std::vector<int>::size_type remains_size = global_size % size;
 
-    if (rank == 0)
-    {
+    if (rank == 0) {
         for (int proc = 1; proc < size; proc++) {
             std::vector<int>::size_type step = proc * local_size;
             if (remains_size != 0) {
@@ -102,8 +100,8 @@ std::vector<int> getParallelOperations(const std::vector<int>& global_vector,
 
     std::vector<int>::size_type sort_size = local_size;
     int required_rank = size / 2;
-    
-    if (size % 2)
+
+    if (size % 2 != 0)
         remains_size += local_size;
 
     while (sort_size + remains_size != global_size && rank < required_rank) {
