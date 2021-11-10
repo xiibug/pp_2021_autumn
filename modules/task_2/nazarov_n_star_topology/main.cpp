@@ -1,6 +1,6 @@
-﻿// Copyright 2021 Nazarov Nikita
+﻿//  Copyright 2021 Nazarov Nikita
 #include <gtest/gtest.h>
-#include "star_topology.h"
+#include "./star_topology.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(star_topology_MPI, test1_can_create_star_is_star_topology) {
@@ -38,8 +38,7 @@ TEST(star_topology_MPI, test5_return_true_with_star_topology) {
     for (int i = 0; i < (ProcNum - 1) * 2; i++) {
         if (i < ProcNum - 1) {
             edges[i] = i + 1;
-        }
-        else {
+        } else {
             edges[i] = 0;
         }
     }
