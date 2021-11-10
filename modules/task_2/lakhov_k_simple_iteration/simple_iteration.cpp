@@ -199,19 +199,11 @@ int parallelCalc(std::vector<std::vector<double>> matrix, std::vector<double> fr
     send_offsets.assign(proc_count, 0);
     for (int i = 1; i < proc_count; i++)
         send_offsets[i] = send_offsets[i - 1] + send_counts[i - 1];
-    if(proc_rank==0){
-        std::cout<<"sendcounts"<<proc_rank<<std::endl;
-        printVector(send_counts, proc_count);
-        std::cout<<"sendoffsets"<<proc_rank<<std::endl;
-        printVector(send_offsets, proc_count);
-    }
+
 
     MPI_Allgatherv(this_x.data(), this_x.size(), MPI_DOUBLE, x.data(), send_counts.data(), send_offsets.data(),
         MPI_DOUBLE, MPI_COMM_WORLD);
-    if(proc_rank==0){
-        std::cout<<"gather #"<<proc_rank<<std::endl;
-        printVector(x, size);
-    }
+
     old_x = x;
     double epsilon = 0.0001;
     bool global_stop = false;
@@ -252,8 +244,9 @@ int parallelCalc(std::vector<std::vector<double>> matrix, std::vector<double> fr
             //     std::cout<<"calc #step"<<step<<std::endl;
             //     printVector(this_x, send_counts[proc_rank]);
             // }
-            for(int i = send_offsets[proc_rank]; i < send_counts[proc_rank]; i++){
-                if(std::abs(old_x[i] - this_x[i]) > epsilon){
+            local_stop = true;
+            for(int i = 0; i < send_counts[proc_rank]; i++){
+                if(std::abs(x[send_offsets[proc_rank]+i] - this_x[i]) > epsilon){
                     local_stop = false;
                 }
             }
