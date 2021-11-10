@@ -8,8 +8,8 @@ MPI_Comm Star(const MPI_Comm comm) {
     MPI_Comm_size(comm, &ProcNum);
     MPI_Comm_rank(comm, &ProcRank);
 
-    std::vector<int> index(ProcNum);
-    std::vector<int> edges((ProcNum - 1) * 2);
+    int* index = new int[ProcNum];
+    int* edges = new int[(ProcNum - 1) * 2];
 
     index[0] = ProcNum - 1;
     for (int i = 1; i < ProcNum; i++) {
@@ -24,7 +24,7 @@ MPI_Comm Star(const MPI_Comm comm) {
         }
     }
 
-    MPI_Graph_create(comm, ProcNum, index.data(), edges.data(), false, &star);
+    MPI_Graph_create(comm, ProcNum, index, edges, false, &star);
     return star;
 }
 
@@ -41,9 +41,9 @@ bool IsStar(const MPI_Comm star) {
         return false;
     }
 
-    std::vector<int>index(process);
-    std::vector<int>edges((process - 1) * 2);
-    MPI_Graph_get(star, process, (process - 1) * 2, index.data(), edges.data());
+    int* index = new int[process];
+    int* edges = new int[(process - 1) * 2];
+    MPI_Graph_get(star, process, (process - 1) * 2, index, edges);
 
     for (int i = 0; i < process; i++) {
         if (index[i] != process - 1 + i) {
