@@ -78,5 +78,5 @@ double DoParallelComputing(double* a, int n)
     //Освобождаем память
     delete[] b;
 
-    return max;
+    return max_all;
 }
