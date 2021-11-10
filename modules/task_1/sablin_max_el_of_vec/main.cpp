@@ -33,11 +33,11 @@ TEST(Max_element_test, 2) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
         dia = 200;
-        a = getRandomVector(a, n);
+        a = getRandomVector(a, n, dia);
         ref_max = CalcMaxNumber(a, n);
     }
 
-    calc_max = DoParallelComputing(a, n); 
+    calc_max = DoParallelComputing(a, n);
     delete[] a;
 
     if (ProcRank == 0) {
@@ -54,11 +54,11 @@ TEST(Max_element_test, 3) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
         dia = 1000;
-        a = getRandomVector(a, n);
+        a = getRandomVector(a, n, dia);
         ref_max = CalcMaxNumber(a, n);
     }
 
-    calс_max = DoParallelComputing(a, n);
+    calc_max = DoParallelComputing(a, n);
     delete[] a;
 
     if (ProcRank == 0) {
@@ -75,7 +75,7 @@ TEST(Max_element_test, 4) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
         dia = 150000;
-        a = getRandomVector(a, n);
+        a = getRandomVector(a, n, dia);
         ref_max = CalcMaxNumber(a, n);
     }
 
@@ -96,7 +96,7 @@ TEST(Max_element_test, 5) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank); //Ранк процесса
     if (ProcRank == 0) {
         dia = 150000;
-        a = getRandomVector(a, n);
+        a = getRandomVector(a, n, dia);
         ref_max = CalcMaxNumber(a, n);
     }
 
@@ -117,7 +117,7 @@ TEST(Max_element_test, 6) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
         dia = 150000;
-        a = getRandomVector(a, n);
+        a = getRandomVector(a, n, dia);
         ref_max = CalcMaxNumber(a, n);
     }
 
