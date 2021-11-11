@@ -10,7 +10,7 @@ TEST(Max_element_test, 1) {
     double* a = nullptr;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
-    if (ProcRank == 0){
+    if (ProcRank == 0) {
         dia = 200;
         a = getRandomVector(a, n, dia);
         ref_max = CalcMaxNumber(a, n);
@@ -93,7 +93,7 @@ TEST(Max_element_test, 5) {
     int n = 100000;
     double* a = nullptr;
 
-    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank); //Ранк процесса
+    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
         dia = 150000;
         a = getRandomVector(a, n, dia);

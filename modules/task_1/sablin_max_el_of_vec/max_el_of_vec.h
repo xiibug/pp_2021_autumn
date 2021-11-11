@@ -8,4 +8,4 @@ double CalcMaxNumber(double* calc_vec, int n);
 
 double DoParallelComputing(double* a, int n);
 
-#endif
+#endif  // MODULES_TASK_1_SABLIN_MAX_EL_OF_VEC_MAX_EL_OF_VEC_H_
