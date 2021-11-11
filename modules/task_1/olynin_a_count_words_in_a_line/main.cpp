@@ -8,8 +8,8 @@ TEST(Sequantial_Tests, Sequantial_count_of_words_in_a_line_test_key_0) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     char* my_text = const_cast<char*>(GetReadyText(0));
 
-    int expected_count = 11;
     if (ProcRank == 0) {
+        int expected_count = 11;
         int actual_count = SequentialCountWordsInALine(my_text);
         ASSERT_EQ(expected_count, actual_count);
     }
@@ -20,8 +20,8 @@ TEST(Sequantial_Tests, Sequantial_count_of_words_in_a_line_test_key_1) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     char* my_text = const_cast<char*>(GetReadyText(1));
 
-    int expected_count = 13;
     if (ProcRank == 0) {
+        int expected_count = 13;
         int actual_count = SequentialCountWordsInALine(my_text);
         ASSERT_EQ(expected_count, actual_count);
     }
@@ -35,9 +35,9 @@ TEST(Parallel_Tests, Parallel_count_of_words_in_a_line_test_key_0) {
     if (ProcRank == 0)
         my_text = const_cast<char*>(GetReadyText(0));
 
-    int expected_count = ParallelCountWordsInALine(my_text);
+    int actual_count = ParallelCountWordsInALine(my_text);
     if (ProcRank == 0) {
-        int actual_count = SequentialCountWordsInALine(my_text);
+        int expected_count = SequentialCountWordsInALine(my_text);
         ASSERT_EQ(expected_count, actual_count);
     }
 }
@@ -50,9 +50,9 @@ TEST(Parallel_Tests, Parallel_count_of_words_in_a_line_test_key_1) {
     if (ProcRank == 0)
         my_text = const_cast<char*>(GetReadyText(1));
 
-    int expected_count = ParallelCountWordsInALine(my_text);
+    int actual_count = ParallelCountWordsInALine(my_text);
     if (ProcRank == 0) {
-        int actual_count = SequentialCountWordsInALine(my_text);
+        int expected_count = SequentialCountWordsInALine(my_text);
         ASSERT_EQ(expected_count, actual_count);
     }
 }
@@ -70,9 +70,9 @@ TEST(Parallel_Tests, Parallel_count_of_words_in_a_line_test_key_0_and_1) {
         memcpy(my_text, tmp.c_str(), strlen(tmp.c_str()) + 1);
     }
 
-    int expected_count = ParallelCountWordsInALine(my_text);
+    int actual_count = ParallelCountWordsInALine(my_text);
     if (ProcRank == 0) {
-        int actual_count = SequentialCountWordsInALine(my_text);
+        int expected_count = SequentialCountWordsInALine(my_text);
         ASSERT_EQ(expected_count, actual_count);
     }
 }

@@ -15,7 +15,7 @@ int SequentialCountWordsInALine(const char* tmp) {
     char* is_token = nullptr;
     int len = strlen(str) + 1;
     for (int i = 0; i < len; i++) {
-        is_token = strchr(tokens, (int)(str[i]));
+        is_token = strchr(tokens, static_cast<int>(str[i]));
         if (is_token == nullptr) {
             if (str[i] != ' ') {
                 l++;
@@ -83,9 +83,9 @@ int ParallelCountWordsInALine(const char* tmp) {
     for (int i = 0; i < send_counts[ProcRank] + 1; i++) {
         is_token = strchr(tokens, static_cast<int>(local_str[i]));
         if (is_token == nullptr) {
-            if (local_str[i] != ' ')
+            if (local_str[i] != ' ') {
                 l++;
-            else if (l > 0) {
+            } else if (l > 0) {
                 count++;
                 l = 0;
             }
@@ -104,10 +104,10 @@ int ParallelCountWordsInALine(const char* tmp) {
 
 const char* GetReadyText(int key) {
     if (key == 0) {
-        return "Amidst a wild flat meadow encircled by an Edenic lush forest";
+        return " Amidst a wild flat meadow encircled by an Edenic lush forest ";
     }
     if (key == 1) {
-        return "The Emergency Code for a plane hijacking is 7500: a tense, intense thriller";
+        return " The Emergency Code for a plane hijacking is 7500: a tense, intense thriller ";
     }
     return "error";
 }
