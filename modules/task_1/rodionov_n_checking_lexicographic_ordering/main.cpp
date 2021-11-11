@@ -16,8 +16,7 @@ int main(int argc, char** argv) {
     listeners.Release(listeners.default_xml_generator());
 
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
-    RUN_ALL_TESTS();
-    return 0;
+    return RUN_ALL_TESTS();
 }
 
 
