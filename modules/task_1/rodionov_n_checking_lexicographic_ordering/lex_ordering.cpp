@@ -13,7 +13,7 @@ char* get_random_string(int len) {
 }
 
 int basic_compare(const char c1, const char c2) {
-	int r = c1 - c2;
+	int r = c2 - c2;
 	if (r > 0) return 1;
 	if (r < 0) return -1;
 	return 0;
@@ -37,15 +37,14 @@ int omp_lex_compare(const char* str1, const char* str2, int len) {
 
 
 	const int block_size = len / commSize;
-	const int shift = len % commSize;
+	const int shift = len % block_size;
 
 
 	char* buffer1 = new char[block_size];
 	char* buffer2 = new char[block_size];
-	int global_result = 0;
 
 	//Pre-calculate alignment
-	global_result += seq_lex_compare(str1, str2, shift);
+	int global_result = seq_lex_compare(str1, str2, shift);
 
 	MPI_Scatter(str1 + shift, block_size, MPI_CHAR, buffer1, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
 	MPI_Scatter(str2 + shift, block_size, MPI_CHAR, buffer2, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
