@@ -15,8 +15,8 @@ char* get_random_string(int len) {
 int basic_compare(const char c1, const char c2) {
 	int r = c1 - c2;
 	if (r > 0) return 1;
-	else if (r < 0) return -1;
-	if (r == 0) return 0;
+	if (r < 0) return -1;
+	return 0;
 }
 int seq_lex_compare(const char* str1, const char* str2, int size) 
 {
@@ -27,15 +27,8 @@ int seq_lex_compare(const char* str1, const char* str2, int size)
 	return 0;
 }
 
-int omp_lex_compare(const char* str1, const char* str2) {
+int omp_lex_compare(const char* str1, const char* str2, int len) {
 
-	int len1 = strlen(str1);
-	int len2 = strlen(str2);
-	//Stirngs lengthes are not equals.
-	if (len1 > len2)
-		return -1;
-	if (len1 < len2)
-		return 1;
 
 	int root = 0;
 	int rank = 0, commSize = 0;
@@ -43,8 +36,8 @@ int omp_lex_compare(const char* str1, const char* str2) {
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
 
-	const int block_size = len1 / commSize;
-	const int shift = len1 % commSize;
+	const int block_size = len / commSize;
+	const int shift = len % commSize;
 
 
 	char* buffer1 = new char[block_size];

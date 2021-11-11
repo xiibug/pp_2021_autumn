@@ -27,7 +27,7 @@ TEST(MPILexicalOrdering, IdenticalTest) {
     char* string2 = new char[length + 1];
     memcpy(string2, string1, sizeof(char) * (length + 1));
 
-    int result = omp_lex_compare(string1, string2);
+    int result = omp_lex_compare(string1, string2, length);
 
     ASSERT_EQ(result, 0);
 
@@ -44,7 +44,7 @@ TEST(MPILexicalOrdering, GreaterInconsistencyInStartTest) {
     string1[0] = 0;
     string2[0] = 255;
 
-    int result = omp_lex_compare(string1, string2);
+    int result = omp_lex_compare(string1, string2, length);
 
     ASSERT_EQ(result, 1);
 
@@ -60,7 +60,7 @@ TEST(MPILexicalOrdering, LowerInconsistencyInStartTest) {
     string1[0] = 255;
     string2[0] = 0;
 
-    int result = omp_lex_compare(string1, string2);
+    int result = omp_lex_compare(string1, string2, length);
 
     ASSERT_EQ(result, -1);
 
@@ -77,7 +77,7 @@ TEST(MPILexicalOrdering, GreaterInconsistencyInEndTest) {
     string1[length - 5] = 0;
     string2[length - 5] = 255;
 
-    int result = omp_lex_compare(string1, string2);
+    int result = omp_lex_compare(string1, string2, length);
 
     ASSERT_EQ(result, 1);
 
@@ -93,7 +93,7 @@ TEST(MPILexicalOrdering, LowerInconsistencyInEndTest) {
     string1[length-5] = 255;
     string2[length - 5] = 0;
 
-    int result = omp_lex_compare(string1, string2);
+    int result = omp_lex_compare(string1, string2, length);
 
     ASSERT_EQ(result, -1);
 
