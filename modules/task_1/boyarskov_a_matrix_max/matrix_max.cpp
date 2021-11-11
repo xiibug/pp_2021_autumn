@@ -4,11 +4,11 @@
 #include "../../../modules/task_1/boyarskov_a_matrix_max/matrix_max.h"
 
 
-int *getRandomMatrix(int n, int m) {
+int* getRandomMatrix(int n, int m) {
     std::random_device dev;
     std::mt19937 gen(dev());
     int* matrix = new int[n * m];
-    for (int  i = 0; i < n * m; i++) { matrix[i] = gen() % 100; }
+    for (int i = 0; i < n * m; i++) { matrix[i] = gen() % 100; }
     return matrix;
 }
 
@@ -34,7 +34,8 @@ int getParallelMax(int* global_matrix, int n, int m) {
 
     int* local_matrix = new int[elem_count];
 
-    MPI_Scatter(global_matrix + delta, elem_count, MPI_INT, local_matrix, elem_count, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatter(global_matrix + delta, elem_count, MPI_INT,
+        local_matrix, elem_count, MPI_INT, 0, MPI_COMM_WORLD);
 
     int local_max = getSequentialMax(local_matrix, 1, elem_count);
     int global_max = local_matrix[0];
