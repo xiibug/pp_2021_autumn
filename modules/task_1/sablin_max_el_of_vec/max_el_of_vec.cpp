@@ -1,4 +1,5 @@
-﻿// Copyright 2021 Sablin Alexander
+﻿  // Copyright 2021 Sablin Alexander
+
 
 #include <mpi.h>
 #include <random>
