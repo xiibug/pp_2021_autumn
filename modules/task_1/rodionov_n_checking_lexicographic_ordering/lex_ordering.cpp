@@ -46,12 +46,16 @@ int omp_lex_compare(const char* str1, const char* str2) {
 	const int block_size = len1 / commSize;
 	const int shift = len1 % commSize;
 
+
 	char* buffer1 = new char[block_size];
 	char* buffer2 = new char[block_size];
-	int global_result;
+	int global_result = 0;
 
-	MPI_Scatter(str1, block_size, MPI_CHAR, buffer1, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
-	MPI_Scatter(str2, block_size, MPI_CHAR, buffer2, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
+	//Pre-calculate alignment
+	global_result += seq_lex_compare(str1, str2, shift);
+
+	MPI_Scatter(str1 + shift, block_size, MPI_CHAR, buffer1, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
+	MPI_Scatter(str2 + shift, block_size, MPI_CHAR, buffer2, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
 
 	int local_result = seq_lex_compare(buffer1, buffer2, block_size);
 
