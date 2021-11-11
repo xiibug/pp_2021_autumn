@@ -1,7 +1,7 @@
 ﻿  // Copyright 2021 Sablin Alexander
 
-#include <random>
 #include <mpi.h>
+#include <random>
 #include "../../../modules/task_2/sablin_a_all_reduce/all_reduce.h"
 
 int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
