@@ -1,11 +1,9 @@
 // Copyright 2021 Sablin Alexander
 #include <gtest/gtest.h>
-#include "./all_reduce.h"
-#include <random>
 #include <gtest-mpi-listener.hpp>
+#include "./all_reduce.h"
 
 TEST(All_reduse_test, SIZEx1_INT_SUM) {
- 
     int ProcRank, n, dia;
     int flag = 1;
     typedef int T;

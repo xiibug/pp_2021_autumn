@@ -1,18 +1,16 @@
-﻿// Copyright 2021 Sablin Alexander
+﻿  // Copyright 2021 Sablin Alexander
+
 #include <random>
-#include "../../../modules/task_2/sablin_a_all_reduce/all_reduce.h"
 #include <mpi.h>
-#include <iostream>
+#include "../../../modules/task_2/sablin_a_all_reduce/all_reduce.h"
 
 int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
-    MPI_Op Op, MPI_Comm Comm)
-{
+    MPI_Op Op, MPI_Comm Comm) {
     int FuncNum, FuncRank;
     int root;
     MPI_Comm_size(MPI_COMM_WORLD, &FuncNum);
     MPI_Comm_rank(MPI_COMM_WORLD, &FuncRank);
     if (FuncRank == 0) {
-
         //  do
         //  {
         //    std::cout << "Enter a root: " << std::endl;
@@ -27,10 +25,17 @@ int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
 
     if (FuncRank == root) {
         int type_num;
-        switch (type) {
-        case MPI_INT: type_num = sizeof(int); break;
-        case MPI_DOUBLE: type_num = sizeof(double); break;
-        case MPI_FLOAT: type_num = sizeof(float); break;
+        //  switch (type) {
+        //  case MPI_INT: type_num = sizeof(int); break;
+        //  case MPI_DOUBLE: type_num = sizeof(double); break;
+        //  case MPI_FLOAT: type_num = sizeof(float); break;
+        //  }
+        if (type == MPI_INT) {
+            type_num = sizeof(int);
+        } else if (type == MPI_DOUBLE) {
+            type_num = sizeof(double);
+        } else {
+            type_num = sizeof(float);
         }
         void* buf = new char[type_num * count];
         void* tmp = new char[type_num * count];
@@ -42,143 +47,148 @@ int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
                     MPI_Recv(buf, count, type, MPI_ANY_SOURCE, 1, Comm, MPI_STATUS_IGNORE);
                 } else {
                     for (int i = 0; i < count; i++) {
-                        ((int*)buf)[i] = ((int*)sendbuf)[i];
+                        (reinterpret_cast<int*>(buf))[i] = (reinterpret_cast<int*>(sendbuf))[i];
                     }
                 }
                 if (counter == 0) {
                     for (int i = 0; i < count; i++) {
-                        ((int*)tmp)[i] = ((int*)buf)[i];
+                        (reinterpret_cast<int*>(tmp))[i] = (reinterpret_cast<int*>(buf))[i];
                     }
                     counter++;
                 } else {
                     switch (Op) {
                     case MPI_SUM: {
                         for (int i = 0; i < count; i++) {
-                            ((int*)tmp)[i] += ((int*)buf)[i];
+                            (reinterpret_cast<int*>(tmp))[i] += (reinterpret_cast<int*>(buf))[i];
                         }
                     } break;
                     case MPI_MAX: {
                         for (int i = 0; i < count; i++) {
-                            if (((int*)buf)[i] > ((int*)tmp)[i]) {
-                                ((int*)tmp)[i] = ((int*)buf)[i];
+                            if ((reinterpret_cast<int*>(buf))[i] > (reinterpret_cast<int*>(tmp))[i]) {
+                                (reinterpret_cast<int*>(tmp))[i] = (reinterpret_cast<int*>(buf))[i];
                             }
                         }
                     } break;
                     case MPI_MIN: {
                         for (int i = 0; i < count; i++) {
-                            if (((int*)buf)[i] < ((int*)tmp)[i]) {
-                                ((int*)tmp)[i] = ((int*)buf)[i];
+                            if ((reinterpret_cast<int*>(buf))[i] < (reinterpret_cast<int*>(tmp))[i]) {
+                                (reinterpret_cast<int*>(tmp))[i] = (reinterpret_cast<int*>(buf))[i];
                             }
                         }
                     } break;
                     case MPI_PROD: {
                         for (int i = 0; i < count; i++) {
-                            ((int*)tmp)[i] *= ((int*)buf)[i];
+                            (reinterpret_cast<int*>(tmp))[i] *= (reinterpret_cast<int*>(buf))[i];
                         }
                     } break;
                     }
                 }
             }
             for (int i = 0; i < count; i++) {
-                ((int*)recvbuf)[i] = ((int*)tmp)[i];
+                (reinterpret_cast<int*>(recvbuf))[i] = (reinterpret_cast<int*>(tmp))[i];
             }
+            delete[] reinterpret_cast<int*>(buf);
+            delete[] reinterpret_cast<int*>(tmp);
         } else if (type == MPI_DOUBLE) {
             for (int iter = 0; iter < FuncNum; iter++) {
                 if (iter != root) {
                     MPI_Recv(buf, count, type, MPI_ANY_SOURCE, 1, Comm, MPI_STATUS_IGNORE);
                 } else {
                     for (int i = 0; i < count; i++) {
-                        ((double*)buf)[i] = ((double*)sendbuf)[i];
+                        (reinterpret_cast<double*>(buf))[i] = (reinterpret_cast<double*>(sendbuf))[i];
                     }
                 }
                 if (counter == 0) {
                     for (int i = 0; i < count; i++) {
-                        ((double*)tmp)[i] = ((double*)buf)[i];
+                        (reinterpret_cast<double*>(tmp))[i] = (reinterpret_cast<double*>(buf))[i];
                     }
                     counter++;
                 } else {
                     switch (Op) {
                     case MPI_SUM: {
                         for (int i = 0; i < count; i++) {
-                            ((double*)tmp)[i] += ((double*)buf)[i];
+                            (reinterpret_cast<double*>(tmp))[i] += (reinterpret_cast<double*>(buf))[i];
                         }
                     } break;
                     case MPI_MAX: {
                         for (int i = 0; i < count; i++) {
-                            if (((double*)buf)[i] > ((double*)tmp)[i]) {
-                                ((double*)tmp)[i] = ((double*)buf)[i];
+                            if ((reinterpret_cast<double*>(buf))[i] > (reinterpret_cast<double*>(tmp)[i])) {
+                                (reinterpret_cast<double*>(tmp))[i] = (reinterpret_cast<double*>(buf))[i];
                             }
                         }
                     } break;
                     case MPI_MIN: {
                         for (int i = 0; i < count; i++) {
-                            if (((double*)buf)[i] < ((double*)tmp)[i]) {
-                                ((double*)tmp)[i] = ((double*)buf)[i];
+                            if ((reinterpret_cast<double*>(buf))[i] < (reinterpret_cast<double*>(tmp))[i]) {
+                                (reinterpret_cast<double*>(tmp))[i] = (reinterpret_cast<double*>(buf))[i];
                             }
                         }
                     } break;
                     case MPI_PROD: {
                         for (int i = 0; i < count; i++) {
-                            ((double*)tmp)[i] *= ((double*)buf)[i];
+                            (reinterpret_cast<double*>(tmp))[i] *= (reinterpret_cast<double*>(buf))[i];
                         }
                     } break;
                     }
                 }
             }
             for (int i = 0; i < count; i++) {
-                ((double*)recvbuf)[i] = ((double*)tmp)[i];
+                (reinterpret_cast<double*>(recvbuf))[i] = (reinterpret_cast<double*>(tmp))[i];
             }
+            delete[] reinterpret_cast<double*>(buf);
+            delete[] reinterpret_cast<double*>(tmp);
         } else {
             for (int iter = 0; iter < FuncNum; iter++) {
                 if (iter != root) {
                     MPI_Recv(buf, count, type, MPI_ANY_SOURCE, 1, Comm, MPI_STATUS_IGNORE);
                 } else {
                     for (int i = 0; i < count; i++) {
-                        ((float*)buf)[i] = ((float*)sendbuf)[i];
+                        (reinterpret_cast<float*>(buf))[i] = (reinterpret_cast<float*>(sendbuf))[i];
                     }
                 }
                 if (counter == 0) {
                     for (int i = 0; i < count; i++) {
-                        ((float*)tmp)[i] = ((float*)buf)[i];
+                        (reinterpret_cast<float*>(tmp))[i] = (reinterpret_cast<float*>(buf))[i];
                     }
                     counter++;
                 } else {
                     switch (Op) {
                     case MPI_SUM: {
                         for (int i = 0; i < count; i++) {
-                            ((float*)tmp)[i] += ((float*)buf)[i];
+                            (reinterpret_cast<float*>(tmp))[i] += (reinterpret_cast<float*>(buf))[i];
                         }
                     } break;
                     case MPI_MAX: {
                         for (int i = 0; i < count; i++) {
-                            if (((float*)buf)[i] > ((float*)tmp)[i]) {
-                                ((float*)tmp)[i] = ((float*)buf)[i];
+                            if ((reinterpret_cast<float*>(buf))[i] > (reinterpret_cast<float*>(tmp))[i]) {
+                                (reinterpret_cast<float*>(tmp))[i] = (reinterpret_cast<float*>(buf))[i];
                             }
                         }
                     } break;
                     case MPI_MIN: {
                         for (int i = 0; i < count; i++) {
-                            if (((float*)buf)[i] < ((float*)tmp)[i]) {
-                                ((float*)tmp)[i] = ((float*)buf)[i];
+                            if ((reinterpret_cast<float*>(buf))[i] < (reinterpret_cast<float*>(tmp)[i])) {
+                                (reinterpret_cast<float*>(tmp))[i] = (reinterpret_cast<float*>(buf))[i];
                             }
                         }
                     } break;
                     case MPI_PROD: {
                         for (int i = 0; i < count; i++) {
-                            ((float*)tmp)[i] *= ((float*)buf)[i];
+                            (reinterpret_cast<float*>(tmp))[i] *= (reinterpret_cast<float*>(buf))[i];
                         }
                     } break;
                     }
                 }
             }
             for (int i = 0; i < count; i++) {
-                ((float*)recvbuf)[i] = ((float*)tmp)[i];
+                (reinterpret_cast<float*>(recvbuf))[i] = (reinterpret_cast<float*>(tmp))[i];
             }
+            delete[] reinterpret_cast<float*>(buf);
+            delete[] reinterpret_cast<float*>(tmp);
         }
-        delete[] buf;
-        delete[] tmp;
-    }
-    else {
+        // delete[] buf;
+        // delete[] tmp;
+    } else {
         MPI_Send(sendbuf, count, type, root, 1, Comm);
         MPI_Recv(recvbuf, count, type, MPI_ANY_SOURCE, 1, Comm, MPI_STATUS_IGNORE);
     }
@@ -187,10 +197,10 @@ int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
         dif = FuncNum + dif;
     }
     int ui = ceil(log(dif + 1) / log(2));
-    for (int i = ui; ((int)pow(2, i) + dif < FuncNum); i++) {
-        int num = (int)pow(2, i) + dif + root;
+    for (int i = ui; pow(2, i) + dif < FuncNum; i++) {
+        int num = pow(2, i) + dif + root;
         if (num >= FuncNum) {
-            num = num - FuncNum;
+            num -= FuncNum;
         }
         MPI_Send(recvbuf, count, type, num, 1, Comm);
     }
