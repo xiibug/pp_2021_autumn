@@ -20,11 +20,13 @@ int basic_compare(const char c1, const char c2) {
 }
 int seq_lex_compare(const char* str1, const char* str2, int size) 
 {
+	int r = 0;
 	for (int i = 0; i < size; ++i) {
-		int r = basic_compare(str1[i], str2[i]);
-		if (r != 0) return r;
+		r = basic_compare(str1[i], str2[i]);
+		if (r != 0)
+			break;
 	}
-	return 0;
+	return r;
 }
 
 int omp_lex_compare(const char* str1, const char* str2, int len) {
@@ -43,14 +45,11 @@ int omp_lex_compare(const char* str1, const char* str2, int len) {
 	char* buffer1 = new char[block_size];
 	char* buffer2 = new char[block_size];
 
-	//Pre-calculate alignment
-	int global_result = seq_lex_compare(str1, str2, shift);
-
-	MPI_Scatter(str1 + shift, block_size, MPI_CHAR, buffer1, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
-	MPI_Scatter(str2 + shift, block_size, MPI_CHAR, buffer2, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
-
-	int local_result = seq_lex_compare(buffer1, buffer2, block_size);
-
-	MPI_Reduce(&local_result, &global_result, 1, MPI_INT, MPI_SUM, root, MPI_COMM_WORLD);
+	int global_result = 0;
+	MPI_Scatter(str1, block_size, MPI_CHAR, buffer1, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
+	MPI_Scatter(str2, block_size, MPI_CHAR, buffer2, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
+	int local_result = 0;
+	local_result = seq_lex_compare(buffer1, buffer2, block_size);
+	MPI_Reduce(reinterpret_cast<void*>(&local_result), reinterpret_cast<void*>(&global_result), 1, MPI_INT, MPI_SUM, root, MPI_COMM_WORLD);
 	return global_result;
 }

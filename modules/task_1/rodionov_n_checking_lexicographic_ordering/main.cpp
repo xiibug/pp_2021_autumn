@@ -41,8 +41,8 @@ TEST(MPILexicalOrdering, GreaterInconsistencyInStartTest) {
     memcpy(string2, string1, sizeof(char) * (length + 1));
 
     //Adding inconsistency in start
-    string1[0] = (char)1;
-    string2[0] = (char)2;
+    string1[0] = 'A';
+    string2[0] = 'B';
 
     int result = omp_lex_compare(string1, string2, length);
 
@@ -57,8 +57,8 @@ TEST(MPILexicalOrdering, LowerInconsistencyInStartTest) {
     memcpy(string2, string1, sizeof(char) * (length + 1));
 
     //Adding inconsistency in start
-    string1[0] = (char)2;
-    string2[0] = (char)1;
+    string1[0] = 'B';
+    string2[0] = 'A';
 
     int result = omp_lex_compare(string1, string2, length);
 
@@ -74,8 +74,8 @@ TEST(MPILexicalOrdering, GreaterInconsistencyInEndTest) {
     memcpy(string2, string1, sizeof(char) * (length + 1));
 
     //Adding inconsistency in start
-    string1[length - 5] = (char)1;
-    string2[length - 5] = (char)2;
+    string1[length - 5] = 'A';
+    string2[length - 5] = 'B';
 
     int result = omp_lex_compare(string1, string2, length);
 
@@ -90,8 +90,8 @@ TEST(MPILexicalOrdering, LowerInconsistencyInEndTest) {
     memcpy(string2, string1, sizeof(char) * (length + 1));
 
     //Adding inconsistency in start
-    string1[length-5] = (char)2;
-    string2[length - 5] = (char)1;
+    string1[length-5] = 'B';
+    string2[length - 5] = 'A';
 
     int result = omp_lex_compare(string1, string2, length);
 
