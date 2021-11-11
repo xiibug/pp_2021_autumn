@@ -45,7 +45,6 @@ TEST(MPILexicalOrdering, GreaterInconsistencyInStartTest) {
     string2[0] = 'B';
 
     int result = omp_lex_compare(string1, string2, length);
-
     ASSERT_EQ(result, 1);
 
 }
