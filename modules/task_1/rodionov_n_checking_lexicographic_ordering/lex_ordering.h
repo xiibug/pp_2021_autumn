@@ -1,6 +1,7 @@
+// Copyright 2021 TexHik620953
 #include <iostream>
 #ifndef LEX_ORDERING
-
+#define LEX_ORDERING
 
 char* get_random_string(int len);
 int basic_compare(const char c1, const char c2);

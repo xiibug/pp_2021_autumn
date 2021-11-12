@@ -1,4 +1,5 @@
-#include "lex_ordering.h"
+// Copyright 2021 TexHik620953
+#include "./lex_ordering.h"
 #include <mpi.h>
 #include <list>
 const char ALPHABET[26] = "ABCDEFGHIJKLMOPQRSTUVWXYZ";
@@ -46,7 +47,11 @@ int omp_lex_compare(const char* str1, const char* str2, int len) {
 	char* buffer1 = new char[block_size];
 	char* buffer2 = new char[block_size];
 
-	int global_result = seq_lex_compare(buffer1, buffer2, shift);
+	int global_result;
+	if (rank == root) {
+		global_result = seq_lex_compare(str1, str2, shift);
+	}
+
 	MPI_Scatter(str1 + shift, block_size, MPI_CHAR, buffer1, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
 	MPI_Scatter(str2 + shift, block_size, MPI_CHAR, buffer2, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
 	int local_result = 0;
