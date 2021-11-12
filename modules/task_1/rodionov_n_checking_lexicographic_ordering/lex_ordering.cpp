@@ -4,8 +4,6 @@
 #include <list>
 #include <cstring>
 #include <iostream>
-#include <vector>
-using namespace std;
 const char ALPHABET[26] = "ABCDEFGHIJKLMOPQRSTUVWXYZ";
 
 char* get_random_string(int len) {
