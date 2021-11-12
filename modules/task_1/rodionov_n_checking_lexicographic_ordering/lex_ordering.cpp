@@ -49,6 +49,8 @@ int omp_lex_compare(const char* str1, const char* str2, int len) {
 
 	int global_result;
 	if (rank == root) {
+		memcpy(buffer1, str1, block_size);
+		memcpy(buffer2, str2, block_size);
 		global_result = seq_lex_compare(str1, str2, shift);
 	}
 
