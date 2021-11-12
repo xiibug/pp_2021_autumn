@@ -2,6 +2,7 @@
 #include "./lex_ordering.h"
 #include <mpi.h>
 #include <list>
+#include <cstring>
 const char ALPHABET[26] = "ABCDEFGHIJKLMOPQRSTUVWXYZ";
 
 char* get_random_string(int len) {
