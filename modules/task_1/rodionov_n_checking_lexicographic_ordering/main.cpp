@@ -120,3 +120,25 @@ TEST(MPILexicalOrdering, LowerInconsistencyInEnd) {
         delete[] string2;
     }
 }
+
+TEST(MPILexicalOrdering, LowerInconsistencyInStartAndGreaterInEnd) {
+    int procRank = 0;
+    int length = rand() * 4000 / RAND_MAX + 1000; // From 1000 to 5000
+    char* string1 = get_random_string(length);
+    char* string2 = new char[length + 1];
+
+    MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
+    if (procRank == 0) {
+        memcpy(string2, string1, sizeof(char) * (length + 1));
+        string1[0] = 'A';
+        string2[0] = 'B';
+        string1[length - 2] = 'B';
+        string2[length - 2] = 'A';
+    }
+    int result = omp_lex_compare(string1, string2, length);
+    if (procRank == 0) {
+        EXPECT_EQ(result, 1);
+        delete[] string1;
+        delete[] string2;
+    }
+}
