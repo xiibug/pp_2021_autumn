@@ -71,7 +71,7 @@ void table(int myrank, int nprocs, int total_runs) {
                 MPI_ANY_TAG, MPI_COMM_WORLD, &status);
         } else {
             // printf("No philosophers!\n");
-            throw - 1;
+            return;
         }
         philosopher = status.MPI_SOURCE;
 
