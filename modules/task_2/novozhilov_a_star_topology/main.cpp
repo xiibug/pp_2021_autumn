@@ -51,7 +51,7 @@ TEST(star_topology, 0_proc_sends_data_to_1) {
         MPI_Status status;
         MPI_Recv(&recive_data, 1, MPI_INT, 0, MPI_ANY_TAG, star_comm, &status);
         ASSERT_EQ(recive_data, 5);
-    } 
+    }
 }
 
 TEST(star_topology, 1_proc_sends_data_to_2) {
