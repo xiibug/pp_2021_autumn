@@ -31,9 +31,8 @@ void eat() {
 
 void philosopher(int myrank, int total_runs) {
     int in_buffer[1];
-    int out_buffer[1];
+    int out_buffer[1] = { 0 };
     MPI_Status status;
-    out_buffer[0];
     srand(time(NULL) + myrank);
 
     int runs = 0;
