@@ -1,6 +1,5 @@
 // Copyright 2021 Bakalina Darya
 #include <gtest/gtest.h>
-#include <vector>
 #include "./multiplication_mtrx_by_vec.h"
 #include <gtest-mpi-listener.hpp>
 
@@ -146,6 +145,7 @@ TEST(Parallel_Operations_MPI, parallel_multiplication_in_random_matrix_with_smal
     int** mtrx = 0;
     int* v = 0;
     int* ph_res = 0, * lin_res = 0;
+    bool flag = 0;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
@@ -155,7 +155,7 @@ TEST(Parallel_Operations_MPI, parallel_multiplication_in_random_matrix_with_smal
     }
     ph_res = paral_multiply(mtrx, v, n, m);
     if (ProcRank == 0) {
-        check_equality(ph_res, lin_res, n);
+        flag = check_equality(ph_res, lin_res, n);
     }
     if (ProcRank == 0) {
         for (int i = 0; i < n; i++) {
@@ -163,7 +163,7 @@ TEST(Parallel_Operations_MPI, parallel_multiplication_in_random_matrix_with_smal
         }
         delete[] mtrx;
         delete[] v;
-        ASSERT_TRUE(check_equality);
+        ASSERT_EQ(flag, 1);
     }
 }
 
@@ -174,6 +174,7 @@ TEST(Parallel_Operations_MPI, parallel_multiplication_in_random_matrix_with_larg
     int** mtrx = 0;
     int* v = 0;
     int* ph_res = 0, * lin_res = 0;
+    bool flag = 0;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
@@ -183,7 +184,7 @@ TEST(Parallel_Operations_MPI, parallel_multiplication_in_random_matrix_with_larg
     }
     ph_res = paral_multiply(mtrx, v, n, m);
     if (ProcRank == 0) {
-        check_equality(ph_res, lin_res, n);
+        flag = check_equality(ph_res, lin_res, n);
     }
     if (ProcRank == 0) {
         for (int i = 0; i < n; i++) {
@@ -191,7 +192,7 @@ TEST(Parallel_Operations_MPI, parallel_multiplication_in_random_matrix_with_larg
         }
         delete[] mtrx;
         delete[] v;
-        ASSERT_TRUE(check_equality);
+        ASSERT_EQ(flag, 1);
     }
 }
 

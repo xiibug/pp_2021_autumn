@@ -1,12 +1,11 @@
 // Copyright 2021 Bakalina Darya
-#include <iostream>
 #include <mpi.h>
+#include <iostream>
 #include <random>
 #include "../../../modules/task_2/bakalina_d_multiplication_ribbon_vertical_scheme/multiplication_mtrx_by_vec.h"
 
-
-bool check_equality(int* v1, int* v2, int size_n) {
-    bool flag = 1;
+int check_equality(int* v1, int* v2, int size_n) {
+    int flag = 1;
     for (int i = 0; i < size_n; i++) {
         if (v1[i] == v2[i])
             flag = 1;
@@ -147,7 +146,7 @@ int* paral_multiply(int** mtrx, int* v, int size_n, int size_m) {
     }
     rcvbufF_mtrx = new int[ProcSndNumbr[ProcRank]];
     rcvbufF_vctr = new int[SndNumrVctr[ProcRank]];
-    MPI_Scatterv(v, SndNumrVctr, SndIndxVctr, MPI_INT, rcvbufF_vctr, 
+    MPI_Scatterv(v, SndNumrVctr, SndIndxVctr, MPI_INT, rcvbufF_vctr,
         SndNumrVctr[ProcRank], MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Scatterv(mtrx_v, ProcSndNumbr, ProcSndIndx, MPI_INT, rcvbufF_mtrx,
         ProcSndNumbr[ProcRank], MPI_INT, 0, MPI_COMM_WORLD);
