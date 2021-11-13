@@ -3,8 +3,7 @@
 #include <vector>
 #include "../../../modules/task_2/novozhilov_a_star_topology/star_topology.h"
 
-MPI_Comm createStarTopology(MPI_Comm comm, int size)
-{
+MPI_Comm createStarTopology(MPI_Comm comm, int size) {
     std::vector<int> index;
     std::vector<int> edges;
     index.push_back(size - 1);
