@@ -7,8 +7,9 @@ TEST(Dining_philosophers_MPI, No_philosophers) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (rank == 0)
+    if (rank == 0) {
         ASSERT_ANY_THROW(table(rank, 1, 0));
+    }
 }
 
 TEST(Dining_philosophers_MPI, Three_pizzas) {
