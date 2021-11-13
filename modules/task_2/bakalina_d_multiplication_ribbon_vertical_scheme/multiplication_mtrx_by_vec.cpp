@@ -4,7 +4,6 @@
 #include <random>
 #include "../../../modules/task_2/bakalina_d_multiplication_ribbon_vertical_scheme/multiplication_mtrx_by_vec.h"
 
-using namespace std;
 
 bool check_equality(int* v1, int* v2, int size_n) {
     bool flag = 1;
@@ -60,11 +59,13 @@ int* multiplication(int* mtrx, int* v, int size_n, int ProcSndNumbr, int SndNumr
 int** create_random_matrix(const int size_n, const int size_m) {
     int** mtrx = 0;
     mtrx = new int* [size_m];
+    std::random_device dev;
+    std::mt19937 gen(dev());
     for (int i = 0; i < size_m; i++) {
         mtrx[i] = new int[size_n];
         for (int j = 0; j < size_n; j++) {
             for (int j = 0; j < size_m; j++) {
-                mtrx[i][j] = rand() % 10;
+                mtrx[i][j] = gen() % 10;
             }
         }
     }
@@ -72,10 +73,12 @@ int** create_random_matrix(const int size_n, const int size_m) {
 }
 
 int* create_random_vector(const int len) {
+    std::random_device dev;
+    std::mt19937 gen(dev());
     int* v = 0;
     v = new int[len];
     for (int i = 0; i < len; i++) {
-        v[i] = i + 1;
+        v[i] = gen() % 10;
     }
     return v;
 }
@@ -144,8 +147,10 @@ int* paral_multiply(int** mtrx, int* v, int size_n, int size_m) {
     }
     rcvbufF_mtrx = new int[ProcSndNumbr[ProcRank]];
     rcvbufF_vctr = new int[SndNumrVctr[ProcRank]];
-    MPI_Scatterv(v, SndNumrVctr, SndIndxVctr, MPI_INT, rcvbufF_vctr, SndNumrVctr[ProcRank], MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Scatterv(mtrx_v, ProcSndNumbr, ProcSndIndx, MPI_INT, rcvbufF_mtrx, ProcSndNumbr[ProcRank], MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatterv(v, SndNumrVctr, SndIndxVctr, MPI_INT, rcvbufF_vctr, 
+        SndNumrVctr[ProcRank], MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatterv(mtrx_v, ProcSndNumbr, ProcSndIndx, MPI_INT, rcvbufF_mtrx,
+        ProcSndNumbr[ProcRank], MPI_INT, 0, MPI_COMM_WORLD);
     res = multiplication(rcvbufF_mtrx, rcvbufF_vctr, size_n, ProcSndNumbr[ProcRank], SndNumrVctr[ProcRank]);
     MPI_Gather(res, size_n, MPI_INT, assmbl_buff, size_n, MPI_INT, 0, MPI_COMM_WORLD);
     if (ProcRank == 0) {

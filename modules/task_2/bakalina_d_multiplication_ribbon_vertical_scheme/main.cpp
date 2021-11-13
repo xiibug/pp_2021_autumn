@@ -146,7 +146,6 @@ TEST(Parallel_Operations_MPI, parallel_multiplication_in_random_matrix_with_smal
     int** mtrx = 0;
     int* v = 0;
     int* ph_res = 0, * lin_res = 0;
-    bool flag = 0;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
@@ -175,7 +174,6 @@ TEST(Parallel_Operations_MPI, parallel_multiplication_in_random_matrix_with_larg
     int** mtrx = 0;
     int* v = 0;
     int* ph_res = 0, * lin_res = 0;
-    bool flag = 0;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     if (ProcRank == 0) {
