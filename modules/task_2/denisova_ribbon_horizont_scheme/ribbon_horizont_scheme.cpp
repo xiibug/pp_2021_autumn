@@ -17,7 +17,7 @@ void multipl(int* bigmas, int* mas, int str, int col, int* tmpres) {
 void random_matrix(int str, int col, int* matrix) {
     std::random_device dev;
     std::mt19937 gen(dev());
-	for (int i = 0; i < str; i++) {
+    for (int i = 0; i < str; i++) {
         for (int j = 0; j < col; j++) {
            matrix[i * col + j] = gen() % 10;
         }
@@ -27,7 +27,7 @@ void random_matrix(int str, int col, int* matrix) {
 void random_vector(int str, int* vector) {
     std::random_device dev;
     std::mt19937 gen(dev());
-	for (int i = 0; i < str; i++) {
+    for (int i = 0; i < str; i++) {
         vector[i] = gen() % 10;
     }
 }
