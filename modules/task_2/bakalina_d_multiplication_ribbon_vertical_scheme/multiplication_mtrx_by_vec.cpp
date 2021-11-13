@@ -6,10 +6,10 @@
 
 using namespace std;
 
-bool check_equality(int* mas, int* mas1, int lines) {
+bool check_equality(int* v1, int* v2, int size_n) {
     bool flag = 1;
-    for (int i = 0; i < lines; i++) {
-        if (mas1[i] == mas[i])
+    for (int i = 0; i < size_n; i++) {
+        if (v1[i] == v2[i])
             flag = 1;
         else
             flag = 0;
@@ -80,23 +80,6 @@ int* create_random_vector(const int len) {
     return v;
 }
 
-void print_vector(int* v, const int len) {
-    cout << "vector:" << endl;
-    for (int i = 0; i < len; i++) {
-        cout << v[i] << endl;
-    }
-}
-
-void print_matrix(int** mtrx, int size_n, int size_m) {
-    cout << "Matrix:" << endl;
-    for (int i = 0; i < size_m; i++) {
-        for (int j = 0; j < size_n; j++) {
-            cout << mtrx[i][j] << "  ";
-        }
-        cout << endl;
-    }
-}
-
 int* ribbon_partition(int** mtrx, int size_n, int size_m) {
     int* mtrx_v = 0;
     mtrx_v = new int[(size_m * size_n)];
@@ -110,7 +93,6 @@ int* ribbon_partition(int** mtrx, int size_n, int size_m) {
     }
     return mtrx_v;
 }
-
 
 int* paral_multiply(int** mtrx, int* v, int size_n, int size_m) {
     int ProcNum = 0, ProcRank = 0;
@@ -136,7 +118,7 @@ int* paral_multiply(int** mtrx, int* v, int size_n, int size_m) {
             multy_res[i] = 0;
         }
     }
-    MPI_Bcast(&size_n, 1, MPI_INT, 0, MPI_COMM_WORLD);  //была ошибка size_m
+    MPI_Bcast(&size_n, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&size_m, 1, MPI_INT, 0, MPI_COMM_WORLD);
     quotient = size_m / ProcNum;
     resd = size_m % ProcNum;
@@ -176,10 +158,10 @@ int* paral_multiply(int** mtrx, int* v, int size_n, int size_m) {
     delete res;
     delete ProcSndNumbr;
     delete ProcSndIndx;
+    delete rcvbufF_vctr;
+    delete assmbl_buff;
     delete SndNumrVctr;
     delete SndIndxVctr;
     delete rcvbufF_mtrx;
-    delete rcvbufF_vctr;
-    delete assmbl_buff;
     return multy_res;
 }
