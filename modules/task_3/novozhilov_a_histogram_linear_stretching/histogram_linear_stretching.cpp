@@ -10,7 +10,7 @@ std::vector<int> getRandomVector(int sz) {
     std::random_device dev;
     std::mt19937 gen(dev());
     std::vector<int> vec(sz);
-    for (int i = 0; i < sz; i++) { vec[i] = gen() % 100; }
+    for (int i = 0; i < sz; i++) { vec[i] = gen() % 255; }
     return vec;
 }
 
