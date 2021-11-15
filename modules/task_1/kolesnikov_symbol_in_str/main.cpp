@@ -1,3 +1,4 @@
+// Copyright 2021 Kolesnikov Ilya
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <string>

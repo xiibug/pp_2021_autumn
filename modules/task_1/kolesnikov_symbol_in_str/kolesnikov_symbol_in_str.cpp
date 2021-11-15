@@ -1,3 +1,4 @@
+// Copyright 2021 Kolesnikov Ilya
 #include <mpi.h>
 #include <iostream>
 #include "../../../modules/task_1/kolesnikov_symbol_in_str/kolesnikov_symbol_in_str.h"
