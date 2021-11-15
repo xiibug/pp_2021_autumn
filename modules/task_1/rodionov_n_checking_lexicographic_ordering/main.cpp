@@ -1,9 +1,11 @@
 // Copyright 2021 TexHik620953
+#include <mpi.h>
 #include <gtest/gtest.h>
 #include <vector>
 #include <gtest-mpi-listener.hpp>
-#include <mpi.h>
-#include "lex_ordering.h"
+#include "../../../modules/task_1/rodionov_n_checking_lexicographic_ordering/lex_ordering.h"
+
+int length = 5000;
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
@@ -24,7 +26,6 @@ int main(int argc, char** argv) {
 
 TEST(MPILexicalOrdering, IdenticalTest) {
     int procRank = 0;
-    int length = rand() * 4000 / RAND_MAX + 1000; // From 1000 to 5000
     char* string1 = get_random_string(length);
     char* string2 = new char[length + 1];
 
@@ -43,7 +44,6 @@ TEST(MPILexicalOrdering, IdenticalTest) {
 
 TEST(MPILexicalOrdering, GreaterInconsistencyInStart) {
     int procRank = 0;
-    int length = rand() * 4000 / RAND_MAX + 1000;
     char* string1 = get_random_string(length);
     char* string2 = new char[length + 1];
 
@@ -63,7 +63,6 @@ TEST(MPILexicalOrdering, GreaterInconsistencyInStart) {
 
 TEST(MPILexicalOrdering, GreaterInconsistencyInEnd) {
     int procRank = 0;
-    int length = rand() * 4000 / RAND_MAX + 1000;
     char* string1 = get_random_string(length);
     char* string2 = new char[length + 1];
 
@@ -83,7 +82,6 @@ TEST(MPILexicalOrdering, GreaterInconsistencyInEnd) {
 
 TEST(MPILexicalOrdering, LowerInconsistencyInStart) {
     int procRank = 0;
-    int length = rand() * 4000 / RAND_MAX + 1000;
     char* string1 = get_random_string(length);
     char* string2 = new char[length + 1];
 
@@ -103,7 +101,6 @@ TEST(MPILexicalOrdering, LowerInconsistencyInStart) {
 
 TEST(MPILexicalOrdering, LowerInconsistencyInEnd) {
     int procRank = 0;
-    int length = rand() * 4000 / RAND_MAX + 1000;
     char* string1 = get_random_string(length);
     char* string2 = new char[length + 1];
 

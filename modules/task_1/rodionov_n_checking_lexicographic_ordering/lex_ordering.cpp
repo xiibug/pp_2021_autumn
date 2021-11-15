@@ -1,16 +1,23 @@
 // Copyright 2021 TexHik620953
-#include "./lex_ordering.h"
 #include <mpi.h>
 #include <list>
 #include <cstring>
 #include <iostream>
-#include <stdlib.h>
+#include <random>
+#include "../../../modules/task_1/rodionov_n_checking_lexicographic_ordering/lex_ordering.h"
 const char ALPHABET[26] = "ABCDEFGHIJKLMOPQRSTUVWXYZ";
+
+int randint(int min, int max) {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> dist(min, max);
+    return dist(rng);
+}
 
 char* get_random_string(int len) {
     char* arr = new char[len + 1];
     for (int i = 0; i < len; i++) {
-        arr[i] = ALPHABET[(rand() * 26 / RAND_MAX)];
+        arr[i] = ALPHABET[randint(0, 25)];
     }
     arr[len] = '\0';
     return arr;
@@ -19,11 +26,10 @@ char* get_random_string(int len) {
 int basic_compare(const char c1, const char c2) {
     int r = c2 - c1;
     if (r > 0) return 1;
-    else 
-        if (r < 0) 
-            return -1;
+    else if (r < 0)
+        return -1;
     else
-            return 0;
+        return 0;
     return 0;
 }
 int seq_lex_compare(const char* str1, const char* str2, int size) {
@@ -37,8 +43,6 @@ int seq_lex_compare(const char* str1, const char* str2, int size) {
 }
 
 int omp_lex_compare(const char* str1, const char* str2, int len) {
-
-
     int root = 0;
     int rank = 0, commSize = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &commSize);
@@ -51,14 +55,14 @@ int omp_lex_compare(const char* str1, const char* str2, int len) {
     char* buffer1 = new char[block_size];
     char* buffer2 = new char[block_size];
 
-    
-
     int* global_result = new int[commSize+1];
     for (int i = 0; i < commSize; i++)
         global_result[i] = 0;
 
-    MPI_Scatter(str1 + shift, block_size, MPI_CHAR, buffer1, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
-    MPI_Scatter(str2 + shift, block_size, MPI_CHAR, buffer2, block_size, MPI_CHAR, root, MPI_COMM_WORLD);
+    MPI_Scatter(str1 + shift, block_size, MPI_CHAR, buffer1,
+        block_size, MPI_CHAR, root, MPI_COMM_WORLD);
+    MPI_Scatter(str2 + shift, block_size, MPI_CHAR, buffer2,
+        block_size, MPI_CHAR, root, MPI_COMM_WORLD);
     int local_result = 0;
     local_result = seq_lex_compare(buffer1, buffer2, block_size);
     if (rank != root) {
@@ -68,7 +72,8 @@ int omp_lex_compare(const char* str1, const char* str2, int len) {
     if (rank == root) {
         for (int i = 1; i < commSize; i++) {
             MPI_Status status;
-            MPI_Recv(global_result + i + 1,1, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+            MPI_Recv(global_result + i + 1, 1, MPI_INT,
+                i, 0, MPI_COMM_WORLD, &status);
         }
         global_result[0] = seq_lex_compare(str1, str2, shift);
         global_result[1] = local_result;
