@@ -43,7 +43,7 @@ TEST(MPILexicalOrdering, IdenticalTest) {
 
 TEST(MPILexicalOrdering, GreaterInconsistencyInStart) {
     int procRank = 0;
-    int length = rand() * 4000 / RAND_MAX + 1000; // From 1000 to 5000
+    int length = rand() * 4000 / RAND_MAX + 1000;
     char* string1 = get_random_string(length);
     char* string2 = new char[length + 1];
 
@@ -63,7 +63,7 @@ TEST(MPILexicalOrdering, GreaterInconsistencyInStart) {
 
 TEST(MPILexicalOrdering, GreaterInconsistencyInEnd) {
     int procRank = 0;
-    int length = rand() * 4000 / RAND_MAX + 1000; // From 1000 to 5000
+    int length = rand() * 4000 / RAND_MAX + 1000;
     char* string1 = get_random_string(length);
     char* string2 = new char[length + 1];
 
@@ -83,7 +83,7 @@ TEST(MPILexicalOrdering, GreaterInconsistencyInEnd) {
 
 TEST(MPILexicalOrdering, LowerInconsistencyInStart) {
     int procRank = 0;
-    int length = rand() * 4000 / RAND_MAX + 1000; // From 1000 to 5000
+    int length = rand() * 4000 / RAND_MAX + 1000;
     char* string1 = get_random_string(length);
     char* string2 = new char[length + 1];
 
@@ -103,7 +103,7 @@ TEST(MPILexicalOrdering, LowerInconsistencyInStart) {
 
 TEST(MPILexicalOrdering, LowerInconsistencyInEnd) {
     int procRank = 0;
-    int length = rand() * 4000 / RAND_MAX + 1000; // From 1000 to 5000
+    int length = rand() * 4000 / RAND_MAX + 1000;
     char* string1 = get_random_string(length);
     char* string2 = new char[length + 1];
 
