@@ -38,7 +38,7 @@ TEST(parallel_max_MPI, correct_finding_of_the_maximum_in_a_matrix_with_dimension
 
     if (rank == 0) {
         int reference_max = getSequentialMax(matrix);
-		ASSERT_EQ(reference_max, global_max);
+        ASSERT_EQ(reference_max, global_max);
     }
 }
 
