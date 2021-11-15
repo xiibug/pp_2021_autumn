@@ -1,3 +1,4 @@
+// Copyright 2021 Kolesnikov Ilya
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <string>
@@ -16,7 +17,6 @@ TEST(find_symbol, single) {
         "situation, have been verified in a timely manner. In our quest to"
         "improve the user experience, we miss that the conclusions drawn on the"
         "basis of Internet analytics will be limited solely by the way of thinking.";
-    
     if (rank == 0) {
         int res = single_find_symbol(s, str);
         ASSERT_EQ(res, 10);
@@ -36,11 +36,11 @@ TEST(find_symbol, parallel) {
         "situation, have been verified in a timely manner. In our quest to"
         "improve the user experience, we miss that the conclusions drawn on the"
         "basis of Internet analytics will be limited solely by the way of thinking.";
-    
     int res = parallel_find_symbol(s, str);
 
-    if (rank == size - 1)
+    if (rank == size - 1) {
         ASSERT_EQ(res, 10);
+	}
 }
 
 TEST(find_symbol, single_parallel) {
@@ -56,7 +56,6 @@ TEST(find_symbol, single_parallel) {
         "situation, have been verified in a timely manner. In our quest to"
         "improve the user experience, we miss that the conclusions drawn on the"
         "basis of Internet analytics will be limited solely by the way of thinking.";
-    
     int fst = parallel_find_symbol(s, str);
     if (rank == size - 1) {
         int snd = single_find_symbol(s, str);
@@ -70,9 +69,9 @@ TEST(find_symbol, reverse) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     char s = 'f';
 
-    std::string str = ".gnikniht fo yaw eht yb ylelos detimil eb lliw scitylana tenretnI fo sisab"        
-        "eht no nward snoisulcnoc eht taht ssim ew ,ecneirepxe resu eht evorpmi"        
-        "ot tseuq ruo nI .rennam ylemit a ni deifirev neeb evah ,noitautis"        
+    std::string str = ".gnikniht fo yaw eht yb ylelos detimil eb lliw scitylana tenretnI fo sisab"
+        "eht no nward snoisulcnoc eht taht ssim ew ,ecneirepxe resu eht evorpmi"
+        "ot tseuq ruo nI .rennam ylemit a ni deifirev neeb evah ,noitautis"
         "cimonoce tluciffid tnerruc eht gnimocrevo ,scitylana tenretnI fo sisab"
         "eht no edam snoisulcnoc eht ,yaw eht yB .tnempoleved evissergorp fo"
         "snoitcerid eht fo sisylana na seriuqer noisremmi fo level peed a"
@@ -111,9 +110,9 @@ TEST(find_symbol, uppercase) {
 
     int snd = parallel_find_symbol(s, str2);
 
-    if (rank == size - 1)
+    if (rank == size - 1) {
         ASSERT_EQ(fst, snd);
-        
+	}
 }
 
 int main(int argc, char** argv) {
