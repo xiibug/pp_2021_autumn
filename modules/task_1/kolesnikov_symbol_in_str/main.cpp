@@ -1,4 +1,3 @@
-// Copyright 2021 Kolesnikov Ilya
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <string>
@@ -40,7 +39,7 @@ TEST(find_symbol, parallel) {
 
     if (rank == size - 1) {
         ASSERT_EQ(res, 10);
-	}
+    }
 }
 
 TEST(find_symbol, single_parallel) {
@@ -112,7 +111,7 @@ TEST(find_symbol, uppercase) {
 
     if (rank == size - 1) {
         ASSERT_EQ(fst, snd);
-	}
+    }
 }
 
 int main(int argc, char** argv) {

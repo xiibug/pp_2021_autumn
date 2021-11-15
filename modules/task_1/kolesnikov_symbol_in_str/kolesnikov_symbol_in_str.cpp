@@ -19,14 +19,14 @@ int parallel_find_symbol(char symbol, std::string str) {
 
     if (rank == size - 1) {
         range += str.size() % size;
-	}
+    }
 
     range += start;
 
     for (int i(start); i < range; ++i) {
         if (symbol == str[i] || symbol - 32 == str[i]) {
-			++cnt_sym;
-		}
+            ++cnt_sym;
+        }
     }
     sum += cnt_sym;
     if (rank != size - 1) {
@@ -37,10 +37,11 @@ int parallel_find_symbol(char symbol, std::string str) {
 
 int single_find_symbol(char symbol, std::string str) {
     int cnt_sym = 0;
-    for (long unsigned int i(0); i < str.size(); ++i) {
+    int size = str.size();
+    for (int i(0); i < size; ++i) {
         if (symbol == str[i] || symbol - 32 == str[i]) {
-			++cnt_sym;
-		}
+            ++cnt_sym;
+        }
     }
 
     return cnt_sym;
