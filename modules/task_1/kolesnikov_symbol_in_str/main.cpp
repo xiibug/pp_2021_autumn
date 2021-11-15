@@ -4,8 +4,7 @@
 #include "./kolesnikov_symbol_in_str.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(find_symbol, single) 
-{
+TEST(find_symbol, single) {
     int rank = 0;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     char s = 'f';
@@ -18,15 +17,13 @@ TEST(find_symbol, single)
         "improve the user experience, we miss that the conclusions drawn on the"
         "basis of Internet analytics will be limited solely by the way of thinking.";
     
-    if (rank == 0) 
-    {
+    if (rank == 0) {
         int res = single_find_symbol(s, str);
         ASSERT_EQ(res, 10);
     }
 }
 
-TEST(find_symbol, parallel) 
-{
+TEST(find_symbol, parallel) {
     int rank = 0, size = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -46,8 +43,7 @@ TEST(find_symbol, parallel)
         ASSERT_EQ(res, 10);
 }
 
-TEST(find_symbol, single_parallel) 
-{
+TEST(find_symbol, single_parallel) {
     int rank = 0, size = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -62,15 +58,13 @@ TEST(find_symbol, single_parallel)
         "basis of Internet analytics will be limited solely by the way of thinking.";
     
     int fst = parallel_find_symbol(s, str);
-    if (rank == size - 1) 
-    {
+    if (rank == size - 1) {
         int snd = single_find_symbol(s, str);
         ASSERT_EQ(fst, snd);
     }
 }
 
-TEST(find_symbol, reverse) 
-{
+TEST(find_symbol, reverse) {
     int rank = 0, size = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -79,21 +73,19 @@ TEST(find_symbol, reverse)
     std::string str = ".gnikniht fo yaw eht yb ylelos detimil eb lliw scitylana tenretnI fo sisab"        
         "eht no nward snoisulcnoc eht taht ssim ew ,ecneirepxe resu eht evorpmi"        
         "ot tseuq ruo nI .rennam ylemit a ni deifirev neeb evah ,noitautis"        
-        "cimonoce tluciffid tnerruc eht gnimocrevo ,scitylana tenretnI fo sisab"        
-        "eht no edam snoisulcnoc eht ,yaw eht yB .tnempoleved evissergorp fo"        
-        "snoitcerid eht fo sisylana na seriuqer noisremmi fo level peed a"        
+        "cimonoce tluciffid tnerruc eht gnimocrevo ,scitylana tenretnI fo sisab"
+        "eht no edam snoisulcnoc eht ,yaw eht yB .tnempoleved evissergorp fo"
+        "snoitcerid eht fo sisylana na seriuqer noisremmi fo level peed a"
         "- sdnert nredom fo elpmaxe diviv a si ereH";
 
     int res = parallel_find_symbol(s, str);
 
-    if (rank == size - 1)
-    {
+    if (rank == size - 1) {
         ASSERT_EQ(res, 10);
     }
 }
 
-TEST(find_symbol, uppercase) 
-{
+TEST(find_symbol, uppercase) {
     int rank = 0, size = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -124,8 +116,7 @@ TEST(find_symbol, uppercase)
         
 }
 
-int main(int argc, char** argv) 
-{
+int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
     MPI_Init(&argc, &argv);
