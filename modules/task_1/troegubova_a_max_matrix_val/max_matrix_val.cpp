@@ -1,8 +1,8 @@
 // Copyright 2021 Troegubova Alexandra
 #include <mpi.h>
 #include <vector>
-#include <random>  
-#include <ctime> 
+#include <random>
+#include <ctime>
 #include <algorithm>
 #include "../../../modules/task_1/troegubova_a_max_matrix_val/max_matrix_val.h"
 
@@ -13,7 +13,7 @@ std::vector<int> getRandomMatrix(int lines, int columns) {
     std::uniform_int_distribution<> range(-200, 200);
     int matrix_size = lines * columns;
     std::vector<int> matrix(matrix_size);
-    for (int i = 0; i < matrix_size; i++) { 
+    for (int i = 0; i < matrix_size; i++) {
         matrix[i] = range(gen);
     }
     return matrix;
@@ -38,11 +38,11 @@ int getParallelMax(const std::vector<int> &matrix, const int matrix_size) {
     const int num_elem_block = whole + (rank < remains ? 1 : 0);
     int first_elem, local_max;
     std::vector<int> local_matrix(num_elem_block);
-	
+
     if (rank == 0) {
         local_matrix = std::vector<int>(matrix.begin(), matrix.begin() + num_elem_block);
         if (remains) {
-            for(int proc = 1; proc < remains; proc++) {
+            for (int proc = 1; proc < remains; proc++) {
                 MPI_Send(matrix.data() + proc * num_elem_block, num_elem_block, MPI_INT, proc, 0, MPI_COMM_WORLD);
             }
             if (whole) {
@@ -72,10 +72,10 @@ int getParallelMax(const std::vector<int> &matrix, const int matrix_size) {
                 MPI_Recv(local_matrix.data(), num_elem_block, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
                 local_max = getSequentialMax(local_matrix);
             } else {
-				MPI_Status status;
-				MPI_Recv(&first_elem, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
-				local_max = first_elem;
-			}
+                MPI_Status status;
+                MPI_Recv(&first_elem, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+                local_max = first_elem;
+            }
         }
     }
 

@@ -49,9 +49,9 @@ TEST(parallel_max_MPI, correct_finding_of_the_maximum_in_a_matrix_with_dimension
     const int lines = 1;
     const int columns = 150;
 
-	if (rank == 0) {
-		matrix = getRandomMatrix(lines, columns);
-	}
+    if (rank == 0) {
+        matrix = getRandomMatrix(lines, columns);
+    }
 
     int global_max = getParallelMax(matrix, lines * columns);
 
