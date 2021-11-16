@@ -17,121 +17,48 @@ int BroadcastSum(
     int commSize, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &commSize);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+
     if (rank == root) {
         for (int i = 0; i < commSize; i++) {
             if (i != root) {
-                MPI_Send(sendbuf, count, type, i, 0, MPI_COMM_WORLD);
+                MPI_Send(sendbuf, count * commSize, type, i, 0, MPI_COMM_WORLD);
             }
         }
     }
-    void* recvbuf;
-    switch (type)
-    {
-    case MPI_INT:
-        recvbuf = new int[count];
-        break;
-    case MPI_DOUBLE:
-        recvbuf = new double[count];
-        break;
-    case MPI_FLOAT:
-        recvbuf = new float[count];
-        break;
-    }
+    double* recvbuf = new double[count * commSize];
     if (rank != root) {
-
         MPI_Status status{};
-        MPI_Recv(recvbuf, count, type, root, 0, MPI_COMM_WORLD, &status);
-        if (type == MPI_INT) {
-            int val = 0;
-            for (int i = 0; i < count; i++) {
-                val += reinterpret_cast<int*>(recvbuf)[i];
-            }
-            MPI_Send(&val, 1, type, root, 1, MPI_COMM_WORLD);
-        }
-        else if (type == MPI_FLOAT) {
-            float val = 0;
-            for (int i = 0; i < count; i++) {
-                val += reinterpret_cast<float*>(recvbuf)[i];
-            }
-            MPI_Send(&val, 1, type, root, 1, MPI_COMM_WORLD);
-        }
-        else if (type == MPI_DOUBLE) {
-            double val = 0;
-            for (int i = 0; i < count; i++) {
-                val += reinterpret_cast<double*>(recvbuf)[i];
-            }
-            MPI_Send(&val, 1, type, root, 1, MPI_COMM_WORLD);
-        }
+        MPI_Recv(recvbuf, count * commSize, type, root, 0, MPI_COMM_WORLD, &status);
     }
     else {
-        if (type == MPI_INT) {
-            int val = 0;
-            for (int i = 0; i < count; i++) {
-                val += reinterpret_cast<int*>(recvbuf)[i];
-            }
-        }
-        else if (type == MPI_FLOAT) {
-            float val = 0;
-            for (int i = 0; i < count; i++) {
-                val += reinterpret_cast<float*>(recvbuf)[i];
-            }
-        }
-        else if (type == MPI_DOUBLE) {
-            double val = 0;
-            for (int i = 0; i < count; i++) {
-                val += reinterpret_cast<double*>(recvbuf)[i];
-            }
-        }
+        recvbuf = (double*)sendbuf;
     }
-
+    //Now all processes has same data in recvbuffer
+    //Calculate summ
+    double local_sum = 0;
+    for (int i = 0; i < count; i++) {
+        local_sum += recvbuf[rank * count + i];
+    }
+    if (rank != root) {
+        //Send data to root process
+        MPI_Send(&local_sum, 1, type, root, 1, MPI_COMM_WORLD);
+    }
+    
+    //Receive and summ data
     if (rank == root) {
-        if (type == MPI_INT) {
-            int* result = new int[commSize];
-            for (int i = 1; i < commSize; i++) {
-                result[i] = 0;
-                if (i != root) {
-                    MPI_Status status{};
-                    MPI_Recv(result + i, 1, type, i, 1, MPI_COMM_WORLD, &status);
-                }
+        double global_sum = local_sum;
+        //Receive data from non-root
+        for (int i = 0; i < commSize; i++) {
+            if (i != root) {
+                double process_sum = 0;
+                MPI_Status status{};
+                MPI_Recv(&process_sum, 1, type, i, 1, MPI_COMM_WORLD, &status);
+                global_sum += process_sum;
             }
-            int sum = 0;
-            for (int i = 0; i < commSize; i++) {
-                sum += result[i];
-            }
-            *reinterpret_cast<int*>(outSum) = sum;
-        }
-        else if (type == MPI_FLOAT) {
-            float* result = new float[commSize];
-            for (int i = 1; i < commSize; i++) {
-                result[i] = 0;
-                if (i != root) {
-                    MPI_Status status{};
-                    MPI_Recv(result + i, 1, type, i, 1, MPI_COMM_WORLD, &status);
-                }
-            }
-            float sum = 0;
-            for (int i = 1; i < commSize; i++) {
-                sum += result[i];
-            }
-            *reinterpret_cast<float*>(outSum) = sum;
-        }
-        else if (type == MPI_DOUBLE) {
-            double* result = new double[commSize];
-
-            for (int i = 0; i < commSize; i++) {
-                result[i] = 0;
-                if (i != root) {
-                    MPI_Status status{};
-                    MPI_Recv(result + i, 1, type, i, 1, MPI_COMM_WORLD, &status);
-                }
-            }
-            double sum = 0;
-            for (int i = 0; i < commSize; i++) {
-                sum += result[i];
-            }
-            *reinterpret_cast<double*>(outSum) = sum;
         }
 
+        *reinterpret_cast<double*>(outSum) = global_sum;
     }
     return 0;
 }
