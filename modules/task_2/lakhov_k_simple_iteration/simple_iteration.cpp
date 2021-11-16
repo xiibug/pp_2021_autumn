@@ -15,7 +15,8 @@ std::vector<double> getRandomVector(int sz, int min, int max) {
 
 std::vector<std::vector<double>> getRandomMatrix(int size) {
     std::vector<std::vector<double>> vec(size);
-    std::vector<double> prevailing = getRandomVector(size, 80, 100);
+    std::vector<double> prevailing = getRandomVector(size,
+        10*size+1, 10*size+20);
     for (int  i = 0; i < size; i++) {
         vec[i] = getRandomVector(size, -10, 10);
         vec[i][i] = prevailing[i];
@@ -23,24 +24,25 @@ std::vector<std::vector<double>> getRandomMatrix(int size) {
     return vec;
 }
 
-void printMatrix(std::vector<std::vector<double>> m, int size){
-    for(int i=0; i<size; i++){
-        for(int j=0; j<size; j++){
-            std::cout << m[i][j]<<" ";
+void printMatrix(std::vector<std::vector<double>> m, int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            std::cout << m[i][j] << " ";
         }
         std::cout << std::endl;
     }
 }
 
-void printVector(std::vector<double> m, int size){
-    for(int i=0; i<size; i++){
-        std::cout << m[i]<<" ";
+void printVector(std::vector<double> m, int size) {
+    for (int i = 0; i < size; i++) {
+        std::cout << m[i] << " ";
     }
     std::cout << std::endl;
 }
-void printVector(std::vector<int> m, int size){
-    for(int i=0; i<size; i++){
-        std::cout << m[i]<<" ";
+
+void printVector(std::vector<int> m, int size) {
+    for (int i = 0; i < size; i++) {
+        std::cout << m[i] << " ";
     }
     std::cout << std::endl;
 }
@@ -66,18 +68,22 @@ void printVector(std::vector<int> m, int size){
     условие сходимости:
     max[i](sum[j=1, n](|C[i][j])|) < 1
     обеспечиваем a(i,i) > sum[j=1, n, j!=i](a(i, j))
+
+    more info
+    https://ru.wikipedia.org/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%B8
 */
 
-std::vector<double> sequentialCalc(std::vector<std::vector<double>> coefficients,
-                                   std::vector<double> free_members, int size) {
-    for(int i = 0; i < size; i++){
+std::vector<double> sequentialCalc(
+                                std::vector<std::vector<double>> coefficients,
+                                std::vector<double> free_members, int size) {
+    for (int i = 0; i < size; i++) {
         double coeff = coefficients[i][i];
         bool coeff_is_negative = coeff < 0;
         free_members[i] /= coeff_is_negative ? -coeff : coeff;
-        for(int j = 0; j < size; j++){
-            if(i != j){
+        for (int j = 0; j < size; j++) {
+            if (i != j) {
                 coefficients[i][j] /= coeff_is_negative ? coeff : -coeff;
-            }else{
+            } else {
                 coefficients[i][j] = 0;
             }
         }
@@ -90,27 +96,27 @@ std::vector<double> sequentialCalc(std::vector<std::vector<double>> coefficients
     double epsilon = 0.0001;
     bool stop = false;
     int step = 1;
-    while(!stop){
-        for(int i=0; i<size; i++){
+    while (!stop) {
+        for (int i = 0; i < size; i++) {
             x[i] = next_x[i];
             next_x[i] = 0;
         }
-        for(int i = 0; i<size; i++){
-            for(int j=0; j<size; j++){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 next_x[i] += coefficients[i][j]*x[j];
-                if(step == 1 && i==0){
-                    std::cout<<coefficients[i][j]<<"*"<<x[j]<<"="<<next_x[i]<<"   ";
-                }
+        // if(step == 1 && i==0){
+        // std::cout<<coefficients[i][j]<<"*"<<x[j]<<"="<<next_x[i]<<"   ";
+        // }
             }
             next_x[i] += free_members[i];
-            if(step == 1 && i==0){
-                std::cout<<free_members[i]<<"+="<<next_x[i]<<"   ";
-            }
+            // if(step == 1 && i==0){
+            //     std::cout<<free_members[i]<<"+="<<next_x[i]<<"   ";
+            // }
         }
 
         stop = true;
-        for(int i = 0; i < size - 1; i++){
-            if(std::abs(x[i] - next_x[i]) > epsilon){
+        for (int i = 0; i < size - 1; i++) {
+            if (std::abs(x[i] - next_x[i]) > epsilon) {
                 stop = false;
             }
         }
@@ -126,7 +132,8 @@ std::vector<double> sequentialCalc(std::vector<std::vector<double>> coefficients
 }
 
 
-int parallelCalc(std::vector<std::vector<double>> matrix, std::vector<double> free_members, int size) {
+std::vector<double> parallelCalc(std::vector<std::vector<double>> matrix,
+        std::vector<double> free_members, int size) {
     int proc_count = 0, proc_rank = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
@@ -136,7 +143,7 @@ int parallelCalc(std::vector<std::vector<double>> matrix, std::vector<double> fr
 
     int amount_of_elems_per_proc = rows_per_proc*size+rows_per_proc;
     int current_amount_of_elems = amount_of_elems_per_proc;
-    if(proc_rank < excess_rows){
+    if (proc_rank < excess_rows) {
         current_amount_of_elems += size + 1;
     }
     // int row_len = size+1;
@@ -146,15 +153,16 @@ int parallelCalc(std::vector<std::vector<double>> matrix, std::vector<double> fr
     std::vector<int> send_offsets(proc_count, 0);
     std::vector<double> proc_data(current_amount_of_elems);
 
-    if(proc_rank == 0){
-        printMatrix(matrix, size);
-        printVector(free_members, size);
+    if (proc_rank == 0) {
+        // printMatrix(matrix, size);
+        // printVector(free_members, size);
         // flatten vector and add free members for each row
         std::size_t total_size = size*size + size;
         raw_data.reserve(total_size);
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             matrix[i].push_back(free_members[i]);
-            raw_data.insert(raw_data.end(), matrix[i].begin(), matrix[i].end());
+            raw_data.insert(raw_data.end(),
+                            matrix[i].begin(), matrix[i].end());
         }
 
         for (int i = 0; i < excess_rows; i++)
@@ -163,22 +171,24 @@ int parallelCalc(std::vector<std::vector<double>> matrix, std::vector<double> fr
             send_offsets[i] = send_offsets[i - 1] + send_counts[i - 1];
     }
     MPI_Scatterv(raw_data.data(), send_counts.data(), send_offsets.data(),
-                MPI_DOUBLE, proc_data.data(), current_amount_of_elems, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+                 MPI_DOUBLE, proc_data.data(),
+                 current_amount_of_elems, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
 
-    int start_x_index = rows_per_proc*proc_rank+std::min(proc_rank, excess_rows);
+    int start_x_index = rows_per_proc*proc_rank +
+                        std::min(proc_rank, excess_rows);
     int x_index = start_x_index;
     int row_size = size + 1;
-    for(int i = 0; i < current_amount_of_elems; i += row_size){
+    for (int i = 0; i < current_amount_of_elems; i += row_size) {
         double coeff = proc_data[x_index + i];
         bool coeff_is_negative = coeff < 0;
         int free_member_index = i + row_size - 1;
         proc_data[free_member_index] /= coeff_is_negative ? -coeff : coeff;
         // handle everything except last number that is not a coefficient
-        for(int j = i; j < i + row_size - 1; j++){
-            if(j != x_index + i){
+        for (int j = i; j < i + row_size - 1; j++) {
+            if (j != x_index + i) {
                 proc_data[j] /= coeff_is_negative ? coeff : -coeff;
-            }else{
+            } else {
                 proc_data[j] = 0;
             }
         }
@@ -188,7 +198,7 @@ int parallelCalc(std::vector<std::vector<double>> matrix, std::vector<double> fr
     std::vector<double> old_x(size);
     std::vector<double> this_x;
 
-    for(int i = 0; i < current_amount_of_elems; i += row_size){
+    for (int i = 0; i < current_amount_of_elems; i += row_size) {
         int free_member_index = i + row_size - 1;
         this_x.push_back(proc_data[free_member_index]);
     }
@@ -201,60 +211,46 @@ int parallelCalc(std::vector<std::vector<double>> matrix, std::vector<double> fr
         send_offsets[i] = send_offsets[i - 1] + send_counts[i - 1];
 
 
-    MPI_Allgatherv(this_x.data(), this_x.size(), MPI_DOUBLE, x.data(), send_counts.data(), send_offsets.data(),
-        MPI_DOUBLE, MPI_COMM_WORLD);
+    MPI_Allgatherv(this_x.data(), this_x.size(), MPI_DOUBLE,
+                   x.data(), send_counts.data(), send_offsets.data(),
+                   MPI_DOUBLE, MPI_COMM_WORLD);
 
     old_x = x;
     double epsilon = 0.0001;
     bool global_stop = false;
-    bool local_stop = false;
     int step = 0;
-    while(!global_stop){
-        if(step>0){
-            MPI_Allgatherv(this_x.data(), this_x.size(), MPI_DOUBLE, x.data(), send_counts.data(), send_offsets.data(),
-                MPI_DOUBLE, MPI_COMM_WORLD);
+    while (!global_stop) {
+        if (step > 0) {
+            MPI_Allgatherv(this_x.data(), this_x.size(), MPI_DOUBLE,
+                           x.data(), send_counts.data(), send_offsets.data(),
+                           MPI_DOUBLE, MPI_COMM_WORLD);
             global_stop = true;
-            for(int i = 0; i < size - 1; i++){
-                if(std::abs(old_x[i] - x[i]) > epsilon){
+            for (int i = 0; i < size - 1; i++) {
+                if (std::abs(old_x[i] - x[i]) > epsilon) {
                     global_stop = false;
                 }
             }
-            if(proc_rank==0){
-                std::cout<<"gather #step"<<step<<std::endl;
-                printVector(x, size);
-            }
+            // if(proc_rank==0){
+            //     std::cout<<"gather #step"<<step<<std::endl;
+            //     printVector(x, size);
+            // }
             old_x = x;
         }
 
-        if(!global_stop && !local_stop){
+        if (!global_stop) {
             this_x.assign(send_counts[proc_rank], 0);
-            for(int i = 0; i<send_counts[proc_rank]; i++){
-                for(int j=i*row_size, x_index=0; j<i*row_size+row_size-1; j++, x_index++){
+            for (int i = 0; i < send_counts[proc_rank]; i++) {
+                for (int j = i*row_size, x_index=0;
+                        j < i*row_size+row_size-1; j++, x_index++) {
                     this_x[i] += proc_data[j]*x[x_index];
-                    if(proc_rank==0 && step == 0){
-                        std::cout<<proc_data[j]<<"*"<<x[x_index]<<"="<<this_x[i]<<"   ";
-                    }
                 }
                 this_x[i] += proc_data[i*row_size+row_size - 1];
-                if(proc_rank==0 && step == 0){
-                    std::cout<<proc_data[i*row_size+row_size - 1]<<"+="<<this_x[i]<<"   ";
-                }
-            }
-            // if(proc_rank==0){
-            //     std::cout<<"calc #step"<<step<<std::endl;
-            //     printVector(this_x, send_counts[proc_rank]);
-            // }
-            local_stop = true;
-            for(int i = 0; i < send_counts[proc_rank]; i++){
-                if(std::abs(x[send_offsets[proc_rank]+i] - this_x[i]) > epsilon){
-                    local_stop = false;
-                }
             }
         }
         step++;
-        if(step>20){
+        if (step > 20) {
             break;
         }
     }
-    return 1;
+    return x;
 }

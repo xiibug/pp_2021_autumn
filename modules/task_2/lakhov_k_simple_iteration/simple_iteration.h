@@ -1,6 +1,6 @@
 // Copyright 2021 Lakhov Kirill
-#ifndef MODULES_TASK_1_LAKHOV_K_MATRIX_COL_SUM_MATRIX_COL_SUM_H_
-#define MODULES_TASK_1_LAKHOV_K_MATRIX_COL_SUM_MATRIX_COL_SUM_H_
+#ifndef MODULES_TASK_2_LAKHOV_K_SIMPLE_ITERATION_SIMPLE_ITERATION_H_
+#define MODULES_TASK_2_LAKHOV_K_SIMPLE_ITERATION_SIMPLE_ITERATION_H_
 #include <mpi.h>
 #include <vector>
 #include <random>
@@ -14,9 +14,11 @@ void printMatrix(std::vector<std::vector<double>> m, int size);
 void printVector(std::vector<double> m, int size);
 void printVector(std::vector<int> m, int size);
 
-std::vector<double> sequentialCalc(std::vector<std::vector<double>> coefficients,
-                                   std::vector<double> free_members, int size);
+std::vector<double> sequentialCalc(
+                                std::vector<std::vector<double>> coefficients,
+                                std::vector<double> free_members, int size);
 
-int parallelCalc(std::vector<std::vector<double>> matrix, std::vector<double> free_members, int size);
+std::vector<double> parallelCalc(std::vector<std::vector<double>> matrix,
+                                 std::vector<double> free_members, int size);
 
-#endif  // MODULES_TASK_1_LAKHOV_K_MATRIX_COL_SUM_MATRIX_COL_SUM_H_
+#endif  // MODULES_TASK_2_LAKHOV_K_SIMPLE_ITERATION_SIMPLE_ITERATION_H_
