@@ -95,7 +95,7 @@ TEST(Parallel_Operations_MPI, Test_Random2) {
 TEST(Parallel_Operations_MPI, Test_Random3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    int size = 6;
+    int size = 7;
     double eps = 0.0001;
     std::vector<std::vector<double>> v;
     std::vector<double> b;
