@@ -7,8 +7,10 @@
 #include <stdio.h>
 #include <locale.h>
 #include <conio.h>
+
 int length = 1000;
-int root = 0;
+int root = 1;
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);

@@ -186,30 +186,3 @@ int BroadcastSum(
     }
     return 0;
 }
-
-template<typename T>
-T sumSeq(T* arr, int length) {
-    T sum = 0;
-    for (int i = 0; i < length; i++) {
-        sum += arr[i];
-    }
-    return sum;
-}
-
-template<typename T>
-T* zerosArray(int length) {
-    T* arr = new T[length];
-    for (int i = 0; i < length; i++) {
-        arr[i] = 0;
-    }
-    return arr;
-}
-
-template<typename T>
-T* filledArray(int length, T value) {
-    T* arr = new T[length];
-    for (int i = 0; i < length; i++) {
-        arr[i] = value;
-    }
-    return arr;
-}

@@ -12,14 +12,4 @@ int BroadcastSum(
     MPI_Datatype type
 );
 
-
-template<typename T>
-T sumSeq(T* arr, int length);
-
-template<typename T>
-T* zerosArray(int length);
-
-template<typename T>
-T* filledArray(int length, T value);
-
 #endif  // MODULES_TASK_1_RODIONOV_N_CHECKING_LEXICOGRAPHIC_ORDERING_LEX_ORDERING_H_
