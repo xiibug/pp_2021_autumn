@@ -9,11 +9,6 @@ std::vector<double> getRandomVector(int sz, int min, int max);
 
 std::vector<std::vector<double>> getRandomMatrix(int size);
 
-void printMatrix(std::vector<std::vector<double>> m, int size);
-
-void printVector(std::vector<double> m, int size);
-void printVector(std::vector<int> m, int size);
-
 std::vector<double> sequentialCalc(
                                 std::vector<std::vector<double>> coefficients,
                                 std::vector<double> free_members, int size);

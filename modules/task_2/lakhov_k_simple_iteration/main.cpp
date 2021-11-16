@@ -3,7 +3,6 @@
 #include <vector>
 #include "./simple_iteration.h"
 #include <gtest-mpi-listener.hpp>
-// #include <iostream>
 
 TEST(Parallel_Operations_MPI, Test_Predifined1) {
     int rank;
@@ -21,10 +20,7 @@ TEST(Parallel_Operations_MPI, Test_Predifined1) {
     std::vector<double> p_result = parallelCalc(v, b, size);
     if (rank == 0) {
         std::vector<double> s_result = sequentialCalc(v, b, size);
-        // printVector(p_result, size);
-        // printVector(s_result, size);
         for (int i = 0; i < size; i++) {
-            // std::cout<<e<<std::endl;
             EXPECT_TRUE(std::abs(p_result[i] - s_result[i]) < eps);
         }
     }
@@ -46,10 +42,7 @@ TEST(Parallel_Operations_MPI, Test_Predifined2) {
     std::vector<double> p_result = parallelCalc(v, b, size);
     if (rank == 0) {
         std::vector<double> s_result = sequentialCalc(v, b, size);
-        // printVector(p_result, size);
-        // printVector(s_result, size);
         for (int i = 0; i < size; i++) {
-            // std::cout<<e<<std::endl;
             EXPECT_TRUE(std::abs(p_result[i] - s_result[i]) < eps);
         }
     }
@@ -71,10 +64,7 @@ TEST(Parallel_Operations_MPI, Test_Random1) {
     std::vector<double> p_result = parallelCalc(v, b, size);
     if (rank == 0) {
         std::vector<double> s_result = sequentialCalc(v, b, size);
-        // printVector(p_result, size);
-        // printVector(s_result, size);
         for (int i = 0; i < size; i++) {
-            // std::cout<<e<<std::endl;
             EXPECT_TRUE(std::abs(p_result[i] - s_result[i]) < eps);
         }
     }
@@ -96,10 +86,7 @@ TEST(Parallel_Operations_MPI, Test_Random2) {
     std::vector<double> p_result = parallelCalc(v, b, size);
     if (rank == 0) {
         std::vector<double> s_result = sequentialCalc(v, b, size);
-        // printVector(p_result, size);
-        // printVector(s_result, size);
         for (int i = 0; i < size; i++) {
-            // std::cout<<e<<std::endl;
             EXPECT_TRUE(std::abs(p_result[i] - s_result[i]) < eps);
         }
     }
@@ -121,10 +108,7 @@ TEST(Parallel_Operations_MPI, Test_Random3) {
     std::vector<double> p_result = parallelCalc(v, b, size);
     if (rank == 0) {
         std::vector<double> s_result = sequentialCalc(v, b, size);
-        // printVector(p_result, size);
-        // printVector(s_result, size);
         for (int i = 0; i < size; i++) {
-            // std::cout<<e<<std::endl;
             EXPECT_TRUE(std::abs(p_result[i] - s_result[i]) < eps);
         }
     }
@@ -142,15 +126,5 @@ int main(int argc, char** argv) {
     listeners.Release(listeners.default_xml_generator());
 
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
-    // std::vector<std::vector<double>> v = getRandomMatrix(5);
-    // std::vector<double> b = getRandomVector(5, -20, 20);
-    // printMatrix(v, 5);
-
-    // std::vector<std::vector<double>> v = {{10, 3, -3},
-    // {5, 10, -4}, {-2, 2, 10}};
-    // std::vector<double> b = {7,8,9};
-    // sequentialCalc(v, b, 3);
-    // parallelCalc(v, b, 3);
-    // MPI_Finalize();
     return RUN_ALL_TESTS();
 }

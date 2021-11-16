@@ -24,30 +24,6 @@ std::vector<std::vector<double>> getRandomMatrix(int size) {
     return vec;
 }
 
-void printMatrix(std::vector<std::vector<double>> m, int size) {
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            std::cout << m[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-}
-
-void printVector(std::vector<double> m, int size) {
-    for (int i = 0; i < size; i++) {
-        std::cout << m[i] << " ";
-    }
-    std::cout << std::endl;
-}
-
-void printVector(std::vector<int> m, int size) {
-    for (int i = 0; i < size; i++) {
-        std::cout << m[i] << " ";
-    }
-    std::cout << std::endl;
-}
-
-
 /*
     Ax=b
     [a(1,1), a(1,2)] x [x(1)] = [b(1)]
@@ -88,14 +64,11 @@ std::vector<double> sequentialCalc(
             }
         }
     }
-    // printMatrix(coefficients, size);
-    // printVector(free_members, size);
 
     std::vector<double> x(size);
     std::vector<double> next_x = free_members;
     double epsilon = 0.0001;
     bool stop = false;
-    int step = 1;
     while (!stop) {
         for (int i = 0; i < size; i++) {
             x[i] = next_x[i];
@@ -104,14 +77,8 @@ std::vector<double> sequentialCalc(
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 next_x[i] += coefficients[i][j]*x[j];
-        // if(step == 1 && i==0){
-        // std::cout<<coefficients[i][j]<<"*"<<x[j]<<"="<<next_x[i]<<"   ";
-        // }
             }
             next_x[i] += free_members[i];
-            // if(step == 1 && i==0){
-            //     std::cout<<free_members[i]<<"+="<<next_x[i]<<"   ";
-            // }
         }
 
         stop = true;
@@ -120,13 +87,6 @@ std::vector<double> sequentialCalc(
                 stop = false;
             }
         }
-        // std::cout<<"step: "<<step<<std::endl;
-        step++;
-        // printVector(x, size);
-        // printVector(next_x, size);
-        // if(step>10){
-        //     stop = true;
-        // }
     }
     return next_x;
 }
@@ -146,7 +106,6 @@ std::vector<double> parallelCalc(std::vector<std::vector<double>> matrix,
     if (proc_rank < excess_rows) {
         current_amount_of_elems += size + 1;
     }
-    // int row_len = size+1;
 
     std::vector<double> raw_data;
     std::vector<int> send_counts(proc_count, amount_of_elems_per_proc);
@@ -154,8 +113,6 @@ std::vector<double> parallelCalc(std::vector<std::vector<double>> matrix,
     std::vector<double> proc_data(current_amount_of_elems);
 
     if (proc_rank == 0) {
-        // printMatrix(matrix, size);
-        // printVector(free_members, size);
         // flatten vector and add free members for each row
         std::size_t total_size = size*size + size;
         raw_data.reserve(total_size);
@@ -230,10 +187,6 @@ std::vector<double> parallelCalc(std::vector<std::vector<double>> matrix,
                     global_stop = false;
                 }
             }
-            // if(proc_rank==0){
-            //     std::cout<<"gather #step"<<step<<std::endl;
-            //     printVector(x, size);
-            // }
             old_x = x;
         }
 
@@ -248,9 +201,6 @@ std::vector<double> parallelCalc(std::vector<std::vector<double>> matrix,
             }
         }
         step++;
-        if (step > 20) {
-            break;
-        }
     }
     return x;
 }
