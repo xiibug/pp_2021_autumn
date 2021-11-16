@@ -26,7 +26,7 @@ TEST(ScaulMult_Vectors_MPI, test_1) {
     res = sequentialScalMult(a, b, 100);
     ASSERT_NE(res, 100);
 }
-/*
+
 TEST(ScaulMult_Vectors_MPI, test_2) {
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
@@ -102,7 +102,7 @@ TEST(ScaulMult_Vectors_MPI, test_5) {
         EXPECT_EQ(seqSum, sum);
     }
 }
-*/
+
 
 
 int main(int argc, char** argv) {
