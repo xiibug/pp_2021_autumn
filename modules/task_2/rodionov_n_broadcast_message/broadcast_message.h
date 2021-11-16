@@ -8,6 +8,7 @@ int BroadcastSum(
     void* outSum,
     int count,
     int root,
+    MPI_Op op,
     MPI_Datatype type
 );
 

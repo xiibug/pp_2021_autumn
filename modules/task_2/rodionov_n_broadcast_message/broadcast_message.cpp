@@ -12,6 +12,7 @@ int BroadcastSum(
     void* outSum,
     int count,
     int root,
+    MPI_Op op,
     MPI_Datatype type
 ) {
     int commSize, rank;
@@ -36,29 +37,46 @@ int BroadcastSum(
     }
     //Now all processes has same data in recvbuffer
     //Calculate summ
-    double local_sum = 0;
-    for (int i = 0; i < count; i++) {
-        local_sum += recvbuf[rank * count + i];
+    double local_val = 0;
+    if (op == MPI_SUM) {
+        for (int i = 0; i < count; i++) {
+            local_val += recvbuf[rank * count + i];
+        }
     }
+    else if (op == MPI_MAX) {
+        for (int i = 0; i < count; i++) {
+            if (recvbuf[rank * count + i] > local_val) {
+                local_val = recvbuf[rank * count + i];
+            }
+        }
+    }
+
     if (rank != root) {
         //Send data to root process
-        MPI_Send(&local_sum, 1, type, root, 1, MPI_COMM_WORLD);
+        MPI_Send(&local_val, 1, type, root, 1, MPI_COMM_WORLD);
     }
     
     //Receive and summ data
     if (rank == root) {
-        double global_sum = local_sum;
+        double global_val = local_val;
         //Receive data from non-root
         for (int i = 0; i < commSize; i++) {
             if (i != root) {
-                double process_sum = 0;
+                double process_val = 0;
                 MPI_Status status{};
-                MPI_Recv(&process_sum, 1, type, i, 1, MPI_COMM_WORLD, &status);
-                global_sum += process_sum;
+                MPI_Recv(&process_val, 1, type, i, 1, MPI_COMM_WORLD, &status);
+                if (op == MPI_SUM) {
+                    global_val += process_val;
+                } 
+                else if (op == MPI_MAX) {
+                    if (process_val > global_val) {
+                        global_val = process_val;
+                    }
+                }
             }
         }
 
-        *reinterpret_cast<double*>(outSum) = global_sum;
+        *reinterpret_cast<double*>(outSum) = global_val;
     }
     return 0;
 }
