@@ -49,7 +49,6 @@ int BroadcastSum(
                 }
             }
         }
-        delete[] recvbuf;
         if (rank != root) {
             // Send data to root process
             MPI_Send(&local_val, 1, type, root, 1, MPI_COMM_WORLD);
@@ -101,7 +100,6 @@ int BroadcastSum(
                 }
             }
         }
-        delete[] recvbuf;
         if (rank != root) {
             // Send data to root process
             MPI_Send(&local_val, 1, type, root, 1, MPI_COMM_WORLD);
@@ -153,7 +151,6 @@ int BroadcastSum(
             }
         }
     }
-    delete[] recvbuf;
     if (rank != root) {
         // Send data to root process
         MPI_Send(&local_val, 1, type,
