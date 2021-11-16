@@ -5,7 +5,7 @@
 #include <gtest-mpi-listener.hpp>
 #include "../../../modules/task_2/rodionov_n_broadcast_message/broadcast_message.h"
 int length = 1000;
-int root = 1;
+int root = 0;
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
