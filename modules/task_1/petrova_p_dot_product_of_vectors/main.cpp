@@ -32,7 +32,9 @@ TEST(ScaulMult_Vectors_MPI, test_2) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     std::vector<int> a(100, 2), b(100, 1);
     int res = parallelScalMult(a, b, 100);
-    if (procRank == 0){
+    a.clear();
+    b.clear();
+    if (procRank == 0) {
         ASSERT_EQ(res, 200);
     }
 }
@@ -42,6 +44,8 @@ TEST(ScaulMult_Vectors_MPI, test_3) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     std::vector<int> a(100, 2), b(100, 1);
     int res = parallelScalMult(a, b, 100);
+    a.clear();
+    b.clear();
     if (procRank == 0) {
         ASSERT_NE(res, 100);
     }
@@ -49,6 +53,7 @@ TEST(ScaulMult_Vectors_MPI, test_3) {
 
 TEST(ScaulMult_Vectors_MPI, test_4) {
     int procRank;
+    int seqSum;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     const int lenght = 100;
     std::vector<int> a;
@@ -61,13 +66,20 @@ TEST(ScaulMult_Vectors_MPI, test_4) {
     int sum = parallelScalMult(a, b, lenght);
 
     if (procRank == 0) {
-        int seqSum = sequentialScalMult(a, b, lenght);
+        seqSum = sequentialScalMult(a, b, lenght);
+    }
+
+    a.clear();
+    b.clear();
+
+    if (procRank == 0) {
         EXPECT_EQ(seqSum, sum);
     }
 }
 
 TEST(ScaulMult_Vectors_MPI, test_5) {
     int procRank;
+    int seqSum;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     const int lenght = 10000;
     std::vector<int> a;
@@ -80,7 +92,13 @@ TEST(ScaulMult_Vectors_MPI, test_5) {
     int sum = parallelScalMult(a, b, lenght);
 
     if (procRank == 0) {
-        int seqSum = sequentialScalMult(a, b, lenght);
+        seqSum = sequentialScalMult(a, b, lenght);
+    }
+
+    a.clear();
+    b.clear();
+
+    if (procRank == 0) {
         EXPECT_EQ(seqSum, sum);
     }
 }
