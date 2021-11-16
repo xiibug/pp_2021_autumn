@@ -31,6 +31,11 @@ int getParallelSum(std::vector<int> vec, int size) {
     MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
 
+    while (size < ProcNum) {
+        vec.push_back(0);
+        size++;
+    }
+
     int part = size / ProcNum;
     std::vector<int> part_vec(part);
     if (ProcRank == 0) {
