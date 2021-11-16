@@ -24,10 +24,10 @@ TEST(DanshinGMatrixMaxByRow, ConstMatrixSize5x5) {
     answer_parallel = GetMatrixRowMaxParallel(matrix, row_num, col_num);
     if (rank == 0) {
         EXPECT_EQ(0, std::memcmp(answer_sequence, answer_parallel, row_num * sizeof(int)));
+        delete [] matrix;
+        delete [] answer_sequence;
     }
-    delete matrix;
-    delete answer_sequence;
-    delete answer_parallel;
+    delete [] answer_parallel;
 }
 
 TEST(DanshinGMatrixMaxByRow, ConstMatrixSize10x5) {
@@ -55,10 +55,10 @@ TEST(DanshinGMatrixMaxByRow, ConstMatrixSize10x5) {
     answer_parallel = GetMatrixRowMaxParallel(matrix, row_num, col_num);
     if (rank == 0) {
         EXPECT_EQ(0, std::memcmp(answer_sequence, answer_parallel, row_num * sizeof(int)));
+        delete [] matrix;
+        delete [] answer_sequence;
     }
-    delete matrix;
-    delete answer_sequence;
-    delete answer_parallel;
+    delete [] answer_parallel;
 }
 
 TEST(DanshinGMatrixMaxByRow, ConstMatrixSize5x10) {
@@ -81,10 +81,10 @@ TEST(DanshinGMatrixMaxByRow, ConstMatrixSize5x10) {
     answer_parallel = GetMatrixRowMaxParallel(matrix, row_num, col_num);
     if (rank == 0) {
         EXPECT_EQ(0, std::memcmp(answer_sequence, answer_parallel, row_num * sizeof(int)));
+        delete [] matrix;
+        delete [] answer_sequence;
     }
-    delete matrix;
-    delete answer_sequence;
-    delete answer_parallel;
+    delete [] answer_parallel;
 }
 
 TEST(DanshinGMatrixMaxByRow, ConstMatrixSize10x10) {
@@ -112,10 +112,10 @@ TEST(DanshinGMatrixMaxByRow, ConstMatrixSize10x10) {
     answer_parallel = GetMatrixRowMaxParallel(matrix, row_num, col_num);
     if (rank == 0) {
         EXPECT_EQ(0, std::memcmp(answer_sequence, answer_parallel, row_num * sizeof(int)));
+        delete [] matrix;
+        delete [] answer_sequence;
     }
-    delete matrix;
-    delete answer_sequence;
-    delete answer_parallel;
+    delete [] answer_parallel;
 }
 
 TEST(DanshinGMatrixMaxByRow, RandMatrixSize100x100) {
@@ -132,10 +132,10 @@ TEST(DanshinGMatrixMaxByRow, RandMatrixSize100x100) {
     answer_parallel = GetMatrixRowMaxParallel(matrix, row_num, col_num);
     if (rank == 0) {
         EXPECT_EQ(0, std::memcmp(answer_sequence, answer_parallel, row_num * sizeof(int)));
+        delete [] matrix;
+        delete [] answer_sequence;
     }
-    delete matrix;
-    delete answer_sequence;
-    delete answer_parallel;
+    delete [] answer_parallel;
 }
 
 TEST(DanshinGMatrixMaxByRow, RandMatrixSize250x250) {
@@ -152,10 +152,10 @@ TEST(DanshinGMatrixMaxByRow, RandMatrixSize250x250) {
     answer_parallel = GetMatrixRowMaxParallel(matrix, row_num, col_num);
     if (rank == 0) {
         EXPECT_EQ(0, std::memcmp(answer_sequence, answer_parallel, row_num * sizeof(int)));
+        delete [] matrix;
+        delete [] answer_sequence;
     }
-    delete matrix;
-    delete answer_sequence;
-    delete answer_parallel;
+    delete [] answer_parallel;
 }
 
 TEST(DanshinGMatrixMaxByRow, RandMatrixSize250x500) {
@@ -172,10 +172,10 @@ TEST(DanshinGMatrixMaxByRow, RandMatrixSize250x500) {
     answer_parallel = GetMatrixRowMaxParallel(matrix, row_num, col_num);
     if (rank == 0) {
         EXPECT_EQ(0, std::memcmp(answer_sequence, answer_parallel, row_num * sizeof(int)));
+        delete [] matrix;
+        delete [] answer_sequence;
     }
-    delete matrix;
-    delete answer_sequence;
-    delete answer_parallel;
+    delete [] answer_parallel;
 }
 
 TEST(DanshinGMatrixMaxByRow, RandMatrixSize500x250) {
@@ -192,10 +192,10 @@ TEST(DanshinGMatrixMaxByRow, RandMatrixSize500x250) {
     answer_parallel = GetMatrixRowMaxParallel(matrix, row_num, col_num);
     if (rank == 0) {
         EXPECT_EQ(0, std::memcmp(answer_sequence, answer_parallel, row_num * sizeof(int)));
+        delete [] matrix;
+        delete [] answer_sequence;
     }
-    delete matrix;
-    delete answer_sequence;
-    delete answer_parallel;
+    delete [] answer_parallel;
 }
 
 TEST(DanshinGMatrixMaxByRow, RandMatrixSize500x500) {
@@ -212,10 +212,10 @@ TEST(DanshinGMatrixMaxByRow, RandMatrixSize500x500) {
     answer_parallel = GetMatrixRowMaxParallel(matrix, row_num, col_num);
     if (rank == 0) {
         EXPECT_EQ(0, std::memcmp(answer_sequence, answer_parallel, row_num * sizeof(int)));
+        delete [] matrix;
+        delete [] answer_sequence;
     }
-    delete matrix;
-    delete answer_sequence;
-    delete answer_parallel;
+    delete [] answer_parallel;
 }
 
 int main(int argc, char** argv) {
