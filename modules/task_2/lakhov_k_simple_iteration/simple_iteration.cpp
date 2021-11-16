@@ -41,12 +41,14 @@ std::vector<std::vector<double>> getRandomMatrix(int size) {
     [x(k+1)] = [0, -a(1,2)/a(1,1)] x  [x(k)] + [b(1)/a(1,1)]
     [x(k+1)]   [-a(2,1)/a(2,2), 0]    [x(k)]   [b(2)/a(2,2)]
 
-    условие сходимости:
-    max[i](sum[j=1, n](|C[i][j])|) < 1
-    обеспечиваем a(i,i) > sum[j=1, n, j!=i](a(i, j))
+    convergence condition:
+    max[i](sum[j=1 to n](|C[i][j])|) < 1
+
+    is met by:
+    a(i,i) > sum[j=1 to n, j!=i](a(i, j))
 
     more info
-    https://ru.wikipedia.org/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%B8
+    https://en.wikipedia.org/wiki/Iterative_method (need to enable RU)
 */
 
 std::vector<double> sequentialCalc(
