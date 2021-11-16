@@ -1,8 +1,8 @@
 // Copyright 2021 Yashin Kirill
-#include <gtest-mpi-listener.hpp>
+
 #include <gtest/gtest.h>
-#include <vector>
 #include "./vector_sum.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Sum_MPI, Size_50_Prom_49) {
     int ProcRank, prom;
