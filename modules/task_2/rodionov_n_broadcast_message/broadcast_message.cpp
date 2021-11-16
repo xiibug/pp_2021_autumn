@@ -26,8 +26,9 @@ int BroadcastSum(
         }
     }
     if (type == MPI_DOUBLE) {
-        double* recvbuf = new double[count * commSize];
+        double* recvbuf = nullptr;
         if (rank != root) {
+            recvbuf = new double[count * commSize];
             MPI_Status status{};
             MPI_Recv(recvbuf, count * commSize, type,
                 root, 0, MPI_COMM_WORLD, &status);
@@ -77,8 +78,9 @@ int BroadcastSum(
             *reinterpret_cast<double*>(outSum) = global_val;
         }
     } else if (type == MPI_FLOAT) {
-        float* recvbuf = new float[count * commSize];
+        float* recvbuf = nullptr;
         if (rank != root) {
+            recvbuf = new float[count * commSize];
             MPI_Status status{};
             MPI_Recv(recvbuf, count * commSize, type,
                 root, 0, MPI_COMM_WORLD, &status);
@@ -128,8 +130,9 @@ int BroadcastSum(
             *reinterpret_cast<float*>(outSum) = global_val;
         }
     } else if (type == MPI_INT) {
-    int* recvbuf = new int[count * commSize];
+    int* recvbuf = nullptr;
     if (rank != root) {
+        recvbuf = new int[count * commSize];
         MPI_Status status{};
         MPI_Recv(recvbuf, count * commSize, type,
             root, 0, MPI_COMM_WORLD, &status);
