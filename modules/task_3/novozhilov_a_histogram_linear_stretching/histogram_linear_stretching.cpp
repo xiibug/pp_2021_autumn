@@ -68,7 +68,7 @@ std::vector<std::vector<int>> histogrammStretchingSequential(std::vector<std::ve
     }
     for (int i = 0; i < static_cast<int>(image.size()); i++) {
         for (int j = 0; j < static_cast<int>(image[i].size()); j++) {
-            image[i][j] = (image[i][j] - y_min) * (255 / (y_max - y_min));
+            image[i][j] = (int)(image[i][j] - y_min) * (255 / (double)(y_max - y_min));
         }
     }
     return image;
@@ -126,7 +126,7 @@ std::vector<std::vector<int>> histogrammStretchingParallel(std::vector<std::vect
     MPI_Bcast(&max, 1, MPI_INT, 0, MPI_COMM_WORLD);
     for (int i = 0; i < local_matrix.size(); i++) {
         for (int j = 0; j < static_cast<int>(local_matrix[0].size()); j++) {
-            local_matrix[i][j] = (local_matrix[i][j] - min) * (255 / (max - min));
+            local_matrix[i][j] = (int)(local_matrix[i][j] - min) * (255 / (double)(max - min));
         }
     }
     std::vector<std::vector<int>> result;
