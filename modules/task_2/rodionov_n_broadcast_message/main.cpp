@@ -42,15 +42,12 @@ TEST(BroadCastTest, DoubleSum) {
         }
        
     }
-
     BroadcastSum(linear_matrix, &mpi_result, length, root, MPI_SUM, MPI_DOUBLE);
-    //double seq_test = sumSeq(linear_matrix, commSize * length);
     if (rank == root) {
-        EXPECT_NEAR(mpi_result, seq_sum, 1e-5);
+        EXPECT_NEAR(mpi_result, seq_sum, 1e-2);
+        delete[] linear_matrix;
     }
-
 }
-
 TEST(BroadCastTest, DoubleMax) {
     int commSize, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &commSize);
@@ -70,11 +67,106 @@ TEST(BroadCastTest, DoubleMax) {
         }
 
     }
-
     BroadcastSum(linear_matrix, &mpi_result, length, root, MPI_MAX, MPI_DOUBLE);
-    //double seq_test = sumSeq(linear_matrix, commSize * length);
     if (rank == root) {
-        EXPECT_NEAR(mpi_result, seq_max, 1e-5);
+        EXPECT_NEAR(mpi_result, seq_max, 1e-2);
+        delete[] linear_matrix;
     }
+}
 
+
+TEST(BroadCastTest, FloatSum) {
+    int commSize, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    //Create matrix
+    float* linear_matrix = nullptr;
+    float seq_sum = 0;
+    float mpi_result = 0;
+    if (rank == root) {
+        linear_matrix = new float[commSize * length];
+        for (int i = 0; i < commSize * length; i++) {
+            linear_matrix[i] = (float)rand() / RAND_MAX;
+            seq_sum += linear_matrix[i];
+        }
+
+    }
+    BroadcastSum(linear_matrix, &mpi_result, length, root, MPI_SUM, MPI_FLOAT);
+    if (rank == root) {
+        EXPECT_NEAR(mpi_result, seq_sum, 1e-1);
+        delete[] linear_matrix;
+    }
+}
+TEST(BroadCastTest, FloatMax) {
+    int commSize, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    //Create matrix
+    float* linear_matrix = nullptr;
+    float seq_max = 0;
+    float mpi_result = 0;
+    if (rank == root) {
+        linear_matrix = new float[commSize * length];
+        for (int i = 0; i < commSize * length; i++) {
+            linear_matrix[i] = (float)rand() / RAND_MAX;
+            if (linear_matrix[i] > seq_max)
+            {
+                seq_max = linear_matrix[i];
+            }
+        }
+
+    }
+    BroadcastSum(linear_matrix, &mpi_result, length, root, MPI_MAX, MPI_FLOAT);
+    if (rank == root) {
+        EXPECT_NEAR(mpi_result, seq_max, 1e-1);
+        delete[] linear_matrix;
+    }
+}
+
+TEST(BroadCastTest, IntSum) {
+    int commSize, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    //Create matrix
+    int* linear_matrix = nullptr;
+    int seq_sum = 0;
+    int mpi_result = 0;
+    if (rank == root) {
+        linear_matrix = new int[commSize * length];
+        for (int i = 0; i < commSize * length; i++) {
+            linear_matrix[i] = (int)rand() / RAND_MAX;
+            seq_sum += linear_matrix[i];
+        }
+
+    }
+    BroadcastSum(linear_matrix, &mpi_result, length, root, MPI_SUM, MPI_INT);
+    if (rank == root) {
+        EXPECT_EQ(mpi_result, seq_sum);
+        delete[] linear_matrix;
+    }
+}
+TEST(BroadCastTest, IntMax) {
+    int commSize, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    //Create matrix
+    int* linear_matrix = nullptr;
+    int seq_max = 0;
+    int mpi_result = 0;
+    if (rank == root) {
+        linear_matrix = new int[commSize * length];
+        for (int i = 0; i < commSize * length; i++) {
+            linear_matrix[i] = (int)rand() / RAND_MAX;
+            if (linear_matrix[i] > seq_max)
+            {
+                seq_max = linear_matrix[i];
+            }
+        }
+
+    }
+    BroadcastSum(linear_matrix, &mpi_result, length, root, MPI_MAX, MPI_INT);
+    if (rank == root) {
+        EXPECT_EQ(mpi_result, seq_max);
+        delete[] linear_matrix;
+    }
 }
