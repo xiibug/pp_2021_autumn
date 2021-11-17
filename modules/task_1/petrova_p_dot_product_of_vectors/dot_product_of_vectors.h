@@ -5,7 +5,7 @@
 #include <vector>
 
 std::vector<int> fillRandomVector(int len);  // fill vectors random value
-int sequentialScalMult(std::vector<int> a, std::vector<int> b, int len);  // secuential algorithm dot product of vectors
+int sequentialScalMult(std::vector<int> a, std::vector<int> b, int len);  // sequential algorithm dot product of vectors
 int parallelScalMult(std::vector<int> a, std::vector<int> b, int len);  // parallel algoritm dot rpoduct of vectors
 
 #endif  // MODULES_TASK_1_PETROVA_P_DOT_PRODUCT_OF_VECTORS_DOT_PRODUCT_OF_VECTORS_H_
