@@ -8,7 +8,7 @@
 //----------------------------------------------------
 
 TEST(Parallel_Operations_MPI, parallel_test) {
-    std::string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " 
+    std::string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, "
         "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);

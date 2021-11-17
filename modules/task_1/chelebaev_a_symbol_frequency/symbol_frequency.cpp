@@ -11,8 +11,8 @@
 
 //--------------------------------------------------------------
 
-double parFrequency(char* symbol, std::string text){
-    int my_rank, tasks, ccount = 0;    // variables for the rank of ongoing process, 
+double parFrequency(char* symbol, std::string text) {
+    int my_rank, tasks, ccount = 0;    // variables for the rank of ongoing process,
                                        // number of processes and symbol count respectively
 
     double freq = 0;    // variable representing the frequency of a desired symbol
@@ -31,7 +31,7 @@ double parFrequency(char* symbol, std::string text){
     int i2 = k * (my_rank + 1);    // state second index
     int count = 0;    // number of symbol entries in the string
 
-    if (my_rank == (tasks - 1)) {    // if current process is the last one, change the second index 
+    if (my_rank == (tasks - 1)) {    // if current process is the last one, change the second index
                                     // so that the last process gets a bit more data than the others
         i2 = N;
     }
@@ -46,17 +46,17 @@ double parFrequency(char* symbol, std::string text){
             MPI_Recv(&count, 1, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &Status);
             ccount += count;
         }
-    }else {    // else send the data to the first process
+    } else {    // else send the data to the first process
         MPI_Send(&count, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
     }
 
-    if (my_rank == 0) {    // if current process is the first one, compute the frequency 
-        freq = ((double)ccount / (double)N) * 100;
+    if (my_rank == 0) {    // if current process is the first one, compute the frequency
+        freq = (static_cast<double>(ccount) / (double)N) * 100;
     }
     return freq;
 }
 
-double seqFrequency(char* symbol, std::string text){
+double seqFrequency(char* symbol, std::string text) {
     int N = text.length();
     int count = 0;
     for (int i = 0; i < N; i++) {
