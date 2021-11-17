@@ -2,10 +2,13 @@
 #include <mpi.h>
 #include <vector>
 #include <climits>
+#include <random>
 #include "./matrix_min_line_mpi.h"
 
 Matrix getRandomMatrix(const size_t m, const size_t n) {
     double* tmp = new double[m * n];
+	std::random_device dev;
+    std::mt19937 gen(dev());
 	for (size_t i = 0; i < m*n; ++i) {
 		tmp[i] = rand() % 100;
 	}
@@ -31,8 +34,8 @@ std::vector<double> getSequentialMatrixMinLine(const Matrix& matrix) {
     return result;
 }
 
-std::vector<double> getParallelMatrixMinLine(const Matrix& matrix) { 
-    int min;
+std::vector<double> getParallelMatrixMinLine(const Matrix& matrix) {
+	int min;
     int world_size;
     int world_rank;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
@@ -61,7 +64,7 @@ std::vector<double> getParallelMatrixMinLine(const Matrix& matrix) {
             for (size_t j = 0; j < matrix.weight; ++j) {
                 if (matrix.data[i * matrix.weight + j] < min)
                 {
-                    min = matrix.data[i * matrix.weight + j];
+					min = matrix.data[i * matrix.weight + j];
                 }
             }
             res_vec[i] = min;
