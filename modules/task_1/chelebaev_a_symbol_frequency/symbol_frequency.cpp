@@ -51,7 +51,7 @@ double parFrequency(char* symbol, std::string text) {
     }
 
     if (my_rank == 0) {    // if current process is the first one, compute the frequency
-        freq = (static_cast<double>(ccount) / (double)N) * 100;
+        freq = (static_cast<double>(ccount) / static_cast<double>(N)) * 100;
     }
     return freq;
 }
