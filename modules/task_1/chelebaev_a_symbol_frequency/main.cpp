@@ -8,7 +8,8 @@
 //----------------------------------------------------
 
 TEST(Parallel_Operations_MPI, parallel_test) {
-    std::string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+    std::string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " 
+        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
@@ -19,7 +20,8 @@ TEST(Parallel_Operations_MPI, parallel_test) {
 }
 
 TEST(Parallel_Operations_MPI, sequential_test) {
-    std::string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+    std::string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, "
+        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
@@ -30,7 +32,8 @@ TEST(Parallel_Operations_MPI, sequential_test) {
 }
 
 TEST(Parallel_Oeration_MPI, par_seq_test) {
-    std::string text = "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+    std::string text = "lorem ipsum dolor sit amet, consectetur adipiscing elit, "
+        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
@@ -42,7 +45,8 @@ TEST(Parallel_Oeration_MPI, par_seq_test) {
 }
 
 TEST(Parallel_Operations_MPI, lowercase_test) {
-    std::string text = "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+    std::string text = "lorem ipsum dolor sit amet, consectetur adipiscing elit, "
+        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
@@ -53,7 +57,8 @@ TEST(Parallel_Operations_MPI, lowercase_test) {
 }
 
 TEST(Parallel_Operations_MPI, uppercase_test) {
-    std::string text = "LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.";
+    std::string text = "LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, "
+        "SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.";
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
@@ -64,8 +69,10 @@ TEST(Parallel_Operations_MPI, uppercase_test) {
 }
 
 TEST(Paralle_Operations_MPI, lower_upper_text) {
-    std::string text1 = "LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.",
-                text2 = "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+    std::string text1 = "LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, "
+        "SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.",
+                text2 = "lorem ipsum dolor sit amet, consectetur adipiscing elit, "
+        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
