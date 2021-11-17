@@ -53,53 +53,17 @@ TEST(ScaulMult_Vectors_MPI, test_3) {
 
 TEST(ScaulMult_Vectors_MPI, test_4) {
     int procRank;
-    int seqSum;
+    int seqRec;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-    const int lenght = 100;
-    std::vector<int> a;
-    std::vector<int> b;
-
+    std::vector<int> a(100, 2), b(100, 1);
+    int res = parallelScalMult(a, b, 100);
     if (procRank == 0) {
-        a = fillRandomVector(lenght);
-        b = fillRandomVector(lenght);
+        seqRec = sequentialScalMult(a, b, 100);
     }
-    int sum = parallelScalMult(a, b, lenght);
-
-    if (procRank == 0) {
-        seqSum = sequentialScalMult(a, b, lenght);
-    }
-
     a.clear();
     b.clear();
-
     if (procRank == 0) {
-        EXPECT_EQ(seqSum, sum);
-    }
-}
-
-TEST(ScaulMult_Vectors_MPI, test_5) {
-    int procRank;
-    int seqSum;
-    MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-    const int lenght = 10000;
-    std::vector<int> a;
-    std::vector<int> b;
-
-    if (procRank == 0) {
-        a = fillRandomVector(lenght);
-        b = fillRandomVector(lenght);
-    }
-    int sum = parallelScalMult(a, b, lenght);
-
-    if (procRank == 0) {
-        seqSum = sequentialScalMult(a, b, lenght);
-    }
-
-    a.clear();
-    b.clear();
-
-    if (procRank == 0) {
-        EXPECT_EQ(seqSum, sum);
+        ASSERT_EQ(res, seqRec);
     }
 }
 

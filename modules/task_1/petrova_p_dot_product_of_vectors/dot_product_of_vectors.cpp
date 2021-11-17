@@ -48,7 +48,7 @@ int parallelScalMult(std::vector<int> a, std::vector<int> b, int len) {
     MPI_Scatter(a.data(), littleLen, MPI_INT,
        a1.data(), littleLen, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Scatter(b.data(), littleLen, MPI_INT,
-	   b1.data(), littleLen, MPI_INT, 0, MPI_COMM_WORLD);
+       b1.data(), littleLen, MPI_INT, 0, MPI_COMM_WORLD);
     for (int i = 0; i < littleLen; i++) {
         locSum += a1[i] * b1[i];
     }
