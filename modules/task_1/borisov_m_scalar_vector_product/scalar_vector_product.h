@@ -6,7 +6,7 @@ int sequential_product(const std::vector<int>& vector_a, const std::vector<int>&
 
 int sequential_product_std(const std::vector<int>& vector_a, const std::vector<int>&  vector_b);
 
-int parallel_product(const std::vector<int>& vector_a, const std::vector<int>&  vector_b);
+int parallel_product(std::vector<int> vector_a, std::vector<int>  vector_b);
 
 std::vector<int> get_random_vector(int size);
 
