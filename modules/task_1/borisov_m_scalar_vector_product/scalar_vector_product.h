@@ -12,8 +12,6 @@ int sequential_product_std(const std::vector<int>& vector_a,
 
 int parallel_product(std::vector<int> vector_a, std::vector<int>  vector_b);
 
-int paralel_product(std::vector<int> vector_a, std::vector<int>  vector_b);
-
 std::vector<int> get_random_vector(int size);
 
 #endif  // MODULES_TASK_1_BORISOV_M_SCALAR_VECTOR_PRODUCT_SCALAR_VECTOR_PRODUCT_H_
