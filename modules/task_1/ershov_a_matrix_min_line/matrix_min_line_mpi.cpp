@@ -21,10 +21,10 @@ Matrix getRandomMatrix(const size_t m, const size_t n) {
 std::vector<double> getSequentialMatrixMinLine(const Matrix& matrix) {
     int min;
     std::vector<double> result(matrix.height, 0);
-    for (int i = 0; i < matrix.height; ++i) {
+    for (size_t i = 0; i < matrix.height; ++i) {
         min = INT_MAX;
 
-        for (int j = 0; j < matrix.weight; ++j) {
+        for (size_t j = 0; j < matrix.weight; ++j) {
             if (matrix.data[i * matrix.weight + j] < min) {
                 min = matrix.data[i * matrix.weight + j];
             }
@@ -40,7 +40,7 @@ std::vector<double> getParallelMatrixMinLine(const Matrix& matrix) {
     int world_rank;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
-    int operation_per_process = matrix.height / world_size;
+    size_t operation_per_process = matrix.height / world_size;
     double* vec = new double[matrix.weight * operation_per_process];
     double* res_vec = new double[matrix.height];
     std::vector<double> min_value(matrix.height, 0);
@@ -62,7 +62,7 @@ std::vector<double> getParallelMatrixMinLine(const Matrix& matrix) {
         for (size_t i = world_size * operation_per_process; i < matrix.height; ++i) {
             min = INT_MAX;
             for (size_t j = 0; j < matrix.weight; ++j) {
-                if (matrix.data[i * matrix.weight + j] < min){
+                if (matrix.data[i * matrix.weight + j] < min) {
 					min = matrix.data[i * matrix.weight + j];
                 }
             }
@@ -104,8 +104,7 @@ Matrix::~Matrix() {
 	this->data = nullptr;
 }
 
-Matrix& Matrix::operator=(const Matrix& right)
-{
+Matrix& Matrix::operator=(const Matrix& right) {
     if (this == &right) {
         return *this;
     }
