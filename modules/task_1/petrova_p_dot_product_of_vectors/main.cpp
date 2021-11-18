@@ -29,21 +29,23 @@ TEST(ScaulMult_Vectors_MPI, test_1) {
 
 TEST(ScaulMult_Vectors_MPI, test_2) {
     int procRank;
+    const int len = 120;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-    std::vector<int> a(100, 2), b(100, 1);
-    int res = parallelScalMult(a, b, 100);
+    std::vector<int> a(len, 2), b(len, 1);
+    int res = parallelScalMult(a, b, len);
     a.clear();
     b.clear();
     if (procRank == 0) {
-        ASSERT_EQ(res, 200);
+        ASSERT_EQ(res, 240);
     }
 }
 
 TEST(ScaulMult_Vectors_MPI, test_3) {
     int procRank;
+    const int len = 120;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-    std::vector<int> a(100, 2), b(100, 1);
-    int res = parallelScalMult(a, b, 100);
+    std::vector<int> a(len, 2), b(len, 1);
+    int res = parallelScalMult(a, b, len);
     a.clear();
     b.clear();
     if (procRank == 0) {
@@ -54,11 +56,28 @@ TEST(ScaulMult_Vectors_MPI, test_3) {
 TEST(ScaulMult_Vectors_MPI, test_4) {
     int procRank;
     int seqRec;
+    const int len = 120;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-    std::vector<int> a(100, 2), b(100, 1);
-    int res = parallelScalMult(a, b, 100);
+    std::vector<int> a(len, 2), b(len, 1);
+    int res = parallelScalMult(a, b, len);
     if (procRank == 0) {
-        seqRec = sequentialScalMult(a, b, 100);
+        seqRec = sequentialScalMult(a, b, len);
+    }
+    a.clear();
+    b.clear();
+    if (procRank == 0) {
+        ASSERT_EQ(res, seqRec);
+    }
+}
+TEST(ScaulMult_Vectors_MPI, test_5) {
+    int procRank;
+    int seqRec;
+    const int len = 777;
+    MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
+    std::vector<int> a(len, 2), b(len, 1);
+    int res = parallelScalMult(a, b, len);
+    if (procRank == 0) {
+        seqRec = sequentialScalMult(a, b, len);
     }
     a.clear();
     b.clear();
