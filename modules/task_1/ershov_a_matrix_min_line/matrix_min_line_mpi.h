@@ -11,6 +11,7 @@ struct Matrix {
 	Matrix(double* data, size_t weight, size_t height);
 	Matrix(const Matrix& a);
 	~Matrix();
+	Matrix& operator=(const Matrix& right);
 };
 
 Matrix getRandomMatrix(const size_t m, const size_t n);

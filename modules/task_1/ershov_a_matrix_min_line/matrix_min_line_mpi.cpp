@@ -10,7 +10,7 @@ Matrix getRandomMatrix(const size_t m, const size_t n) {
 	std::random_device dev;
     std::mt19937 gen(dev());
 	for (size_t i = 0; i < m*n; ++i) {
-		tmp[i] = rand() % 100;
+		tmp[i] = gen() % 100;
 	}
 	Matrix matrix(tmp, m, n);
 	delete[] tmp;
@@ -62,8 +62,7 @@ std::vector<double> getParallelMatrixMinLine(const Matrix& matrix) {
         for (size_t i = world_size * operation_per_process; i < matrix.height; ++i) {
             min = INT_MAX;
             for (size_t j = 0; j < matrix.weight; ++j) {
-                if (matrix.data[i * matrix.weight + j] < min)
-                {
+                if (matrix.data[i * matrix.weight + j] < min){
 					min = matrix.data[i * matrix.weight + j];
                 }
             }
@@ -103,4 +102,15 @@ Matrix::Matrix(const Matrix& a) {
 Matrix::~Matrix() {
 	delete[] this->data;
 	this->data = nullptr;
+}
+
+Matrix& Matrix::operator=(const Matrix& right)
+{
+    if (this == &right) {
+        return *this;
+    }
+    this->height = right.height;
+    this->weight = right.weight;
+    this->data = right.data;
+    return *this;
 }
