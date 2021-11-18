@@ -9,7 +9,6 @@ TEST(Parallel_Operations_MPI, Test_Empty_string) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string global_vec;
     const int count_size_vector = 0;
-
     if (rank == 0) {
         global_vec = getRandomString(count_size_vector);
     }
@@ -27,12 +26,11 @@ TEST(Parallel_Operations_MPI, Test_Diff) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string global_vec;
     const int count_size_vector = 120;
-
+    int global_diff;
     if (rank == 0) {
         global_vec = getRandomString(count_size_vector);
     }
-
-    int global_diff = CountingAlphabeticCharParallel(global_vec);
+    global_diff = CountingAlphabeticCharParallel(global_vec);
 
     if (rank == 0) {
         int reference_diff = CountingAlphabeticCharSequential(global_vec);
