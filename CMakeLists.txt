@@ -81,10 +81,13 @@ endif( USE_TBB )
 ############################## CPPLINT ##############################
 find_package(Python3 REQUIRED)
 enable_testing()
-if( APPLE )
+
+option(USE_STYLE_CHECKER OFF)
+if( USE_STYLE_CHECKER )
+    message(STATUS "Enable style check: see google style")
     include(cmake/Cpplint.cmake)
     cpplint_add_subdirectory(modules)
-endif( APPLE )
+endif( USE_STYLE_CHECKER )
 
 ############################## Modules ##############################
 include_directories(3rdparty/unapproved)
