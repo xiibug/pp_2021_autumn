@@ -1,3 +1,4 @@
+// Copyright 2021 TexHik620953
 #include <gtest/gtest.h>
 #include "./quicksort.h"
 #include <gtest-mpi-listener.hpp>
@@ -8,7 +9,8 @@ int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);  // check for MPI_SUCCESS?
 
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-    ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners();
+    ::testing::TestEventListeners& listeners =
+        ::testing::UnitTest::GetInstance()->listeners();
 
     listeners.Release(listeners.default_result_printer());
     listeners.Release(listeners.default_xml_generator());
@@ -100,8 +102,6 @@ TEST(QuickSort, MpiSort) {
 
     if (rank == 0) {
         EXPECT_TRUE(CheckOrdering(arr, length));
-
         delete[] arr;
     }
-
 }

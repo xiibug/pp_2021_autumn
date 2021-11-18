@@ -1,4 +1,5 @@
-#include "quicksort.h"
+// Copyright 2021 TexHik620953
+#include "./../../modules/task_3/rodionov_n_quicksort/quicksort.h"
 #include <stdlib.h>
 #include <random>
 #include <iostream>
@@ -23,12 +24,16 @@ bool CheckOrdering(int* arr, int length) {
 
 
 void LinearSortSeq(int* arr, int size) {
-	qsort(arr, size, sizeof(int), [](const void* a, const void* b) -> int {return (*(int*)a - *(int*)b); });
+	qsort(arr, size, sizeof(int),
+		[](const void* a, const void* b) -> int {
+			return (
+			*reinterpret_cast<const int*>(a) -
+			*reinterpret_cast<const int*>(b));
+		});
 }
 
 
 void QuickSortMpi(int* arr, int size) {
-
 	int procCount = 0, rank = 0;
 	MPI_Comm_size(MPI_COMM_WORLD, &procCount);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -39,7 +44,7 @@ void QuickSortMpi(int* arr, int size) {
 	int* buffer = new int[block_size];
 	int* result = nullptr;
 
-	//Send copy of array to each process
+	// Send copy of array to each process
 	if (rank == 0) {
 		result = new int[size];
 		for (int i = 0; i < size; i++) {
@@ -52,7 +57,7 @@ void QuickSortMpi(int* arr, int size) {
 		buffer, block_size, MPI_INT,
 		0, MPI_COMM_WORLD
 	);
-	//sort part of array
+	// Sort part of array
 	LinearSortSeq(buffer, block_size);
 
 	if (rank != 0) {
@@ -67,14 +72,14 @@ void QuickSortMpi(int* arr, int size) {
 		// Receive values from other processes
 		for (int i = 1; i < procCount; i++) {
 			MPI_Status status{};
-			MPI_Recv(result + shift + i * block_size, block_size, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+			MPI_Recv(result + shift + i * block_size,
+				block_size,
+				MPI_INT, i, 0, MPI_COMM_WORLD, &status);
 		}
-		//Sort result array
+		// Sort result array
 		LinearSortSeq(result, size);
 		memcpy(arr, result, size * sizeof(int));
 		delete[] result;
 	}
 	delete[] buffer;
-
-
 }
