@@ -1,5 +1,6 @@
 // Copyright 2021 TexHik620953
 #include <gtest/gtest.h>
+#include <cstring>
 #include "./quicksort.h"
 #include <gtest-mpi-listener.hpp>
 int length = 5000;

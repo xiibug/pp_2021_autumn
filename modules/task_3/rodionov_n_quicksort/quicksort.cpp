@@ -2,8 +2,9 @@
 #include "./../../modules/task_3/rodionov_n_quicksort/quicksort.h"
 #include <mpi.h>
 #include <stdlib.h>
+#include <cstring>
 #include <random>
-#include <iostream>
+
 
 void RandomArray(int* arr, int length) {
     std::random_device dev;
