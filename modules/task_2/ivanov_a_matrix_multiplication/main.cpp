@@ -334,7 +334,7 @@ int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);  // check for MPI_SUCCESS?
 
-    ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
+    ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);  // just comment
     ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners();
 
     listeners.Release(listeners.default_result_printer());
