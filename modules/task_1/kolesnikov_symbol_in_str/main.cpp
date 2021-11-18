@@ -114,7 +114,7 @@ TEST(find_symbol, uppercase) {
         ASSERT_EQ(fst, snd);
     }
 }
-
+//main
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
