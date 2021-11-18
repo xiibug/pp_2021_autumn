@@ -4,7 +4,7 @@
 
 #include <vector>
 
-std::vector<int> fillRandomVector(int len);  // fill vectors random value
+std::vector<int> fillRandomVector(int len);  // fill vectors with random value
 int sequentialScalMult(std::vector<int> a, std::vector<int> b, int len);  // sequential algorithm dot product of vectors
 int parallelScalMult(std::vector<int> a, std::vector<int> b, int len);  // parallel algoritm dot rpoduct of vectors
 
