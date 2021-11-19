@@ -14,11 +14,11 @@ std::vector<int> minValuesInColumnsSequential(std::vector<std::vector<int>> matr
 
 std::vector<std::vector<int>> histogrammStretchingSequential(std::vector<std::vector<int>> image);
 
-std::vector<std::vector<int>> histogrammStretchingParallel(std::vector<std::vector<int>>& image, int rows, int cols);
+std::vector<std::vector<int>> histogrammStretchingParallel(const std::vector<std::vector<int>>& image, int rows, int cols);
 
-int maxValueInVector(std::vector<int>& vector);
+int maxValueInVector(const std::vector<int>& vector);
 
-int minValueInVector(std::vector<int>& vector);
+int minValueInVector(const std::vector<int>& vector);
 
 
 #endif  // MODULES_TASK_3_NOVOZHILOV_A_HISTOGRAM_LINEAR_STRETCHING_HISTOGRAM_LINEAR_STRETCHING_H_

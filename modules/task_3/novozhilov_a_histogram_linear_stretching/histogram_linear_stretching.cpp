@@ -35,8 +35,7 @@ std::vector<int> maxValuesInColumnsSequential(std::vector<std::vector<int>> matr
     return result;
 }
 
-std::vector<int> minValuesInColumnsSequential(std::vector<std::vector<int>> matrix)
-{
+std::vector<int> minValuesInColumnsSequential(std::vector<std::vector<int>> matrix) {
     std::vector<int> result;
     for (int i = 0; i < static_cast<int>(matrix[0].size()); i++) {
         int min = matrix[0][i];
@@ -51,8 +50,7 @@ std::vector<int> minValuesInColumnsSequential(std::vector<std::vector<int>> matr
 }
 
 
-std::vector<std::vector<int>> histogrammStretchingSequential(std::vector<std::vector<int>> image)
-{
+std::vector<std::vector<int>> histogrammStretchingSequential(std::vector<std::vector<int>> image) {
     int y_min = image[0][0];
     int y_max = image[0][0];
     for (int i = 0; i < static_cast<int>(image.size()); i++) {
@@ -73,8 +71,7 @@ std::vector<std::vector<int>> histogrammStretchingSequential(std::vector<std::ve
     return image;
 }
 
-std::vector<std::vector<int>> histogrammStretchingParallel(std::vector<std::vector<int>>& image, int rows, int cols)
-{
+std::vector<std::vector<int>> histogrammStretchingParallel(const std::vector<std::vector<int>>& image, int rows, int cols) {
     int size = 0, rank = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -102,8 +99,7 @@ std::vector<std::vector<int>> histogrammStretchingParallel(std::vector<std::vect
         }
         local_max_vec = maxValuesInColumnsSequential(local_matrix);
         local_min_vec = minValuesInColumnsSequential(local_matrix);
-    }
-    else {
+    } else {
         std::vector<int> tmp(cols);
         MPI_Status status;
         for (int i = 0; i < rows_per_proc; i++) {
@@ -123,7 +119,7 @@ std::vector<std::vector<int>> histogrammStretchingParallel(std::vector<std::vect
     }
     MPI_Bcast(&min, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&max, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    for (int i = 0; i < local_matrix.size(); i++) {
+    for (int i = 0; i < static_cast<int>(local_matrix.size()); i++) {
         for (int j = 0; j < static_cast<int>(local_matrix[0].size()); j++) {
             local_matrix[i][j] = (int)(local_matrix[i][j] - min) * (255 / (double)(max - min));
         }
@@ -146,8 +142,7 @@ std::vector<std::vector<int>> histogrammStretchingParallel(std::vector<std::vect
                 result.push_back(local_matrix[rows_per_proc + i]);
             }
         }
-    }
-    else {
+    } else {
         for (int i = 0; i < rows_per_proc; i++) {
             MPI_Send(local_matrix[i].data(), cols, MPI_INT, 0, 0, MPI_COMM_WORLD);
         }
@@ -155,7 +150,7 @@ std::vector<std::vector<int>> histogrammStretchingParallel(std::vector<std::vect
     return result;
 }
 
-int maxValueInVector(std::vector<int>& vector) {
+int maxValueInVector(const std::vector<int>& vector) {
     int max = vector[0];
     for (int i : vector) {
         if (i > max) {
@@ -165,7 +160,7 @@ int maxValueInVector(std::vector<int>& vector) {
     return max;
 }
 
-int minValueInVector(std::vector<int>& vector) {
+int minValueInVector(const std::vector<int>& vector) {
     int min = vector[0];
     for (int i : vector) {
         if (i < min) {
