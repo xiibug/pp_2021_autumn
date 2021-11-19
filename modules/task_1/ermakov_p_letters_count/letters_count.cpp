@@ -2,8 +2,7 @@
 #include "../../../modules/task_1/ermakov_p_letters_count/letters_count.h"
 const int albet_size = 26;
 
-std::string random_str_gen(int size)
-{
+std::string random_str_gen(int size) {
     std::string s;
     static const char alphanum[] =
         "01234 56789"
@@ -17,7 +16,7 @@ std::string random_str_gen(int size)
 }
 
 int letters_count_seq(std::string str) {
-	int letters_count = 0;
+    int letters_count = 0;
     int str_size = str.length();
     char albet_lo_reg[albet_size]{},
          albet_up_reg[albet_size]{};
@@ -58,18 +57,16 @@ int letters_count_par(std::string str) {
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_num);
     if (str_size == 0)
         return 0;
-    if (num_of_proc > str_size)
+    if (num_of_proc > str_size) {
         throw "Error. Number of processes is bigger then lenght of string!";
-
-    else {
+    }else {
         num_of_chars = str_size / num_of_proc;
         rest = str_size % num_of_proc;
     }
 
     if (proc_num == 0) {
         for (int i = 1; i < num_of_proc; i++) {
-            int start_of_s = 0, 
-                end_of_s = 0;
+            int start_of_s = 0, end_of_s = 0;
             start_of_s = i * num_of_chars + rest;
             end_of_s = start_of_s + num_of_chars;
             MPI_Send(&start_of_s, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
@@ -81,16 +78,15 @@ int letters_count_par(std::string str) {
         MPI_Status status;
         MPI_Recv(&start_of_s, 1, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
         MPI_Recv(&end_of_s, 1, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-
-        for (int i = start_of_s; i < end_of_s; i++) 
-            for (int j = 0; j < albet_size; j++)
+        for (int i = start_of_s; i < end_of_s; i++) {
+            for (int j = 0; j < albet_size; j++) {
                 if (str[i] == albet_lo_reg[j] || str[i] == albet_up_reg[j]) {
                     count_of_s++;
                     break;
                 }
-    }
-
-    else {
+            }
+        }
+    }else {
         int from_zero_to_start = num_of_chars + rest;
         for (int i = 0; i < from_zero_to_start; i++) {
             for (int j = 0; j < albet_size; j++) {
