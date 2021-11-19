@@ -100,7 +100,11 @@ TEST(Parallel_Operations_MPI, Test_time) {
             return;
         }
         image = getRandomMatrix(1000, 1000);
+        MPI_Barrier(MPI_COMM_WORLD);
         parallel_t1 = MPI_Wtime();
+    }
+    else {
+        MPI_Barrier(MPI_COMM_WORLD);
     }
     std::vector<std::vector<int>> result_p = histogrammStretchingParallel(image, 1000, 1000);
     if (rank == 0) {
