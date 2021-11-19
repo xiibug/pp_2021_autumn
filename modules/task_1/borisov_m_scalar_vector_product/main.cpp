@@ -11,8 +11,6 @@ TEST(parallel_mpi, test_scalar_std) {
     std::vector<int> vector_a;
     std::vector<int> vector_b;
     if (proc_rank == 0) {
-        vector_a.reserve(100);
-        vector_b.reserve(100);
         vector_a = get_random_vector(100);
         vector_b = get_random_vector(100);
     }
@@ -21,7 +19,7 @@ TEST(parallel_mpi, test_scalar_std) {
 
     if (proc_rank == 0) {
         int seq_result = sequential_product_std(vector_a, vector_b);
-        ASSERT_EQ(par_result, seq_result);
+        ASSERT_EQ(seq_result, par_result);
     }
 }
 
@@ -32,8 +30,6 @@ TEST(parallel_mpi, test_scalar_mine) {
     std::vector<int> vector_a;
     std::vector<int> vector_b;
     if (proc_rank == 0) {
-        vector_a.reserve(100);
-        vector_b.reserve(100);
         vector_a = get_random_vector(100);
         vector_b = get_random_vector(100);
     }
@@ -41,7 +37,7 @@ TEST(parallel_mpi, test_scalar_mine) {
 
     if (proc_rank == 0) {
         int seq_result = sequential_product(vector_a, vector_b);
-        ASSERT_EQ(par_result, seq_result);
+        ASSERT_EQ(seq_result, par_result);
     }
 }
 
@@ -52,8 +48,6 @@ TEST(parallel_mpi, test_scalar_std_2) {
     std::vector<int> vector_a;
     std::vector<int> vector_b;
     if (proc_rank == 0) {
-        vector_a.reserve(1000);
-        vector_b.reserve(1000);
         vector_a = get_random_vector(1000);
         vector_b = get_random_vector(1000);
     }
@@ -62,7 +56,7 @@ TEST(parallel_mpi, test_scalar_std_2) {
 
     if (proc_rank == 0) {
         int seq_result = sequential_product_std(vector_a, vector_b);
-        ASSERT_EQ(par_result, seq_result);
+        ASSERT_EQ(seq_result, par_result);
     }
 }
 
@@ -73,8 +67,6 @@ TEST(parallel_mpi, test_scalar_mine_1) {
     std::vector<int> vector_a;
     std::vector<int> vector_b;
     if (proc_rank == 0) {
-        vector_a.reserve(1000);
-        vector_b.reserve(1000);
         vector_a = get_random_vector(1000);
         vector_b = get_random_vector(1000);
     }
@@ -82,7 +74,7 @@ TEST(parallel_mpi, test_scalar_mine_1) {
 
     if (proc_rank == 0) {
         int seq_result = sequential_product(vector_a, vector_b);
-        ASSERT_EQ(par_result, seq_result);
+        ASSERT_EQ(seq_result, par_result);
     }
 }
 
@@ -92,8 +84,6 @@ TEST(parallel_mpi, test_scalar_std_3) {
     std::vector<int> vector_a;
     std::vector<int> vector_b;
     if (proc_rank == 0) {
-        vector_a.reserve(500);
-        vector_b.reserve(500);
         vector_a = get_random_vector(500);
         vector_b = get_random_vector(500);
     }
@@ -102,7 +92,7 @@ TEST(parallel_mpi, test_scalar_std_3) {
 
     if (proc_rank == 0) {
         int seq_result = sequential_product_std(vector_a, vector_b);
-        ASSERT_EQ(par_result, seq_result);
+        ASSERT_EQ(seq_result, par_result);
     }
 }
 
