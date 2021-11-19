@@ -18,13 +18,13 @@ std::string random_str_gen(int size)
 
 int letters_count_seq(std::string str) {
 	int letters_count = 0;
-
+    int str_size = str.length();
     char albet_lo_reg[albet_size]{},
          albet_up_reg[albet_size]{};
     std::iota(std::begin(albet_lo_reg), std::end(albet_lo_reg), 'a');
     std::iota(std::begin(albet_up_reg), std::end(albet_up_reg), 'A');
 
-    for (int i = 0; i < str.length(); i++) {
+    for (int i = 0; i < str_size; i++) {
         for (int j = 0; j < albet_size; j++) {
             if (str[i] == albet_lo_reg[j] || str[i] == albet_up_reg[j]) {
                 letters_count++;
@@ -32,7 +32,7 @@ int letters_count_seq(std::string str) {
             }
         }
     }
-    if (str.length() == 0)
+    if (str_size == 0)
         return 0;
     return letters_count;
 }
