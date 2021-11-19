@@ -10,7 +10,7 @@ TEST(Parallel_Find_Minimum_In_Matrix, Rows_Equal_Columns) {
     MPI_Comm_rank(MPI_COMM_WORLD, &currentRank);
 
     std::vector<std::vector<int>> globalMatrix;
-    const int numberOfRows = 10, numberOfColumns = 10;
+    const int numberOfRows = 100, numberOfColumns = 100;
     int parallelMinimum, singleMinimum;
 
     // Act
@@ -34,7 +34,7 @@ TEST(Parallel_Find_Minimum_In_Matrix, Rows_Greater_Columns) {
     MPI_Comm_rank(MPI_COMM_WORLD, &currentRank);
 
     std::vector<std::vector<int>> globalMatrix;
-    const int numberOfRows = 15, numberOfColumns = 10;
+    const int numberOfRows = 150, numberOfColumns = 100;
     int parallelMinimum, singleMinimum;
 
     // Act
@@ -58,7 +58,7 @@ TEST(Parallel_Find_Minimum_In_Matrix, Rows_Less_Columns) {
     MPI_Comm_rank(MPI_COMM_WORLD, &currentRank);
 
     std::vector<std::vector<int>> globalMatrix;
-    const int numberOfRows = 10, numberOfColumns = 15;
+    const int numberOfRows = 100, numberOfColumns = 150;
     int parallelMinimum, singleMinimum;
 
     // Act
@@ -82,7 +82,7 @@ TEST(Parallel_Find_Minimum_In_Matrix, Minimum_At_The_Beginning_Of_The_Matrix) {
     MPI_Comm_rank(MPI_COMM_WORLD, &currentRank);
 
     std::vector<std::vector<int>> globalMatrix;
-    const int numberOfRows = 10, numberOfColumns = 10;
+    const int numberOfRows = 100, numberOfColumns = 100;
     int parallelMinimum, singleMinimum;
 
     // Act
@@ -107,7 +107,7 @@ TEST(Parallel_Find_Minimum_In_Matrix, Minimum_At_The_End_Of_The_Matrix) {
     MPI_Comm_rank(MPI_COMM_WORLD, &currentRank);
 
     std::vector<std::vector<int>> globalMatrix;
-    const int numberOfRows = 10, numberOfColumns = 10;
+    const int numberOfRows = 100, numberOfColumns = 100;
     int parallelMinimum, singleMinimum;
 
     // Act
