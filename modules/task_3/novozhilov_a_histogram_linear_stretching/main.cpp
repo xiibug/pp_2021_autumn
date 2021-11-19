@@ -88,37 +88,6 @@ TEST(Parallel_Operations_MPI, Test_square_matrix) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_time) {
-    int rank, size;
-    double parallel_t1, parallel_t2, sequential_t1, sequential_t2;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
-    std::vector<std::vector<int>> image;
-    if (rank == 0) {
-        if (size == 1) {
-            ASSERT_TRUE(true);
-            return;
-        }
-        image = getRandomMatrix(1000, 1000);
-        MPI_Barrier(MPI_COMM_WORLD);
-        parallel_t1 = MPI_Wtime();
-    }
-    else {
-        MPI_Barrier(MPI_COMM_WORLD);
-    }
-    std::vector<std::vector<int>> result_p = histogrammStretchingParallel(image, 1000, 1000);
-    if (rank == 0) {
-        parallel_t2 = MPI_Wtime();
-        sequential_t1 = MPI_Wtime();
-        std::vector<std::vector<int>> result_s = histogrammStretchingSequential(image);
-        sequential_t2 = MPI_Wtime();
-        double p_time = parallel_t2 - parallel_t1;
-        double s_time = sequential_t2 - sequential_t1;
-        ASSERT_TRUE(p_time <= s_time);
-    }
-}
-
-
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
