@@ -99,10 +99,10 @@ TEST(Parallel_Operations_MPI, Test_time) {
             ASSERT_TRUE(true);
             return;
         }
-        image = getRandomMatrix(10000, 10000);
+        image = getRandomMatrix(1000, 1000);
         parallel_t1 = MPI_Wtime();
     }
-    std::vector<std::vector<int>> result_p = histogrammStretchingParallel(image, 10000, 10000);
+    std::vector<std::vector<int>> result_p = histogrammStretchingParallel(image, 1000, 1000);
     if (rank == 0) {
         parallel_t2 = MPI_Wtime();
         sequential_t1 = MPI_Wtime();

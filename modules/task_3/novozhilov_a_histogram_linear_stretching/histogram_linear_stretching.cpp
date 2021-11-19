@@ -21,7 +21,7 @@ std::vector<std::vector<int>> getRandomMatrix(int rows, int cols) {
     return matrix;
 }
 
-std::vector<int> maxValuesInColumnsSequential(std::vector<std::vector<int>> matrix) {
+std::vector<int> maxValuesInColumnsSequential(const std::vector<std::vector<int>>& matrix) {
     std::vector<int> result;
     for (int i = 0; i < static_cast<int>(matrix[0].size()); i++) {
         int max = matrix[0][i];
@@ -35,7 +35,7 @@ std::vector<int> maxValuesInColumnsSequential(std::vector<std::vector<int>> matr
     return result;
 }
 
-std::vector<int> minValuesInColumnsSequential(std::vector<std::vector<int>> matrix) {
+std::vector<int> minValuesInColumnsSequential(const std::vector<std::vector<int>>& matrix) {
     std::vector<int> result;
     for (int i = 0; i < static_cast<int>(matrix[0].size()); i++) {
         int min = matrix[0][i];

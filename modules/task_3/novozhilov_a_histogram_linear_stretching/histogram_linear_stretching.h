@@ -8,9 +8,9 @@ std::vector<int> getRandomVector(int sz);
 
 std::vector<std::vector<int>> getRandomMatrix(int rows, int cols);
 
-std::vector<int> maxValuesInColumnsSequential(std::vector<std::vector<int>> matrix);
+std::vector<int> maxValuesInColumnsSequential(const std::vector<std::vector<int>>& matrix);
 
-std::vector<int> minValuesInColumnsSequential(std::vector<std::vector<int>> matrix);
+std::vector<int> minValuesInColumnsSequential(const std::vector<std::vector<int>>& matrix);
 
 std::vector<std::vector<int>> histogrammStretchingSequential(std::vector<std::vector<int>> image);
 
