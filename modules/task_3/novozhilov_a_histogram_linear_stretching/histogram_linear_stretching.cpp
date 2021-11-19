@@ -71,7 +71,8 @@ std::vector<std::vector<int>> histogrammStretchingSequential(std::vector<std::ve
     return image;
 }
 
-std::vector<std::vector<int>> histogrammStretchingParallel(const std::vector<std::vector<int>>& image, int rows, int cols) {
+std::vector<std::vector<int>> histogrammStretchingParallel(const std::vector<std::vector<int>>& image,
+                                                                                   int rows, int cols) {
     int size = 0, rank = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -121,7 +122,7 @@ std::vector<std::vector<int>> histogrammStretchingParallel(const std::vector<std
     MPI_Bcast(&max, 1, MPI_INT, 0, MPI_COMM_WORLD);
     for (int i = 0; i < static_cast<int>(local_matrix.size()); i++) {
         for (int j = 0; j < static_cast<int>(local_matrix[0].size()); j++) {
-            local_matrix[i][j] = (int)(local_matrix[i][j] - min) * (255 / (double)(max - min));
+            local_matrix[i][j] = static_cast<int>((local_matrix[i][j] - min) * (255 / static_cast<double>(max - min)));
         }
     }
     std::vector<std::vector<int>> result;

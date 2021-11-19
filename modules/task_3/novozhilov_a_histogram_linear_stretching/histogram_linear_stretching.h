@@ -14,7 +14,8 @@ std::vector<int> minValuesInColumnsSequential(std::vector<std::vector<int>> matr
 
 std::vector<std::vector<int>> histogrammStretchingSequential(std::vector<std::vector<int>> image);
 
-std::vector<std::vector<int>> histogrammStretchingParallel(const std::vector<std::vector<int>>& image, int rows, int cols);
+std::vector<std::vector<int>> histogrammStretchingParallel(const std::vector<std::vector<int>>& image,
+                                                                                  int rows, int cols);
 
 int maxValueInVector(const std::vector<int>& vector);
 

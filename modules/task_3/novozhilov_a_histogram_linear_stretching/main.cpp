@@ -89,11 +89,17 @@ TEST(Parallel_Operations_MPI, Test_square_matrix) {
 }
 
 TEST(Parallel_Operations_MPI, Test_time) {
-    int rank;
+    int rank, size;
     double parallel_t1, parallel_t2, sequential_t1, sequential_t2;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    
     std::vector<std::vector<int>> image;
     if (rank == 0) {
+        if (size == 1) {
+            ASSERT_TRUE(true);
+            return;
+        }
         image = getRandomMatrix(1000, 1000);
         parallel_t1 = MPI_Wtime();
     }
