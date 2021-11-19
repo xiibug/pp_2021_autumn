@@ -3,8 +3,7 @@
 const int albet_size = 26;
 
 std::string
-random_str_gen(int size)
-{
+random_str_gen(int size) {
     std::string s;
     static const char alphanum[] = "01234 56789"
                                    "ABCDEFGHIJKLM NOPQRSTUVWXYZ"
@@ -16,8 +15,7 @@ random_str_gen(int size)
     return s;
 }
 
-int letters_count_seq(std::string str)
-{
+int letters_count_seq(std::string str) {
     int letters_count = 0;
     int str_size = str.length();
     char albet_lo_reg[albet_size] {}, albet_up_reg[albet_size] {};
@@ -37,8 +35,7 @@ int letters_count_seq(std::string str)
     return letters_count;
 }
 
-int letters_count_par(std::string str)
-{
+int letters_count_par(std::string str) {
     int total_amount = 0, num_of_proc, proc_num, num_of_chars = 0, rest = 0,
         count_of_s = 0, str_size = str.length(), start_of_s, end_of_s;
 
@@ -92,8 +89,7 @@ int letters_count_par(std::string str)
         }
     }
 
-    MPI_Reduce(
-        &count_of_s, &total_amount, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&count_of_s, &total_amount, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
     return total_amount;
 }
