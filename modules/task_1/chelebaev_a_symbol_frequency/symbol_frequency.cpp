@@ -22,10 +22,6 @@ double parFrequency(char* symbol, std::string text) {
     MPI_Comm_size(MPI_COMM_WORLD, &tasks);    // stating the number of processes
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);    // stating the rank of ongoing process
 
-    if (N < tasks) {
-        throw (-1);
-    }
-
     if (N < tasks) {    // in case there is less data than the number of processes, we terminate the program
         throw "There is less data than the number of processes!";
     }
