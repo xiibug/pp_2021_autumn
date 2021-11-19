@@ -1,7 +1,6 @@
 // Copyright 2021 Novozhilov Alexander
 #include <mpi.h>
 #include <vector>
-#include <string>
 #include <random>
 #include <algorithm>
 #include "../../../modules/task_3/novozhilov_a_histogram_linear_stretching/histogram_linear_stretching.h"
@@ -74,7 +73,7 @@ std::vector<std::vector<int>> histogrammStretchingSequential(std::vector<std::ve
     return image;
 }
 
-std::vector<std::vector<int>> histogrammStretchingParallel(std::vector<std::vector<int>> image, int rows, int cols)
+std::vector<std::vector<int>> histogrammStretchingParallel(std::vector<std::vector<int>>& image, int rows, int cols)
 {
     int size = 0, rank = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &size);

@@ -3,7 +3,6 @@
 #define MODULES_TASK_3_NOVOZHILOV_A_HISTOGRAM_LINEAR_STRETCHING_HISTOGRAM_LINEAR_STRETCHING_H_
 
 #include <vector>
-#include <string>
 
 std::vector<int> getRandomVector(int sz);
 
@@ -15,7 +14,7 @@ std::vector<int> minValuesInColumnsSequential(std::vector<std::vector<int>> matr
 
 std::vector<std::vector<int>> histogrammStretchingSequential(std::vector<std::vector<int>> image);
 
-std::vector<std::vector<int>> histogrammStretchingParallel(std::vector<std::vector<int>> image, int rows, int cols);
+std::vector<std::vector<int>> histogrammStretchingParallel(std::vector<std::vector<int>>& image, int rows, int cols);
 
 int maxValueInVector(std::vector<int>& vector);
 
