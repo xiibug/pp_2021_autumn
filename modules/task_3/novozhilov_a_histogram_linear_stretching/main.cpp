@@ -93,17 +93,16 @@ TEST(Parallel_Operations_MPI, Test_time) {
     double parallel_t1, parallel_t2, sequential_t1, sequential_t2;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    
     std::vector<std::vector<int>> image;
     if (rank == 0) {
         if (size == 1) {
             ASSERT_TRUE(true);
             return;
         }
-        image = getRandomMatrix(1000, 1000);
+        image = getRandomMatrix(10000, 10000);
         parallel_t1 = MPI_Wtime();
     }
-    std::vector<std::vector<int>> result_p = histogrammStretchingParallel(image, 1000, 1000);
+    std::vector<std::vector<int>> result_p = histogrammStretchingParallel(image, 10000, 10000);
     if (rank == 0) {
         parallel_t2 = MPI_Wtime();
         sequential_t1 = MPI_Wtime();

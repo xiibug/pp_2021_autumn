@@ -65,7 +65,7 @@ std::vector<std::vector<int>> histogrammStretchingSequential(std::vector<std::ve
     }
     for (int i = 0; i < static_cast<int>(image.size()); i++) {
         for (int j = 0; j < static_cast<int>(image[i].size()); j++) {
-            image[i][j] = (int)(image[i][j] - y_min) * (255 / (double)(y_max - y_min));
+            image[i][j] = static_cast<int>((image[i][j] - y_min) * (255 / static_cast<double>((y_max - y_min))));
         }
     }
     return image;
