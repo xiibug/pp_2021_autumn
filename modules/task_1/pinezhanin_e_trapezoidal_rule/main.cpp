@@ -7,8 +7,18 @@ double f1(double x) {
     return x * x;
 }
 
-TEST(Trapezoidal_rule_test, one) {
+TEST(Trapezoidal_rule_test, x_square) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    int n = 100;
+    double a = -2, b = 2;
 
+    double global_sum = getIntegralTrapezoidalRuleParallel(f1, a, b, n);
+
+    if (rank == 0) {
+        double reference_sum = getIntegralTrapezoidalRuleSequential(f1, a, b, n);
+        ASSERT_DOUBLE_EQ(reference_sum, global_sum);
+    }
 }
 
 TEST(Trapezoidal_rule_test, two) {
