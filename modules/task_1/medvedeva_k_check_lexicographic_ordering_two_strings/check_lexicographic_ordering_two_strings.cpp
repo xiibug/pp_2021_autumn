@@ -21,7 +21,7 @@ int getSequentialOperations(const std::vector<char>& str1, const std::vector<cha
     for (std::vector<char>::size_type i = 0; i < str1.size(); i++) {
         if (str1[i] < str2[i]) {
             return -1;
-        } else { 
+        } else {
             if (str1[i] > str2[i]) {
                 return 1;
             }
