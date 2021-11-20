@@ -1,9 +1,10 @@
 // Copyright 2021 Zaitseva Ksenia
+#include <gtest/gtest.h>
+#include <gtest-mpi-listener.hpp>
+#include <cmath>
 #include <mpi.h>
 #include "RectangleMethod.h"
 #include <iostream>
-#include <gtest/gtest.h>
-#include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_MPI, Test_Sin) {
     int rank;

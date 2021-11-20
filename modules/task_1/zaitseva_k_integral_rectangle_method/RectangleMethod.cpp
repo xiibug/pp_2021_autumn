@@ -1,10 +1,7 @@
 // Copyright 2021 Zaitseva Ksenia
 #include "RectangleMethod.h"
-#include <vector>
-#include <iostream>
-#include <iomanip>
 
-std::vector<std::function<double(double)>> functions {
+std::vector<std::function<double(double)> > functions {
     [](double x) {return std::sin(x);},
     [](double x) {return (-x + 3.0);},
     [](double x) {return (x * x + 2.0 * x + 1.0);},
