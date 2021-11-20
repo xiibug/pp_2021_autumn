@@ -1,7 +1,7 @@
 // Copyright 2021 Zaitseva Ksenia
 #include <gtest/gtest.h>
-#include <cmath>
 #include <mpi.h>
+#include <cmath>
 #include <iostream>
 #include "RectangleMethod.h"
 #include <gtest-mpi-listener.hpp>
