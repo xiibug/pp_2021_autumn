@@ -18,8 +18,7 @@ int left(int p, int s) {
 int right(int p, int s) {
     if (p + 1 == s + 1) {
         return 1;
-    }
-    else {
+    } else {
         return p + 1;
     }
 }
