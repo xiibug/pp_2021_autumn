@@ -13,8 +13,9 @@ TEST(Parallel_Operations_MPI, parallel_test) {
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
+    double freq = parFrequency(&symbol, text);
     if (my_rank == 0) {
-        double freq = parFrequency(&symbol, text);
+        
         ASSERT_EQ((int)freq, 4);
     }
 }
@@ -25,21 +26,22 @@ TEST(Parallel_Operations_MPI, sequential_test) {
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
+    double freq = seqFrequency(&symbol, text);
     if (my_rank == 0) {
-        double freq = seqFrequency(&symbol, text);
+        
         ASSERT_EQ((int)freq, 4);
     }
 }
 
-TEST(Parallel_Oeration_MPI, par_seq_test) {
+TEST(Parallel_Operations_MPI, par_seq_test) {
     std::string text = "lorem ipsum dolor sit amet, consectetur adipiscing elit, "
         "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
+    double freq1 = parFrequency(&symbol, text);
     if (my_rank == 0) {
-        double freq1 = parFrequency(&symbol, text),
-               freq2 = seqFrequency(&symbol, text);
+        double freq2 = seqFrequency(&symbol, text);
         ASSERT_EQ((int)freq1, (int)freq2);
     }
 }
@@ -50,8 +52,9 @@ TEST(Parallel_Operations_MPI, lowercase_test) {
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
+    double freq = parFrequency(&symbol, text);
     if (my_rank == 0) {
-        double freq = parFrequency(&symbol, text);
+        
         ASSERT_EQ((int)freq, 4);
     }
 }
@@ -62,13 +65,14 @@ TEST(Parallel_Operations_MPI, uppercase_test) {
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
+    double freq = parFrequency(&symbol, text);
     if (my_rank == 0) {
-        double freq = parFrequency(&symbol, text);
+        
         ASSERT_EQ((int)freq, 4);
     }
 }
 
-TEST(Paralle_Operations_MPI, lower_upper_text) {
+TEST(Parallel_Operations_MPI, lower_upper_text) {
     std::string text1 = "LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, "
         "SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.",
                 text2 = "lorem ipsum dolor sit amet, consectetur adipiscing elit, "
@@ -76,9 +80,10 @@ TEST(Paralle_Operations_MPI, lower_upper_text) {
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     char symbol = 'l';
+    double freq1 = parFrequency(&symbol, text1),
+        freq2 = parFrequency(&symbol, text2);
     if (my_rank == 0) {
-        double freq1 = parFrequency(&symbol, text1),
-               freq2 = parFrequency(&symbol, text2);
+        
         ASSERT_EQ((int)freq1, (int)freq2);
     }
 }
