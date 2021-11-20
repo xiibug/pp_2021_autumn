@@ -37,7 +37,7 @@ void my_func(std::pair<int, int> *a, std::pair<int, int> *b, int *len, MPI_Datat
     if (abs(a->first - a->second) < abs(b->first - b->second)){
         b = a;
     }
-    if (abs(a->first - a->second) < abs(b->first - b->second)){
+    if (abs(a->first - a->second) == abs(b->first - b->second)){
         if ((a->first + a->second) > (b->first + b->second)){
             b = a;
         }
