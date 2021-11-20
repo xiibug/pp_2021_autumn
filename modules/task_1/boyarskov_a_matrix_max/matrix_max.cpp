@@ -13,9 +13,6 @@ int* getRandomMatrix(int n, int m) {
 }
 
 int getSequentialMax(int* matrix, int n, int m) {
-    if (n <= 0 || m <= 0)
-        throw - 1;
-
     int max = matrix[0];
     for (int i = 0; i < n * m; i++)
         if (max < matrix[i]) {
