@@ -1,3 +1,4 @@
+// Copyright 2021 Zaitseva Ksenia
 #include <mpi.h>
 #include "RectangleMethod.h"
 #include <iostream>
@@ -69,8 +70,7 @@ TEST(Parallel_MPI, Test_Cos) {
     }
 }
 
-int main(int argc, char** argv) 
-{
+int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
