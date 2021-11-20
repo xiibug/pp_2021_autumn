@@ -25,7 +25,7 @@ int getSequentialOperations(const std::vector<char>& str1, const std::vector<cha
             if (str1[i] > str2[i]) {
                 return 1;
             }
-        }    
+        }
     }
     return 0;
 }
@@ -38,7 +38,7 @@ int getParallelOperations(const std::vector<char>&str1, const std::vector<char>&
     std::vector<char>::size_type local_size = global_size / size;
 
     if (rank == 0) {
-        for (std::vector<char>::size_type proc = 1; proc < size; proc++) {
+        for (int proc = 1; proc < size; proc++) {
             std::vector<char>::size_type step = proc * local_size;
 
             if (global_size % size != 0) {
