@@ -35,9 +35,7 @@ TEST(Parallel_Operations_MPI, rand_str_64_char) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string s;
     const int size_of_s = 64;
-    if (rank == 0)
-        s = random_str_gen(size_of_s);
-
+    s = random_str_gen(size_of_s);
     int num_of_letters_in_s_par = letters_count_par(s);
     if (rank == 0) {
         int num_of_letters_in_s_seq = letters_count_seq(s);
@@ -63,9 +61,7 @@ TEST(Parallel_Operations_MPI, no_letters_at_all) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string s;
-    if (rank == 0)
-        s = "123!@)=|%^&*";
-
+    s = "123!@)=|%^&*";
     int num_of_letters_in_s = letters_count_par(s);
     if (rank == 0) {
         int res = 0;
