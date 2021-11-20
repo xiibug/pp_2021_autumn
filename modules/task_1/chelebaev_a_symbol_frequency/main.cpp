@@ -1,5 +1,6 @@
 // Copyright 2021 Chelebaev Artem
 #include <gtest/gtest.h>
+#include <mpi.h>
 #include <vector>
 #include "./symbol_frequency.h"
 #include <gtest-mpi-listener.hpp>
