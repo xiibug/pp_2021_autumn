@@ -11,8 +11,7 @@ TEST(Dining_philosophers_MPI, One_pizza) {
 
     if (rank == 0) {
         table(rank, size, runs);
-    }
-    else {
+    } else {
         philosopher(rank, runs);
     }
     MPI_Barrier(MPI_COMM_WORLD);
