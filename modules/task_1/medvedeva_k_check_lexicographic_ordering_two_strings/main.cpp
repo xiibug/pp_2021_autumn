@@ -28,7 +28,7 @@ TEST(Sequential_Operations_MPI, can_define_smaller_string) {
     ASSERT_EQ(res, getSequentialOperations(str1, str2));
 }
 
-TEST(Sequential_Operations_MPI, can, define_larger_string) {
+TEST(Sequential_Operations_MPI, can_define_larger_string) {
     std::vector<char> str1 = { 'a', 'a', 'b' };
     std::vector<char> str2 = { 'a', 'a', 'a' };
     int res = 1;

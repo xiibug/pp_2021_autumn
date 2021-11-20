@@ -18,17 +18,16 @@ std::vector<char> getRandomString(std::vector<char>::size_type size) {
 }
 
 int getSequentialOperations(const std::vector<char>& str1, const std::vector<char>& str2) {
-
     for (std::vector<char>::size_type i = 0; i < str1.size(); i++) {
         if (str1[i] < str2[i]) {
             return -1;
-        }
-        else if (str1[i] > str2[i]) {
-            return 1;
+        } else { 
+            if (str1[i] > str2[i]) {
+                return 1;
+            }
         }    
     }
     return 0;
-    
 }
 
 int getParallelOperations(const std::vector<char>&str1, const std::vector<char>&str2,
@@ -39,7 +38,7 @@ int getParallelOperations(const std::vector<char>&str1, const std::vector<char>&
     std::vector<char>::size_type local_size = global_size / size;
 
     if (rank == 0) {
-        for (int proc = 1; proc < size; proc++) {
+        for (std::vector<char>::size_type proc = 1; proc < size; proc++) {
             std::vector<char>::size_type step = proc * local_size;
 
             if (global_size % size != 0) {
@@ -47,13 +46,13 @@ int getParallelOperations(const std::vector<char>&str1, const std::vector<char>&
             }
 
             std::vector<char> send_vector;
-            for (int i = step; i < step + local_size; i++) {
+            for (std::vector<char>::size_type i = step; i < step + local_size; i++) {
                 send_vector.push_back(str1[i]);
             }
-            for (int i = step; i < step + local_size; i++) {
+            for (std::vector<char>::size_type i = step; i < step + local_size; i++) {
                 send_vector.push_back(str2[i]);
             }
-            MPI_Send(send_vector.data(), static_cast<int>(send_vector.size()), 
+            MPI_Send(send_vector.data(), static_cast<int>(send_vector.size()),
                 MPI_CHAR, proc, 0, MPI_COMM_WORLD);
         }
     }
@@ -63,17 +62,16 @@ int getParallelOperations(const std::vector<char>&str1, const std::vector<char>&
     }
 
     std::vector<char> local_vector(local_size * 2);
-    if(rank == 0) {
+    if (rank == 0) {
         for (std::vector<int>::size_type i = 0; i < local_size; i++) {
             local_vector[i] = str1[i];
             local_vector[i + local_size] = str2[i];
         }
     } else {
         MPI_Status status;
-        MPI_Recv(local_vector.data(), static_cast<int>(local_vector.size()), 
+        MPI_Recv(local_vector.data(), static_cast<int>(local_vector.size()),
             MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
     }
-    
     std::vector<char> local_str1(local_size);
     std::vector<char> local_str2(local_size);
 
@@ -93,9 +91,10 @@ int getParallelOperations(const std::vector<char>&str1, const std::vector<char>&
         for (const auto& res : global_res) {
             if (res == 1) {
                 return 1;
-            }
-            else if (res == -1) {
-                return -1;
+            } else {
+                if (res == -1) {
+                    return -1;
+                }
             }
         }
         return 0;
