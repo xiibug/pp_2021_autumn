@@ -20,7 +20,6 @@ double parFrequency(char* symbol, std::string text) {
     double freq = 0;    // variable representing the frequency of a desired symbol
     int N = text.length();    // length of the incoming string
 
-    MPI_Status Status;
     MPI_Comm_size(MPI_COMM_WORLD, &tasks);    // stating the number of processes
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);    // stating the rank of ongoing process
     
@@ -49,17 +48,7 @@ double parFrequency(char* symbol, std::string text) {
         
     }
     //std::cout << "thread " << my_rank << " count: " << count << std::endl;
-    /*if (my_rank == 0) {    // if current process is the first one, receive data from the other processes
-        ccount = count;
-        for (int i = 1; i < tasks; i++) {
-            MPI_Recv(&count, 1, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &Status);
-            ccount += count;
-            
-        }
-    } else {    // else send the data to the first process
-        
-        MPI_Send(&count, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
-    }*/
+    
 
     MPI_Reduce(&count, &ccount, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
