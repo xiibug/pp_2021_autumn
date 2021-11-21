@@ -6,11 +6,11 @@
 #include <vector>
 #include <gtest-mpi-listener.hpp>
 
-#ifndef MODULES_TASK_1_TREVOGIN_K_FINDE_VEC_FINDE_VEC_
-#define MODULES_TASK_1_TREVOGIN_K_FINDE_VEC_FINDE_VEC_
+#ifndef MODULES_TASK_1_TREVOGIN_K_FINDE_VEC_FINDE_VEC_H_
+#define MODULES_TASK_1_TREVOGIN_K_FINDE_VEC_FINDE_VEC_H_
 
 std::vector<int> getRandomVector(int size);
 int getFindeOrderedElements(std::vector<int> vec);
 int getFindeOrderedElementsParall(std::vector<int> vec, int v_size);
 
-#endif  // MODULES_TASK_1_TREVOGIN_K_FINDE_VEC_FINDE_VEC_
+#endif  // MODULES_TASK_1_TREVOGIN_K_FINDE_VEC_FINDE_VEC_H_

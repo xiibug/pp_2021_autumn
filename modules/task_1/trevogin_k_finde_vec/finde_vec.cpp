@@ -15,9 +15,10 @@ std::vector<int> getRandomVector(int size) {
 
 int getFindeOrderedElements(std::vector<int> vec) {
     int count = 0;
+    int vec_size = vec.size();
     if (vec.size() == 0)
         return 0;
-    for (int i = 1; i < vec.size(); i++) {
+    for (int i = 1; i < vec_size; i++) {
         if (vec[i - 1] <= vec[i])
             count++;
     }
@@ -36,8 +37,9 @@ int getFindeOrderedElementsParall(std::vector<int> vec, int size_vec) {
         return 0;
     if (Rank < Size - 1) {
         end = start + rad;
-    } else
+    } else {
         end = size_vec;
+    }
     if (Rank == 0) {
         for (int i = 1; i < Size; i++)
             MPI_Send(vec.data(), size_vec, MPI_INT, i, 0, MPI_COMM_WORLD);
