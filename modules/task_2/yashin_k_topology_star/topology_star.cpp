@@ -21,20 +21,20 @@ MPI_Comm Star(int ProcNum) {
     int* index = new int[ProcNum];
     int* edges = new int[2 * ProcNum - 2];
 
-    for (int i = 0; i < ProcNum - 1; i++) {
-        index[i] = 1;
+    index[0] = ProcNum - 1;
+    for (int i = 1; i < ProcNum; i++) {
+        index[i] = index[i - 1] + 1;
     }
 
-    index[ProcNum - 1] = ProcNum - 1;
+    for (int i = 0; i < 2 * ProcNum - 2; i++) {
+        if (i < ProcNum - 1) {
+            edges[i] = i + 1;
 
-    for (int i = 0; i < ProcNum - 1; i++) {
-        edges[i] = 0;
+        } else {
+            edges[i] = 0;
+        }
     }
 
-    for (int i = ProcNum - 1; i < 2 * ProcNum - 2; i++) {
-        edges[i] = i - ProcNum + 2;
-    }
-
-    MPI_Graph_create(MPI_COMM_WORLD, ProcNum, index, edges, 0, &starcomm);
+    MPI_Graph_create(MPI_COMM_WORLD, ProcNum, index, edges, 1, &starcomm);
     return starcomm;
 }
