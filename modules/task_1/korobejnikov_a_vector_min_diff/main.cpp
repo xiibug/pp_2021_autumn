@@ -1,101 +1,95 @@
+// Copyright 2021 Korobejnikov Alexander
 #include <gtest/gtest.h>
-#include "vector_min_diff.h"
 #include <vector>
+#include "./vector_min_diff.h"
 #include <gtest-mpi-listener.hpp>
 
-
-TEST (Parallel_Operations_MPI, Test_Min1) {
+TEST(Parallel_Operations_MPI, Test_even_count) {
     int rank;
- 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 120;
+    const int count_size_vector = 100;
     if (rank == 0) {
-	    global_vec = getRandomVector(count_size_vector);
+        global_vec = getRandomVector(count_size_vector);
     }
-    std::pair<int, int> globalMin = parallelCount(global_vec, count_size_vector);
+    int globalMin = parallelCount(global_vec, count_size_vector);
     if (rank == 0) {
-	    std::pair<int, int> reference_min = sequentialCount(global_vec, count_size_vector);
+        int reference_min = sequentialCount(global_vec);
         ASSERT_EQ(globalMin, reference_min);
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Min2) {
+TEST(Parallel_Operations_MPI, Test_even_count_2) {
     int rank;
-    
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
     const int count_size_vector = 120;
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
-    std::pair<int, int> globalMin = parallelCount(global_vec, count_size_vector);
+    int globalMin = parallelCount(global_vec, count_size_vector);
     if (rank == 0) {
-        std::pair<int, int> reference_min = sequentialCount(global_vec, count_size_vector);
+        int reference_min = sequentialCount(global_vec);
         ASSERT_EQ(globalMin, reference_min);
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Min3) {
+TEST(Parallel_Operations_MPI, Test_uneven_count) {
     int rank;
-    
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 120;
+    const int count_size_vector = 111;
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
-    std::pair<int, int> globalMin = parallelCount(global_vec, count_size_vector);
+    int globalMin = parallelCount(global_vec, count_size_vector);
     if (rank == 0) {
-        std::pair<int, int> reference_min = sequentialCount(global_vec, count_size_vector);
+        int reference_min = sequentialCount(global_vec);
         ASSERT_EQ(globalMin, reference_min);
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Min4) {
+TEST(Parallel_Operations_MPI, Test_uneven_count_2) {
     int rank;
-    
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 120;
+    const int count_size_vector = 99;
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
-    std::pair<int, int> globalMin = parallelCount(global_vec, count_size_vector);
+    int globalMin = parallelCount(global_vec, count_size_vector);
     if (rank == 0) {
-        std::pair<int, int> reference_min = sequentialCount(global_vec, count_size_vector);
+        int reference_min = sequentialCount(global_vec);
         ASSERT_EQ(globalMin, reference_min);
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Min5) {
+TEST(Parallel_Operations_MPI, Test_5) {
     int rank;
-    
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 120;
+    const int count_size_vector = 23;
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
-    std::pair<int, int> globalMin = parallelCount(global_vec, count_size_vector);
+    int globalMin = parallelCount(global_vec, count_size_vector);
     if (rank == 0) {
-        std::pair<int, int> reference_min = sequentialCount(global_vec, count_size_vector);
+        int reference_min = sequentialCount(global_vec);
         ASSERT_EQ(globalMin, reference_min);
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Min6) {
+TEST(Parallel_Operations_MPI, Test_6) {
     int rank;
-    
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 120;
+    const int count_size_vector = 24;
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
-    std::pair<int, int> globalMin = parallelCount(global_vec, count_size_vector);
+    int globalMin = parallelCount(global_vec, count_size_vector);
     if (rank == 0) {
-        std::pair<int, int> reference_min = sequentialCount(global_vec, count_size_vector);
+        int reference_min = sequentialCount(global_vec);
         ASSERT_EQ(globalMin, reference_min);
     }
 }
@@ -103,15 +97,12 @@ TEST(Parallel_Operations_MPI, Test_Min6) {
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
-    MPI_Init(&argc, &argv); 
-    
+    MPI_Init(&argc, &argv);
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-    ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners();
-    
+    ::testing::TestEventListeners& listeners = ::testing
+        ::UnitTest::GetInstance()->listeners();
     listeners.Release(listeners.default_result_printer());
     listeners.Release(listeners.default_xml_generator());
-    
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
     return RUN_ALL_TESTS();
 }
-
