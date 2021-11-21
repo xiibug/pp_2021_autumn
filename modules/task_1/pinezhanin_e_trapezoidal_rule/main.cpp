@@ -7,7 +7,7 @@
 TEST(Trapezoidal_rule_test, x_square_a_less_b) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    auto f1 = [](double x) { return x * x; };
+    auto f1 = [](double x) -> double { return x * x; };
     double a = -2.0, b = 2.0;
     int n = 1000;
 
@@ -22,7 +22,7 @@ TEST(Trapezoidal_rule_test, x_square_a_less_b) {
 TEST(Trapezoidal_rule_test, x_square_a_more_b) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    auto f1 = [](double x) { return x * x; };
+    auto f1 = [](double x) -> double { return x * x; };
     double a = 2.0, b = -2.0;
     int n = 1000;
 
@@ -37,7 +37,7 @@ TEST(Trapezoidal_rule_test, x_square_a_more_b) {
 TEST(Trapezoidal_rule_test, x_cube) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    auto f2 = [](double x) { return x * x * x; };
+    auto f2 = [](double x) -> double { return x * x * x; };
     double a = -3.0, b = 3.0;
     int n = 1000;
 
@@ -52,7 +52,7 @@ TEST(Trapezoidal_rule_test, x_cube) {
 TEST(Trapezoidal_rule_test, polynomial) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    auto f3 = [](double x) { return 5.0 * x * x * x * x + 10.0 * x * x * x + 3.0 * x * x; };
+    auto f3 = [](double x) -> double { return 5.0 * x * x * x * x + 10.0 * x * x * x + 3.0 * x * x; };
     double a = -5.0, b = 5.0;
     int n = 1000;
 
@@ -67,7 +67,7 @@ TEST(Trapezoidal_rule_test, polynomial) {
 TEST(Trapezoidal_rule_test, null) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    auto f4 = [](double x) { return 0.0; };
+    auto f4 = [](double x) -> double { return 0.0; };
     double a = -5.0, b = 5.0;
     int n = 1000;
 
@@ -82,7 +82,7 @@ TEST(Trapezoidal_rule_test, null) {
 TEST(Trapezoidal_rule_test, x_sinx) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    auto f5 = [](double x) { return x * sin(x); };
+    auto f5 = [](double x) -> double { return x * sin(x); };
     double a = -5.0, b = 5.0;
     int n = 1000;
 
@@ -97,7 +97,7 @@ TEST(Trapezoidal_rule_test, x_sinx) {
 TEST(Trapezoidal_rule_test, sinx_1_x) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    auto f6 = [](double x) { return sin(x) / x; };
+    auto f6 = [](double x) -> double { return sin(x) / x; };
     double a = 1.0, b = 6.0;
     int n = 1000;
 
@@ -112,7 +112,7 @@ TEST(Trapezoidal_rule_test, sinx_1_x) {
 TEST(Trapezoidal_rule_test, exp) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    auto f7 = [](double x) { return exp(x); };
+    auto f7 = [](double x) -> double { return exp(x); };
     double a = -6.0, b = 6.0;
     int n = 1000;
 

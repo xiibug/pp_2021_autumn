@@ -1,7 +1,6 @@
 // Copyright 2021 Pinezhanin Evgeny
 #include <mpi.h>
 #include <stdexcept>
-#include "trapezoidal_rule.h"
 #include "../../../modules/task_1/pinezhanin_e_trapezoidal_rule/trapezoidal_rule.h"
 
 double getIntegralTrapezoidalRuleParallel(double (*f)(double), double a, double b, int n) {
@@ -12,7 +11,7 @@ double getIntegralTrapezoidalRuleParallel(double (*f)(double), double a, double 
     double sum = 0.0;
     if (n > 0) {
         double h = (b - a) / n;
-        for (int i = rank; i < n; i += size){
+        for (int i = rank; i < n; i += size) {
             sum += (f(a + i * h) + f(a + (i + 1) * h)) / 2;
         }
         sum *= h;
