@@ -7,7 +7,7 @@
 
 int getRand(int min, int max) {
     if (min == max) {
-        return min;
+        return max;
     } else {
         std::mt19937 gen;
     std::uniform_int_distribution<> distr{min, max};
