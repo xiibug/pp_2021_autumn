@@ -10,7 +10,7 @@ TEST(Parallel_Operations_MPI, Test_Vec_Size_0) {
     if (Rank == 0)
         vec = getRandomVector(0);
 
-    res = getFindeOrderedElementsParall(vec, vec.size());
+    res = getFindeOrderedElementsParall(vec, 0);
 
     if (Rank == 0) {
         res1 = getFindeOrderedElements(vec);
@@ -25,7 +25,7 @@ TEST(Parallel_Operations_MPI, Test_Vec_Size_1) {
     if (Rank == 0)
         vec = getRandomVector(1);
 
-    res = getFindeOrderedElementsParall(vec, vec.size());
+    res = getFindeOrderedElementsParall(vec, 1);
 
     if (Rank == 0) {
         res1 = getFindeOrderedElements(vec);
@@ -40,7 +40,7 @@ TEST(Parallel_Operations_MPI, Test_Vec_Size_5) {
     if (Rank == 0)
         vec = getRandomVector(5);
 
-    res = getFindeOrderedElementsParall(vec, vec.size());
+    res = getFindeOrderedElementsParall(vec, 5);
 
     if (Rank == 0) {
         res1 = getFindeOrderedElements(vec);
@@ -55,7 +55,7 @@ TEST(Parallel_Operations_MPI, Test_Vec_Size_20) {
     if (Rank == 0)
         vec = getRandomVector(20);
 
-    res = getFindeOrderedElementsParall(vec, vec.size());
+    res = getFindeOrderedElementsParall(vec, 20);
 
     if (Rank == 0) {
         res1 = getFindeOrderedElements(vec);
@@ -70,7 +70,7 @@ TEST(Parallel_Operations_MPI, Test_Vec_Size_60) {
     if (Rank == 0)
         vec = getRandomVector(60);
 
-    res = getFindeOrderedElementsParall(vec, vec.size());
+    res = getFindeOrderedElementsParall(vec, 60);
 
     if (Rank == 0) {
         res1 = getFindeOrderedElements(vec);
