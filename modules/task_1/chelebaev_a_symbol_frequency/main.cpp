@@ -16,7 +16,6 @@ TEST(Parallel_Operations_MPI, parallel_test) {
     char symbol = 'l';
     double freq = parFrequency(&symbol, text);
     if (my_rank == 0) {
-        
         ASSERT_EQ((int)freq, 4);
     }
 }
@@ -29,7 +28,6 @@ TEST(Parallel_Operations_MPI, sequential_test) {
     char symbol = 'l';
     double freq = seqFrequency(&symbol, text);
     if (my_rank == 0) {
-        
         ASSERT_EQ((int)freq, 4);
     }
 }
@@ -55,7 +53,6 @@ TEST(Parallel_Operations_MPI, lowercase_test) {
     char symbol = 'l';
     double freq = parFrequency(&symbol, text);
     if (my_rank == 0) {
-        
         ASSERT_EQ((int)freq, 4);
     }
 }
@@ -68,7 +65,6 @@ TEST(Parallel_Operations_MPI, uppercase_test) {
     char symbol = 'l';
     double freq = parFrequency(&symbol, text);
     if (my_rank == 0) {
-        
         ASSERT_EQ((int)freq, 4);
     }
 }
@@ -84,7 +80,6 @@ TEST(Parallel_Operations_MPI, lower_upper_text) {
     double freq1 = parFrequency(&symbol, text1),
         freq2 = parFrequency(&symbol, text2);
     if (my_rank == 0) {
-        
         ASSERT_EQ((int)freq1, (int)freq2);
     }
 }
