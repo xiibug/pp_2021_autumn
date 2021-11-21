@@ -7,7 +7,7 @@
 
 int getRand(int min, int max) {
     if (min == max) {
-        return min;
+        return ;
     } else {
         std::mt19937 gen;
     std::uniform_int_distribution<> distr{min, max};
@@ -21,7 +21,7 @@ MPI_Comm Star(int ProcNum) {
     int* index = new int[ProcNum];
     int* edges = new int[2 * ProcNum - 2];
 
-    for (int i = 0; i < ProcNum-1; i++) {
+    for (int i = 0; i < ProcNum - 1; i++) {
         index[i] = 1;
     }
 
