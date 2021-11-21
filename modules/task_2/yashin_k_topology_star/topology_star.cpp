@@ -6,7 +6,9 @@
 #include "../../../modules/task_2/yashin_k_topology_star/topology_star.h"
 
 int getRand(std::size_t min, std::size_t max) {
-    return (min + rand_r() % (max - min));
+    std::random_device dev;
+    std::mt19937 gen(dev());
+    return (min + gen() % (max - min));
 }
 
 MPI_Comm Star(std::size_t ProcNum) {
