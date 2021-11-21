@@ -1,7 +1,8 @@
 // Copyright 2021 Yashin Kirill
-#include <gtest-mpi-listener.hpp>
+
 #include <gtest/gtest.h>
 #include "./topology_star.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, Test_0_send_random) {
     int rank, size, sender, reciever;
