@@ -5,13 +5,17 @@
 #include <random>
 #include "../../../modules/task_2/yashin_k_topology_star/topology_star.h"
 
-int getRand(std::size_t min, std::size_t max) {
-    std::random_device dev;
-    std::mt19937 gen(dev());
-    return (min + gen() % (max - min));
+int getRand(int min, int max) {
+    if (min == max) {
+        return max;
+    } else {
+        std::mt19937 gen;
+    std::uniform_int_distribution<> distr{min, max};
+    return distr(gen);
+    }
 }
 
-MPI_Comm Star(std::size_t ProcNum) {
+MPI_Comm Star(int ProcNum) {
     MPI_Comm starcomm;
 
     int* index = new int[ProcNum];

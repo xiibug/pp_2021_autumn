@@ -125,7 +125,7 @@ TEST(Parallel_Operations_MPI, Test_send_char_to_1_from_random) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm newcomm = Star(size);
 
-    if (size == 1) {
+    if ((size == 1) || (size == 2)) {
         ASSERT_EQ(1, 1);
     } else {
         sender = getRand(2, size - 1);
