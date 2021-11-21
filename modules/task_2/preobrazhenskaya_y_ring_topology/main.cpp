@@ -17,6 +17,10 @@ TEST(Ring_Topology_MPI, get_the_number_of_neighbors_for_process_0) {
 TEST(Ring_Topology_MPI, get_the_rank_of_neighbor_for_process_0) {
     int size;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
+    if (size == 1) {
+        ASSERT_TRUE(true);
+        return;
+    }
     MPI_Comm ring = getRingTopology(MPI_COMM_WORLD);
     int neighbor_count = 1;
     int neighbor;
@@ -28,13 +32,16 @@ TEST(Ring_Topology_MPI, send_data_from_process_0_to_process_2) {
     int size;
     int rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
+    if (size < 3) {
+        ASSERT_TRUE(true);
+        return;
+    }
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm ring = getRingTopology(MPI_COMM_WORLD);
     if (rank == 0) {
         char data = '+';
         MPI_Send(&data, 1, MPI_CHAR, 2, 0, ring);
     }
-
     if (rank == 2) {
         char recv_data;
         MPI_Status status;
@@ -47,6 +54,10 @@ TEST(Ring_Topology_MPI, send_data_from_the_last_process_to_process_0) {
     int size;
     int rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
+    if (size == 1) {
+        ASSERT_TRUE(true);
+        return;
+    }
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm ring = getRingTopology(MPI_COMM_WORLD);
 
