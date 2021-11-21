@@ -1,7 +1,6 @@
 // Copyright 2021 Pudovkin Artem
 #include <mpi.h>
 #include <vector>
-#include <iostream>
 #include <random>
 #include <algorithm>
 #include "../../../modules/task_1/pudovkin_a_finding_min_by_rows/finding_min_by_rows.h"
@@ -53,9 +52,6 @@ vector<int> parallelFindingMinimumByRows(vector<int> matrix, const vector<int>::
             MPI_Send(matrix.data() + unbreakableData * cols + proc * countData, countData, MPI_INT,
                                                                             proc, 0, MPI_COMM_WORLD);
         }
-
-        localMinByRows = std::vector<int>(matrix.begin(), matrix.begin() + countData + unbreakableData * cols);
-        localMinByRows = sequentialFindingMinimumByRows(localMinByRows, delta + unbreakableData, columns);
     }
     MPI_Bcast(&delta, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&countData, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -74,6 +70,9 @@ vector<int> parallelFindingMinimumByRows(vector<int> matrix, const vector<int>::
 
     if (rank == 0) {
         MPI_Status status;
+
+        localMinByRows = std::vector<int>(matrix.begin(), matrix.begin() + countData + unbreakableData * cols);
+        localMinByRows = sequentialFindingMinimumByRows(localMinByRows, delta + unbreakableData, columns);
 
         vector<int>::size_type lastElement = delta + unbreakableData;
         for (vector<int>::size_type i = 0; i < lastElement; ++i)

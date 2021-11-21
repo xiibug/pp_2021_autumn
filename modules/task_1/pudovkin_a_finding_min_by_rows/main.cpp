@@ -62,18 +62,18 @@ TEST(Parallel_Finding_Min_By_Rows_MPI, Rows_Less_Cols_100_200) {
 }
 
 
-TEST(Parallel_Finding_Min_By_Rows_MPI, Rows_Eq_Cols_200_Min_At_End) {
+TEST(Parallel_Finding_Min_By_Rows_MPI, Rows_Eq_Cols_100_Min_At_End) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     vector<int> global_matrix;
-    const vector<int>::size_type rowsMatrix = 200;
-    const vector<int>::size_type colsMatrix = 200;
+    const vector<int>::size_type rowsMatrix = 100;
+    const vector<int>::size_type colsMatrix = 100;
 
     if (rank == 0) {
         global_matrix = getRandomMatrix(rowsMatrix * colsMatrix);
 
         for (vector<int>::size_type i = 1; i <= rowsMatrix; ++i) {
-            global_matrix[i * colsMatrix - 1] = -1000000;
+            global_matrix[i * colsMatrix - 1] = -10000;
         }
     }
 
@@ -85,18 +85,18 @@ TEST(Parallel_Finding_Min_By_Rows_MPI, Rows_Eq_Cols_200_Min_At_End) {
     }
 }
 
-TEST(Parallel_Finding_Min_By_Rows_MPI, Rows_Eq_Cols_200_Min_At_Start) {
+TEST(Parallel_Finding_Min_By_Rows_MPI, Rows_Eq_Cols_100_Min_At_Start) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     vector<int> global_matrix;
-    const vector<int>::size_type rowsMatrix = 200;
-    const vector<int>::size_type colsMatrix = 200;
+    const vector<int>::size_type rowsMatrix = 100;
+    const vector<int>::size_type colsMatrix = 100;
 
     if (rank == 0) {
         global_matrix = getRandomMatrix(rowsMatrix * colsMatrix);
 
         for (vector<int>::size_type i = 0; i < rowsMatrix; ++i) {
-            global_matrix[i * colsMatrix] = -1000000;
+            global_matrix[i * colsMatrix] = -10000;
         }
     }
 
