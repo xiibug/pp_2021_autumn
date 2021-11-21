@@ -1,6 +1,6 @@
 // Copyright 2021 Dydykin Pavel
 #include <gtest/gtest.h>
-#include "integration_montecarlo.h"
+#include "../../../modules/task_1/dydykin_p_integration_montecarlo/integration_montecarlo.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Test_MonteCarlo, TestFunc1) {
@@ -95,7 +95,8 @@ int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
 
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-    ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners();
+    ::testing::TestEventListeners& listeners =
+        ::testing::UnitTest::GetInstance()->listeners();
 
     listeners.Release(listeners.default_result_printer());
     listeners.Release(listeners.default_xml_generator());
