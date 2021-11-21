@@ -17,7 +17,7 @@ double getIntegralTrapezoidalRuleParallel(double (*f)(double), double a, double 
         sum *= h;
         MPI_Reduce(&sum, &res_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     }
-    return sum;
+    return res_sum;
 }
 
 double getIntegralTrapezoidalRuleSequential(double (*f)(double), double a, double b, int n) {
