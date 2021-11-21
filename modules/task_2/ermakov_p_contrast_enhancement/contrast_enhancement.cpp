@@ -2,11 +2,11 @@
 #include "../../../modules/task_2/ermakov_p_contrast_enhancement/contrast_enhancement.h"
 
 std::vector<std::vector<int>> pic_gen(int h, int w) {
-    srand(time(NULL));
+    std::mt19937 rand_r(time(0));
     std::vector<std::vector<int>> m(h, std::vector<int>(w));
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
-            m[i][j] = rand() % 256;
+            m[i][j] = rand_r() % 256;
         }
     }
     return m;
@@ -23,7 +23,6 @@ int barrier(int pixel) {
 std::vector<std::vector<int>> contrast_enhancement_seq(std::vector<std::vector<int>> pic, double alpha, int beta) {
     int rows = pic.size();
     int cols = pic[0].size();
-    int pixel = 0;
     std::vector<std::vector<int>> tmp(rows, std::vector<int>(cols));
     for (int x = 0; x < rows; x++) {
         for (int y = 0; y < cols; y++) {
@@ -78,7 +77,8 @@ std::vector<std::vector<int>> contrast_enhancement_par(std::vector<std::vector<i
     }
     num_of_pixels[num_of_proc - 1] = pic_size - trest;
     std::vector<int> tmp_res(num_of_pixels[proc_num]);
-    MPI_Scatterv(tmp.data(), num_of_pixels, displs, MPI_INT, tmp_res.data(), num_of_pixels[proc_num], MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatterv(tmp.data(), num_of_pixels, displs, MPI_INT, tmp_res.data(),
+        num_of_pixels[proc_num], MPI_INT, 0, MPI_COMM_WORLD);
 
     if (0 == proc_num) {
         for (int i = 0; i < num_of_pixels[proc_num]; i++) {
@@ -94,7 +94,8 @@ std::vector<std::vector<int>> contrast_enhancement_par(std::vector<std::vector<i
 
     std::vector<int> _tmp(pic_size);
     i = 0;
-    MPI_Gatherv(tmp_res.data(), num_of_pixels[proc_num], MPI_INT, _tmp.data(), num_of_pixels, displs, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Gatherv(tmp_res.data(), num_of_pixels[proc_num], MPI_INT, _tmp.data(),
+        num_of_pixels, displs, MPI_INT, 0, MPI_COMM_WORLD);
     for (int x = 0; x < rows; x++) {
         for (int y = 0; y < cols; y++) {
             res[x][y] = _tmp[i];

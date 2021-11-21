@@ -1,21 +1,20 @@
 // Copyright 2021 Ermakov Pavel
 #include "./contrast_enhancement.h"
 
-TEST(Parallel_Operations_MPI, contrast_enhancement_pic_7x7) {
+TEST(Parallel_Operations_MPI, contrast_enhancement_pic_3x3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    int h = 7;
-    int w = 7;
+    int h = 3;
+    int w = 3;
     double alpha = 1;
     int beta = 15;
     std::vector<std::vector<int>> m(h, std::vector<int>(w));
     std::vector<std::vector<int>> res_par(h, std::vector<int>(w));
     std::vector<std::vector<int>> res_seq(h, std::vector<int>(w));
-
     m = pic_gen(h, w);
     res_par = contrast_enhancement_par(m, alpha, beta);
-    res_seq = contrast_enhancement_seq(m, alpha, beta);
     if (rank == 0) {
+        res_seq = contrast_enhancement_seq(m, alpha, beta);
         ASSERT_EQ(res_seq, res_par);
     }
 }

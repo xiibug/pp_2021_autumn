@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <cstdlib>
+#include <random>
 #include <vector>
 #include <ctime>
 #include <gtest-mpi-listener.hpp>
@@ -14,6 +15,4 @@ int barrier(int pixel);
 std::vector<std::vector<int>> contrast_enhancement_seq(std::vector<std::vector<int>> pic, double alpha, int beta);
 std::vector<std::vector<int>> contrast_enhancement_par(std::vector<std::vector<int>> pic, double alpha, int beta);
 
-
-
-#endif  //MODULES_TASK_2_MODULES_TASK_2_ERMAKOV_P_CONTRAST_ENHANCEMENT_CONTRAST_ENHANCEMENT_H_
+#endif  // MODULES_TASK_2_ERMAKOV_P_CONTRAST_ENHANCEMENT_CONTRAST_ENHANCEMENT_H_
