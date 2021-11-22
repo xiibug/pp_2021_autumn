@@ -12,9 +12,8 @@ double getIntegralTrapezoidalRuleParallel(double (*f)(double), double a, double 
     if (n > 0) {
         double h = (b - a) / n;
         for (int i = rank; i < n; i += size) {
-            sum += (f(a + i * h) + f(a + (i + 1) * h)) / 2;
+            sum += (f(a + i * h) + f(a + (i + 1) * h)) * 0.5 * h;
         }
-        sum *= h;
         MPI_Reduce(&sum, &res_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     }
     return res_sum;
@@ -25,9 +24,8 @@ double getIntegralTrapezoidalRuleSequential(double (*f)(double), double a, doubl
     if (n > 0) {
         double h = (b - a) / n;
         for (int i = 0; i < n; i++) {
-            res_sum += (f(a + i * h) + f(a + (i + 1) * h)) / 2;
+            res_sum += (f(a + i * h) + f(a + (i + 1) * h)) * 0.5 * h;
         }
-        res_sum *= h;
     }
     return res_sum;
 }

@@ -8,7 +8,7 @@ TEST(Trapezoidal_rule_test, x_square_a_less_b) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     auto f1 = [](double x) -> double { return x * x; };
-    double a = -2.0, b = 2.0;
+    double a = 0.0, b = 4.0;
     int n = 1000;
 
     double global_sum = getIntegralTrapezoidalRuleParallel(f1, a, b, n);
@@ -23,7 +23,7 @@ TEST(Trapezoidal_rule_test, x_square_a_more_b) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     auto f1 = [](double x) -> double { return x * x; };
-    double a = 2.0, b = -2.0;
+    double a = 0.0, b = 4.0;
     int n = 1000;
 
     double global_sum = getIntegralTrapezoidalRuleParallel(f1, a, b, n);
@@ -38,8 +38,8 @@ TEST(Trapezoidal_rule_test, x_cube) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     auto f2 = [](double x) -> double { return x * x * x; };
-    double a = -3.0, b = 3.0;
-    int n = 1000;
+    double a = 0.0, b = 6.0;
+    int n = 100;
 
     double global_sum = getIntegralTrapezoidalRuleParallel(f2, a, b, n);
 
@@ -53,7 +53,7 @@ TEST(Trapezoidal_rule_test, polynomial) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     auto f3 = [](double x) -> double { return 5.0 * x * x * x * x + 10.0 * x * x * x + 3.0 * x * x; };
-    double a = -5.0, b = 5.0;
+    double a = 0.0, b = 5.0;
     int n = 1000;
 
     double global_sum = getIntegralTrapezoidalRuleParallel(f3, a, b, n);
@@ -94,11 +94,11 @@ TEST(Trapezoidal_rule_test, x_sinx) {
     }
 }
 
-TEST(Trapezoidal_rule_test, sinx_1_x) {
+TEST(Trapezoidal_rule_test, cosx_x) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    auto f6 = [](double x) -> double { return sin(x) / x; };
-    double a = 1.0, b = 6.0;
+    auto f6 = [](double x) -> double { return cos(x) * x; };
+    double a = 0.0, b = 1.0;
     int n = 1000;
 
     double global_sum = getIntegralTrapezoidalRuleParallel(f6, a, b, n);
