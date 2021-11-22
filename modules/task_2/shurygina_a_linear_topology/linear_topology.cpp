@@ -29,7 +29,7 @@ MPI_Comm createGraphComm(MPI_Comm comm) {
         degree[i] = degree[i - 1] + 2;
     }
     degree[size - 1] = degree[size - 2] + 1;
-    
+
     // find edges
     // edges[0] - neghbors of 0 vertex
     // edges[j] - neghbors of i vertex (where degree[i-1]<=j<=degree[i]-1)
@@ -51,7 +51,7 @@ MPI_Comm createGraphComm(MPI_Comm comm) {
 // int* sendData(int* buf, int count, MPI_Datatype type, int dest,int tag,
 //    MPI_Comm comm, int source, int ProcRank)
 // buf - memmory buffer
-// count - send data size 
+// count - send data size
 // type - data type
 // dest - process we send data
 // comm - communicator
@@ -90,7 +90,8 @@ int* sendData(int* buf, int count, MPI_Datatype type, int dest, int tag,
                     MPI_Send(&local_buf[0], count, type, neighbors[1], 0, comm);
                 }
             } else if (procRank == proc + 1) {
-                    MPI_Recv(&local_buf[0], count, type, neighbors[0], 0, comm, &status);
+                    MPI_Recv(&local_buf[0], count, type,
+                        neighbors[0], 0, comm, &status);
             }
             MPI_Barrier(comm);
         }
@@ -99,12 +100,15 @@ int* sendData(int* buf, int count, MPI_Datatype type, int dest, int tag,
     if (source > dest) {
         for (int proc = source; proc > dest; proc--) {
             if (procRank == proc) {
-                    MPI_Send(&local_buf[0], count, type, neighbors[0], 0, comm);
+                    MPI_Send(&local_buf[0], count, type,
+                        neighbors[0], 0, comm);
             } else if (procRank == proc - 1) {
                 if (procRank == 0) {
-                    MPI_Recv(&local_buf[0], count, type, neighbors[0], 0, comm, &status);
+                    MPI_Recv(&local_buf[0], count, type,
+                        neighbors[0], 0, comm, &status);
                 } else {
-                    MPI_Recv(&local_buf[0], count, type, neighbors[1], 0, comm, &status);
+                    MPI_Recv(&local_buf[0], count, type,
+                        neighbors[1], 0, comm, &status);
                 }
             }
             MPI_Barrier(comm);
