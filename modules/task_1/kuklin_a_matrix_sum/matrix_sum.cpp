@@ -7,15 +7,12 @@
 using std::vector;
 
 vector<vector<int>> getRandMatrix(int sizei, int sizej) {
-    vector<vector<int>> matrix;
-    matrix.resize(sizei);
-    for (int i = 0; i < sizei; i++) {
-        matrix[i].resize(sizej);
-    }
+    vector<vector<int>> matrix(sizei);
 
     std::random_device device;
     std::mt19937 gen(device());
     for (int i = 0; i < sizei; i++) {
+        matrix[i] = vector<int>(sizej);
         for (int j = 0; j < sizej; j++) {
             matrix[i][j] = gen() % 1000;
         }
