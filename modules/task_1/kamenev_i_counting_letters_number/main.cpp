@@ -9,9 +9,7 @@ TEST(Parallel_Operations_MPI, Test_Empty_Random_Str) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
   const int str_size = 0;
-  if (rank == 0) {
-    str = CreateRandomStr(str_size);
-  }
+  str = CreateRandomStr(str_size);
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
     int expected_result = 0;
@@ -24,9 +22,7 @@ TEST(Parallel_Operations_MPI, Test_Only_Letters_100) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
   const int str_size = 100;
-  if (rank == 0) {
-    str = CreateOnlyLettersStr(str_size);
-  }
+  str = CreateOnlyLettersStr(str_size);
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
     int expected_result = 100;
@@ -38,9 +34,7 @@ TEST(Parallel_Operations_MPI, Test_20_Letters_Str) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
-  if (rank == 0) {
-    str = "DDD2DDD2D27DD4D4d7dd7dd4ddd4dd7";
-  }
+  str = "DDD2DDD2D27DD4D4d7dd7dd4ddd4dd7";
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
     int expected_result = 20;
@@ -53,9 +47,7 @@ TEST(Parallel_Operations_MPI, Test_Empty_Str_Parallel_Equals_Sequential) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
   const int str_size = 0;
-  if (rank == 0) {
-    str = CreateOnlyLettersStr(str_size);
-  }
+  str = CreateOnlyLettersStr(str_size);
   int par_result, seq_result;
   par_result = CountingLettersParallel(str);
   if (rank == 0) {
@@ -68,9 +60,7 @@ TEST(Parallel_Operations_MPI, Test_No_Letters_Str) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
-  if (rank == 0) {
-    str = "$%##4235!8*15%79)-7$}=";
-  }
+  str = "$%##4235!8*15%79)-7$}=";
   int result;
   result = CountingLettersParallel(str);
   if (rank == 0) {
