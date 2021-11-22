@@ -8,8 +8,8 @@ TEST(Trapezoidal_rule_test, x_square_a_less_b) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     auto f1 = [](double x) -> double { return x * x; };
-    double a = 0.0, b = 4.0;
-    int n = 1000;
+    double a = 5.0, b = 10.0;
+    int n = 100;
 
     double global_sum = getIntegralTrapezoidalRuleParallel(f1, a, b, n);
 
@@ -23,8 +23,8 @@ TEST(Trapezoidal_rule_test, x_square_a_more_b) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     auto f1 = [](double x) -> double { return x * x; };
-    double a = 0.0, b = 4.0;
-    int n = 1000;
+    double a = 10.0, b = 5.0;
+    int n = 100;
 
     double global_sum = getIntegralTrapezoidalRuleParallel(f1, a, b, n);
 
@@ -94,11 +94,11 @@ TEST(Trapezoidal_rule_test, x_sinx) {
     }
 }
 
-TEST(Trapezoidal_rule_test, cosx_x) {
+TEST(Trapezoidal_rule_test, line) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    auto f6 = [](double x) -> double { return cos(x) * x; };
-    double a = 0.0, b = 1.0;
+    auto f6 = [](double x) -> double { return x; };
+    double a = 2.0, b = 7.0;
     int n = 1000;
 
     double global_sum = getIntegralTrapezoidalRuleParallel(f6, a, b, n);
