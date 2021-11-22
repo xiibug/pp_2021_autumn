@@ -44,7 +44,7 @@ TEST(Test_MonteCarlo, TestFunc3) {
     double mpi_result = MonteCarloMPI(N, a, b, func3);
     if (ProcRank == 0) {
         double withoutmpi_result = MonteCarloWithOutMPI(N, a, b, func3);
-        ASSERT_NEAR(mpi_result, withoutmpi_result, 0.5);
+        ASSERT_NEAR(mpi_result, withoutmpi_result, 1);
     }
 }
 
