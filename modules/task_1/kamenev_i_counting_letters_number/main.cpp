@@ -36,7 +36,6 @@ TEST(Parallel_Operations_MPI, Test_20_Letters_Str) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
   str = "Q%r8Mk0)oPQ-Dgfg75Z89M3cvP7[Zhl09A";
-
   int par_result = CountingLettersParallel(str);
 
   if (rank == 0) {

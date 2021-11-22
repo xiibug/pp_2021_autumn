@@ -4,10 +4,11 @@
 #include <random>
 #include "mpi.h"
 
+
 std::string CreateRandomStr(size_t size) {
   std::string str(size, ' ');
   for (size_t i = 0; i < size; i++) {
-    str += static_cast<char>(rand() % 119 + 9);
+    str[i] = static_cast<char>(rand() % 113 + 9);
   }
   return str;
 }
@@ -17,7 +18,7 @@ std::string CreateOnlyLettersStr(size_t size) {
   static const char alphabet[] =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   for (size_t i = 0; i < size; i++) {
-    str += alphabet[rand() % (sizeof(alphabet) - 1)];
+    str[i] = alphabet[rand() % (sizeof(alphabet) - 1)];
   }
   return str;
 }
@@ -37,16 +38,16 @@ int CountingLettersParallel(const std::string& str) {
   int rank;
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  const int delta = str.size() / size;
+  const int delta = str.length() / size;
 
   if (rank == 0) {
     for (int proc = 1; proc < size; proc++) {
-      MPI_Send(str.data() + proc * delta, delta, MPI_CHAR, proc, 0,
-               MPI_COMM_WORLD);
+      MPI_Send(str.data() + proc * delta, delta, MPI_CHAR, proc,
+          0, MPI_COMM_WORLD);
     }
   }
 
-  std::string partial_str(delta, ' ');
+  std::string partial_str;
   if (rank == 0) {
     partial_str = std::string(str.begin(), str.begin() + delta);
   } else {
@@ -56,6 +57,7 @@ int CountingLettersParallel(const std::string& str) {
 
   int global_letters_count = 0;
   int partial_letters_count = CountingLettersSequential(partial_str);
-  MPI_Reduce(&partial_letters_count, &global_letters_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Reduce(&partial_letters_count, &global_letters_count, 1,
+      MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
   return global_letters_count;
 }
