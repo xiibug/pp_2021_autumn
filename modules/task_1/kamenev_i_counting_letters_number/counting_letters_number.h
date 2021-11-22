@@ -2,12 +2,10 @@
 #ifndef MODULES_TASK_1_KAMENEV_I_COUNTING_LETTERS_NUMBER_COUNTING_LETTERS_NUMBER_H_
 #define MODULES_TASK_1_KAMENEV_I_COUNTING_LETTERS_NUMBER_COUNTING_LETTERS_NUMBER_H_
 
-#include <gtest/gtest.h>
 #include "mpi.h"
-#include <iostream>
-#include <random>
 #include <string>
-#include <gtest-mpi-listener.hpp>
+#include <random>
+#include <iostream>
 
 std::string CreateRandomStr(size_t size);
 std::string CreateOnlyLettersStr(size_t size);
