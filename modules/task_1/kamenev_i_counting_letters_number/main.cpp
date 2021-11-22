@@ -23,10 +23,9 @@ TEST(Parallel_Operations_MPI, Test_Only_Letters_20) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
-  const int str_size = 20;
+  const int str_size = 120;
   if (rank == 0) {
     str = CreateOnlyLettersStr(str_size);
-    std::cout << str;
   }
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
@@ -39,10 +38,9 @@ TEST(Parallel_Operations_MPI, Test_Random_Str_20) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
-  const int str_size = 20;
+  const int str_size = 120;
   if (rank == 0) {
     str = CreateRandomStr(str_size);
-    std::cout << str;
   }
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
