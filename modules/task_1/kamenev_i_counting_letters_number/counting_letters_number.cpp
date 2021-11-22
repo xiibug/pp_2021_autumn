@@ -4,8 +4,10 @@
 
 std::string CreateRandomStr(size_t size) {
     std::string str;
+    std::random_device dev;
+    std::mt19937 gen(dev());
     for (size_t i = 0; i < size; i++) {
-        str += static_cast<char>(rand() % 113 + 9);
+        str += static_cast<char>(gen() % 113 + 9);
     }
     return str;
 }

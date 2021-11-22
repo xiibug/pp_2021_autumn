@@ -6,8 +6,6 @@
 #include <iostream>
 #include <random>
 #include "mpi.h"
-#include <gtest/gtest.h>
-#include <gtest-mpi-listener.hpp>
 
 std::string CreateRandomStr(size_t size);
 std::string CreateOnlyLettersStr(size_t size);

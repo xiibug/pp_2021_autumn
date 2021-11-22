@@ -1,5 +1,8 @@
 // Copyright 2021 Kamenev Ilya
+
+#include <gtest/gtest.h>
 #include "counting_letters_number.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, Test_Empty_Random_Str) {
     int rank;
@@ -31,10 +34,10 @@ TEST(Parallel_Operations_MPI, Test_100_Letters_Str) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string str;
-    str = CreateOnlyLettersStr(100);
+    str = CreateOnlyLettersStr(20);
     int par_result = CountingLettersParallel(str);
     if (rank == 0) {
-        int expected_result = 100;
+        int expected_result = 20;
         ASSERT_EQ(expected_result, par_result);
     }
 }
@@ -76,5 +79,4 @@ int main(int argc, char** argv) {
     listeners.Release(listeners.default_xml_generator());
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
     return RUN_ALL_TESTS();
-    MPI_Finalize();
 }
