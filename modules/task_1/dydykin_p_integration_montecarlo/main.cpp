@@ -53,7 +53,7 @@ TEST(Test_MonteCarlo, TestFunc4) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     int a, b, N;
     a = 5;
-    b = 100;
+    b = 9;
     N = 20000;
 
     double mpi_result = MonteCarloMPI(N, a, b, func1);
@@ -68,7 +68,7 @@ TEST(Test_MonteCarlo, TestFunc5) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     int a, b, N;
     a = 3;
-    b = 500;
+    b = 21;
     N = 20000;
 
     double mpi_result = MonteCarloMPI(N, a, b, func2);

@@ -24,21 +24,23 @@ double MonteCarloWithOutMPI(int N, int a, int b, double(*func)(double)) {
 
     float x;
     float y = 0;
-    float Integral;
-    float koef = static_cast<float>(b - a);
-    float te;
+    float integ;
+    float k = static_cast<float>(b) - a;
+    float z;
 
-    srand(time(0));
+    std::mt19937 gen;
+    gen.seed(static_cast<unsigned int>(time(0)));
+    std::uniform_int_distribution<unsigned int> uid(0, RAND_MAX);
     if (N == 0) {
         throw - 1;
     } else {
       for (int i = 0; i < N; i++) {
-          te = (static_cast<float>(rand()) / RAND_MAX);
-          x = a + te * (b - a);
+          z = static_cast<float>(uid(gen) / RAND_MAX);
+          x = a + z * (b - a);
           y += func(x);
       }
-      Integral = (static_cast<float>(1) / N) * koef * static_cast<float>(y);
-      return Integral;
+      integ = (static_cast<float>(1) / N) * k * static_cast<float>(y);
+      return integ;
     }
 }
 
@@ -47,8 +49,8 @@ double MonteCarloMPI(int N, int a, int b, double(*func)(double)) {
         throw - 1;
 
     double t1, t2;
-    float y, te, x, Integral, result;
-    float koef = static_cast<float>(b - a);
+    float y, z, x, integ, result;
+    float k = static_cast<float>(b) - a;
 
     int ProcNum, ProcRank;
     MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
@@ -66,14 +68,16 @@ double MonteCarloMPI(int N, int a, int b, double(*func)(double)) {
         return 0;
     } else {
       y = 0.0;
-      srand(time(0));
+      std::mt19937 gen;
+      gen.seed(static_cast<unsigned int>(time(0)));
+      std::uniform_int_distribution<unsigned int> uid(0, RAND_MAX);
       for (int i = 1; i < count; i++) {
-          te = (static_cast<float>(rand()) / RAND_MAX);
-          x = a + te * (b - a);
+          z = static_cast<float>(uid(gen) / RAND_MAX);
+          x = a + z * (b - a);
           y += func(x);
       }
-      Integral = (static_cast<float>(1) / N) * koef * static_cast<float>(y);
-      MPI_Reduce(&Integral, &result, 1, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
+      integ = (static_cast<float>(1) / N) * k * static_cast<float>(y);
+      MPI_Reduce(&integ, &result, 1, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
       if (ProcRank == 0) {
           t2 = MPI_Wtime();
           std::cout << t2 - t1 << std::endl;
