@@ -33,7 +33,7 @@ vector<int> sequentialFindingMinimumByRows(vector<int> matrix, const vector<int>
 vector<int> parallelFindingMinimumByRows(vector<int> matrix, const vector<int>::size_type rows,
                                                               const vector<int>::size_type cols) {
     vector<int> localMinByRows, globalMinByRows;
-    int delta = 0; 
+    int delta = 0;
 
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
@@ -48,12 +48,11 @@ vector<int> parallelFindingMinimumByRows(vector<int> matrix, const vector<int>::
     localMinByRows.resize(delta * cols);
 
     MPI_Scatter(matrix.data(), delta * cols, MPI_INT,
-        localMinByRows.data(), delta * cols, MPI_INT, 0, MPI_COMM_WORLD);
+                localMinByRows.data(), delta * cols, MPI_INT, 0, MPI_COMM_WORLD);
 
     localMinByRows = sequentialFindingMinimumByRows(localMinByRows, delta, cols);
-    
     MPI_Gather(localMinByRows.data(), delta, MPI_INT, globalMinByRows.data(),
-        delta, MPI_INT, 0, MPI_COMM_WORLD);
+               delta, MPI_INT, 0, MPI_COMM_WORLD);
 
     if (rank == 0) {
         if (size != 1) {
@@ -61,10 +60,10 @@ vector<int> parallelFindingMinimumByRows(vector<int> matrix, const vector<int>::
             localMinByRows = vector<int>(matrix.begin() + (rows - tail) * cols, matrix.end());
             localMinByRows = sequentialFindingMinimumByRows(localMinByRows, tail, cols);
 
-            for (int i = (rows - tail), j = 0; i < rows; ++i, ++j) {
+            for (vector<int>::size_type i = (rows - tail), j = 0; i < rows; ++i, ++j) {
                 globalMinByRows[i] = localMinByRows[j];
             }
-        } 
+        }
     }
 
     return globalMinByRows;
