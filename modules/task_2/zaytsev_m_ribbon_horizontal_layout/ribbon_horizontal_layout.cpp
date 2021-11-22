@@ -43,20 +43,18 @@ std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vect
     std::vector<int> localMatrixMultiplication, globalMatrixMultiplication;
     int dataPerProcess = 0, lossData = 0;
 
-    int numberOfProcess, currentProces;
+    int numberOfProcess, currentProcess;
     MPI_Comm_size(MPI_COMM_WORLD, &numberOfProcess);
-    MPI_Comm_rank(MPI_COMM_WORLD, &currentProces);
+    MPI_Comm_rank(MPI_COMM_WORLD, &currentProcess);
 
     dataPerProcess = matrixRows / numberOfProcess;
     lossData = matrixRows % numberOfProcess;
 
-    if (currentProces == 0) {
+    if (currentProcess == 0) {
         if (lossData) {
             localMatrixMultiplication = std::vector<int>(matrix.begin(), matrix.begin() + lossData * matrixColumns);
-            localMatrixMultiplication = getSequentialOperations(localMatrixMultiplication, lossData,
+            globalMatrixMultiplication = getSequentialOperations(localMatrixMultiplication, lossData,
                                                                               matrixColumns, vector);
-
-            globalMatrixMultiplication = localMatrixMultiplication;
         }
         globalMatrixMultiplication.resize(matrixRows);
     } else {
