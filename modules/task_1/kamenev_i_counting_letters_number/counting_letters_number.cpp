@@ -1,5 +1,5 @@
 // Copyright 2021 Kamenev Ilya
-#include "counting_letters_number.h"
+#include "../../../modules/task_1/kamenev_i_counting_letters_number/counting_letters_number.h"
 
 std::string CreateRandomStr(size_t size) {
   std::string str;
@@ -13,10 +13,12 @@ std::string CreateRandomStr(size_t size) {
 
 std::string CreateOnlyLettersStr(size_t size) {
   std::string str;
+  std::random_device dev;
+  std::mt19937 gen(dev());
   static const char alphabet[] =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   for (size_t i = 0; i < size; i++) {
-    str += alphabet[rand() % (sizeof(alphabet) - 1)];
+    str += alphabet[gen() % (sizeof(alphabet) - 1)];
   }
   return str;
 }
@@ -47,7 +49,6 @@ int CountingLettersParallel(const std::string& str) {
     partial_str = std::string(str.begin(), str.begin() + delta);
   } else {
     MPI_Status status;
-    partial_str.resize(delta);
     MPI_Recv(&(partial_str[0]), delta, MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
   }
   int global_letters_count = 0;
