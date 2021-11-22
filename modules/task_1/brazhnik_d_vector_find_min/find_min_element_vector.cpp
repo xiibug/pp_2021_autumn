@@ -7,9 +7,6 @@
 #include "find_min_element_vector.h"
 
 std::vector<int> fillRandomValToVector(const int size) {
-    if (size <= 0)
-        throw "Error: The size cannot be negative!"; 
-
 	std::vector<int> data(size);
 
 	for (int i = 0; i < size; i++) {
@@ -21,7 +18,7 @@ std::vector<int> fillRandomValToVector(const int size) {
 int defaultFindingMinVal(const std::vector<int>& vector) {
 	if (!vector.empty()) {
 		int min = vector[0];
-		for (int i = 1; i < vector.size(); i++) {
+		for (auto i = 1; i < vector.size(); i++) {
 			if (min > vector[i])
 				min = vector[i];
 		}
@@ -52,9 +49,9 @@ int parallelFindingMinVal(const std::vector<int>& vector, const int size) {
         countSends.assign(countProcess, vector.size() / countProcess);
         tmp.resize(countProcess);
 
-        for (size_t i = 0; i < elementsRemaining; i++)
+        for (auto i = 0; i < elementsRemaining; i++)
             countSends[i]++;
-        for (size_t i = 0; i < countProcess - 1; i++)
+        for (auto i = 0; i < countProcess - 1; i++)
             tmp[i + 1] = tmp[i] + countSends[i];
     }
     MPI_Scatterv(reinterpret_cast<const void*>(vector.data()), countSends.data(), tmp.data(),
