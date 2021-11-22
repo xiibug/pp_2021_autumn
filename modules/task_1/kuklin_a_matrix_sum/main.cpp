@@ -53,8 +53,8 @@ TEST(Parrallel_Operations_MPI, Test_sum_with_rand_sizes) {
 
     std::random_device device;
     std::mt19937 gen(device());
-    i = gen() % 20;
-    j = gen() % 30;
+    i = gen() % 10;
+    j = gen() % 10;
 
     if (procRank == 0)
         matrix = getRandMatrix(i, j);
