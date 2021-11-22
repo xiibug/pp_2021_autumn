@@ -16,6 +16,6 @@ MPI_Comm createGraphComm(MPI_Comm comm);
 // source - process which send data
 // procRank - calling process
 int* sendData(int* buf, int count, MPI_Datatype type,
-	int dest, int tag, MPI_Comm comm, int source, int procRank);
+int dest, int tag, MPI_Comm comm, int source, int procRank);
 
 #endif  // MODULES_TASK_2_SHURYGINA_A_LINEAR_TOPOLOGY_LINEAR_TOPOLOGY_H_
