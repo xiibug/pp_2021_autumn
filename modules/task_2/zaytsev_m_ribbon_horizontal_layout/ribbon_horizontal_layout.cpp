@@ -53,7 +53,7 @@ std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vect
     if (currentProces == 0) {
         if (lossData) {
             localMatrixMultiplication = std::vector<int>(matrix.begin(), matrix.begin() + lossData * matrixColumns);
-            localMatrixMultiplication = getSequentialOperations(localMatrixMultiplication, lossData, 
+            localMatrixMultiplication = getSequentialOperations(localMatrixMultiplication, lossData,
                                                                               matrixColumns, vector);
 
             globalMatrixMultiplication = localMatrixMultiplication;
@@ -69,7 +69,7 @@ std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vect
     MPI_Scatter(matrix.data() + (lossData * matrixColumns), dataPerProcess * matrixColumns, MPI_INT,
         localMatrixMultiplication.data(), dataPerProcess * matrixColumns, MPI_INT, 0, MPI_COMM_WORLD);
 
-    localMatrixMultiplication = getSequentialOperations(localMatrixMultiplication, dataPerProcess, 
+    localMatrixMultiplication = getSequentialOperations(localMatrixMultiplication, dataPerProcess,
                                                                             matrixColumns, vector);
 
     MPI_Gather(localMatrixMultiplication.data(), dataPerProcess, MPI_INT, globalMatrixMultiplication.data() + lossData,
