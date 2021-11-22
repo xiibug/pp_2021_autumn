@@ -2,14 +2,16 @@
 #ifndef MODULES_TASK_1_KAMENEV_I_COUNTING_LETTERS_NUMBER_H_
 #define MODULES_TASK_1_KAMENEV_I_COUNTING_LETTERS_NUMBER_H_
 
-#include <string>
+#include <gtest-mpi-listener.hpp>
+#include <gtest/gtest.h>
+#include "mpi.h"
 #include <iostream>
 #include <random>
-#include "mpi.h"
+#include <string>
 
 std::string CreateRandomStr(size_t size);
 std::string CreateOnlyLettersStr(size_t size);
 int CountingLettersParallel(const std::string& str);
 int CountingLettersSequential(const std::string& str);
 
-#endif  //MODULES_TASK_1_KAMENEV_I_COUNTING_LETTERS_NUMBER_H_
+#endif //MODULES_TASK_1_KAMENEV_I_COUNTING_LETTERS_NUMBER_H_

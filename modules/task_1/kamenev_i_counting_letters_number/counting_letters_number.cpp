@@ -33,8 +33,7 @@ int CountingLettersSequential(const std::string& str) {
 }
 
 int CountingLettersParallel(const std::string& str) {
-    int size;
-    int rank;
+    int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     const int delta = str.size() / size;
@@ -47,7 +46,7 @@ int CountingLettersParallel(const std::string& str) {
     std::string partial_str;
     if (rank == 0) {
         partial_str = std::string(str.begin(), str.begin() + delta);
-    } else {
+    }else {
         MPI_Status status;
         partial_str.resize(delta);
         MPI_Recv(&partial_str[0], delta, MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
