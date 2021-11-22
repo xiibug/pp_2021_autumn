@@ -53,8 +53,9 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
 		}
 	}
 
-	vector<int> local_vec(size_of_tmp_vec + sizei % procNum * delta);
+	vector<int> local_vec;
 	if (procRank == 0) {
+          local_vec.resize(size_of_tmp_vec + sizei % procNum * delta);
 		for (int i = delta * (procNum - 1); i < sizei; i++) {
 			for (int j = 0; j < sizej; j++) {
 				local_vec[j + sizej * i] = mat[i][j];
@@ -62,6 +63,7 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
 		}
 	}
 	else {
+		  local_vec.resize(size_of_tmp_vec + sizei);
 		MPI_Status stat;
 		MPI_Recv(local_vec.data(), size_of_tmp_vec, MPI_INT, 0, 0, MPI_COMM_WORLD, &stat);
 	}
