@@ -10,15 +10,15 @@ vector<vector<int>> getRandMatrix(int sizei, int sizej) {
     vector<vector<int>> matrix;
     matrix.resize(sizei);
     for (int i = 0; i < sizei; i++) {
-      matrix[i].resize(sizej);
+        matrix[i].resize(sizej);
     }
 
     std::random_device device;
     std::mt19937 gen(device());
     for (int i = 0; i < sizei; i++) {
-      for (int j = 0; j < sizej; j++) {
-        matrix[i][j] = gen() % 1000;
-      }
+        for (int j = 0; j < sizej; j++) {
+            matrix[i][j] = gen() % 1000;
+        }
     }
 
     return matrix;
@@ -55,9 +55,9 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
     }
 
     vector<int> local_vec;
-    int k = 0;
     if (procRank == 0) {
         local_vec.resize(size_of_tmp_vec + sizei % procNum * delta);
+        int k = 0;
         for (int i = delta * (procNum - 1); i < sizei; i++) {
             for (int j = 0; j < sizej; j++) {
                 local_vec[j + sizej * k] = mat[i][j];
