@@ -1,19 +1,14 @@
 // Copyright 2021 Zaytsev Mikhail
-
-#pragma once
-
-#ifndef FINDING_MINIMUM_BY_MATRIX_COLUMNS_
-#define FINDING_MINIMUM_BY_MATRIX_COLUMNS_
+#ifndef MODULES_TASK_1_ZAYTSEV_M_FINDING_MINIMUM_BY_MATRIX_COLUMNS_FINDING_MINIMUM_BY_MATRIX_COLUMNS_H_
+#define MODULES_TASK_1_ZAYTSEV_M_FINDING_MINIMUM_BY_MATRIX_COLUMNS_FINDING_MINIMUM_BY_MATRIX_COLUMNS_H_
 
 #include <vector>
 
-std::vector<std::vector<int>> fillMatrix(const int rows, const int columns);
-std::vector<std::vector<int>> transponseMatrix(const std::vector<std::vector<int>>& matrix);
+void getRandomMatrix(std::vector<int>* matrix, std::vector<int>::size_type matrixSize);
 
-void printMatrix(const std::vector<std::vector<int>>& matrix);
+std::vector<int> getSequentialOperations(const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
+                                                                      std::vector<int>::size_type matrixColumns);
+std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
+                                                                    std::vector<int>::size_type matrixColumns);
 
-std::vector<int> singleFindingMinimum(const std::vector<std::vector<int>>& matrix);
-
-std::vector<int> parallelFindingMinimum(const std::vector<std::vector<int>>& matrix);
-
-#endif  // FINDING_MINIMUM_BY_MATRIX_COLUMNS_
+#endif  // MODULES_TASK_1_ZAYTSEV_M_FINDING_MINIMUM_BY_MATRIX_COLUMNS_FINDING_MINIMUM_BY_MATRIX_COLUMNS_H_
