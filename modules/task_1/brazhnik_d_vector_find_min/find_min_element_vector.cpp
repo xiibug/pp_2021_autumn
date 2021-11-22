@@ -7,27 +7,27 @@
 #include "find_min_element_vector.h"
 
 std::vector<int> fillRandomValToVector(const int size) {
-	std::vector<int> data(size);
+    std::vector<int> data(size);
 
-	for (int i = 0; i < size; i++) {
-		data[i] = -10000 + rand() % 100000;
-	}
+    for (int i = 0; i < size; i++) {
+        data[i] = -10000 + rand() % 100000;
+    }
 	return data;
 }
 
 int defaultFindingMinVal(const std::vector<int>& vector) {
-	if (!vector.empty()) {
-		int min = vector[0];
-		for (auto i = 1; i < vector.size(); i++) {
-			if (min > vector[i])
-				min = vector[i];
-		}
-		return min;
-	}
-	return 0;
+    if (!vector.empty()) {
+        int min = vector[0];
+        for (int i = 1; i < static_cast<int>(vector.size()); i++) {
+            if (min > vector[i])
+                min = vector[i];
+        }
+        return min;
+    }
+    return 0;
 }
 
-int parallelFindingMinVal(const std::vector<int>& vector, const int size) {  
+int parallelFindingMinVal(const std::vector<int>& vector, const int size) {
     int countProcess, rankProcess;
     MPI_Comm_size(MPI_COMM_WORLD, &countProcess);
     MPI_Comm_rank(MPI_COMM_WORLD, &rankProcess);
@@ -64,4 +64,3 @@ int parallelFindingMinVal(const std::vector<int>& vector, const int size) {
 
     return resMinVal;
 }
-

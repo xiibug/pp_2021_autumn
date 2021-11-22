@@ -11,7 +11,7 @@ TEST(Parallel_Operations_MPI, TEST_FIND_MIN_VAL_IN_VECTOR) {
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
 
     if (commRank == 0)
-        vector = fillRandomValToVector(100000);
+        vector = fillRandomValToVector(100);
 
     int minFirst = defaultFindingMinVal(vector);
 
@@ -28,10 +28,10 @@ TEST(Parallel_Operations_MPI, TEST_PARALLEL_FIND_MIN_VAL_IN_VECTOR_GET_VAL) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
     if (commRank == 0) {
-        vector = fillRandomValToVector(100000);
+        vector = fillRandomValToVector(100);
         minFirst = defaultFindingMinVal(vector);
     }
-    minSecond = parallelFindingMinVal(vector, 100000);
+    minSecond = parallelFindingMinVal(vector, 100);
     if (commRank == 0)
         ASSERT_EQ(minFirst, minSecond);
 }
@@ -67,6 +67,7 @@ TEST(Parallel_Operations_MPI, TEST_PUT_VECTOR_HAS_FEWER_ELEMENTS_THAN_CPU_CORES_
         ASSERT_EQ(minFirst, minSecond);
 }
 
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
@@ -78,8 +79,7 @@ int main(int argc, char** argv) {
     listeners.Release(listeners.default_result_printer());
     listeners.Release(listeners.default_xml_generator());
 
-    listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);    
+    listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
 
     return RUN_ALL_TESTS();
 }
-
