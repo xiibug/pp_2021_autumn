@@ -14,7 +14,7 @@ vector<vector<int>> getRandMatrix(int sizei, int sizej) {
     for (int i = 0; i < sizei; i++) {
         matrix[i] = vector<int>(sizej);
         for (int j = 0; j < sizej; j++) {
-            matrix[i][j] = gen() % 1000;
+            matrix[i][j] = gen() % 100;
         }
     }
 
@@ -39,12 +39,15 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
     vector<int> tmp_vec(size_of_tmp_vec);
 
     if (procRank == 0) {
+        int k = 0;
         for (int proc = 1; proc < procNum; proc++) {
             for (int i = proc - 1; i < proc - 1 + delta; i++) {
                 for (int j = 0; j < sizej; j++) {
-                    tmp_vec[j + sizej * i] = mat[i][j];
+                    tmp_vec[j + sizej * k] = mat[i][j];
                 }
+                k++;
             }
+            k = 0;
             MPI_Send(tmp_vec.data(), size_of_tmp_vec, MPI_INT, proc, 0,
                     MPI_COMM_WORLD);
         }
