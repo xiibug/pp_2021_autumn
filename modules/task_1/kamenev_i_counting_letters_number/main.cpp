@@ -21,11 +21,11 @@ TEST(Parallel_Operations_MPI, Test_Only_Letters_100) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
-  const int str_size = 100;
+  const int str_size = 20;
   str = CreateOnlyLettersStr(str_size);
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
-    int expected_result = 100;
+    int expected_result = 20;
     ASSERT_EQ(expected_result, par_result);
   }
 }
@@ -34,7 +34,7 @@ TEST(Parallel_Operations_MPI, Test_20_Letters_Str) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
-  str = "DDD2DDD2D27DD4D4d7dd7dd4ddd4dd7";
+  str = "DDD#aa&a%B4c78";
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
     int expected_result = 20;
