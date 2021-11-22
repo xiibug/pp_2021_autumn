@@ -10,8 +10,9 @@ TEST(Parallel_Operations_MPI, TEST_FIND_MIN_VAL_IN_VECTOR) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
 
-    if (commRank == 0)
+    if (commRank == 0) {
         vector = fillRandomValToVector(100);
+    }
 
     int minFirst = defaultFindingMinVal(vector);
 
@@ -32,8 +33,9 @@ TEST(Parallel_Operations_MPI, TEST_PARALLEL_FIND_MIN_VAL_IN_VECTOR_GET_VAL) {
         minFirst = defaultFindingMinVal(vector);
     }
     minSecond = parallelFindingMinVal(vector, 100);
-    if (commRank == 0)
+    if (commRank == 0) {
         ASSERT_EQ(minFirst, minSecond);
+    }
 }
 
 TEST(Parallel_Operations_MPI, TEST_PUT_NEGATIVE_SIZE_VALUE_TO_FUNCTION_FILL_VECTOR) {
@@ -48,8 +50,9 @@ TEST(Parallel_Operations_MPI, TEST_PUT_NEGATIVE_SIZE_VALUE_TO_FUNCTION_PARALLEL_
     std::vector<int> vector = fillRandomValToVector(50);
 
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
-    if (commRank == 0)
+    if (commRank == 0) {
         ASSERT_ANY_THROW(parallelFindingMinVal(vector, -15));
+    }
 }
 
 TEST(Parallel_Operations_MPI, TEST_PUT_VECTOR_HAS_FEWER_ELEMENTS_THAN_CPU_CORES_GET_MIN_VAL) {
@@ -63,8 +66,9 @@ TEST(Parallel_Operations_MPI, TEST_PUT_VECTOR_HAS_FEWER_ELEMENTS_THAN_CPU_CORES_
         minFirst = defaultFindingMinVal(vector);
     }
     minSecond = parallelFindingMinVal(vector, 4);
-    if (commRank == 0)
+    if (commRank == 0) {
         ASSERT_EQ(minFirst, minSecond);
+    }
 }
 
 
