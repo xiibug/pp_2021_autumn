@@ -1,7 +1,7 @@
 // Copyright 2021 Kamenev Ilya
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
-#include "./counting_letters_number.h"
+#include "../../../modules/task_1/kamenev_i_counting_letters_number/counting_letters_number.h"
 
 TEST(Parallel_Operations_MPI, Test_Empty_Random_Str) {
   int rank;

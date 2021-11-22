@@ -46,17 +46,16 @@ int CountingLettersParallel(const std::string& str) {
     }
   }
 
-  std::string partialStr;
+  std::string partial_str;
   if (rank == 0) {
-    partialStr = std::string(str.begin(), str.begin() + delta);
+    partial_str = std::string(str.begin(), str.begin() + delta);
   } else {
     MPI_Status status;
-    MPI_Recv(&partialStr[0], delta, MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
+    MPI_Recv(&partial_str[0], delta, MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
   }
 
-  int globalLettersCount = 0;
-  int partialLettersCount = CountingLettersSequential(partialStr);
-  MPI_Reduce(&partialLettersCount, &globalLettersCount, 1, MPI_INT, MPI_SUM, 0,
-             MPI_COMM_WORLD);
-  return globalLettersCount;
+  int global_letters_count = 0;
+  int partial_letters_count = CountingLettersSequential(partial_str);
+  MPI_Reduce(&partial_letters_count, &global_letters_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+  return global_letters_count;
 }
