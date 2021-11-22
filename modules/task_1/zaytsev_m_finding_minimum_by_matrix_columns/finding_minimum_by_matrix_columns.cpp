@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Zaytsev Mikhail
+﻿ // Copyright 2021 Zaytsev Mikhail
 #include <mpi.h>
 #include <random>
 #include "../../../modules/task_1/zaytsev_m_finding_minimum_by_matrix_columns/finding_minimum_by_matrix_columns.h"
@@ -19,7 +19,7 @@ std::vector<int> getSequentialOperations(const std::vector<int>& matrix, std::ve
 
     for (std::vector<int>::size_type i = 0; i < matrixColumns; ++i) {
         vectorOfMinimum[i] = matrix[i];
-        for (int j = 1; j < matrixRows; ++j) {
+        for (std::vector<int>::size_type j = 1; j < matrixRows; ++j) {
             if (vectorOfMinimum[i] > matrix[matrixColumns * j + i]) vectorOfMinimum[i] = matrix[matrixColumns * j + i];
         }
     }
@@ -44,12 +44,13 @@ std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vect
 
     localVectorOfMinimum.resize(dataPerProcess * matrixColumns);
 
-    MPI_Scatter(matrix.data() + lossData * matrixColumns, dataPerProcess * matrixColumns, MPI_INT, localVectorOfMinimum.data(), dataPerProcess * matrixColumns,
-                                                                           MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatter(matrix.data() + lossData * matrixColumns, dataPerProcess * matrixColumns, MPI_INT,
+          localVectorOfMinimum.data(), dataPerProcess * matrixColumns, MPI_INT, 0, MPI_COMM_WORLD);
 
     localVectorOfMinimum = getSequentialOperations(localVectorOfMinimum, dataPerProcess, matrixColumns);
 
-    MPI_Reduce(localVectorOfMinimum.data(), globalVectorOfMinimum.data(), matrixColumns, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
+    MPI_Reduce(localVectorOfMinimum.data(), globalVectorOfMinimum.data(), matrixColumns,
+                                                    MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
 
     if (currentProcess == 0) {
         if (lossData) {
@@ -57,7 +58,9 @@ std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vect
             localVectorOfMinimum = getSequentialOperations(localVectorOfMinimum, lossData, matrixColumns);
 
             for (std::vector<int>::size_type i = 0; i < matrixColumns; ++i) {
-                if (globalVectorOfMinimum[i] > localVectorOfMinimum[i]) globalVectorOfMinimum[i] = localVectorOfMinimum[i];
+                if (globalVectorOfMinimum[i] > localVectorOfMinimum[i]) {
+                    globalVectorOfMinimum[i] = localVectorOfMinimum[i];
+                }
             }
         }
     }

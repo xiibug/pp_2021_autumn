@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Zaytsev Mikhail
+﻿ // Copyright 2021 Zaytsev Mikhail
 #include <gtest/gtest.h>
 #include "./finding_minimum_by_matrix_columns.h"
 #include <gtest-mpi-listener.hpp>
@@ -112,7 +112,7 @@ TEST(Parallel_Finding_Minimum_By_Matrix_Columns, Minimum_Elements_At_The_Beginni
 
     if (currentProcess == 0) {
         getRandomMatrix(&matrix, matrixRows * matrixColumns);
-        
+
         for (std::vector<int>::size_type i = 0; i < matrixRows; ++i) {
             matrix[matrixColumns * i] = -100000;
         }
