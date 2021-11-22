@@ -49,15 +49,17 @@ TEST(Parrallel_Operations_MPI, Test_sum_with_rand_sizes) {
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     std::vector<std::vector<int>> matrix;
-    int i, j;
+    int i = 3, j = 4;
 
-    std::random_device device;
-    std::mt19937 gen(device());
-    i = gen() % 10;
-    j = gen() % 10;
-
-    if (procRank == 0)
-        matrix = getRandMatrix(i, j);
+    if (procRank == 0) {
+         matrix.resize(i);
+        for (int sz = 0; sz < i; sz++) {
+            matrix[sz].resize(j);
+        }
+        matrix[0] = {2, 5, 4, 6};
+        matrix[1] = {3, 7, 9, 2};
+        matrix[2] = {1, 6, 8, 9};
+    }
 
     int matSumParal = matrixSumParal(matrix, i, j);
 
@@ -95,13 +97,17 @@ TEST(Parrallel_Operations_MPI, Test_sum_sqr_matrix_with_rand_size) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     std::vector<std::vector<int>> matrix;
 
-    int i, j;
-    std::random_device device;
-    std::mt19937 gen(device());
-    i = gen() % 20;
-    j = i;
-
-    if (procRank == 0) matrix = getRandMatrix(i, j);
+    int i = 4, j = 4;
+    if (procRank == 0) {
+        matrix.resize(i);
+        for (int sz = 0; sz < i; sz++) {
+            matrix[sz].resize(j);
+        }
+        matrix[0] = {1, 2, 3, 4};
+        matrix[1] = {5, 6, 7, 8};
+        matrix[2] = {3, 2, 1, 9};
+        matrix[3] = {4, 4, 3, 7};
+    }
 
     int matSumParal = matrixSumParal(matrix, i, j);
 
