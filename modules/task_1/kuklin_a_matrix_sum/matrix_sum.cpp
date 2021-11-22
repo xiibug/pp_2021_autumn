@@ -1,7 +1,7 @@
 //  Copyright 2021 Kuklin Andrey
 #include <mpi.h>
 #include <vector>
-#include <ctime>
+#include <random>
 #include "../../../modules/task_1/kuklin_a_matrix_sum/matrix_sum.h"
 
 using std::vector;
@@ -13,10 +13,11 @@ vector<vector<int>> getRandMatrix(int sizei, int sizej) {
       matrix[i].resize(sizej);
     }
 
-    srand(time(0));
+    std::random_device device;
+    std::mt19937 gen(device());
     for (int i = 0; i < sizei; i++) {
       for (int j = 0; j < sizej; j++) {
-        matrix[i][j] = rand() % 1000;
+        matrix[i][j] = gen() % 1000;
       }
     }
 
@@ -42,14 +43,14 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
 
     if (procRank == 0) {
         for (int proc = 1; proc < procNum; proc++) {
-        for (int i = proc - 1; i < proc + delta; i++) {
-            for (int j = 0; j < sizej; j++) {
-            tmp_vec[j + sizej * i] = mat[i][j];
+            for (int i = proc - 1; i < proc + delta; i++) {
+                for (int j = 0; j < sizej; j++) {
+                    tmp_vec[j + sizej * i] = mat[i][j];
+                }
             }
-        }
-        MPI_Send(tmp_vec.data(), size_of_tmp_vec, MPI_INT, proc, 0,
-                MPI_COMM_WORLD);
-        tmp_vec.clear();
+            MPI_Send(tmp_vec.data(), size_of_tmp_vec, MPI_INT, proc, 0,
+                    MPI_COMM_WORLD);
+            tmp_vec.clear();
         }
     }
 
@@ -61,12 +62,11 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
                 local_vec[j + sizej * i] = mat[i][j];
             }
         }
-    } 
-    else {
-    local_vec.resize(size_of_tmp_vec + sizei);
-    MPI_Status stat;
-    MPI_Recv(local_vec.data(), size_of_tmp_vec, MPI_INT, 0, 0, MPI_COMM_WORLD,
-             &stat);
+    } else {
+      local_vec.resize(size_of_tmp_vec + sizei);
+      MPI_Status stat;
+      MPI_Recv(local_vec.data(), size_of_tmp_vec, MPI_INT, 0, 0, MPI_COMM_WORLD,
+               &stat);
     }
 
     int matrix_sum = 0;
@@ -76,3 +76,4 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
 
     return matrix_sum;
 }
+    

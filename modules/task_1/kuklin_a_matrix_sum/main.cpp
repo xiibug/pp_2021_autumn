@@ -1,6 +1,7 @@
 ﻿//  Copyright 2021 Kuklin Andrey
 #include <gtest/gtest.h>
 #include <vector>
+#include <random>
 #include "./matrix_sum.h"
 #include <gtest-mpi-listener.hpp>
 
@@ -50,9 +51,10 @@ TEST(Parrallel_Operations_MPI, Test_sum_with_rand_sizes) {
     std::vector<std::vector<int>> matrix;
     int i, j;
 
-    srand(time(0));
-    i = rand() % 20;
-    j = rand() % 20;
+    std::random_device device;
+    std::mt19937 gen(device());
+    i = gen() % 20;
+    j = gen() % 30;
 
     if (procRank == 0)
         matrix = getRandMatrix(i, j);
@@ -94,8 +96,9 @@ TEST(Parrallel_Operations_MPI, Test_sum_sqr_matrix_with_rand_size) {
     std::vector<std::vector<int>> matrix;
 
     int i, j;
-    srand(time(0));
-    i = rand() % 20;
+    std::random_device device;
+    std::mt19937 gen(device());
+    i = gen() % 20;
     j = i;
 
     if (procRank == 0) matrix = getRandMatrix(i, j);
