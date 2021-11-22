@@ -5,11 +5,11 @@
 #include "./matrix_sum.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(Parrallel_Operations_MPI, Test_sum_with_fix_equal_sizes) {
+TEST(Parrallel_Operations_MPI, Test_sum_with_fix_large_numbers_of_lines) {
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     std::vector<std::vector<int>> matrix;
-    int i = 5, j = 5;
+    int i = 2, j = 4;
 
     if (procRank == 0)
         matrix = getRandMatrix(i, j);
@@ -25,7 +25,7 @@ TEST(Parrallel_Operations_MPI, Test_sum_with_fix_equal_sizes) {
     }
 }
 
-TEST(Parrallel_Operations_MPI, Test_sum_with_fix_different_sizes) {
+TEST(Parrallel_Operations_MPI, Test_sum_with_fix_large_numbers_of_columns) {
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     std::vector<std::vector<int>> matrix;

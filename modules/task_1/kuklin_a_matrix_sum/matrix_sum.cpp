@@ -63,7 +63,7 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
             }
         }
     } else {
-      local_vec.resize(size_of_tmp_vec + sizei);
+      local_vec.resize(size_of_tmp_vec);
       MPI_Status stat;
       MPI_Recv(local_vec.data(), size_of_tmp_vec, MPI_INT, 0, 0, MPI_COMM_WORLD,
                &stat);
