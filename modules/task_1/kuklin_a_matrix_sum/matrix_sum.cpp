@@ -1,8 +1,8 @@
-//Copyright 2021 Kuklin Andrey
-#include <gtest-mpi-listener.hpp>
+// Copyright 2021 Kuklin Andrey
+#include "mpi.h"
 #include <ctime>
 #include <vector>
-#include "matrix_sum.h"
+#include "../../../modules/task_1/kuklin_a_matrix_sum/matrix_sum.h"
 
 using std::vector;
 
