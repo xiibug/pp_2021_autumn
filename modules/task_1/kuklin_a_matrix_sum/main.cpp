@@ -88,6 +88,29 @@ TEST(Parrallel_Operations_MPI, Test_sum_sqr_matrix) {
 	}
 }
 
+TEST(Parrallel_Operations_MPI, Test_sum_sqr_matrix_with_rand_size) {
+  int procRank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
+  std::vector<std::vector<int>> matrix;
+
+  int i, j;
+  srand(time(0));
+  i = rand() % 20;
+  j = i;
+
+  if (procRank == 0) matrix = getRandMatrix(i, j);
+
+  long long int matSumParal = matrixSumParal(matrix, i, j);
+
+  if (procRank == 0) {
+    long long int matSumSequential = 0;
+    for (int sz = 0; sz < i; sz++) {
+      matSumSequential += matrixSumSequential(matrix[sz]);
+    }
+    ASSERT_EQ(matSumSequential, matSumParal);
+  }
+}
+
 int main(int argc, char** argv) {
 	::testing::InitGoogleTest(&argc, argv);
 	MPI_Init(&argc, &argv);
