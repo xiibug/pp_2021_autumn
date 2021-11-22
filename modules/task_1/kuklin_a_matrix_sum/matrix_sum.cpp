@@ -76,4 +76,3 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
 
     return matrix_sum;
 }
-    
