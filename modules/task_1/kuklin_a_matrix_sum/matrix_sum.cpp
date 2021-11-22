@@ -47,7 +47,6 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
             }
             MPI_Send(tmp_vec.data(), size_of_tmp_vec, MPI_INT, proc, 0,
                     MPI_COMM_WORLD);
-            tmp_vec.clear();
         }
     }
 
