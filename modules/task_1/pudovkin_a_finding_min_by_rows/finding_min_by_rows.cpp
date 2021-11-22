@@ -2,7 +2,6 @@
 #include <mpi.h>
 #include <vector>
 #include <random>
-#include <algorithm>
 #include "../../../modules/task_1/pudovkin_a_finding_min_by_rows/finding_min_by_rows.h"
 
 
@@ -12,7 +11,7 @@ vector<int> getRandomMatrix(const vector<int>::size_type size) {
     std::mt19937 gen(dev());
 
     for (vector<int>::size_type i = 0; i < size; ++i) {
-        matrix[i] = gen() % 10000;
+        matrix[i] = gen() % 1000;
     }
     return matrix;
 }
