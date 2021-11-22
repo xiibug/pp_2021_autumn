@@ -19,36 +19,39 @@ TEST(Parallel_Operations_MPI, Test_Empty_Random_Str) {
   }
 }
 
-TEST(Parallel_Operations_MPI, Test_Only_Letters_100) {
+TEST(Parallel_Operations_MPI, Test_Only_Letters_20) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
-  const int str_size = 100;
+  const int str_size = 20;
   if (rank == 0) {
     str = CreateOnlyLettersStr(str_size);
+    std::cout << str;
   }
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
-    int expected_result = 100;
+    int expected_result = CountingLettersSequential(str);
     ASSERT_EQ(expected_result, par_result);
   }
 }
 
-TEST(Parallel_Operations_MPI, Test_20_Letters_Str) {
+TEST(Parallel_Operations_MPI, Test_Random_Str_20) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
+  const int str_size = 20;
   if (rank == 0) {
-    str = "DDD2DDD2D27DD4D4d7dd7dd4ddd4dd7";
+    str = CreateRandomStr(str_size);
+    std::cout << str;
   }
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
-    int expected_result = 20;
+    int expected_result = CountingLettersSequential(str);
     ASSERT_EQ(expected_result, par_result);
   }
 }
 
-TEST(Parallel_Operations_MPI, Test_Empty_Str_Parallel_Equals_Sequential) {
+TEST(Parallel_Operations_MPI, Test_Empty_Str_Only_Letters) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
