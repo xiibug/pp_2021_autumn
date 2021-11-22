@@ -1,7 +1,7 @@
 // Copyright 2021 Brazhnik Dmitry
 #include <mpi.h>
 #include <random>
-#include "./find_min_element_vector.h"
+#include "../../../modules/task_1/brazhnik_d_vector_find_min/find_min_element_vector.h"
 
 std::vector<int> fillRandomValToVector(const int size) {
     std::vector<int> data(size);
