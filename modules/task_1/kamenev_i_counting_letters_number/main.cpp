@@ -1,6 +1,4 @@
 // Copyright 2021 Kamenev Ilya
-#include <gtest/gtest.h>
-#include <gtest-mpi-listener.hpp>
 #include "../../../modules/task_1/kamenev_i_counting_letters_number/counting_letters_number.h"
 
 TEST(Parallel_Operations_MPI, Test_Empty_Random_Str) {
@@ -12,8 +10,8 @@ TEST(Parallel_Operations_MPI, Test_Empty_Random_Str) {
     int par_result = CountingLettersParallel(str);
 
     if (rank == 0) {
-      int expected_result = 0;
-      ASSERT_EQ(expected_result, par_result);
+        int expected_result = 0;
+        ASSERT_EQ(expected_result, par_result);
     }
 }
 
@@ -26,8 +24,8 @@ TEST(Parallel_Operations_MPI, Test_Only_Letters_100) {
     int par_result = CountingLettersParallel(str);
 
     if (rank == 0) {
-      int expected_result = 100;
-      ASSERT_EQ(expected_result, par_result);
+        int expected_result = 100;
+        ASSERT_EQ(expected_result, par_result);
     }
 }
 
@@ -35,12 +33,12 @@ TEST(Parallel_Operations_MPI, Test_20_Letters_Str) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string str;
-    str = "Q%r8Mk0)oPQ-Dgfg75Z89M3cvP7[Zhl09A";
+    str = "abcdefghijABCDEFGHIJ";
     int par_result = CountingLettersParallel(str);
 
     if (rank == 0) {
-      int expected_result = 20;
-      ASSERT_EQ(expected_result, par_result);
+        int expected_result = 20;
+        ASSERT_EQ(expected_result, par_result);
     }
 }
 
@@ -55,7 +53,7 @@ TEST(Parallel_Operations_MPI, Test_Empty_Str_Parallel_Equals_Sequential) {
     seq_result = CountingLettersSequential(str);
 
     if (rank == 0) {
-      ASSERT_EQ(seq_result, par_result);
+        ASSERT_EQ(seq_result, par_result);
     }
 }
 
@@ -68,8 +66,8 @@ TEST(Parallel_Operations_MPI, Test_No_Letters_Str) {
     result = CountingLettersParallel(str);
 
     if (rank == 0) {
-      int expected_result = 0;
-      ASSERT_EQ(expected_result, result);
+        int expected_result = 0;
+        ASSERT_EQ(expected_result, result);
     }
 }
 
