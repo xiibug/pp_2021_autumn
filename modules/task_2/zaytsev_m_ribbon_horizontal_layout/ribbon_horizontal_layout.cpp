@@ -24,9 +24,8 @@ void getRandomMatrix(std::vector<int>* matrix, std::vector<int>::size_type matri
     }
 }
 
-std::vector<int> getSequentialOperations(std::vector<int> matrix, std::vector<int>::size_type matrixRows,
-                                      std::vector<int>::size_type matrixColumns, std::vector<int> vector) {
-    std::vector<int>::size_type vectorSize = vector.size();
+std::vector<int> getSequentialOperations(const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
+                                             std::vector<int>::size_type matrixColumns, std::vector<int> vector) {
     std::vector<int> resultVector(matrixRows);
 
     for (std::vector<int>::size_type i = 0; i < matrixRows; ++i) {
@@ -39,8 +38,8 @@ std::vector<int> getSequentialOperations(std::vector<int> matrix, std::vector<in
 
     return resultVector;
 }
-std::vector<int> getParallelOperations(std::vector<int> matrix, std::vector<int>::size_type matrixRows,
-                                      std::vector<int>::size_type matrixColumns, std::vector<int> vector) {
+std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
+                                           std::vector<int>::size_type matrixColumns, std::vector<int> vector) {
     std::vector<int> localMatrixMultiplication, globalMatrixMultiplication;
     int dataPerProcess = 0, lossData = 0;
 
@@ -54,24 +53,24 @@ std::vector<int> getParallelOperations(std::vector<int> matrix, std::vector<int>
     if (currentProces == 0) {
         if (lossData) {
             localMatrixMultiplication = std::vector<int>(matrix.begin(), matrix.begin() + lossData * matrixColumns);
-            localMatrixMultiplication = getSequentialOperations(localMatrixMultiplication, lossData, matrixColumns, vector);
+            localMatrixMultiplication = getSequentialOperations(localMatrixMultiplication, lossData, 
+                                                                              matrixColumns, vector);
 
             globalMatrixMultiplication = localMatrixMultiplication;
         }
-        
         globalMatrixMultiplication.resize(matrixRows);
-    }
-    else {
+    } else {
         vector.resize(matrixColumns);
     }
     MPI_Bcast(vector.data(), matrixColumns, MPI_INT, 0, MPI_COMM_WORLD);
-    
+
     localMatrixMultiplication.resize(dataPerProcess * matrixColumns);
 
     MPI_Scatter(matrix.data() + (lossData * matrixColumns), dataPerProcess * matrixColumns, MPI_INT,
         localMatrixMultiplication.data(), dataPerProcess * matrixColumns, MPI_INT, 0, MPI_COMM_WORLD);
 
-    localMatrixMultiplication = getSequentialOperations(localMatrixMultiplication, dataPerProcess, matrixColumns, vector);
+    localMatrixMultiplication = getSequentialOperations(localMatrixMultiplication, dataPerProcess, 
+                                                                            matrixColumns, vector);
 
     MPI_Gather(localMatrixMultiplication.data(), dataPerProcess, MPI_INT, globalMatrixMultiplication.data() + lossData,
         dataPerProcess, MPI_INT, 0, MPI_COMM_WORLD);

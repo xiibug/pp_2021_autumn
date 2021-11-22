@@ -72,7 +72,8 @@ TEST(Parallel_Matrix_Multiplacition, mRows_Eq_mColumns_100_vSize_100) {
     std::vector<int> globalMatrixMultiplication = getParallelOperations(matrix, matrixRows, matrixColumns, vector);
 
     if (currentProcess == 0) {
-        std::vector<int> referenceMatrixMultiplication = getSequentialOperations(matrix, matrixRows, matrixColumns, vector);
+        std::vector<int> referenceMatrixMultiplication = getSequentialOperations(matrix, matrixRows,
+                                                                              matrixColumns, vector);
         ASSERT_EQ(globalMatrixMultiplication, referenceMatrixMultiplication);
     }
 }
@@ -97,7 +98,8 @@ TEST(Parallel_Matrix_Multiplacition, mRows_Eq_mColumns_150_vSize_150) {
     std::vector<int> globalMatrixMultiplication = getParallelOperations(matrix, matrixRows, matrixColumns, vector);
 
     if (currentProcess == 0) {
-        std::vector<int> referenceMatrixMultiplication = getSequentialOperations(matrix, matrixRows, matrixColumns, vector);
+        std::vector<int> referenceMatrixMultiplication = getSequentialOperations(matrix, matrixRows,
+                                                                              matrixColumns, vector);
         ASSERT_EQ(globalMatrixMultiplication, referenceMatrixMultiplication);
     }
 }
@@ -122,7 +124,8 @@ TEST(Parallel_Matrix_Multiplacition, mRows_Eq_mColumns_200_vSize_200) {
     std::vector<int> globalMatrixMultiplication = getParallelOperations(matrix, matrixRows, matrixColumns, vector);
 
     if (currentProcess == 0) {
-        std::vector<int> referenceMatrixMultiplication = getSequentialOperations(matrix, matrixRows, matrixColumns, vector);
+        std::vector<int> referenceMatrixMultiplication = getSequentialOperations(matrix, matrixRows,
+                                                                              matrixColumns, vector);
         ASSERT_EQ(globalMatrixMultiplication, referenceMatrixMultiplication);
     }
 }
@@ -147,7 +150,8 @@ TEST(Parallel_Matrix_Multiplacition, mRows_Gr_mColumns_150_100_vSize_100) {
     std::vector<int> globalMatrixMultiplication = getParallelOperations(matrix, matrixRows, matrixColumns, vector);
 
     if (currentProcess == 0) {
-        std::vector<int> referenceMatrixMultiplication = getSequentialOperations(matrix, matrixRows, matrixColumns, vector);
+        std::vector<int> referenceMatrixMultiplication = getSequentialOperations(matrix, matrixRows,
+                                                                              matrixColumns, vector);
         ASSERT_EQ(globalMatrixMultiplication, referenceMatrixMultiplication);
     }
 }
@@ -172,7 +176,8 @@ TEST(Parallel_Matrix_Multiplacition, mRows_Le_mColumns_100_150_vSize_150) {
     std::vector<int> globalMatrixMultiplication = getParallelOperations(matrix, matrixRows, matrixColumns, vector);
 
     if (currentProcess == 0) {
-        std::vector<int> referenceMatrixMultiplication = getSequentialOperations(matrix, matrixRows, matrixColumns, vector);
+        std::vector<int> referenceMatrixMultiplication = getSequentialOperations(matrix, matrixRows,
+                                                                              matrixColumns, vector);
         ASSERT_EQ(globalMatrixMultiplication, referenceMatrixMultiplication);
     }
 }
