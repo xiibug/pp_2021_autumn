@@ -6,7 +6,6 @@
 #include <vector>
 
 std::vector<int> fillRandomValToVector(const int size);
-void viewVector(const std::vector<int>& matrix);
 
 int defaultFindingMinVal(const std::vector<int>& vector);
 int parallelFindingMinVal(const std::vector<int>& vector, const int size);

@@ -18,13 +18,6 @@ std::vector<int> fillRandomValToVector(const int size) {
 	return data;
 }
 
-void viewVector(const std::vector<int>& vector) {
-	for (int i = 0; i < vector.size(); i++) {
-		std::cout << vector[i] + " ";
-	}
-	std::cout << " [Size: " + vector.size() + ']';
-}
-
 int defaultFindingMinVal(const std::vector<int>& vector) {
 	if (!vector.empty()) {
 		int min = vector[0];
