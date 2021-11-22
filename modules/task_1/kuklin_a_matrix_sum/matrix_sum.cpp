@@ -53,7 +53,7 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
 		}
 	}
 
-	vector<int> local_vec(size_of_tmp_vec);
+	vector<int> local_vec(size_of_tmp_vec + sizei % procNum * delta);
 	if (procRank == 0) {
 		for (int i = delta * (procNum - 1); i < sizei; i++) {
 			for (int j = 0; j < sizej; j++) {
