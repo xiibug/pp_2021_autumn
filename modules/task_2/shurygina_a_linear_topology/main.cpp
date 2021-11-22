@@ -1,8 +1,8 @@
 // Copyright 2021 Shurygina Anna
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <vector>
+#include <gtest-mpi-listener.hpp>
 #include "../../../modules/task_2/shurygina_a_linear_topology/linear_topology.h"
 
 TEST(Linear_Topology_MPI, Test_Creating_Linear_Graph) {
