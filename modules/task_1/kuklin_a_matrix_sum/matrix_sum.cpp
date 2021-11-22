@@ -41,7 +41,7 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
     if (procRank == 0) {
         int k = 0;
         for (int proc = 1; proc < procNum; proc++) {
-            for (int i = proc - 1; i < proc - 1 + delta; i++) {
+            for (int i = delta * (proc - 1); i < delta * (proc - 1) + delta; i++) {
                 for (int j = 0; j < sizej; j++) {
                     tmp_vec[j + sizej * k] = mat[i][j];
                 }
