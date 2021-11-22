@@ -33,8 +33,7 @@ TEST(Linear_Topology_MPI, Test_Graph_Neighbors) {
     if ((rank == 0) || (rank == size - 1)) {
         MPI_Graph_neighbors_count(communicator, rank, &count_neighbors);
         ASSERT_EQ(count_neighbors, 1);
-    }
-    else {
+    } else {
         MPI_Graph_neighbors_count(communicator, rank, &count_neighbors);
         ASSERT_EQ(count_neighbors, 2);
     }
@@ -64,10 +63,12 @@ TEST(Linear_Topology_MPI, Test_Send_Recv_From_First_To_Last) {
         MPI_Send(&data[0], dataSize, MPI_INT, rankLast, 0, MPI_COMM_WORLD);
     }
     if (rank == rankLast) {
-        MPI_Recv(&data[0], dataSize, MPI_INT, rankFirst, 0, MPI_COMM_WORLD, &status);
+        MPI_Recv(&data[0], dataSize, MPI_INT,
+            rankFirst, 0, MPI_COMM_WORLD, &status);
     }
 
-    int* r = sendData(&data[0], dataSize, MPI_INT, rankLast, 0, communicator, rankFirst, rank);
+    int* r = sendData(&data[0], dataSize, MPI_INT,
+        rankLast, 0, communicator, rankFirst, rank);
     if (rank == rankLast) {
         std::vector<int> message(data, data + dataSize);
         std::vector<int> result_message(r, r + dataSize);
@@ -97,10 +98,12 @@ TEST(Linear_Topology_MPI, Test_Send_Recv_From_First_To_Last_Large_Size) {
         MPI_Send(&m[0], size_vec, MPI_INT, rank_r, 0, MPI_COMM_WORLD);
     }
     if (rank == rank_r) {
-        MPI_Recv(&m[0], size_vec, MPI_INT, rank_s, 0, MPI_COMM_WORLD, &status);
+        MPI_Recv(&m[0], size_vec, MPI_INT,
+            rank_s, 0, MPI_COMM_WORLD, &status);
     }
 
-    int* r = sendData(&m[0], size_vec, MPI_INT, rank_r, 0, communicator, rank_s, rank);
+    int* r = sendData(&m[0], size_vec, MPI_INT,
+        rank_r, 0, communicator, rank_s, rank);
     if (rank == rank_r) {
         std::vector<int> message(m, m + size_vec);
         std::vector<int> result_message(r, r + size_vec);
@@ -127,13 +130,16 @@ TEST(Linear_Topology_MPI, Test_Send_Recv_From_Last_To_First) {
     int* m = new int[size_vec];
     if (rank == rank_s) {
         m = getRandomSequence(size_vec);
-        MPI_Send(&m[0], size_vec, MPI_INT, rank_r, 0, MPI_COMM_WORLD);
+        MPI_Send(&m[0], size_vec, MPI_INT,
+            rank_r, 0, MPI_COMM_WORLD);
     }
     if (rank == rank_r) {
-        MPI_Recv(&m[0], size_vec, MPI_INT, rank_s, 0, MPI_COMM_WORLD, &status);
+        MPI_Recv(&m[0], size_vec, MPI_INT,
+            rank_s, 0, MPI_COMM_WORLD, &status);
     }
 
-    int* r = sendData(&m[0], size_vec, MPI_INT, rank_r, 0, communicator, rank_s, rank);
+    int* r = sendData(&m[0], size_vec, MPI_INT,
+        rank_r, 0, communicator, rank_s, rank);
     if (rank == rank_r) {
         std::vector<int> message(m, m + size_vec);
         std::vector<int> result_message(r, r + size_vec);
@@ -161,13 +167,16 @@ TEST(Linear_Topology_MPI, Test_Send_Recv_From_Last_To_First_Large_Size) {
 
     if (rank == rankFirst) {
         m = getRandomSequence(size_vec);
-        MPI_Send(&m[0], size_vec, MPI_INT, rankLast, 0, MPI_COMM_WORLD);
+        MPI_Send(&m[0], size_vec, MPI_INT,
+            rankLast, 0, MPI_COMM_WORLD);
     }
     if (rank == rankLast) {
-        MPI_Recv(&m[0], size_vec, MPI_INT, rankFirst, 0, MPI_COMM_WORLD, &status);
+        MPI_Recv(&m[0], size_vec, MPI_INT,
+            rankFirst, 0, MPI_COMM_WORLD, &status);
     }
 
-    int* r = sendData(&m[0], size_vec, MPI_INT, rankLast, 0, communicator, rankFirst, rank);
+    int* r = sendData(&m[0], size_vec, MPI_INT,
+        rankLast, 0, communicator, rankFirst, rank);
     if (rank == rankLast) {
         std::vector<int> message(m, m + size_vec);
         std::vector<int> result_message(r, r + size_vec);
