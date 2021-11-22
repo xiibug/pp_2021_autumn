@@ -1,7 +1,7 @@
 // Copyright 2021 Brazhnik Dmitry
 #include <gtest/gtest.h>
 #include <vector>
-#include "../../../modules/task_1/brazhnik_d_vector_find_min/find_min_element_vector.h"
+#include "./find_min_element_vector.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, TEST_FIND_MIN_VAL_IN_VECTOR) {
