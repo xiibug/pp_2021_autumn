@@ -5,7 +5,7 @@
 #include "mpi.h"
 
 std::string CreateRandomStr(size_t size) {
-  std::string str;
+  std::string str(size, ' ');
   for (size_t i = 0; i < size; i++) {
     str += static_cast<char>(rand() % 119 + 9);
   }
@@ -13,7 +13,7 @@ std::string CreateRandomStr(size_t size) {
 }
 
 std::string CreateOnlyLettersStr(size_t size) {
-  std::string str;
+  std::string str(size, ' ');
   static const char alphabet[] =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   for (size_t i = 0; i < size; i++) {
@@ -46,7 +46,7 @@ int CountingLettersParallel(const std::string& str) {
     }
   }
 
-  std::string partial_str;
+  std::string partial_str(delta, ' ');
   if (rank == 0) {
     partial_str = std::string(str.begin(), str.begin() + delta);
   } else {
