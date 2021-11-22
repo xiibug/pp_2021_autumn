@@ -9,7 +9,9 @@ TEST(Parallel_Operations_MPI, Test_Empty_Random_Str) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
   const int str_size = 0;
-  str = CreateRandomStr(str_size);
+  if (rank == 0) {
+    str = CreateRandomStr(str_size);
+  }
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
     int expected_result = 0;
@@ -21,11 +23,13 @@ TEST(Parallel_Operations_MPI, Test_Only_Letters_100) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
-  const int str_size = 20;
-  str = CreateOnlyLettersStr(str_size);
+  const int str_size = 100;
+  if (rank == 0) {
+    str = CreateOnlyLettersStr(str_size);
+  }
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
-    int expected_result = 20;
+    int expected_result = 100;
     ASSERT_EQ(expected_result, par_result);
   }
 }
@@ -34,7 +38,9 @@ TEST(Parallel_Operations_MPI, Test_20_Letters_Str) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
-  str = "DDD#aa&a%B4c78";
+  if (rank == 0) {
+    str = "DDD2DDD2D27DD4D4d7dd7dd4ddd4dd7";
+  }
   int par_result = CountingLettersParallel(str);
   if (rank == 0) {
     int expected_result = 20;
@@ -47,11 +53,12 @@ TEST(Parallel_Operations_MPI, Test_Empty_Str_Parallel_Equals_Sequential) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
   const int str_size = 0;
-  str = CreateOnlyLettersStr(str_size);
-  int par_result, seq_result;
-  par_result = CountingLettersParallel(str);
   if (rank == 0) {
-    seq_result = CountingLettersSequential(str);
+    str = CreateOnlyLettersStr(str_size);
+  }
+  int par_result = CountingLettersParallel(str);
+  if (rank == 0) {
+    int seq_result = CountingLettersSequential(str);
     ASSERT_EQ(seq_result, par_result);
   }
 }
@@ -60,9 +67,10 @@ TEST(Parallel_Operations_MPI, Test_No_Letters_Str) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::string str;
-  str = "$%##4235!8*15%79)-7$}=";
-  int result;
-  result = CountingLettersParallel(str);
+  if (rank == 0) {
+    str = "$%##4235!8*15%79)-7$}=";
+  }
+  int result = CountingLettersParallel(str);
   if (rank == 0) {
     int expected_result = 0;
     ASSERT_EQ(expected_result, result);
