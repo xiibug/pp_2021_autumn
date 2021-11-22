@@ -131,8 +131,8 @@ Navigate to a source code folder.
 * Name your pull request in the following way:
   * for tasks:
   ```
-  <Фамилия Имя>. Задача <Номер задачи>. <Полное название задачи>.
-  Нестеров Александр. Задача 1. Сумма элементов вектора.
+  <Фамилия Имя>. Задача <Номер задачи>. Вариант <Номер варианта>. <Полное название задачи>.
+  Нестеров Александр. Задача 1. Вариант 123. Сумма элементов вектора.
   ```
  
 * Provide the full task definition in pull request's description.
