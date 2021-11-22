@@ -5,7 +5,7 @@
 #include <iostream>
 #include <random>
 #include <string>
-#include "mpi.h"
+#include <mpi.h>
 
 std::string CreateRandomStr(size_t size);
 std::string CreateOnlyLettersStr(size_t size);
