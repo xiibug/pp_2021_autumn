@@ -38,7 +38,6 @@ int matrixSumParal(vector<vector<int>> mat, int sizei, int sizej) {
 	MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
 	
 	int delta = sizei / procNum;
-	double deltaRemain = sizei % procNum;
 	int size_of_tmp_vec = delta * sizej;
 	vector<int> tmp_vec(size_of_tmp_vec);
 
