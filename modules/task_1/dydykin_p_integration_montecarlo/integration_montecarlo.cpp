@@ -15,7 +15,7 @@ double func2(double x) {
 }
 
 double func3(double x) {
-    return (pow(x, 2));
+    return 2 * x + 4;
 }
 
 double MonteCarloWithOutMPI(int N, int a, int b, double(*func)(double)) {

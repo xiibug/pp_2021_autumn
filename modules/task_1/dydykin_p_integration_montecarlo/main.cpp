@@ -38,7 +38,7 @@ TEST(Test_MonteCarlo, TestFunc3) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     int a, b, N;
     a = 15;
-    b = 27;
+    b = 20;
     N = 20000;
 
     double mpi_result = MonteCarloMPI(N, a, b, func3);
