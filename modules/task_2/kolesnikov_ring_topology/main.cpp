@@ -25,41 +25,45 @@ TEST(find_symbol, right_neighbour_of_0_process) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
     MPI_Comm ring = topology_ring(MPI_COMM_WORLD);
-    if (rank == 0) {
+    if (rank == 0 && size > 1) {
         MPI_Cart_shift(ring, 0, 1, &neighbours[0], &neighbours[1]);
         ASSERT_EQ(1, neighbours[1]);
     }
 }
 
 TEST(find_symbol, send_from_3_to_5) {
-    int rank = 0;
+    int rank = 0, size = 0;
     int to_send = 12, to_get = 0;
     MPI_Status status;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm ring = topology_ring(MPI_COMM_WORLD);
-
-    if (rank == 3) {
-        MPI_Send(&to_send, 1, MPI_INT, 5, 1, ring);
-    }
-    if (rank == 5) {
-        MPI_Recv(&to_get, 1, MPI_INT, 3, 1, ring, &status);
-        ASSERT_EQ(to_send, to_get);
+    if (size > 5) {
+        if (rank == 3) {
+            MPI_Send(&to_send, 1, MPI_INT, 5, 1, ring);
+        }
+        if (rank == 5) {
+            MPI_Recv(&to_get, 1, MPI_INT, 3, 1, ring, &status);
+            ASSERT_EQ(to_send, to_get);
+        }
     }
 }
 
 TEST(find_symbol, send_from_5_to_3) {
-    int rank = 0;
+    int rank = 0, size = 0;
     int to_send = 150, to_get = 0;
     MPI_Status status;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm ring = topology_ring(MPI_COMM_WORLD);
-
-    if (rank == 5) {
-        MPI_Send(&to_send, 1, MPI_INT, 3, 1, ring);
-    }
-    if (rank == 3) {
-        MPI_Recv(&to_get, 1, MPI_INT, 5, 1, ring, &status);
-        ASSERT_EQ(to_send, to_get);
+    if (size > 5) {
+        if (rank == 5) {
+            MPI_Send(&to_send, 1, MPI_INT, 3, 1, ring);
+        }
+        if (rank == 3) {
+            MPI_Recv(&to_get, 1, MPI_INT, 5, 1, ring, &status);
+            ASSERT_EQ(to_send, to_get);
+        }
     }
 }
 
