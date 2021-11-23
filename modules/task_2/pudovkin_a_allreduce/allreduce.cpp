@@ -1,11 +1,12 @@
 // Copyright 2021 Pudovkin Artem
 #include <mpi.h>
+#include <cstring>
 #include "../../..//modules/task_2/pudovkin_a_allreduce/allreduce.h"
 
 int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm) {
-    if (recvbuf == nullptr) 
+    if (recvbuf == nullptr)
         return MPI_ERR_BUFFER;
-    if (count <= 0) 
+    if (count <= 0)
         return MPI_ERR_COUNT;
     if ((datatype != MPI_INT) && (datatype != MPI_FLOAT) && (datatype != MPI_DOUBLE))
         return MPI_ERR_TYPE;
@@ -31,11 +32,9 @@ int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MP
 
         if (datatype == MPI_INT) {
             bufferInt = new int[count];
-        }
-        else if (datatype == MPI_FLOAT) {
+        } else if (datatype == MPI_FLOAT) {
             bufferFloat = new float[count];
-        }
-        else if (datatype == MPI_DOUBLE) {
+        } else if (datatype == MPI_DOUBLE) {
             bufferDouble = new double[count];
         }
 
@@ -50,16 +49,22 @@ int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MP
 
             if (op == MPI_MAX) {
                 for (int i = 0; i < count; i++) {
-                    if (datatype == MPI_INT) static_cast<int*>(recvbuf)[i] = std::max(static_cast<int*>(recvbuf)[i], bufferInt[i]);
-                    if (datatype == MPI_FLOAT) static_cast<float*>(recvbuf)[i] = std::max(static_cast<float*>(recvbuf)[i], bufferFloat[i]);
-                    if (datatype == MPI_DOUBLE) static_cast<double*>(recvbuf)[i] = std::max(static_cast<double*>(recvbuf)[i], bufferDouble[i]);
+                    if (datatype == MPI_INT) 
+                        static_cast<int*>(recvbuf)[i] = std::max(static_cast<int*>(recvbuf)[i], bufferInt[i]);
+                    if (datatype == MPI_FLOAT) 
+                        static_cast<float*>(recvbuf)[i] = std::max(static_cast<float*>(recvbuf)[i], bufferFloat[i]);
+                    if (datatype == MPI_DOUBLE) 
+                        static_cast<double*>(recvbuf)[i] = std::max(static_cast<double*>(recvbuf)[i], bufferDouble[i]);
                 }
             }
             if (op == MPI_MIN) {
                 for (int i = 0; i < count; i++) {
-                    if (datatype == MPI_INT) static_cast<int*>(recvbuf)[i] = std::min(static_cast<int*>(recvbuf)[i], bufferInt[i]);
-                    if (datatype == MPI_FLOAT) static_cast<float*>(recvbuf)[i] = std::min(static_cast<float*>(recvbuf)[i], bufferFloat[i]);
-                    if (datatype == MPI_DOUBLE) static_cast<double*>(recvbuf)[i] = std::min(static_cast<double*>(recvbuf)[i], bufferDouble[i]);
+                    if (datatype == MPI_INT) 
+                        static_cast<int*>(recvbuf)[i] = std::min(static_cast<int*>(recvbuf)[i], bufferInt[i]);
+                    if (datatype == MPI_FLOAT) 
+                        static_cast<float*>(recvbuf)[i] = std::min(static_cast<float*>(recvbuf)[i], bufferFloat[i]);
+                    if (datatype == MPI_DOUBLE) 
+                        static_cast<double*>(recvbuf)[i] = std::min(static_cast<double*>(recvbuf)[i], bufferDouble[i]);
                 }
             }
             if (op == MPI_SUM) {
