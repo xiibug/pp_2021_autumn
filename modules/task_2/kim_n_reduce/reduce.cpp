@@ -72,7 +72,7 @@ int Reduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op op
             (static_cast<float*>(recvbuf))[j] *= tmp[j];
           } else {
             return -3;
-	      }
+          }
         }
       }
       delete[] tmp;
