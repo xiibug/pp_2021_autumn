@@ -1,9 +1,10 @@
-﻿//  Copyright 2021 Kuklin Andrey
+﻿// Copyright 2021 Kuklin Andrey
 #include <gtest/gtest.h>
 #include <vector>
 #include <random>
 #include "./matrix_sum.h"
 #include <gtest-mpi-listener.hpp>
+
 
 TEST(Parrallel_Operations_MPI, Test_sum_with_fix_large_numbers_of_lines) {
     int procRank;

@@ -1,4 +1,4 @@
-//  Copyright 2021 Kuklin Andrey
+// Copyright 2021 Kuklin Andrey
 #ifndef MODULES_TASK_1_KUKLIN_A_MATRIX_SUM_MATRIX_SUM_H_
 #define MODULES_TASK_1_KUKLIN_A_MATRIX_SUM_MATRIX_SUM_H_
 

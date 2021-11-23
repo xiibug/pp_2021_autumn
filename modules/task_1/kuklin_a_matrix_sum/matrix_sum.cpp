@@ -1,4 +1,4 @@
-//  Copyright 2021 Kuklin Andrey
+// Copyright 2021 Kuklin Andrey
 #include <mpi.h>
 #include <vector>
 #include <random>
