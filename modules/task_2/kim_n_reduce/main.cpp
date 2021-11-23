@@ -10,9 +10,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_MAX) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<int> input_vec;
-  std::vector<int> res_vec_1;
-  std::vector<int> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<int> input_vec(20);
+  std::vector<int> res_vec_1(range);
+  std::vector<int> res_vec_2(range);
+  std::vector<int> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<int>(20);
@@ -22,15 +24,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_MAX) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<int> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_INT, local_vec.data(), range, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
@@ -58,9 +54,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_MIN) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<int> input_vec;
-  std::vector<int> res_vec_1;
-  std::vector<int> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<int> input_vec(20);
+  std::vector<int> res_vec_1(range);
+  std::vector<int> res_vec_2(range);
+  std::vector<int> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<int>(20);
@@ -70,15 +68,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_MIN) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<int> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_INT, local_vec.data(), range, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
@@ -106,9 +98,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_SUM) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<int> input_vec;
-  std::vector<int> res_vec_1;
-  std::vector<int> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<int> input_vec(20);
+  std::vector<int> res_vec_1(range);
+  std::vector<int> res_vec_2(range);
+  std::vector<int> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<int>(20);
@@ -118,15 +112,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_SUM) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<int> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_INT, local_vec.data(), range, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
@@ -154,9 +142,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_PROD) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<int> input_vec;
-  std::vector<int> res_vec_1;
-  std::vector<int> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<int> input_vec(20);
+  std::vector<int> res_vec_1(range);
+  std::vector<int> res_vec_2(range);
+  std::vector<int> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<int>(20);
@@ -166,15 +156,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_PROD) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<int> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_INT, local_vec.data(), range, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
@@ -202,9 +186,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_MAX) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<float> input_vec;
-  std::vector<float> res_vec_1;
-  std::vector<float> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<float> input_vec(20);
+  std::vector<float> res_vec_1(range);
+  std::vector<float> res_vec_2(range);
+  std::vector<float> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<float>(20);
@@ -214,15 +200,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_MAX) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<float> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_FLOAT, local_vec.data(), range, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
@@ -250,9 +230,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_MIN) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<float> input_vec;
-  std::vector<float> res_vec_1;
-  std::vector<float> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<float> input_vec(20);
+  std::vector<float> res_vec_1(range);
+  std::vector<float> res_vec_2(range);
+  std::vector<float> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<float>(20);
@@ -262,15 +244,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_MIN) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<float> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_FLOAT, local_vec.data(), range, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
@@ -298,9 +274,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_SUM) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<float> input_vec;
-  std::vector<float> res_vec_1;
-  std::vector<float> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<float> input_vec(20);
+  std::vector<float> res_vec_1(range);
+  std::vector<float> res_vec_2(range);
+  std::vector<float> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<float>(20);
@@ -310,15 +288,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_SUM) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<float> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_FLOAT, local_vec.data(), range, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
@@ -346,9 +318,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_PROD) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<float> input_vec;
-  std::vector<float> res_vec_1;
-  std::vector<float> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<float> input_vec(20);
+  std::vector<float> res_vec_1(range);
+  std::vector<float> res_vec_2(range);
+  std::vector<float> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<float>(20);
@@ -358,15 +332,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_PROD) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<float> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_FLOAT, local_vec.data(), range, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
@@ -396,9 +364,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_MAX) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<double> input_vec;
-  std::vector<double> res_vec_1;
-  std::vector<double> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<double> input_vec(20);
+  std::vector<double> res_vec_1(range);
+  std::vector<double> res_vec_2(range);
+  std::vector<double> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<double>(20);
@@ -408,15 +378,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_MAX) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<double> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_DOUBLE, local_vec.data(), range, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
@@ -444,9 +408,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_MIN) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<double> input_vec;
-  std::vector<double> res_vec_1;
-  std::vector<double> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<double> input_vec(20);
+  std::vector<double> res_vec_1(range);
+  std::vector<double> res_vec_2(range);
+  std::vector<double> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<double>(20);
@@ -456,15 +422,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_MIN) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<double> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_DOUBLE, local_vec.data(), range, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
@@ -492,9 +452,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_SUM) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<double> input_vec;
-  std::vector<double> res_vec_1;
-  std::vector<double> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<double> input_vec(20);
+  std::vector<double> res_vec_1(range);
+  std::vector<double> res_vec_2(range);
+  std::vector<double> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<double>(20);
@@ -504,15 +466,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_SUM) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<double> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_DOUBLE, local_vec.data(), range, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
@@ -540,9 +496,11 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_PROD) {
   double time_1, time_2;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  std::vector<double> input_vec;
-  std::vector<double> res_vec_1;
-  std::vector<double> res_vec_2;
+  int range = 20 / proc_num;
+  std::vector<double> input_vec(20);
+  std::vector<double> res_vec_1(range);
+  std::vector<double> res_vec_2(range);
+  std::vector<double> local_vec(range);
 
   if (rank == 0) {
     input_vec = getRandomVector<double>(20);
@@ -552,15 +510,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_PROD) {
   }
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  // range == const for all processes
-  // even if 20 % proc_num != 0
-  int range = 20 / proc_num;
-  std::vector<double> local_vec(range);
   MPI_Scatter(input_vec.data(), range, MPI_DOUBLE, local_vec.data(), range, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   if (rank == root) {
-    res_vec_1.reserve(range);
-    res_vec_2.reserve(range);
     time_1 = MPI_Wtime();
   }
 
