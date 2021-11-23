@@ -86,8 +86,7 @@ TEST(Test_MonteCarlo, TestFunc6) {
     b = 10;
     N = 20000;
 
-    double mpi_result;
-    ASSERT_ANY_THROW(mpi_result = MonteCarloMPI(N, a, b, func3));
+    ASSERT_ANY_THROW(MonteCarloMPI(N, a, b, func3));
 }
 
 int main(int argc, char** argv) {
