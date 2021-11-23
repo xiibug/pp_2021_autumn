@@ -10,6 +10,8 @@
 
 using std::vector;
 
+int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+
 template<typename type>
 vector<type> getRandomVector(const size_t size)  {
     vector<type> vec(size);
@@ -41,11 +43,9 @@ MPI_Datatype selectMPIDatatype() {
 
     if (std::is_same<type, int>::value) {
         datatype = MPI_INT;
-    }
-    else if (std::is_same<type, float>::value) {
+    } else if (std::is_same<type, float>::value) {
         datatype = MPI_FLOAT;
-    }
-    else if (std::is_same<type, double>::value) {
+    } else if (std::is_same<type, double>::value) {
         datatype = MPI_DOUBLE;
     }
 
@@ -152,8 +152,5 @@ type parallelSum(const vector<type>& vec, const size_t sizeVec) {
     }
     return globalSum;
 }
-
-int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
-
 
 #endif  // MODULES_TASK_2_PUDOVKIN_A_ALLREDUCE_ALLREDUCE_H_

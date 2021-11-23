@@ -49,21 +49,21 @@ int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MP
 
             if (op == MPI_MAX) {
                 for (int i = 0; i < count; i++) {
-                    if (datatype == MPI_INT) 
+                    if (datatype == MPI_INT)
                         static_cast<int*>(recvbuf)[i] = std::max(static_cast<int*>(recvbuf)[i], bufferInt[i]);
-                    if (datatype == MPI_FLOAT) 
+                    if (datatype == MPI_FLOAT)
                         static_cast<float*>(recvbuf)[i] = std::max(static_cast<float*>(recvbuf)[i], bufferFloat[i]);
-                    if (datatype == MPI_DOUBLE) 
+                    if (datatype == MPI_DOUBLE)
                         static_cast<double*>(recvbuf)[i] = std::max(static_cast<double*>(recvbuf)[i], bufferDouble[i]);
                 }
             }
             if (op == MPI_MIN) {
                 for (int i = 0; i < count; i++) {
-                    if (datatype == MPI_INT) 
+                    if (datatype == MPI_INT)
                         static_cast<int*>(recvbuf)[i] = std::min(static_cast<int*>(recvbuf)[i], bufferInt[i]);
-                    if (datatype == MPI_FLOAT) 
+                    if (datatype == MPI_FLOAT)
                         static_cast<float*>(recvbuf)[i] = std::min(static_cast<float*>(recvbuf)[i], bufferFloat[i]);
-                    if (datatype == MPI_DOUBLE) 
+                    if (datatype == MPI_DOUBLE)
                         static_cast<double*>(recvbuf)[i] = std::min(static_cast<double*>(recvbuf)[i], bufferDouble[i]);
                 }
             }
