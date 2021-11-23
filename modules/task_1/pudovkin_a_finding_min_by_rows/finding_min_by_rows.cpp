@@ -57,11 +57,13 @@ vector<int> parallelFindingMinimumByRows(vector<int> matrix, const vector<int>::
     if (rank == 0) {
         if (size != 1) {
             int tail = rows - size * delta;
-            localMinByRows = vector<int>(matrix.begin() + (rows - tail) * cols, matrix.end());
-            localMinByRows = sequentialFindingMinimumByRows(localMinByRows, tail, cols);
+            if (tail) {
+                localMinByRows = vector<int>(matrix.begin() + (rows - tail) * cols, matrix.end());
+                localMinByRows = sequentialFindingMinimumByRows(localMinByRows, tail, cols);
 
-            for (vector<int>::size_type i = (rows - tail), j = 0; i < rows; ++i, ++j) {
-                globalMinByRows[i] = localMinByRows[j];
+                for (vector<int>::size_type i = (rows - tail), j = 0; i < rows; ++i, ++j) {
+                    globalMinByRows[i] = localMinByRows[j];
+                }
             }
         }
     }
