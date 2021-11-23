@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Kuklin Andrey  
+﻿// Copyright 2021 Kuklin Andrey
 #include <gtest/gtest.h>
 #include <vector>
 #include <random>
@@ -12,8 +12,7 @@ TEST(Parrallel_Operations_MPI, Test_sum_with_fix_large_numbers_of_lines) {
     std::vector<std::vector<int>> matrix;
     int i = 2, j = 4;
 
-    if (procRank == 0)
-        matrix = getRandMatrix(i, j);
+    if (procRank == 0) matrix = getRandMatrix(i, j);
 
     int matSumParal = matrixSumParal(matrix, i, j);
 
