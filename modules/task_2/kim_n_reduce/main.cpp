@@ -46,8 +46,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_MAX) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (res_vec_1[i] != res_vec_2[i])
+      if (res_vec_1[i] != res_vec_2[i]) {
         ASSERT_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
@@ -93,8 +94,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_MIN) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (res_vec_1[i] != res_vec_2[i])
+      if (res_vec_1[i] != res_vec_2[i]) {
         ASSERT_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
@@ -140,8 +142,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_SUM) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (res_vec_1[i] != res_vec_2[i])
+      if (res_vec_1[i] != res_vec_2[i]) {
         ASSERT_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
@@ -187,8 +190,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_INT_PROD) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (res_vec_1[i] != res_vec_2[i])
+      if (res_vec_1[i] != res_vec_2[i]) {
         ASSERT_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
@@ -234,8 +238,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_MAX) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10)
+      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10) {
         ASSERT_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
@@ -281,8 +286,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_MIN) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10)
+      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10) {
         ASSERT_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
@@ -328,8 +334,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_SUM) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10)
+      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10) {
         ASSERT_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
@@ -377,8 +384,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_FLOAT_PROD) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10)
+      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10) {
         ASSERT_FLOAT_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
@@ -424,8 +432,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_MAX) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10)
+      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10) {
         ASSERT_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
@@ -471,8 +480,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_MIN) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10)
+      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10) {
         ASSERT_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
@@ -518,8 +528,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_SUM) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10)
+      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10) {
         ASSERT_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
@@ -567,8 +578,9 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_PROD) {
   if (rank == root) {
     time_2 = MPI_Wtime() - time_2;
     for (int i = 0; i < range; i++)
-      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10)
+      if (abs(res_vec_1[i] - res_vec_2[i]) > 1e-10) {
         ASSERT_DOUBLE_EQ(res_vec_2[i], res_vec_1[i]);
+      }
     ASSERT_LT(abs(time_2 - time_1), 1);
   }
 }
