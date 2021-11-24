@@ -2,9 +2,8 @@
 #include "DiningPhilosophers.h"
 
 namespace params {
-MPI_Status status; 
-constexpr int n = _PHOLISOPHERS_COUNT_;
-int state[n];
+MPI_Status status;
+int state[3];
 int key_fork;
 }  // namespace params
 
