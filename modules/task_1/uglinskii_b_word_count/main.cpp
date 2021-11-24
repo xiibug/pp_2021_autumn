@@ -1,7 +1,7 @@
 // Copyright 2021 Uglinskii Bogdan
 #include <gtest/gtest.h>
-#include "./word_count.h"
 #include <gtest-mpi-listener.hpp>
+#include "./word_count.h"
 
 TEST(Sequential_Word_Count_MPI, Sirus_speech_seq) {
   int ProcRank;

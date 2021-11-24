@@ -6,7 +6,7 @@
 #include <random>
 #include "../../../modules/task_1/uglinskii_b_word_count/word_count.h"
 
-int ParallelWordCount(std::string input) {
+int ParallelWordCount(const std::string input) {
   int ProcNum, ProcRank;
 
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
