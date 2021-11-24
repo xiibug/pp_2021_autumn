@@ -7,7 +7,6 @@
 #include <random>
 #include <chrono> // NOLINT [build/c++11]
 #include <iostream>
-#include <random>
 #include <thread> // NOLINT [build/c++11]
 
 #define _PHOLISOPHERS_COUNT_ 3
