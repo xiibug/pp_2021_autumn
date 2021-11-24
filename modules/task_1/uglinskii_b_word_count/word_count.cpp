@@ -3,13 +3,12 @@
 #include <random>
 #include "../../../modules/task_1/uglinskii_b_word_count/word_count.h"
 
-int ParallelWordCount(const std::string input) {
+int ParallelWordCount(std::string input_str) {
   int ProcNum, ProcRank;
 
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
 
-  std::string input_str = input;
   int str_size = input_str.size();
 
   int chunck_size = 0;
