@@ -1,11 +1,10 @@
 // Copyright 2021 Uglinskii Bogdan
-#include "../../../modules/task_1/uglinskii_b_word_count/word_count.h"
-
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <random>
 #include "mpi.h"
+#include "../../../modules/task_1/uglinskii_b_word_count/word_count.h"
 
 int ParallelWordCount(std::string input) {
   int ProcNum, ProcRank;
@@ -18,9 +17,8 @@ int ParallelWordCount(std::string input) {
 
   int chunck_size = 0;
 
-  if (str_size % ProcNum != 0) {  
+  if (str_size % ProcNum != 0) {
     int spaces_len = ProcNum - str_size % ProcNum;
-
     for (int i = 0; i < spaces_len; i++) {
       input_str += " ";
     }
@@ -32,7 +30,7 @@ int ParallelWordCount(std::string input) {
 
   if (ProcRank == 0) {
     int size_to_send = input_str.size();
-    if (ProcNum > 1) {  
+    if (ProcNum > 1) {
       for (int i = 1; i < ProcNum; i++) {
         MPI_Send(&size_to_send, 1, MPI_INT, i, 1, MPI_COMM_WORLD);
         MPI_Send(input_str.c_str(), size_to_send, MPI_CHAR, i, 2,
@@ -47,8 +45,7 @@ int ParallelWordCount(std::string input) {
     if (ProcNum > 1) {
       MPI_Status status;
 
-      MPI_Recv(&str_size, 1, MPI_INT, 0, 1, MPI_COMM_WORLD,
-               &status); 
+      MPI_Recv(&str_size, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
 
       input_str.resize(str_size + 1);
       MPI_Recv(const_cast<char*>(input_str.data()), str_size, MPI_CHAR, 0, 2,
@@ -89,8 +86,7 @@ int ParallelWordCount(std::string input) {
 int CountWordsSubstr(char* substr, int size) {
   int count = 0;
   int i = 0;
-  int chr = (int)substr[0];
-  int spaces_left = 0, spaces_right = 0;
+  int chr = substr[0];
 
   while ((substr[i] == '-' || substr[i] == ' ') && i < size) {
     i++;
@@ -102,8 +98,10 @@ int CountWordsSubstr(char* substr, int size) {
     if ((chr != ' ' && chr != '-') && word == 0) {
       word = 1;
       count++;
-    } else if (chr == ' ')
+    } else if (chr == ' ') {
       word = 0;
+    }
+      
     i++;
   }
 
@@ -112,7 +110,7 @@ int CountWordsSubstr(char* substr, int size) {
 
 std::string GenStr(int length, int max_size) {
   std::string str = "";
-  int space = 0, size = 1;
+  int size = 1;
 
   std::random_device dev;
   std::mt19937 gen(dev());
@@ -120,7 +118,7 @@ std::string GenStr(int length, int max_size) {
   for (int i = 0; i < length; i++) {
     size = 1 + gen() % max_size;
     for (int j = 0; j < size; j++) {
-      str += (char)(97 + gen() % (122 - 97));
+      str += static_cast<char>(97 + gen() % (122 - 97));
     }
     str += ' ';
   }
