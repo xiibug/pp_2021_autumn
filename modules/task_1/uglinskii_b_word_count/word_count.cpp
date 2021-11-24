@@ -3,7 +3,7 @@
 #include <ctime>
 #include <iostream>
 #include <random>
-#include "mpi.h"
+#include <mpi.h>
 #include "../../../modules/task_1/uglinskii_b_word_count/word_count.h"
 
 int ParallelWordCount(std::string input) {
@@ -101,7 +101,6 @@ int CountWordsSubstr(char* substr, int size) {
     } else if (chr == ' ') {
       word = 0;
     }
-      
     i++;
   }
 

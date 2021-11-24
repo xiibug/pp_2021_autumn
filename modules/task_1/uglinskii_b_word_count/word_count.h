@@ -11,4 +11,4 @@ int CountWordsSubstr(char* substr, int size);
 
 std::string GenStr(int length, int max_size = 2);
 
-#endif  //MODULES_TASK_1_UGLINSKII_B_WORD_COUNT_WORD_COUNT_H_
+#endif  // MODULES_TASK_1_UGLINSKII_B_WORD_COUNT_WORD_COUNT_H_
