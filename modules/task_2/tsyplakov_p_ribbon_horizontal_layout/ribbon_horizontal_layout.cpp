@@ -35,7 +35,6 @@ vector<int> getSequentialOperations(const vector<int>& globalMatrix, vector<int>
             resultMultiplication[i] += globalMatrix[i * numberOfCols + j] * globalVector[j];
         }
     }
-    
     return resultMultiplication;
 }
 
