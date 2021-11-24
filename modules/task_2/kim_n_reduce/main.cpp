@@ -525,6 +525,7 @@ TEST(Parallel_Operations_MPI, Test_Reduce_DOUBLE_PROD) {
 
   MPI_Reduce(local_vec.data(), res_vec_2.data(), range, MPI_DOUBLE, MPI_PROD, root, MPI_COMM_WORLD);
 
+  // HI
   // res_vec_1[i] && res_vec_2[i] sometimes equal to x.ye+18 - x.ye+30 and more
   // so, i use assert_double_eq instead assert_lt (time is good on other tests => good at this)
   if (rank == root) {
