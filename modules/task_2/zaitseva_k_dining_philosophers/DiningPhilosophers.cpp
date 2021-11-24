@@ -2,13 +2,13 @@
 #include "DiningPhilosophers.h"
 
 namespace params {
-MPI_Status status;
-int state[_PHOLISOPHERS_COUNT_];
+MPI_Status status; constexpr int n = _PHOLISOPHERS_COUNT_;
+int state[n];
 int key_fork;
 }  // namespace params
 
 void think(int idx) {
-  int ms = 10 + (rand() % 100);
+  int ms = 10 + (rand_r() % 100);
   std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
