@@ -1,9 +1,9 @@
 // Copyright 2021 Uglinskii Bogdan
+#include <mpi.h>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <random>
-#include <mpi.h>
 #include "../../../modules/task_1/uglinskii_b_word_count/word_count.h"
 
 int ParallelWordCount(std::string input) {
