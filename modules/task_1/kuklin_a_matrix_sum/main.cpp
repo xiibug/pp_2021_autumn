@@ -1,7 +1,6 @@
 // Copyright 2021 Kuklin Andrey
 #include <gtest/gtest.h>
 #include <vector>
-#include <random>
 #include "./matrix_sum.h"
 #include <gtest-mpi-listener.hpp>
 
@@ -45,7 +44,7 @@ TEST(Parrallel_Operations_MPI, Test_sum_with_fix_large_numbers_of_columns) {
     }
 }
 
-TEST(Parrallel_Operations_MPI, Test_sum_with_rand_sizes) {
+TEST(Parrallel_Operations_MPI, Test_sum_with_not_rand_matrix) {
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     std::vector<std::vector<int>> matrix;
@@ -92,7 +91,7 @@ TEST(Parrallel_Operations_MPI, Test_sum_sqr_matrix) {
     }
 }
 
-TEST(Parrallel_Operations_MPI, Test_sum_sqr_matrix_with_rand_size) {
+TEST(Parrallel_Operations_MPI, Test_sum_sqr_matrix_with_not_rand_sqr_matrix) {
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     std::vector<std::vector<int>> matrix;
