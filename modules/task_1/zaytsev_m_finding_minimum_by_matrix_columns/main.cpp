@@ -10,9 +10,9 @@ TEST(Sequential_Finding_Minimum_By_Matrix_Columns, Rows_Equal_Columns) {
     if (currentProcess == 0) {
         std::vector<int> matrix = { 2, 4, 0, -2, 1, 3, -1, 0, 1 };
 
-        std::vector<int> globalMatrixMultiplication = getSequentialOperations(matrix, 3, 3);
-        std::vector<int> referenceMatrixMultiplication = { -2, 0, 0 };
-        ASSERT_EQ(globalMatrixMultiplication, referenceMatrixMultiplication);
+        std::vector<int> globalMatrixMininimum = sequentialFindMinimum(matrix, 3, 3);
+        std::vector<int> referenceMatrixMinimum = { -2, 0, 0 };
+        ASSERT_EQ(globalMatrixMininimum, referenceMatrixMinimum);
     }
 }
 
@@ -23,9 +23,9 @@ TEST(Sequential_Finding_Minimum_By_Matrix_Columns, Rows_Greater_Columns) {
     if (currentProcess == 0) {
         std::vector<int> matrix = { 2, 4, 0, -2, 1, 3, -1, 0, -10, 2, 4, 5 };
 
-        std::vector<int> globalMatrixMultiplication = getSequentialOperations(matrix, 4, 3);
-        std::vector<int> referenceMatrixMultiplication = { -2, 0, -10 };
-        ASSERT_EQ(globalMatrixMultiplication, referenceMatrixMultiplication);
+        std::vector<int> globalMatrixMininimum = sequentialFindMinimum(matrix, 4, 3);
+        std::vector<int> referenceMatrixMinimum = { -2, 0, -10 };
+        ASSERT_EQ(globalMatrixMininimum, referenceMatrixMinimum);
     }
 }
 
@@ -36,9 +36,9 @@ TEST(Sequential_Finding_Minimum_By_Matrix_Columns, Rows_Less_Columns) {
     if (currentProcess == 0) {
         std::vector<int> matrix = { 2, 4, 0, -2, 1, 3, -1, 0, 1, 2, 4, 5 };
 
-        std::vector<int> globalMatrixMultiplication = getSequentialOperations(matrix, 3, 4);
-        std::vector<int> referenceMatrixMultiplication = { 1, 2, -1, -2 };
-        ASSERT_EQ(globalMatrixMultiplication, referenceMatrixMultiplication);
+        std::vector<int> globalMatrixMininimum = sequentialFindMinimum(matrix, 3, 4);
+        std::vector<int> referenceMatrixMinimum = { 1, 2, -1, -2 };
+        ASSERT_EQ(globalMatrixMininimum, referenceMatrixMinimum);
     }
 }
 
@@ -47,18 +47,18 @@ TEST(Parallel_Finding_Minimum_By_Matrix_Columns, Rows_Equal_Columns) {
     MPI_Comm_rank(MPI_COMM_WORLD, &currentProcess);
 
     std::vector<int> matrix;
-    const std::vector<int>::size_type matrixRows = 10;
-    const std::vector<int>::size_type matrixColumns = 10;
+    const std::vector<int>::size_type matrixRows = 100;
+    const std::vector<int>::size_type matrixColumns = 100;
 
     if (currentProcess == 0) {
         getRandomMatrix(&matrix, matrixRows * matrixColumns);
     }
 
-    std::vector<int> globalMatrixMinimum = getParallelOperations(matrix, matrixRows, matrixColumns);
+    std::vector<int> globalMatrixMininimum = parallelFindMinimum(matrix, matrixRows, matrixColumns);
 
     if (currentProcess == 0) {
-        std::vector<int> referenceMatrixMinimum = getSequentialOperations(matrix, matrixRows, matrixColumns);
-        ASSERT_EQ(globalMatrixMinimum, referenceMatrixMinimum);
+        std::vector<int> referenceMatrixMinimum = sequentialFindMinimum(matrix, matrixRows, matrixColumns);
+        ASSERT_EQ(globalMatrixMininimum, referenceMatrixMinimum);
     }
 }
 
@@ -74,10 +74,10 @@ TEST(Parallel_Finding_Minimum_By_Matrix_Columns, Rows_Greater_Columns) {
         getRandomMatrix(&matrix, matrixRows * matrixColumns);
     }
 
-    std::vector<int> globalMatrixMinimum = getParallelOperations(matrix, matrixRows, matrixColumns);
+    std::vector<int> globalMatrixMinimum = parallelFindMinimum(matrix, matrixRows, matrixColumns);
 
     if (currentProcess == 0) {
-        std::vector<int> referenceMatrixMinimum = getSequentialOperations(matrix, matrixRows, matrixColumns);
+        std::vector<int> referenceMatrixMinimum = sequentialFindMinimum(matrix, matrixRows, matrixColumns);
         ASSERT_EQ(globalMatrixMinimum, referenceMatrixMinimum);
     }
 }
@@ -94,10 +94,10 @@ TEST(Parallel_Finding_Minimum_By_Matrix_Columns, Rows_Less_Columns) {
         getRandomMatrix(&matrix, matrixRows * matrixColumns);
     }
 
-    std::vector<int> globalMatrixMinimum = getParallelOperations(matrix, matrixRows, matrixColumns);
+    std::vector<int> globalMatrixMinimum = parallelFindMinimum(matrix, matrixRows, matrixColumns);
 
     if (currentProcess == 0) {
-        std::vector<int> referenceMatrixMinimum = getSequentialOperations(matrix, matrixRows, matrixColumns);
+        std::vector<int> referenceMatrixMinimum = sequentialFindMinimum(matrix, matrixRows, matrixColumns);
         ASSERT_EQ(globalMatrixMinimum, referenceMatrixMinimum);
     }
 }
@@ -118,10 +118,10 @@ TEST(Parallel_Finding_Minimum_By_Matrix_Columns, Minimum_Elements_At_The_Beginni
         }
     }
 
-    std::vector<int> globalMatrixMinimum = getParallelOperations(matrix, matrixRows, matrixColumns);
+    std::vector<int> globalMatrixMinimum = parallelFindMinimum(matrix, matrixRows, matrixColumns);
 
     if (currentProcess == 0) {
-        std::vector<int> referenceMatrixMinimum = getSequentialOperations(matrix, matrixRows, matrixColumns);
+        std::vector<int> referenceMatrixMinimum = sequentialFindMinimum(matrix, matrixRows, matrixColumns);
         ASSERT_EQ(globalMatrixMinimum, referenceMatrixMinimum);
     }
 }
@@ -142,10 +142,10 @@ TEST(Parallel_Finding_Minimum_By_Matrix_Columns, Minimum_Elements_At_The_Ending_
         }
     }
 
-    std::vector<int> globalMatrixMinimum = getParallelOperations(matrix, matrixRows, matrixColumns);
+    std::vector<int> globalMatrixMinimum = parallelFindMinimum(matrix, matrixRows, matrixColumns);
 
     if (currentProcess == 0) {
-        std::vector<int> referenceMatrixMinimum = getSequentialOperations(matrix, matrixRows, matrixColumns);
+        std::vector<int> referenceMatrixMinimum = sequentialFindMinimum(matrix, matrixRows, matrixColumns);
         ASSERT_EQ(globalMatrixMinimum, referenceMatrixMinimum);
     }
 }

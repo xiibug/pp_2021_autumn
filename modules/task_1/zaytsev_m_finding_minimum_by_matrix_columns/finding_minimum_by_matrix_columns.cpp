@@ -13,8 +13,8 @@ void getRandomMatrix(std::vector<int>* matrix, std::vector<int>::size_type matri
     }
 }
 
-std::vector<int> getSequentialOperations(const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
-                                                                      std::vector<int>::size_type matrixColumns) {
+std::vector<int> sequentialFindMinimum(const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
+                                                                    std::vector<int>::size_type matrixColumns) {
     std::vector<int> vectorOfMinimum(matrixColumns);
 
     for (std::vector<int>::size_type i = 0; i < matrixColumns; ++i) {
@@ -26,8 +26,8 @@ std::vector<int> getSequentialOperations(const std::vector<int>& matrix, std::ve
 
     return vectorOfMinimum;
 }
-std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
-                                                                    std::vector<int>::size_type matrixColumns) {
+std::vector<int> parallelFindMinimum(const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
+                                                                  std::vector<int>::size_type matrixColumns) {
     std::vector<int> localVectorOfMinimum, globalVectorOfMinimum;
     int dataPerProcess = 0, lossData = 0;
 
@@ -47,7 +47,7 @@ std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vect
     MPI_Scatter(matrix.data() + lossData * matrixColumns, dataPerProcess * matrixColumns, MPI_INT,
           localVectorOfMinimum.data(), dataPerProcess * matrixColumns, MPI_INT, 0, MPI_COMM_WORLD);
 
-    localVectorOfMinimum = getSequentialOperations(localVectorOfMinimum, dataPerProcess, matrixColumns);
+    localVectorOfMinimum = sequentialFindMinimum(localVectorOfMinimum, dataPerProcess, matrixColumns);
 
     MPI_Reduce(localVectorOfMinimum.data(), globalVectorOfMinimum.data(), matrixColumns,
                                                     MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
@@ -55,7 +55,7 @@ std::vector<int> getParallelOperations(const std::vector<int>& matrix, std::vect
     if (currentProcess == 0) {
         if (lossData) {
             localVectorOfMinimum = std::vector<int>(matrix.begin(), matrix.begin() + lossData * matrixColumns);
-            localVectorOfMinimum = getSequentialOperations(localVectorOfMinimum, lossData, matrixColumns);
+            localVectorOfMinimum = sequentialFindMinimum(localVectorOfMinimum, lossData, matrixColumns);
 
             for (std::vector<int>::size_type i = 0; i < matrixColumns; ++i) {
                 if (globalVectorOfMinimum[i] > localVectorOfMinimum[i]) {
