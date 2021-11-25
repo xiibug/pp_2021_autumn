@@ -40,8 +40,7 @@ vector<int> simpleMerge(const vector<int>& firstVector, const vector<int>& secon
     while (firstIt < firstVector.size() && secondIt < secondVector.size()) {
         if (firstVector[firstIt] < secondVector[secondIt]) {
             resultVector[resutIt++] = firstVector[firstIt++];
-        }
-        else {
+        } else {
             resultVector[resutIt++] = secondVector[secondIt++];
         }
     }
@@ -121,6 +120,6 @@ vector<int> parallelRadixSort(const vector<int>& vectorOfValue, const v_size_t v
             globalVector = simpleMerge(globalVector, localVector);
         }
     }
-    
+
     return globalVector;
 }
