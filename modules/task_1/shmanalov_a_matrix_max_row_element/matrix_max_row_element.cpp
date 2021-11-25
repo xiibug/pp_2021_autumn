@@ -1,6 +1,7 @@
 // Copyright 2021 Shmanalov Alexander
 #include <mpi.h>
 #include <random>
+#include <climits>
 #include "../../../modules/task_1/shmanalov_a_matrix_max_row_element/matrix_max_row_element.h"
 
 void generationRandomMatrix(int** matrix, int rows, int columns) {
