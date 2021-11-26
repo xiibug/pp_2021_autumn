@@ -8,6 +8,7 @@
 #include <cstdint>
 
 #define UINT64_T uint64_t
+#define MIE "mem init error"
 
 template<class T>
 class matrix {
@@ -51,6 +52,8 @@ matrix<T>::matrix(const matrix<T>& c) {
         m = nullptr;
     } else {
         m = new T[static_cast<UINT64_T>(numRows) * numColums];  // C26451
+        if (m == nullptr)
+            throw MIE;
         for (int i = 0; i < numRows * numColums; i++)
             m[i] = c.m[i];
     }
@@ -63,7 +66,9 @@ matrix<T>::matrix(const int _numRows, const int _numColumns) {
     numRows = _numRows;
     numColums = _numColumns;
     m = new T[static_cast<UINT64_T>(numRows) * numColums];  // C26451
-    // for (int i = 0; i < numRows * numColums; m[i++] = 0) {}
+    if (m == nullptr)
+        throw MIE;
+    for (int i = 0; i < numRows * numColums; m[i++] = 0) {}
 }
 
 template<class T>
@@ -114,6 +119,8 @@ matrix<T>& matrix<T>::operator=(const matrix<T>& c) {
     numRows = c.numRows;
     numColums = c.numColums;
     m = new T[static_cast<UINT64_T>(numRows) * numColums];  // C26451
+    if (m == nullptr)
+        throw MIE;
     for (int i = 0; i < numRows * numColums; i++)
         m[i] = c.m[i];
     return *this;
@@ -155,6 +162,8 @@ void matrix<T>::prepareSpace(int _numRows, int _numColums) {
     numRows = _numRows;
     numColums = _numColums;
     m = new T[static_cast<UINT64_T>(numRows) * numColums];  // C26451
+    if (m == nullptr)
+        throw MIE;
 }
 
 // can generate in range [-maxValue, -minValue] && [minValue, maxValue] IN: minValue, maxValue > 0
@@ -187,7 +196,7 @@ matrix<T> parallelMultiplication(const matrix<T>* A, const matrix<T>* B, MPI_Dat
         matrixSizes[2] = B->getNumRows();
         matrixSizes[3] = B->getNumColums();
     }
-    MPI_Bcast(static_cast<void*>(matrixSizes), 4, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(reinterpret_cast<void*>(matrixSizes), 4, MPI_INT, 0, MPI_COMM_WORLD);
 
     // Now all processes have info about matrixes sizes
     // but !root processes have to prepare workspace for operations
@@ -211,6 +220,10 @@ matrix<T> parallelMultiplication(const matrix<T>* A, const matrix<T>* B, MPI_Dat
     if (procRank == 0) {
         sendcounts = new int[procCount];
         displs = new int[procCount];
+        if (sendcounts == nullptr)
+            throw MIE;
+        if (displs == nullptr)
+            throw MIE;
         // scnt[?,?,?,?] -> [0,0,0,0] | [?,?,?,?] -> [1,1,1,1]
         std::fill_n(sendcounts, procCount, matrixSizes[0] / procCount);
         // [0,0,0,0] -> [1,1,1,0] | [1,1,1,1] -> [2,2,1,1]
