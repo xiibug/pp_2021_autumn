@@ -4,19 +4,21 @@
 #include <vector>
 #include <ctime>
 #include <iostream>
-#include "order_errors.h"
+#include "./order_errors.h"
 
-int orderErrors(std::vector<int>& v) {
+int orderErrors(std::vector<int> v) {
     int procs, rank, rem, pairsPerProc, res, errors = 0;
-    int n_ = v.size() - 1;
+    int n_ = static_cast<int>(v.size()) - 1;
     int* displs;
     int* scounts;
-    int* arr = new int[v.size()];
-    for (int i = 0; i < v.size(); i++) {
-        arr[i] = v[i];
-    }
+    int* arr = new int[static_cast<int>(v.size())];
     MPI_Comm_size(MPI_COMM_WORLD, &procs);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if (rank == 0) {
+        for (int i = 0; i < static_cast<int>(v.size()); i++) {
+            arr[i] = v[i];
+        }
+    }
     rem = n_ % procs;
     pairsPerProc = n_ / procs;
     displs = new int[procs];
