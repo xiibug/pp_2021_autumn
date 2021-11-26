@@ -1,7 +1,7 @@
 // Copyright 2021 Ivanov Arkadiy
 #include <gtest/gtest.h>
-#include "./vector_alternations.h"
 #include <iostream>
+#include "./vector_alternations.h"
 #include <gtest-mpi-listener.hpp>
 
 
