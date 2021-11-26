@@ -16,7 +16,7 @@ int* RandomVector(int size) {
   return our_vector;
 }
 int SequentialMin(int* our_vector, const int count_size_vector) {
-  int size = count_size_vector, min_elem;
+  int min_elem;
   min_elem = our_vector[0];
   for (int i = 1; i < count_size_vector; i++)
     if (min_elem > our_vector[i]) min_elem = our_vector[i];
@@ -25,14 +25,13 @@ int SequentialMin(int* our_vector, const int count_size_vector) {
 int ParallelMin(int* global_our_vector, const int count_size_vector) {
   int *Send = nullptr, *local_vector = nullptr;
   int our_size, our_rank, TotalMin, SeqMin, Buffer_Size;
-  MPI_Status status;
   MPI_Comm_size(MPI_COMM_WORLD, &our_size);
   MPI_Comm_rank(MPI_COMM_WORLD, &our_rank);
   if (our_rank == 0) {
     local_vector = new int[our_size];
     Send = new int[our_size];
     int delta = count_size_vector % our_size;
-    int summ = NULL;
+    int summ = 0;
     for (int i = 0; i < our_size; i++) {
       Send[i] = (count_size_vector / our_size);
       if (delta > 0) {
