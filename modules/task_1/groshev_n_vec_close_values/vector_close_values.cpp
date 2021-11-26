@@ -23,7 +23,7 @@ int getMinDiffByOneProc(const std::vector <int> vector) {
     if ((vector.size() == 1) || (vector.size() == 0)) {
         return 0;
     } else {
-        for (unsigned long int i = 0; i < (vector.size() - 1); i++) {
+        for (int i = 0; i < static_cast<int>(vector.size() - 1); i++) {
             if (minDiff > abs(vector[i] - vector[i + 1]))
                 minDiff = abs(vector[i] - vector[i + 1]);
         }
