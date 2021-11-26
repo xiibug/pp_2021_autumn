@@ -2,4 +2,4 @@
 #include <mpi.h>
 #include <vector>
 
-int orderErrors(std::vector<int> v);
+int orderErrors(std::vector<int>& v);

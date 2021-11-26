@@ -1,4 +1,4 @@
-
+//  Copyright 2021 Maksim Orlov
 
 #include <gtest/gtest.h>
 #include "./order_errors.h"
@@ -8,8 +8,10 @@ TEST(MPI, small_sorted_vector) {
     std::vector<int> v = { 1, 3, 5 };
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if(rank == 0)
-        ASSERT_EQ(orderErrors(v), 0);
+    int errors = orderErrors(v);
+    if (rank == 0) {
+        ASSERT_EQ(errors, 0);
+    }
 }
 
 TEST(MPI, large_sorted_vector) {
@@ -18,16 +20,20 @@ TEST(MPI, large_sorted_vector) {
         v.push_back(i);
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if (rank == 0)
-    ASSERT_EQ(orderErrors(v), 0);
+    int errors = orderErrors(v);
+    if (rank == 0) {
+        ASSERT_EQ(errors, 0);
+    }
 }
 
 TEST(MPI, unsorted_vector) {
     std::vector<int> v = { 5, 2, 6, 13, 7, 9 };
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if (rank == 0)
-    ASSERT_EQ(orderErrors(v), 2); //2
+    int errors = orderErrors(v);
+    if (rank == 0) {
+        ASSERT_EQ(errors, 2);
+    }
 }
 
 TEST(MPI, large_unsorted_vector) {
@@ -36,16 +42,20 @@ TEST(MPI, large_unsorted_vector) {
         v.push_back(1000 - i);
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if (rank == 0)
-    ASSERT_EQ(orderErrors(v), 999);
+    int errors = orderErrors(v);
+    if (rank == 0) {
+        ASSERT_EQ(errors, 999);
+    }
 }
 
 TEST(MPI, empty_vector) {
     std::vector<int> v;
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if (rank == 0)
-    ASSERT_EQ(orderErrors(v), 0);
+    int errors = orderErrors(v);
+    if (rank == 0) {
+        ASSERT_EQ(errors, 0);
+    }
 }
 
 int main(int argc, char** argv) {
