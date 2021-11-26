@@ -18,7 +18,7 @@ std::vector<int> getRandomVector(int vecSize) {
 }
 
 
-int getMinDiffByOneProc(const std::vector <int> vector) {
+int getMinDiffByOneProc(std::vector <int> vector) {
     int minDiff = INT_MAX;
     if ((vector.size() == 1) || (vector.size() == 0)) {
         return 0;
@@ -31,7 +31,7 @@ int getMinDiffByOneProc(const std::vector <int> vector) {
     return minDiff;
 }
 
-int getMinDiffParallel(const std::vector <int> someVector) {
+int getMinDiffParallel(std::vector <int> someVector) {
     int minDiff = INT_MAX;
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
