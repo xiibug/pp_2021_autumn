@@ -64,11 +64,11 @@ TEST(Parallel_Operations_MPI, Test_uneven_count_2) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_5) {
+TEST(Parallel_Operations_MPI, Test_uneven_count_3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 23;
+    const int count_size_vector = 77;
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
@@ -79,11 +79,11 @@ TEST(Parallel_Operations_MPI, Test_5) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_6) {
+TEST(Parallel_Operations_MPI, Test_even_count_3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 24;
+    const int count_size_vector = 86;
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
