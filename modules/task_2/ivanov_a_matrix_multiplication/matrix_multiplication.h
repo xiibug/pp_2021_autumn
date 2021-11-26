@@ -219,11 +219,13 @@ matrix<T> parallelMultiplication(const matrix<T>* A, const matrix<T>* B, MPI_Dat
     int* sendcounts = nullptr, * displs = nullptr;
     if (procRank == 0) {
         sendcounts = new int[procCount];
-        displs = new int[procCount];
         if (sendcounts == nullptr)
             throw MIE;
-        if (displs == nullptr)
+        displs = new int[procCount];
+        if (displs == nullptr) {
+            delete[] sendcounts;
             throw MIE;
+        }
         // scnt[?,?,?,?] -> [0,0,0,0] | [?,?,?,?] -> [1,1,1,1]
         std::fill_n(sendcounts, procCount, matrixSizes[0] / procCount);
         // [0,0,0,0] -> [1,1,1,0] | [1,1,1,1] -> [2,2,1,1]
