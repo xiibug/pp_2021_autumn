@@ -1,6 +1,7 @@
 // Copyright 2021 Ivanov Arkadiy
 #include <gtest/gtest.h>
 #include "./vector_alternations.h"
+#include <iostream>
 #include <gtest-mpi-listener.hpp>
 
 
@@ -12,6 +13,10 @@ TEST(seq_and_par_check_equivalence, two_elems_at_the_borders_vec_size_200) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
         vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         std::fill_n(vec, vecLen, 1); vec[0] = vec[vecLen - 1] = -1;
     }
     int globalAlternations = parallelCount(vec, vecLen);
@@ -30,6 +35,10 @@ TEST(seq_and_par_check_equivalence, one_elem_in_the_middle_vec_size_200) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
         vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         std::fill_n(vec, vecLen, 1); vec[100] = -1;
     }
     int globalAlternations = parallelCount(vec, vecLen);
@@ -48,6 +57,10 @@ TEST(seq_and_par_check_equivalence, negative_vec_size_200) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
         vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         std::fill_n(vec, vecLen, -1);
     }
     int globalAlternations = parallelCount(vec, vecLen);
@@ -66,6 +79,10 @@ TEST(seq_and_par_check_equivalence, positive_vec_size_200) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
         vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         std::fill_n(vec, vecLen, 1);
     }
     int globalAlternations = parallelCount(vec, vecLen);
@@ -84,6 +101,10 @@ TEST(seq_and_par_check_equivalence, rng_vec_size_100000) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
         vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         fillVecWithRandValues(vec, vecLen);
     }
     int globalAlternations = parallelCount(vec, vecLen);
@@ -102,6 +123,10 @@ TEST(seq_and_par_check_equivalence, rng_vec_size_110) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
         vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         fillVecWithRandValues(vec, vecLen);
     }
     int globalAlternations = parallelCount(vec, vecLen);
@@ -120,6 +145,10 @@ TEST(seq_and_par_check_equivalence, rng_vec_size_11) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
         vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         fillVecWithRandValues(vec, vecLen);
     }
     int globalAlternations = parallelCount(vec, vecLen);
@@ -138,6 +167,10 @@ TEST(seq_and_par_check_equivalence, rng_vec_size_8) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if (procRank == 0) {
         vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         fillVecWithRandValues(vec, vecLen);
     }
     int globalAlternations = parallelCount(vec, vecLen);
@@ -154,6 +187,10 @@ TEST(equivalense_of_sequential_count, two_elems_at_the_borders) {
     if (procRank == 0) {
         const int vecLen = 1000;
         int* vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         bool ok = true;
         std::fill_n(vec, vecLen, 1);
         vec[0] = vec[vecLen - 1] = -1;
@@ -172,6 +209,10 @@ TEST(equivalense_of_sequential_count, one_elem_in_the_middle) {
     if (procRank == 0) {
         const int vecLen = 1000;
         int* vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         bool ok = true;
         std::fill_n(vec, vecLen, 1);
         vec[400] = -1;
@@ -190,6 +231,10 @@ TEST(equivalense_of_sequential_count, on_negative_vect) {
     if (procRank == 0) {
         const int vecLen = 1000;
         int* vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         std::fill_n(vec, vecLen, -1);
         int sc_v1 = sequentialCount_V1(vec, vecLen);
         int sc_v2 = sequentialCount_V2(vec, vecLen);
@@ -204,6 +249,10 @@ TEST(equivalense_of_sequential_count, on_positive_vect) {
     if (procRank == 0) {
         const int vecLen = 1000;
         int* vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         std::fill_n(vec, vecLen, 1);
         int sc_v1 = sequentialCount_V1(vec, vecLen);
         int sc_v2 = sequentialCount_V2(vec, vecLen);
@@ -218,6 +267,10 @@ TEST(equivalense_of_sequential_count, on_rand_vect) {
     if (procRank == 0) {
         const int vecLen = 1000;
         int *vec = new int[vecLen];
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         fillVecWithRandValues(vec, vecLen);
         int sc_v1 = sequentialCount_V1(vec, vecLen);
         int sc_v2 = sequentialCount_V2(vec, vecLen);
@@ -234,7 +287,10 @@ TEST(RNG_function_check, does_not_contain_0) {
         const int numOfIterations = 10;
         bool ok = true;
         int* vec = new int[vecLen];
-
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         for (int i = 0; i < numOfIterations; i++) {
             fillVecWithRandValues(vec, vecLen);
             for (int j = 0; j < vecLen; j++) {
@@ -259,7 +315,10 @@ TEST(RNG_function_check, generate_positive_and_negative_numbers) {
         bool hasPositive, hasNegative;
         bool ok = true;
         int* vec = new int[vecLen];
-
+        if (vec == nullptr) {
+            std::cout << MIE << std::endl;
+            throw MIE;
+        }
         for (int i = 0; i < numOfIterations; i++) {
             hasPositive = hasNegative = false;
             fillVecWithRandValues(vec, vecLen);
