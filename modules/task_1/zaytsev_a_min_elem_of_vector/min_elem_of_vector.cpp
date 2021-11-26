@@ -22,6 +22,7 @@ int SequentialMin(int* our_vector, const int count_size_vector) {
     if (min_elem > our_vector[i]) min_elem = our_vector[i];
   return min_elem;
 }
+
 int ParallelMin(int* global_our_vector, const int count_size_vector) {
   int *Send = nullptr, *local_vector = nullptr;
   int our_size, our_rank, TotalMin, SeqMin, Buffer_Size;
