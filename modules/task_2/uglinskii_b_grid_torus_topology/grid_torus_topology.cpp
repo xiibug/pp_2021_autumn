@@ -12,9 +12,8 @@ MPI_Comm CreateGridTorusTopology(int width, int height) {
   int dimensions[2] = {width, height};
 
   MPI_Comm grid_torus_comm;
-  int periods[2] = {true, true};
-  MPI_Cart_create(MPI_COMM_WORLD, 2, dimensions, periods, false,
-                  &grid_torus_comm);
+  int periods[2] = {1, 1};
+  MPI_Cart_create(MPI_COMM_WORLD, 2, dimensions, periods, false, &grid_torus_comm);
 
   MPI_Comm_rank(grid_torus_comm, &ProcRank);
   int my_coords[2];
@@ -40,9 +39,9 @@ bool IsExpectedGridTorus(const MPI_Comm grid_torus_comm, const int exp_dims_coun
 
     MPI_Cart_get(grid_torus_comm, 2, topology_dims, topology_periods, proc_coords);
 
-    for (size_t i = 0; i < real_dims_count; i++) {
+    for (int i = 0; i < real_dims_count; i++) {
       if ((topology_dims[i] != exp_dims_vals[i]) ||
-          (topology_periods[i] != true)) {
+          (topology_periods[i] != 1)) {
         return false;
       }
     }

@@ -101,7 +101,7 @@ TEST(Correct_Massage_Sending, collective_sending) {
     MPI_Reduce(&answer, &result, 1, MPI_INT, MPI_SUM, 0, grid_torus_comm);
     if (ProcRank == 0) {
       int exp_result = 0;
-      for (size_t i = 0; i < ProcNum; i++) {
+      for (int i = 0; i < ProcNum; i++) {
         exp_result += koeff * (i + 1);
       }
       ASSERT_EQ(result, exp_result);
