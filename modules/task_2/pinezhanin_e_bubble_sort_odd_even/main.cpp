@@ -17,7 +17,7 @@ TEST(Bubble_sort_odd_even_test, sort_1000_element) {
     vec = BubbleSortOddEvenParallel(vec);
 
     if (rank == 0) {
-        ref_vec = BubbleSortOddEvenParallel(ref_vec);
+        ref_vec = BubbleSortOddEvenSequential(ref_vec);
         ASSERT_EQ(ref_vec, vec);
     }
 }
