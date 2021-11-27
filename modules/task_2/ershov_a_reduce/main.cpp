@@ -1,7 +1,7 @@
 // Copyright 2021 Ershov Alexey
 #include <gtest/gtest.h>
+#include <time.h>
 
-#include <chrono>
 #include <gtest-mpi-listener.hpp>
 
 #include "./reduce_mpi.h"
@@ -22,25 +22,22 @@ TEST(reduse_test, test_BIG_FLOAT_MAX) {
     myRes = new float[10000];
   }
 
-  auto start = std::chrono::system_clock::now();
+  double start = MPI_Wtime();
 
   reduce(data, myRes, 10000, MPI_FLOAT, MPI_MAX, 0, MPI_COMM_WORLD);
 
-  auto end = std::chrono::system_clock::now();
-  std::chrono::duration<double> sec = end - start;
+  double end = MPI_Wtime();
 
-  // std::cout << "Time of reduce work: " << sec.count() << " sec " <<
-  // std::endl;
+  /*std::cout << "Time of reduce work: " << (end - start) << " sec " << std::endl;*/
 
-  start = std::chrono::system_clock::now();
+  double start2 = MPI_Wtime();
 
   MPI_Reduce(data, res, 10000, MPI_FLOAT, MPI_MAX, 0, MPI_COMM_WORLD);
 
-  end = std::chrono::system_clock::now();
-  sec = end - start;
+  double end2 = MPI_Wtime();
 
-  // std::cout << "Time of MPI_reduce work : " << sec.count() << " sec " <<
-  // std::endl;
+  /*std::cout << "Time of MPI_reduce work : " << (end2 - start2) << " sec "
+            << std::endl;*/
 
   if (rank == 0) {
     for (size_t i = 0; i < 10000; ++i) {
