@@ -61,7 +61,7 @@ TEST(DiningPhilosophers, ten_fifty) {
   int rank, size;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
-  int runs = 50;
+  int runs = 25;
 
   DiningPholisophers(rank, size, runs);
 
