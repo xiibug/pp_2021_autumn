@@ -29,7 +29,9 @@
         }
         multi = countLettersMPI(temp, 500);
         if (rank == 0)
+        {
             EXPECT_EQ(single, multi);
+        }
     }
 
     TEST(TEST3, NO_LETTERS)
@@ -47,7 +49,9 @@
         }
         multi = countLettersMPI(temp, 9);
         if (rank == 0)
+        {
             EXPECT_EQ(0, multi);
+        }
     }
 
     TEST(TEST4, SPACE_STRING)
@@ -65,7 +69,9 @@
         }
         multi = countLettersMPI(temp, 500);
         if (rank == 0)
+        {
             EXPECT_EQ(0, multi);
+        }
     }
 
     TEST(TEST5, EMPTY_STRING)
@@ -77,7 +83,9 @@
         
         multi = countLettersMPI(temp, 0);
         if (rank == 0)
+        {
             EXPECT_EQ(0, multi);
+        }
     }
     
 

@@ -5,8 +5,12 @@ int countLetters(string str)
 {
     int counter = 0;
     for (char c : str)
+    {
         if (isalpha(c))
+        {
             counter++;
+        }
+    }
     return counter;
 }
 
@@ -18,7 +22,9 @@ string randomStr(int size)
     uniform_int_distribution<int> dist(33, 126);
 
     for (int i = 0; i < size; i++)
+    {
         result += dist(RNG);
+    }
 
     return result;
 }
