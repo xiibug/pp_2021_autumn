@@ -4,7 +4,6 @@
 #include "./avarage_of_el_of_vec.h"
 #include <gtest-mpi-listener.hpp>
 
-
 TEST(Parallel_Operations_MPI, Create_vector) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -25,7 +24,6 @@ TEST(Parallel_Operations_MPI, Size_of_vector_eq_zero) {
   if (rank == 0) {
     global_vec = getRandomVector(count_size_vector);
   }
-  int global_sum = 0;
 
   if (rank == 0) {
     ASSERT_ANY_THROW(getParallelOperations(global_vec, count_size_vector));

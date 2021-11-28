@@ -1,8 +1,6 @@
 // Copyright 2021 Utyugov Denis
 #include "../../../modules/task_1/utyugov_d_avarage_of_el_of_vec/avarage_of_el_of_vec.h"
-
 #include <mpi.h>
-
 #include <random>
 #include <vector>
 

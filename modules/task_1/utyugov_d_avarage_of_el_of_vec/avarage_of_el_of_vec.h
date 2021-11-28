@@ -2,7 +2,6 @@
 #ifndef MODULES_TASK_1_UTYUGOV_D_AVARAGE_OF_EL_OF_VEC_AVARAGE_OF_EL_OF_VEC_H_
 #define MODULES_TASK_1_UTYUGOV_D_AVARAGE_OF_EL_OF_VEC_AVARAGE_OF_EL_OF_VEC_H_
 
-#include <string>
 #include <vector>
 
 std::vector<int> getRandomVector(int sz);
