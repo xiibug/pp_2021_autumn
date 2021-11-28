@@ -58,13 +58,7 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     }
   }
   const int delta = count_size_vector / size;
-  int *proc_counts = new int(size);
-  if (rank == 0) {
-    for (int i = 0; i < size; i++) {
-      proc_counts[i] = delta;
-    }
-    proc_counts[size - 1] += size - count_size_vector % size;
-  }
+
   std::vector<int> proc_el(delta);
 
   MPI_Scatter(global_vec.data(), delta, MPI_INT, proc_el.data(), delta, MPI_INT,
