@@ -43,7 +43,7 @@ int countLettersMPI(string str, int size) {
 
     string local;
     if (procRank == 0) {
-        local = str.substr(0, sizeOfBuff);
+        local = str.substr(0, sizeOfBuff) + str.substr(procNum * sizeOfBuff,size % procNum + 1);
     } else {
         char* temp = new char[sizeOfBuff+1];
         MPI_Status status;

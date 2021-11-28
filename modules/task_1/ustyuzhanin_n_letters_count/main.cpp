@@ -35,10 +35,10 @@ int main(int argc, char** argv) {
         string temp = "";
         int single, multi;
         if (rank == 0) {
-            temp = randomStr(500);
+            temp = randomStr(511);
             single = countLetters(temp);
         }
-        multi = countLettersMPI(temp, 500);
+        multi = countLettersMPI(temp, 511);
         if (rank == 0) {
             EXPECT_EQ(single, multi);
         }
