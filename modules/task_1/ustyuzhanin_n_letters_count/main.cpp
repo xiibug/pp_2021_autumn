@@ -5,7 +5,22 @@
 #include <mpi.h>
 #include <gtest-mpi-listener.hpp>
 
-    TEST(TEST1, IS_ONE_THREAD_VALID)
+int main(int argc, char** argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    MPI_Init(&argc, &argv);
+
+    ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
+    ::testing::TestEventListeners& listeners =
+        ::testing::UnitTest::GetInstance()->listeners();
+
+    listeners.Release(listeners.default_result_printer());
+    listeners.Release(listeners.default_xml_generator());
+
+    listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
+    return RUN_ALL_TESTS();
+}
+
+    TEST(LETTERS_COUNT, IS_ONE_THREAD_VALID)
     {
         int rank;
         MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -16,7 +31,7 @@
         }
     }
 
-    TEST(TEST2, IS_EQUAL)
+    TEST(LETTERS_COUNT, IS_EQUAL)
     {
         int rank;
         MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -34,7 +49,7 @@
         }
     }
 
-    TEST(TEST3, NO_LETTERS)
+    TEST(LETTERS_COUNT, NO_LETTERS)
     {
         int rank;
         MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -54,7 +69,7 @@
         }
     }
 
-    TEST(TEST4, SPACE_STRING)
+    TEST(LETTERS_COUNT, SPACE_STRING)
     {
         int rank;
         MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -74,7 +89,7 @@
         }
     }
 
-    TEST(TEST5, EMPTY_STRING)
+    TEST(LETTERS_COUNT, EMPTY_STRING)
     {
         int rank;
         MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -89,17 +104,4 @@
     }
     
 
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    MPI_Init(&argc, &argv);
 
-    ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-    ::testing::TestEventListeners& listeners =
-        ::testing::UnitTest::GetInstance()->listeners();
-
-    listeners.Release(listeners.default_result_printer());
-    listeners.Release(listeners.default_xml_generator());
-
-    listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
-    return RUN_ALL_TESTS();
-}
