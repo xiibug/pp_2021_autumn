@@ -1,10 +1,11 @@
+// Copyright 2021 Ustyuzhanin Nikita
 #pragma once
 
-#include <string>
 #include <mpi.h>
+#include <string>
 #include <random>
 
-using namespace std;
+using std::string;
 
 int countLetters(string str);
 int countLettersMPI(string str, int size);
