@@ -11,7 +11,7 @@ TEST(Parallel_Operations_MPI, Create_vector) {
   const int count_size_vector = 120;
 
   if (rank == 0) {
-    ASSERT_NO_THROW(global_vec = getRandomVector(count_size_vector););
+    ASSERT_NO_THROW(global_vec = getRandomVector(count_size_vector));
   }
 }
 
