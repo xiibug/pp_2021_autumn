@@ -4,7 +4,7 @@
 #include <vector>
 #include <ctime>
 #include <iostream>
-#include "./order_errors.h"
+#include "../../../modules/task_1/orlov_m_order_errors/order_errors.h"
 
 int orderErrors(std::vector<int> v) {
     int procs, rank, rem, pairsPerProc, res, errors = 0;
