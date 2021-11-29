@@ -1,6 +1,6 @@
 // Copyright 2021 Ershov Alexey
 #include <gtest/gtest.h>
-#include <time.h>
+//#include <time.h>
 
 #include <gtest-mpi-listener.hpp>
 
@@ -22,19 +22,19 @@ TEST(reduse_test, test_BIG_FLOAT_MAX) {
     myRes = new float[10000];
   }
 
-  double start = MPI_Wtime();
+  //double start = MPI_Wtime();
 
   reduce(data, myRes, 10000, MPI_FLOAT, MPI_MAX, 0, MPI_COMM_WORLD);
 
-  double end = MPI_Wtime();
+  //double end = MPI_Wtime();
 
   /*std::cout << "Time of reduce work: " << (end - start) << " sec " << std::endl;*/
 
-  double start2 = MPI_Wtime();
+  //double start2 = MPI_Wtime();
 
   MPI_Reduce(data, res, 10000, MPI_FLOAT, MPI_MAX, 0, MPI_COMM_WORLD);
 
-  double end2 = MPI_Wtime();
+  //double end2 = MPI_Wtime();
 
   /*std::cout << "Time of MPI_reduce work : " << (end2 - start2) << " sec "
             << std::endl;*/

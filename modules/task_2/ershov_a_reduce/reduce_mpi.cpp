@@ -36,8 +36,8 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
 
     size_t memSize = (typeSize * count);
 
-    void* buf = (void*)malloc(memSize);
-    void* tmp = (void*)malloc(memSize);
+    void* buf = new char[memSize];
+    void* tmp = new char[memSize];
 
     int counter = 0;
     if (type == MPI_INT) {
