@@ -1,9 +1,9 @@
 // Copyright 2021 Trevogin Kirill
 #include "../../../modules/task_2/trevogin_k_gausian_slau/gausian_slau.h"
 
-int ProcNum; // Число доступных процессоров
-int ProcRank; // Ранг текущего процессора
-int pParallelPivotPos = 0; // Номера строк, которые были выбраны ведущими
+int ProcNum;
+int ProcRank;
+int pParallelPivotPos = 0;
 std::vector<int> pProcPivotIter;
 
 void out_mat(std::vector<double> mat, std::vector<double> vec) {
@@ -73,7 +73,6 @@ std::vector<double> triangulation_parall(std::vector<double> mat, int line, std:
 }
 
 std::vector<double> res_parall(std::vector<double> mat, int line, std::vector<double> vec, std::vector<double> vec1) {
-
     int size = pProcPivotIter.size();
     int rank1;
     double g;
@@ -120,7 +119,6 @@ std::vector<double> res(std::vector<double> mat, std::vector<double> vec) {
     int column = vec.size();
     int line = mat.size() / column;
     std::vector<double> vec1(line);
-
     int a = line - 1;
     for (int i = line - 1; i >= 0; i--) {
         for (int j = column - 1; j >= a; j--) {
@@ -177,11 +175,8 @@ std::vector<double> gaus_metod_parall(std::vector<double> mat, std::vector<doubl
     MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
     DataDistribution(mat, vec1, line1, mat1);
     mat1 = triangulation_parall(mat1, line, vec1);
-
     MPI_Barrier(MPI_COMM_WORLD);
-
     vec = res_parall(mat1, line, vec, vec1);
-
     pProcPivotIter.clear();
     return vec;
 }
