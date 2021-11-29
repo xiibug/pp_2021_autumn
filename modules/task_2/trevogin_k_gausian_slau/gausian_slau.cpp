@@ -122,7 +122,6 @@ std::vector<double> res(std::vector<double> mat, std::vector<double> vec) {
     std::vector<double> vec1(line);
 
     int a = line - 1;
-    int k = 0;
     for (int i = line - 1; i >= 0; i--) {
         for (int j = column - 1; j >= a; j--) {
 
@@ -137,16 +136,11 @@ std::vector<double> res(std::vector<double> mat, std::vector<double> vec) {
     return vec;
 }
 void DataDistribution(std::vector<double>& mat, std::vector<double>& vec, int& line, std::vector<double>& mat1) {
-    int* pSendNum; // Количество элементов, посылаемых процессу
-    int pSendInd; // Индекс первого элемента данных,
-        // посылаемого процессу
-    int RestRows = line; // Количество строк матрицы, которые еще
-        // не распределены
+    int pSendInd;
     int RowNum;
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Bcast(vec.data(), line, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_Bcast(mat.data(), line * line, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    // Выделение памяти для хранения временных объектов
     RowNum = (line / ProcNum);
     pSendInd = line - RowNum * ProcNum;
     if (ProcRank < pSendInd) {
@@ -181,7 +175,6 @@ std::vector<double> gaus_metod_parall(std::vector<double> mat, std::vector<doubl
     std::vector<double> vec1 = vec;
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
     MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
-    // Распределение исходных данных
     DataDistribution(mat, vec1, line1, mat1);
     mat1 = triangulation_parall(mat1, line, vec1);
 
@@ -193,8 +186,7 @@ std::vector<double> gaus_metod_parall(std::vector<double> mat, std::vector<doubl
     return vec;
 }
 
-std::vector<double> gaus_metod(std::vector<double> mat, std::vector<double> vec)
-{
+std::vector<double> gaus_metod(std::vector<double> mat, std::vector<double> vec) {
     int line = sqrt(mat.size());
     if (line == 0) {
         return vec;

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include <random>
-#include <vector>
 #include <gtest-mpi-listener.hpp>
 
 #ifndef MODULES_TASK_2_TREVOGIN_K_GAUSIAN_SLAU_GAUSIAN_SLAU_H_
