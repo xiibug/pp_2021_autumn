@@ -91,7 +91,6 @@ std::vector<double> res_parall(std::vector<double> mat, int line, std::vector<do
             MPI_MAXLOC, MPI_COMM_WORLD);
         MPI_Bcast(&g, 1, MPI_DOUBLE, rank1, MPI_COMM_WORLD);
         for (int j = size - pParallelPivotPos - 1; j >= 0; j--) {
-
             vec1[j] = vec1[j] - mat[j * line + i] * g;
         }
         vec[i] = g;
@@ -122,7 +121,6 @@ std::vector<double> res(std::vector<double> mat, std::vector<double> vec) {
     int a = line - 1;
     for (int i = line - 1; i >= 0; i--) {
         for (int j = column - 1; j >= a; j--) {
-
             if (j == a) {
                 vec[i] = vec[i] / mat[j + i * line];
             } else {
