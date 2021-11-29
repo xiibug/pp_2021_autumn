@@ -148,7 +148,7 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
       delete[] reinterpret_cast<double*>(tmp);
       buf = nullptr;
       tmp = nullptr;
-    } else if (type == MPI_FLOAT) {
+    } else {
       for (int i = 0; i < size; ++i) {
         if (i != root) {
           MPI_Recv(buf, count, type, MPI_ANY_SOURCE, 1, comm,
@@ -202,14 +202,6 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
       delete[] reinterpret_cast<float*>(buf);
       delete[] reinterpret_cast<float*>(tmp);
       buf = nullptr;
-      tmp = nullptr;
-    }
-    if (buf != nullptr) {
-      delete[] reinterpret_cast<void*>(buf);
-      buf = nullptr;
-    }
-    if (tmp != nullptr) {
-      delete[] reinterpret_cast<void*>(tmp);
       tmp = nullptr;
     }
   } else {
