@@ -196,11 +196,20 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
         }
       }
       for (int i = 0; i < count; ++i) {
-        (reinterpret_cast<float*>(recvbuf))[i] = (reinterpret_cast<float*>(tmp))[i];
+        (reinterpret_cast<float*>(recvbuf))[i] =
+            (reinterpret_cast<float*>(tmp))[i];
       }
       delete[] reinterpret_cast<float*>(buf);
       delete[] reinterpret_cast<float*>(tmp);
       buf = nullptr;
+      tmp = nullptr;
+    }
+    if (buf != nullptr) {
+      delete[] reinterpret_cast<void*>(buf);
+      buf = nullptr;
+    }
+    if (tmp != nullptr) {
+      delete[] reinterpret_cast<void*>(tmp);
       tmp = nullptr;
     }
   } else {
