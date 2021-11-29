@@ -89,8 +89,8 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
       for (int i = 0; i < count; ++i) {
         (reinterpret_cast<int*>(recvbuf))[i] = (reinterpret_cast<int*>(tmp))[i];
       }
-      delete[] buf;
-      delete[] tmp;
+      delete[] reinterpret_cast<int*>(buf);
+      delete[] reinterpret_cast<int*>(tmp);
       buf = nullptr;
       tmp = nullptr;
     } else if (type == MPI_DOUBLE) {
@@ -144,8 +144,8 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
         (reinterpret_cast<double*>(recvbuf))[i] =
             (reinterpret_cast<double*>(tmp))[i];
       }
-      delete[] buf;
-      delete[] tmp;
+      delete[] reinterpret_cast<double*>(buf);
+      delete[] reinterpret_cast<double*>(tmp);
       buf = nullptr;
       tmp = nullptr;
     } else if (type == MPI_FLOAT) {
@@ -198,8 +198,8 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
       for (int i = 0; i < count; ++i) {
         (reinterpret_cast<float*>(recvbuf))[i] = (reinterpret_cast<float*>(tmp))[i];
       }
-      delete[] buf;
-      delete[] tmp;
+      delete[] reinterpret_cast<float*>(buf);
+      delete[] reinterpret_cast<float*>(tmp);
       buf = nullptr;
       tmp = nullptr;
     }
