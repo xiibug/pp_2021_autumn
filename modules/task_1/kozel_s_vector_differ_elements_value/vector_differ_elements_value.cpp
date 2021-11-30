@@ -25,7 +25,7 @@ int differElementsValue(const std::vector<int>& vector) {
         return max;
     }
 
-    return 0; 
+    return 0;
 }
 
 int paralleldifferElementsValue(const std::vector<int>& vector, const int size) {
