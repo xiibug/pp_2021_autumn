@@ -5,6 +5,7 @@
 
 #include <random>
 #include <vector>
+#include <climits>
 
 std::vector<int> getRandomVector(int sz) {
   std::random_device dev;
