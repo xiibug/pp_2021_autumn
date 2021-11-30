@@ -78,7 +78,6 @@ TEST(Parallel_Operations_MPI, Test_Gaus_metod_5) {
 }
 
 int main(int argc, char** argv) {
-    std::vector<std::vector<int>> input_vec;
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
