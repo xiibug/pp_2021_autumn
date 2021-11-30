@@ -216,6 +216,38 @@ TEST(DISABLED_PARALLEL_OPERATIONS, comparison_working_hours_with_matrix_240x240)
     }
 }
 
+TEST(DISABLED_PARALLEL_OPERATIONS, comparison_working_hours_with_matrix_360x360) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    std::vector<double>::size_type matrix_size = 360;
+    std::vector<double> first_matrix(matrix_size * matrix_size, 0.0);
+    std::vector<double> second_matrix(matrix_size * matrix_size, 0.0);
+
+    if (rank == 0) {
+        generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
+        generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
+    }
+
+    auto start_parallel_algorithm = MPI_Wtime();
+    std::vector<double> result = getParallelOperations(first_matrix, second_matrix, matrix_size);
+    auto finish_parallel_algorithm = MPI_Wtime();
+
+    if (rank == 0) {
+        std::vector<double> expected_result(matrix_size * matrix_size, 0.0);
+
+        auto start_sequential_algorithm = MPI_Wtime();
+        getSequentialOperations(first_matrix, second_matrix, &expected_result, matrix_size);
+        auto finish_sequential_algorithm = MPI_Wtime();
+
+        auto parallel_time = finish_parallel_algorithm - start_parallel_algorithm;
+        auto sequential_time = finish_sequential_algorithm - start_sequential_algorithm;
+
+        printf("Sequential Time = %lf\nParallel Time = %lf\nBoost = %lf\n",
+            sequential_time, parallel_time, sequential_time / parallel_time);
+    }
+}
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);

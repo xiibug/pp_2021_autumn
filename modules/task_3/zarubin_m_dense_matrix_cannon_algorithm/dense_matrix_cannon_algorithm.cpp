@@ -38,20 +38,6 @@ int calculateActualSize(int old_size,
     return sqrt_size * sqrt_size;
 }
 
-void getPartMatrix(const std::vector<double>& orig_matrix,
-    std::vector<double>::size_type matrix_size,
-    std::vector<double>* part_matrix,
-    std::vector<double>::size_type local_size,
-    std::vector<double>::size_type count_parts,
-    std::vector<double>::size_type start_offset) {
-    for (std::vector<double>::size_type i = 0; i < local_size * local_size; ++i) {
-        std::vector<double>::size_type global_offset = matrix_size * (i / local_size);
-        std::vector<double>::size_type local_offset = i % local_size;
-
-        (*part_matrix)[i] = orig_matrix[start_offset + local_offset + global_offset];
-    }
-}
-
 std::vector<double> getParallelOperations(const std::vector<double>& first_matrix,
     const std::vector<double>& second_matrix,
     std::vector<double>::size_type matrix_size) {
@@ -94,8 +80,13 @@ std::vector<double> getParallelOperations(const std::vector<double>& first_matri
             std::vector<double> part_first_matrix(local_size * local_size, 0.0);
             std::vector<double> part_second_matrix(local_size * local_size, 0.0);
 
-            getPartMatrix(first_matrix, matrix_size, &part_first_matrix, local_size, count_parts, step);
-            getPartMatrix(second_matrix, matrix_size, &part_second_matrix, local_size, count_parts, step);
+            for (std::vector<double>::size_type i = 0; i < local_size * local_size; ++i) {
+                std::vector<double>::size_type global_offset = matrix_size * (i / local_size);
+                std::vector<double>::size_type local_offset = i % local_size;
+
+                part_first_matrix[i] = first_matrix[step + local_offset + global_offset];
+                part_second_matrix[i] = second_matrix[step + local_offset + global_offset];
+            }
 
             MPI_Send(part_first_matrix.data(), static_cast<int>(local_size * local_size),
                 MPI_DOUBLE, proc, 1, MPI_ACTUAL_PROC);
@@ -108,8 +99,13 @@ std::vector<double> getParallelOperations(const std::vector<double>& first_matri
     std::vector<double> local_second_matrix(local_size * local_size, 0.0);
 
     if (rank == 0) {
-        getPartMatrix(first_matrix, matrix_size, &local_first_matrix, local_size, count_parts, 0);
-        getPartMatrix(second_matrix, matrix_size, &local_second_matrix, local_size, count_parts, 0);
+        for (std::vector<double>::size_type i = 0; i < local_size * local_size; ++i) {
+            std::vector<double>::size_type global_offset = matrix_size * (i / local_size);
+            std::vector<double>::size_type local_offset = i % local_size;
+
+            local_first_matrix[i] = first_matrix[local_offset + global_offset];
+            local_second_matrix[i] = second_matrix[local_offset + global_offset];
+        }
     } else {
         MPI_Status status;
         MPI_Recv(local_first_matrix.data(), static_cast<int>(local_size * local_size),
@@ -164,8 +160,8 @@ std::vector<double> getParallelOperations(const std::vector<double>& first_matri
     }
 
     for (std::vector<double>::size_type i = 0; i < local_answer_vector.size(); i++) {
-        int row = (rank / count_parts) * local_size + i / local_size;
-        int column = (rank % count_parts) * local_size + i % local_size;
+        std::vector<double>::size_type row = (rank / count_parts) * local_size + i / local_size;
+        std::vector<double>::size_type column = (rank % count_parts) * local_size + i % local_size;
 
         local_answer_matrix[row * matrix_size + column] = local_answer_vector[i];
     }
