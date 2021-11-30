@@ -13,7 +13,7 @@ void generateRandomMatrix(std::vector<double>* matrix,
     std::random_device dev;
     std::mt19937 gen(dev());
     std::uniform_real_distribution<> urd(left_border, right_border);
-    for (int i = 0; i < size * size; i++) {
+    for (std::vector<double>::size_type i = 0; i < size * size; i++) {
         (*matrix)[i] = urd(gen);
     }
 }
@@ -66,7 +66,7 @@ std::vector<double> getParallelOperations(const std::vector<double>& first_matri
     MPI_Comm_group(MPI_COMM_WORLD, &MPI_GROUP);
 
     std::vector<int> actual_proc_vector(actual_size);
-    for (std::vector<int>::size_type i = 0; i < actual_size; ++i)
+    for (int i = 0; i < actual_size; ++i)
         actual_proc_vector[i] = i;
 
     MPI_Comm MPI_ACTUAL_PROC;

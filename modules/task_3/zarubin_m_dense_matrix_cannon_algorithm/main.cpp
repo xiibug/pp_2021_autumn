@@ -12,7 +12,7 @@ TEST(GENERATE_VECTOR, can_generate_random_matrix) {
 
 TEST(SEQUENTIAL_OPERATIONS, can_run_sequential_operations) {
     std::vector<double> first_matrix(5 * 5), second_matrix(5 * 5), answer(5 * 5, 0.0);
-    generateRandomMatrix(&first_matrix, 5, -100,100);
+    generateRandomMatrix(&first_matrix, 5, -100, 100);
     generateRandomMatrix(&second_matrix, 5, -100, 100);
     ASSERT_NO_THROW(getSequentialOperations(first_matrix, second_matrix, &answer, 5));
 }
@@ -29,7 +29,7 @@ TEST(SEQUENTIAL_OPERATIONS, correct_work_sequential_operations) {
                                             94.23, -26.73, 120.86 };
     std::vector<double> result(3 * 3, 0.0);
     getSequentialOperations(first_matrix, second_matrix, &result, 3);
-    
+
     for (std::vector<double>::size_type i = 0; i < result.size(); ++i) {
         ASSERT_NEAR(result[i], expected_result[i], 0.001);
     }
@@ -44,8 +44,8 @@ TEST(PARALLEL_OPERATIONS, can_run_parallel_operations) {
     std::vector<double> second_matrix(matrix_size * matrix_size, 0.0);
 
     if (rank == 0) {
-            generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
-            generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
+        generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
+        generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
     }
 
     ASSERT_NO_THROW(getParallelOperations(first_matrix, second_matrix, matrix_size));
@@ -60,12 +60,8 @@ TEST(PARALLEL_OPERATIONS, correct_work_with_matirx_size_multiple_2) {
     std::vector<double> second_matrix(matrix_size * matrix_size, 0.0);
 
     if (rank == 0) {
-        
-        for (std::vector<double>::size_type i = 0; i < first_matrix.size(); ++i)
-        {
-            generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
-            generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
-        }
+        generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
+        generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
     }
 
     std::vector<double> result = getParallelOperations(first_matrix, second_matrix, matrix_size);
@@ -89,12 +85,8 @@ TEST(PARALLEL_OPERATIONS, correct_work_with_matirx_size_multiple_3) {
     std::vector<double> second_matrix(matrix_size * matrix_size, 0.0);
 
     if (rank == 0) {
-
-        for (std::vector<double>::size_type i = 0; i < first_matrix.size(); ++i)
-        {
-            generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
-            generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
-        }
+        generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
+        generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
     }
 
     std::vector<double> result = getParallelOperations(first_matrix, second_matrix, matrix_size);
@@ -118,12 +110,8 @@ TEST(PARALLEL_OPERATIONS, correct_work_with_matirx_size_multiple_5) {
     std::vector<double> second_matrix(matrix_size * matrix_size, 0.0);
 
     if (rank == 0) {
-
-        for (std::vector<double>::size_type i = 0; i < first_matrix.size(); ++i)
-        {
-            generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
-            generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
-        }
+        generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
+        generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
     }
 
     std::vector<double> result = getParallelOperations(first_matrix, second_matrix, matrix_size);
@@ -148,12 +136,8 @@ TEST(PARALLEL_OPERATIONS, correct_work_with_matirx_size_multiple_7) {
     std::vector<double> second_matrix(matrix_size * matrix_size, 0.0);
 
     if (rank == 0) {
-
-        for (std::vector<double>::size_type i = 0; i < first_matrix.size(); ++i)
-        {
-            generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
-            generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
-        }
+        generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
+        generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
     }
 
     std::vector<double> result = getParallelOperations(first_matrix, second_matrix, matrix_size);
@@ -177,12 +161,8 @@ TEST(DISABLED_PARALLEL_OPERATIONS, comparison_working_hours_with_matrix_120x120)
     std::vector<double> second_matrix(matrix_size * matrix_size, 0.0);
 
     if (rank == 0) {
-
-        for (std::vector<double>::size_type i = 0; i < first_matrix.size(); ++i)
-        {
-            generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
-            generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
-        }
+        generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
+        generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
     }
 
     auto start_parallel_algorithm = MPI_Wtime();
@@ -213,12 +193,8 @@ TEST(DISABLED_PARALLEL_OPERATIONS, comparison_working_hours_with_matrix_240x240)
     std::vector<double> second_matrix(matrix_size * matrix_size, 0.0);
 
     if (rank == 0) {
-
-        for (std::vector<double>::size_type i = 0; i < first_matrix.size(); ++i)
-        {
-            generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
-            generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
-        }
+        generateRandomMatrix(&first_matrix, matrix_size, -100, 100);
+        generateRandomMatrix(&second_matrix, matrix_size, -100, 100);
     }
 
     auto start_parallel_algorithm = MPI_Wtime();
