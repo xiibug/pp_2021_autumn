@@ -56,7 +56,7 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     if (rank == 0) {
       return getSequentialOperations(global_vec);
     } else {
-      return NULL;
+      return 0;
     }
   }
 }
