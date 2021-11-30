@@ -34,7 +34,7 @@ void getSequentialOperations(const std::vector<double>& first_matrix,
 int calculateActualSize(int old_size,
     std::vector<double>::size_type matrix_size) {
     int sqrt_size = static_cast<int>(sqrt(old_size));
-    for (sqrt_size; matrix_size % sqrt_size > 0 && sqrt_size >= 2; --sqrt_size);
+    for (; matrix_size % sqrt_size && sqrt_size >= 2; --sqrt_size) {}
     return sqrt_size * sqrt_size;
 }
 
@@ -145,10 +145,14 @@ std::vector<double> getParallelOperations(const std::vector<double>& first_matri
             MPI_DOUBLE, init_recipient_b, 2, init_sender_b, 2, MPI_ACTUAL_PROC, &status);
     }
 
-    int recipient_a = ((rank - 1) / count_parts == proc_number_row && rank - 1 >= 0) ? rank - 1 : rank + count_parts - 1;
-    int recipient_b = rank - count_parts >= 0 ? rank - count_parts : actual_size + (rank - count_parts);
-    int sender_a = (rank + 1) / count_parts == proc_number_row ? rank + 1 : rank - count_parts + 1;
-    int sender_b = rank + count_parts < actual_size ? rank + count_parts : (rank + count_parts) - actual_size;
+    int recipient_a = ((rank - 1) / count_parts == proc_number_row && rank - 1 >= 0) ?
+        rank - 1 : rank + count_parts - 1;
+    int recipient_b = rank - count_parts >= 0 ?
+        rank - count_parts : actual_size + (rank - count_parts);
+    int sender_a = (rank + 1) / count_parts == proc_number_row ?
+        rank + 1 : rank - count_parts + 1;
+    int sender_b = rank + count_parts < actual_size ?
+        rank + count_parts : (rank + count_parts) - actual_size;
 
     for (int i = 0; i < count_parts; ++i) {
         getSequentialOperations(local_first_matrix, local_second_matrix, &local_answer_vector, local_size);
@@ -162,7 +166,7 @@ std::vector<double> getParallelOperations(const std::vector<double>& first_matri
     for (std::vector<double>::size_type i = 0; i < local_answer_vector.size(); i++) {
         int row = (rank / count_parts) * local_size + i / local_size;
         int column = (rank % count_parts) * local_size + i % local_size;
-        
+
         local_answer_matrix[row * matrix_size + column] = local_answer_vector[i];
     }
 
