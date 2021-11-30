@@ -1,72 +1,98 @@
-// Copyright 2021 Kozel Svetlana
+// Copyright 2018 Nesterov Alexander
 #include <gtest/gtest.h>
 #include <vector>
-#include "../../../modules/task_1/kozel_s_vector_differ_elements_value/vector_differ_elements_value.h"
+#include "./ops_mpi.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(Parallel_Operations_MPI, DEFAULT_FIND_DIFFER_ELEMENT_VALUES_VECTOR_SIZE_5_GET_VAL) {
-    int commRank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
-    std::vector<int> vector = { 0, 1, 5, 4, 5 };
-    if (commRank == 0) {
-        int max = differElementsValue(vector);
-        ASSERT_EQ(max, 4);
+TEST(Parallel_Operations_MPI, Test_Sum) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> global_vec;
+    const int count_size_vector = 120;
+
+    if (rank == 0) {
+        global_vec = getRandomVector(count_size_vector);
+    }
+
+    int global_sum = getParallelOperations(global_vec, count_size_vector, "+");
+
+    if (rank == 0) {
+        int reference_sum = getSequentialOperations(global_vec, "+");
+        ASSERT_EQ(reference_sum, global_sum);
     }
 }
 
-TEST(Parallel_Operations_MPI, PARALLEL_FIND_DIFFER_ELEMENT_VALUES_VECTOR_SIZE_500_GET_VAL) {
-    int commRank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
-    std::vector<int> vector = fillVector(500);
-    int max1;
-    if (commRank == 0) {
-        max1 = differElementsValue(vector);
+TEST(Parallel_Operations_MPI, Test_Diff) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> global_vec;
+    const int count_size_vector = 120;
+
+    if (rank == 0) {
+        global_vec = getRandomVector(count_size_vector);
     }
-    int max2 = paralleldifferElementsValue(vector, vector.size());
-    if (commRank == 0) {
-        ASSERT_EQ(max1, max2);
+
+    int global_diff = getParallelOperations(global_vec, count_size_vector, "-");
+
+    if (rank == 0) {
+        int reference_diff = getSequentialOperations(global_vec, "-");
+        ASSERT_EQ(reference_diff, global_diff);
     }
 }
 
-TEST(Parallel_Operations_MPI, PARALLEL_FIND_DIFFER_ELEMENT_VALUES_EQUAL_ELEMENTS_IN_VECTOR_GET_VAL) {
-    int commRank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
-    std::vector<int> vector = {5, 5, 5, 5, 5, 5, 5, 5, 5};
-    int max1;
-    if (commRank == 0) {
-        max1 = differElementsValue(vector);
+TEST(Parallel_Operations_MPI, Test_Diff_2) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> global_vec;
+    const int count_size_vector = 120;
+
+    if (rank == 0) {
+        global_vec = getRandomVector(count_size_vector);
     }
-    int max2 = paralleldifferElementsValue(vector, vector.size());
-    if (commRank == 0) {
-        ASSERT_EQ(max1, max2);
+
+    int global_diff = getParallelOperations(global_vec, count_size_vector, "-");
+
+    if (rank == 0) {
+        int reference_diff = getSequentialOperations(global_vec, "-");
+        ASSERT_EQ(reference_diff, global_diff);
     }
 }
 
-TEST(Parallel_Operations_MPI, PARALLEL_FIND_DIFFER_ELEMENT_VALUES_VECTOR_ERROR_SIZE_0_GET_VAL) {
-    int commRank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
-    std::vector<int> vector = fillVector(0);
-    int max1;
-    if (commRank == 0) {
-        max1 = differElementsValue(vector);
+TEST(Parallel_Operations_MPI, Test_Max) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> global_vec;
+    const int count_size_vector = 120;
+
+    if (rank == 0) {
+        global_vec = getRandomVector(count_size_vector);
     }
-    int max2 = paralleldifferElementsValue(vector, vector.size());
-    if (commRank == 0) {
-        ASSERT_EQ(max1, max2);
+
+    int global_max;
+    global_max = getParallelOperations(global_vec, count_size_vector, "max");
+
+    if (rank == 0) {
+        int reference_max = getSequentialOperations(global_vec, "max");
+        ASSERT_EQ(reference_max, global_max);
     }
 }
 
-TEST(Parallel_Operations_MPI, PARALLEL_FIND_DIFFER_ELEMENT_VALUES_VECTOR_LARGE_SIZE_100000_GET_VAL) {
-    int commRank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
-    std::vector<int> vector = fillVector(100000);
-    int max1;
-    if (commRank == 0) {
-        max1 = differElementsValue(vector);
+TEST(Parallel_Operations_MPI, Test_Max_2) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> global_vec;
+    const int count_size_vector = 120;
+
+    if (rank == 0) {
+        global_vec = getRandomVector(count_size_vector);
     }
-    int max2 = paralleldifferElementsValue(vector, vector.size());
-    if (commRank == 0) {
-        ASSERT_EQ(max1, max2);
+
+    int global_max;
+    global_max = getParallelOperations(global_vec, count_size_vector, "max");
+
+    if (rank == 0) {
+        int reference_max = getSequentialOperations(global_vec, "max");
+        ASSERT_EQ(reference_max, global_max);
     }
 }
 
@@ -82,6 +108,5 @@ int main(int argc, char** argv) {
     listeners.Release(listeners.default_xml_generator());
 
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
-
     return RUN_ALL_TESTS();
 }
