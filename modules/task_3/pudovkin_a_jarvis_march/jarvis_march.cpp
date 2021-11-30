@@ -56,8 +56,7 @@ vector<Point2d> sequentialJarvisMarch(const vector<Point2d>& vectorOfVertex) {
         }
         if (vectorOfIndex[right] == curveH[0]) {
             break;
-        }
-        else {
+        } else {
             curveH.push_back(vectorOfIndex[right]);
             vectorOfIndex.erase(vectorOfIndex.begin() + right);
         }
@@ -89,8 +88,7 @@ vector<Point2d> parallelJarvisMarch(const vector<Point2d>& vectorOfVertex, vecto
 
     if (rank != 0) {
         MPI_Send(localJarvisMarch.data(), localJarvisMarch.size(), structPoint2d, 0, 0, MPI_COMM_WORLD);
-    }
-    else {
+    } else {
         for (int i = 1; i < size; i++) {
             MPI_Status status;
             int sendElements = 0;
@@ -105,7 +103,8 @@ vector<Point2d> parallelJarvisMarch(const vector<Point2d>& vectorOfVertex, vecto
         if (size != 1) {
             int tail = vectorSize - size * delta;
             if (tail) {
-                localVectorOfVertex = vector<Point2d>(vectorOfVertex.begin() + (vectorSize - tail), vectorOfVertex.end());
+                localVectorOfVertex = vector<Point2d>(vectorOfVertex.begin() +
+                    (vectorSize - tail), vectorOfVertex.end());
                 globalJarvisMarch = sequentialJarvisMarch(localVectorOfVertex);
 
                 vector<int>::size_type oldSize = localJarvisMarch.size();
