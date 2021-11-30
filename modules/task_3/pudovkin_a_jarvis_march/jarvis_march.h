@@ -8,11 +8,11 @@
 using std::vector;
 
 struct Point2d {
-	int x;
-	int y;
+    int x;
+    int y;
 
-	Point2d() : x(0), y(0) {}
-	Point2d(const int _x, const int _y) : x(_x), y(_y) {}
+    Point2d() : x(0), y(0) {}
+    Point2d(const int _x, const int _y) : x(_x), y(_y) {}
 };
 
 vector<Point2d> getRandomVector(const vector<int>::size_type vectorSize);
