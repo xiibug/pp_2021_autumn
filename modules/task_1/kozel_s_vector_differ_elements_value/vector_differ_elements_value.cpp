@@ -2,7 +2,6 @@
 #include <mpi.h>
 #include <random>
 #include "../../../modules/task_1/kozel_s_vector_differ_elements_value/vector_differ_elements_value.h"
-#include <iostream>
 
 std::vector<int> fillVector(const int size_) {
     std::vector<int> vector(size_);
@@ -25,7 +24,8 @@ int differElementsValue(const std::vector<int>& vector) {
         }
         return max;
     }
-    else { return 0; }
+
+    return 0; 
 }
 
 int paralleldifferElementsValue(const std::vector<int>& vector, const int size) {
