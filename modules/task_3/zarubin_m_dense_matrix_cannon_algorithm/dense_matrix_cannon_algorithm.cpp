@@ -8,7 +8,7 @@
 
 
 void generateRandomMatrix(std::vector<double>* matrix,
-    std::vector<double>::size_type size, 
+    std::vector<double>::size_type size,
     int left_border, int right_border) {
     std::random_device dev;
     std::mt19937 gen(dev());
@@ -34,7 +34,7 @@ void getSequentialOperations(const std::vector<double>& first_matrix,
 int calculateActualSize(int old_size,
     std::vector<double>::size_type matrix_size) {
     int sqrt_size = static_cast<int>(sqrt(old_size));
-    for (; matrix_size % sqrt_size && sqrt_size >= 2; --sqrt_size);
+    for (sqrt_size; matrix_size % sqrt_size > 0 && sqrt_size >= 2; --sqrt_size);
     return sqrt_size * sqrt_size;
 }
 
@@ -50,7 +50,6 @@ void getPartMatrix(const std::vector<double>& orig_matrix,
 
         (*part_matrix)[i] = orig_matrix[start_offset + local_offset + global_offset];
     }
-
 }
 
 std::vector<double> getParallelOperations(const std::vector<double>& first_matrix,
@@ -75,7 +74,6 @@ std::vector<double> getParallelOperations(const std::vector<double>& first_matri
 
     std::vector<double> global_answer(matrix_size * matrix_size, 0.0);
     if (size < 4 || actual_size < 4) {
-
         if (rank == 0)
             getSequentialOperations(first_matrix, second_matrix, &global_answer, matrix_size);
 
@@ -112,8 +110,7 @@ std::vector<double> getParallelOperations(const std::vector<double>& first_matri
     if (rank == 0) {
         getPartMatrix(first_matrix, matrix_size, &local_first_matrix, local_size, count_parts, 0);
         getPartMatrix(second_matrix, matrix_size, &local_second_matrix, local_size, count_parts, 0);
-    }
-    else {
+    } else {
         MPI_Status status;
         MPI_Recv(local_first_matrix.data(), static_cast<int>(local_size * local_size),
             MPI_DOUBLE, 0, 1, MPI_ACTUAL_PROC, &status);
@@ -127,10 +124,14 @@ std::vector<double> getParallelOperations(const std::vector<double>& first_matri
     int proc_number_row = rank / count_parts;
     int proc_number_column = rank % count_parts;
 
-    int init_recipient_a = ((rank - proc_number_row) / count_parts == proc_number_row && rank - proc_number_row >= 0) ? rank - proc_number_row : rank + count_parts - proc_number_row;
-    int init_recipient_b = rank - proc_number_column * count_parts >= 0 ? rank - proc_number_column * count_parts : actual_size + (rank - proc_number_column * count_parts);
-    int init_sender_a = (rank + proc_number_row) / count_parts == proc_number_row ? rank + proc_number_row : rank - count_parts + proc_number_row;
-    int init_sender_b = rank + proc_number_column * count_parts < actual_size ? rank + proc_number_column * count_parts : (rank + proc_number_column * count_parts) - actual_size;
+    int init_recipient_a = ((rank - proc_number_row) / count_parts == proc_number_row && rank - proc_number_row >= 0) ?
+        rank - proc_number_row : rank + count_parts - proc_number_row;
+    int init_recipient_b = rank - proc_number_column * count_parts >= 0 ?
+        rank - proc_number_column * count_parts : actual_size + (rank - proc_number_column * count_parts);
+    int init_sender_a = (rank + proc_number_row) / count_parts == proc_number_row ?
+        rank + proc_number_row : rank - count_parts + proc_number_row;
+    int init_sender_b = rank + proc_number_column * count_parts < actual_size ?
+        rank + proc_number_column * count_parts : (rank + proc_number_column * count_parts) - actual_size;
 
     MPI_Status status;
 
