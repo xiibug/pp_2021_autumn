@@ -9,8 +9,9 @@ void findMaxAndMinValue(const std::vector<double>& matrix, std::vector<double>::
 
 void getRandomMatrix(std::vector<double>* matrix, std::vector<double>::size_type matrixSize);
 
-std::vector<double> getSequentialOperations(const std::vector<double>& matrix, std::vector<double>::size_type matrixRows,
-    std::vector<double>::size_type matrixColumns, const double maxValue, const double minValue);
+std::vector<double> getSequentialOperations(const std::vector<double>& matrix,
+    std::vector<double>::size_type matrixRows, std::vector<double>::size_type matrixColumns,
+    const double maxValue, const double minValue);
 std::vector<double> getParallelOperations(const std::vector<double>& matrix, std::vector<double>::size_type matrixRows,
     std::vector<double>::size_type matrixColumns);
 

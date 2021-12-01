@@ -21,13 +21,12 @@ void findMaxAndMinValue(const vector<double>& matrix, vector<double>::size_type 
     *maxValue = 0;
     *minValue = 1;
 
-    for (int x = 0; x < matrixRows; ++x) {
-        for (int y = 0; y < matrixColumns; ++y) {
+    for (vector<double>::size_type x = 0; x < matrixRows; ++x) {
+        for (vector<double>::size_type y = 0; y < matrixColumns; ++y) {
             double currentValue = matrix[matrixColumns * x + y];
             if (currentValue > *maxValue) {
                 *maxValue = currentValue;
-            }
-            else if (currentValue < *minValue) {
+            } else if (currentValue < *minValue) {
                 *minValue = currentValue;
             }
         }
@@ -49,8 +48,8 @@ vector<double> getSequentialOperations(const vector<double>& matrix, vector<doub
 
     vector<double> resultMatrix(matrixRows * matrixColumns);
 
-    for (int x = 0; x < matrixRows; ++x) {
-        for (int y = 0; y < matrixColumns; y++) {
+    for (vector<double>::size_type x = 0; x < matrixRows; ++x) {
+        for (vector<double>::size_type y = 0; y < matrixColumns; y++) {
             double value = calculatedNewPixelColor(matrix, matrixRows, matrixColumns, maxValue, minValue, x, y);
             resultMatrix[matrixColumns * x + y] = value;
         }
