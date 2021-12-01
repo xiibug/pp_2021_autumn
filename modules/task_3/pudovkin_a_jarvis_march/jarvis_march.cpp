@@ -11,11 +11,16 @@ int findRotate(const Point2d& firstVertex, const Point2d& secondVertex, const Po
         - (secondVertex.y - firstVertex.y) * (thirdVertex.x - secondVertex.x);
 }
 void initializeStructPoint2d(MPI_Datatype* structPoint2d) {
-    int lenght[3] = { 1, 1, 1 };
-    MPI_Aint position[3] = { offsetof(Point2d, x), offsetof(Point2d, y), sizeof(Point2d) };
-    MPI_Datatype type[3] = { MPI_INT, MPI_INT, MPI_UB };
+    int count = 2;
+    int array_of_blocklengths[] = { 1, 1 };
+    MPI_Aint array_of_displacements[] = { offsetof(Point2d, x), offsetof(Point2d, y) };
+    MPI_Datatype array_of_types[] = { MPI_INT, MPI_INT };
+    MPI_Datatype tmp_type;
+    MPI_Aint lb, extent;
 
-    MPI_Type_create_struct(3, lenght, position, type, structPoint2d);
+    MPI_Type_create_struct(count, array_of_blocklengths, array_of_displacements, array_of_types, &tmp_type);
+    MPI_Type_get_extent(tmp_type, &lb, &extent);
+    MPI_Type_create_resized(tmp_type, lb, extent, structPoint2d);
     MPI_Type_commit(structPoint2d);
 }
 
