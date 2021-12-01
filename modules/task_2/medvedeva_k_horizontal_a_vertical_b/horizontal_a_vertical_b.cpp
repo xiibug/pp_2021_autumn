@@ -19,7 +19,7 @@ std::vector<int> getRandomMatrix(std::vector<int>::size_type row_count, std::vec
     return vec;
 }
 
-std::vector<int> getSequentialOperations(std::vector<int> matrix1, std::vector<int> matrix2, 
+std::vector<int> getSequentialOperations(std::vector<int> matrix1, std::vector<int> matrix2,
     std::vector<int>::size_type row_count_matrix1, std::vector<int>::size_type column_count_matrix1,
     std::vector<int>::size_type column_count_matrix2) {
 
@@ -31,7 +31,8 @@ std::vector<int> getSequentialOperations(std::vector<int> matrix1, std::vector<i
     for (std::vector<int>::size_type i = 0; i < row_count_matrix1; i++) {
         for (std::vector<int>::size_type j = 0; j < column_count_matrix2; j++) {
             for (std::vector<int>::size_type k = 0; k < column_count_matrix1; k++) {
-                res[i * column_count_matrix2 + j] += matrix1[i * row_count_matrix2 + k] * matrix2[k * column_count_matrix2 + j];
+                res[i * column_count_matrix2 + j] +=
+                    matrix1[i * row_count_matrix2 + k] * matrix2[k * column_count_matrix2 + j];
             }
         }
     }
@@ -45,7 +46,7 @@ std::vector<int> getParallelOperations(std::vector<int> matrix1, std::vector<int
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (size > row_count_matrix1) {
+    if (size > static_cast<int>(row_count_matrix1)) {
         return rank == 0 ?
             getSequentialOperations(matrix1, matrix2, row_count_matrix1, column_count_matrix1, row_count_matrix1) :
             std::vector<int>{};
@@ -100,7 +101,7 @@ std::vector<int> getParallelOperations(std::vector<int> matrix1, std::vector<int
         MPI_Recv(local_vector_b.data(), static_cast<int>(local_size - remaining * column_count_matrix1),
             MPI_INT, 0, 2, MPI_COMM_WORLD, &status);
     }
-    local_vector_b[local_size] = rank == 0 ? 0 : rank * local_count + remaining; //step from 0-column
+    local_vector_b[local_size] = rank == 0 ? 0 : rank * local_count + remaining;  // step from 0-column
 
     std::vector<int> local_res(row_count_matrix1 * column_count_matrix2, 0);
 
@@ -109,10 +110,11 @@ std::vector<int> getParallelOperations(std::vector<int> matrix1, std::vector<int
 
     for (int i = 0; i < size; i++) {
         std::vector<int>::size_type local_row_count_matrix1 = rank == 0 ? local_count + remaining : local_count;
-        std::vector<int>::size_type local_column_count_matrix2 = (rank + i) % size == 0 ? local_count + remaining : local_count;
+        std::vector<int>::size_type local_column_count_matrix2 =
+            (rank + i) % size == 0 ? local_count + remaining : local_count;
 
-        std::vector<int> tmp_res = getSequentialOperations(local_vector_a, local_vector_b, local_row_count_matrix1, column_count_matrix1,
-            local_column_count_matrix2);
+        std::vector<int> tmp_res = getSequentialOperations(local_vector_a, local_vector_b,
+            local_row_count_matrix1, column_count_matrix1, local_column_count_matrix2);
 
         std::vector<int>::size_type step_matrix = rank == 0 ? 0 : (rank * local_count + remaining) * row_count_matrix1;
         for (std::vector<int>::size_type j = 0; j < tmp_res.size(); j++) {

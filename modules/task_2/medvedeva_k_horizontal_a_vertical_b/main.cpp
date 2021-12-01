@@ -41,7 +41,7 @@ TEST(Sequential_Operations_MPI, getSequentialOperations_works_correctly_with_arb
                                 2, 2, 2,
                                 2, 2, 2,
                                 2, 2, 2};
-    std::vector<int> res = { 8, 8, 8, 
+    std::vector<int> res = { 8, 8, 8,
                              8, 8, 8 };
     ASSERT_EQ(res, getSequentialOperations(matrix1, matrix2, 2, 4, 3));
 }
