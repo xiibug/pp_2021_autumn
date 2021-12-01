@@ -24,7 +24,6 @@ int differElementsValue(const std::vector<int>& vector) {
         }
         return max;
     }
-
     return 0;
 }
 
