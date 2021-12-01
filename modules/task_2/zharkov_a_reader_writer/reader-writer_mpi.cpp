@@ -110,7 +110,7 @@ void work(int rank, int proc) {
     bool Access = true;
     // num activ of R
     int activeReaders = 0;
-    // semaphore to prevent hunger R è W
+    // semaphore to prevent hunger R and W
     bool S = true;
 
     int* runs = new int[proc - 1];
