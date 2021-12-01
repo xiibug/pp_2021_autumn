@@ -38,7 +38,7 @@ int paralleldifferElementsValue(const std::vector<int>& vector, const int size) 
         block++;
     }
 
-    int localMin = MPI_MIN;
+    int localMin = -9999999;
     int globalMin;
 
     // if proc > size
