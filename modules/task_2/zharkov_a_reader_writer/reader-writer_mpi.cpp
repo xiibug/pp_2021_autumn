@@ -1,8 +1,8 @@
 // Copyright 2021 Zharkov Andrey
 #include "./reader-writer_mpi.h"
 #include <mpi.h>
-#include <chrono>
-#include <thread>
+#include <chrono> // NOLINT [build/c++11]
+#include <thread> // NOLINT [build/c++11]
 #include <string>
 #include <algorithm>
 #include <random>
@@ -102,15 +102,15 @@ void work(int rank, int proc) {
     int get_buf[1] = { 0 };
     int set_buf[1] = { 0 };
 
-    // активный процесс
+    // activ proc
     int Activ_proc;
-    // управление доступом к ReadCount
+    // access control to ReadCount
     bool RC = true;
-    // управление доступом к данным
+    // access control to data
     bool Access = true;
-    // количество активных R
+    // num activ of R
     int activeReaders = 0;
-    // семафор для предотвращения голода R и W
+    // semaphore to prevent hunger R и W
     bool S = true;
 
     int* runs = new int[proc - 1];
@@ -144,24 +144,6 @@ void work(int rank, int proc) {
                 S = true;
             }
         }
-        if (status.MPI_TAG == Access_Request) {
-            if (Access == true) {
-                Access = false;
-                set_buf[0] = 1;
-                MPI_Send(set_buf, 1, MPI_INT, Activ_proc,
-                    Access_Response, MPI_COMM_WORLD);
-            }
-            else {
-                set_buf[0] = -1;
-                MPI_Send(set_buf, 1, MPI_INT, Activ_proc,
-                    Access_Response, MPI_COMM_WORLD);
-            }
-        }
-        if (status.MPI_TAG == Access_Release) {
-            if (Access == false) {
-                Access = true;
-            }
-        }
         if (status.MPI_TAG == RC_Request) {
             if (RC == true) {
                 RC = false;
@@ -176,8 +158,25 @@ void work(int rank, int proc) {
         }
         if (status.MPI_TAG == RC_Release) {
             if (RC == false) {
-               RC = true;
-               activeReaders = get_buf[0];
+                RC = true;
+                activeReaders = get_buf[0];
+            }
+        }
+        if (status.MPI_TAG == Access_Request) {
+            if (Access == true) {
+                Access = false;
+                set_buf[0] = 1;
+                MPI_Send(set_buf, 1, MPI_INT, Activ_proc,
+                    Access_Response, MPI_COMM_WORLD);
+            } else {
+                set_buf[0] = -1;
+                MPI_Send(set_buf, 1, MPI_INT, Activ_proc,
+                    Access_Response, MPI_COMM_WORLD);
+            }
+        }
+        if (status.MPI_TAG == Access_Release) {
+            if (Access == false) {
+                Access = true;
             }
         }
         if (status.MPI_TAG == Finish) {
@@ -185,7 +184,7 @@ void work(int rank, int proc) {
         }
         int used = 0;
         for (int i = 0; i < proc - 1; i++) {
-           // считаем сколько процессов использовалось
+           // used proc
            used += runs[i];
         }
         read_oper();
