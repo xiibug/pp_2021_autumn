@@ -174,7 +174,7 @@ TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_odd_siz
     }
 }
 
-TEST(Parallel_Operations_MPI, check_running_time_of_getParallelOperations_with_small_size) {
+TEST(DISABLED_Parallel_Operations_MPI, check_running_time_of_getParallelOperations_with_small_size) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int>::size_type row_count = 55, column_count = 67;
@@ -204,7 +204,7 @@ TEST(Parallel_Operations_MPI, check_running_time_of_getParallelOperations_with_s
     }
 }
 
-TEST(Parallel_Operations_MPI, check_running_time_of_getParallelOperations_with_middle_size) {
+TEST(DISABLED_Parallel_Operations_MPI, check_running_time_of_getParallelOperations_with_middle_size) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int>::size_type row_count = 205, column_count = 198;
@@ -234,7 +234,7 @@ TEST(Parallel_Operations_MPI, check_running_time_of_getParallelOperations_with_m
     }
 }
 
-TEST(Parallel_Operations_MPI, check_running_time_of_getParallelOperations_with_big_size) {
+TEST(DISABLED_Parallel_Operations_MPI, check_running_time_of_getParallelOperations_with_big_size) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int>::size_type row_count = 500, column_count = 500;
