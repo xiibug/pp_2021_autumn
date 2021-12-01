@@ -34,12 +34,12 @@ int paralleldifferElementsValue(const std::vector<int>& vector, const int size) 
     int block = size / proc;
     int ostatok = size % proc;
 
+    int localMin = -9999999;
+    int globalMin;
+
     if (rank < ostatok) {
         block++;
     }
-
-    int localMin = -9999999;
-    int globalMin;
 
     // if proc > size
     if (ostatok > block) {
