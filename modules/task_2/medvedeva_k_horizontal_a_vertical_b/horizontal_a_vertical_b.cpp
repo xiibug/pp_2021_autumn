@@ -46,7 +46,7 @@ std::vector<int> getParallelOperations(std::vector<int> matrix1, std::vector<int
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (size > static_cast<int>(row_count_matrix1)) {
+    if (size > static_cast<int>(row_count_matrix1) || size == 1) {
         return rank == 0 ?
             getSequentialOperations(matrix1, matrix2, row_count_matrix1, column_count_matrix1, row_count_matrix1) :
             std::vector<int>{};
