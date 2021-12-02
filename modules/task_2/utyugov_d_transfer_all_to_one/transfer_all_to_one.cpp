@@ -17,7 +17,7 @@ std::vector<int> getRandomVector(int sz) {
   return vec;
 }
 
-// only MPI_Send and MPI_Recv
+// only MPI_Send and MPI_Recv.
 // Must realise MPI_INT, MPI_DOUBLE, MPI_FLOAT.
 
 int MY_Reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
