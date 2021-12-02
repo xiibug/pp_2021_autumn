@@ -28,6 +28,7 @@ double parallel_int(std::function<double(double)> funct, double a, double b, int
 		l_res = def_int(funct, l_a, b, count - l_count * (size - 1));
 	}
 	MPI_Reduce(&l_res, &res, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+	return res;
 }
 double func(double x) {
 	return(2 * x * x * x - 7 * x + 4);
