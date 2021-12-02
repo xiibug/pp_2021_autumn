@@ -39,7 +39,7 @@ int paralleldifferElementsValue(const std::vector<int>& vector, const int size) 
         block++;
     }
 
-    int localMax = INT_MIN;
+    int localMax = -9999999;
     int globalMax;
 
     // if proc > size
