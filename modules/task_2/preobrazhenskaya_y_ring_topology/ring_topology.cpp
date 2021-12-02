@@ -9,7 +9,7 @@ MPI_Comm getRingTopology(const MPI_Comm comm) {
     int* edges = new int[size];
 
     for (int i = 0; i < size; i++) {
-        index[i] = 1;
+        index[i] = i + 1;
     }
 
     for (int i = 0; i < size; i++) {
