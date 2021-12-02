@@ -69,7 +69,6 @@ void line(int chairs_count, int runs) {
 void barber(int myrank, int chairs_count, int ccount) {
     int* clients = new int[chairs_count];
     int in_buffer[1];
-    int out_buffer[1];
     MPI_Status status;
   for (int i = 0; i < ccount; i++) {
         MPI_Recv(in_buffer, 1, MPI_INT, 1,
