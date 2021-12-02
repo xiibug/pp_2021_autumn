@@ -55,9 +55,20 @@ int parallelCount(const int* vec, int len) {  // parallel code
         elemsForProc++;  // [3,3,3,2] -> [4,4,4,2] | [3,3,2,2] -> [4,4,3,2]
     int* sendcounts = nullptr, * displs = nullptr;
     int* recvbuf = new int[elemsForProc];
+    if (recvbuf == nullptr)
+        throw MIE;
     if (procRank == 0) {
         sendcounts = new int[procCount];
+        if (sendcounts == nullptr) {
+            delete[] recvbuf;
+            throw MIE;
+        }
         displs = new int[procCount];
+        if (displs == nullptr) {
+            delete[] recvbuf;
+            delete[] sendcounts;
+            throw MIE;
+        }
         std::fill_n(sendcounts, procCount, len / procCount);  // scnt[?,?,?,?]->[2,2,2,2]
         for (int i = 0; i < len % procCount; ++sendcounts[i++]) {}  // scnt[2,2,2,2]->[3,3,3,2] | [2,2,2,2]->[3,3,2,2]
         displs[0] = 0;  // dspls[0,?,?,?]
