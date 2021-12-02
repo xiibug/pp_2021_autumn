@@ -32,13 +32,13 @@ double trapezoidMethodParallel(double (*f)(double, double), double a_x, double b
 
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
-  const int n = 10000;  // кол-во шагов
-  double ans_all;  // конечный результат
-  double ans = 0.0;  // результат на определенном процессе
+  const int n = 10000;
+  double ans_all;
+  double ans = 0.0;
 
-  double h_x = (b_x - a_x) / n;  // длина шага
-  double h_y = (b_y - a_y) / n;  // длина шага
-  double x;  // Текущее положение
+  double h_x = (b_x - a_x) / n;
+  double h_y = (b_y - a_y) / n;
+  double x;
 
   x = a_x + h_x * (ProcRank + 1);
 
@@ -49,7 +49,7 @@ double trapezoidMethodParallel(double (*f)(double, double), double a_x, double b
       }
       ans += cur_ans;
       x += h_x * ProcNum;
-  } 
+  }
 
   MPI_Reduce(&ans, &ans_all, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 

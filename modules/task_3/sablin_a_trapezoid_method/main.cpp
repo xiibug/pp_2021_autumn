@@ -1,8 +1,9 @@
 // Copyright 2021 Sablin Alexander
 
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <cmath>
+#include <gtest/gtest.h>
+#include <gtest-mpi-listener.hpp>
 #include "../../../modules/task_3/sablin_a_trapezoid_method/trapezoid_method.h"
 
 
