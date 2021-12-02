@@ -27,14 +27,13 @@ std::vector<std::vector<int>> contrast_enhancement_seq(std::vector<std::vector<i
     std::vector<std::vector<int>> tmp(rows, std::vector<int>(cols));
     for (int x = 0; x < rows; x++) {
         for (int y = 0; y < cols; y++) {
-            tmp[x][y] = barrier((int)(alpha * pic[x][y]) + beta);
+            tmp[x][y] = barrier(static_cast<int>(alpha * pic[x][y]) + beta);
         }
     }
     return tmp;
 }
 
-std::vector<int> contrast_enhancement_par(std::vector<int>& tmp, double alpha, int beta,int rows, int cols)
-{
+std::vector<int> contrast_enhancement_par(std::vector<int> tmp, double alpha, int beta, int rows, int cols) {
     int pic_size = rows * cols;
     int num_of_proc;
     int proc_num;
@@ -78,13 +77,13 @@ std::vector<int> contrast_enhancement_par(std::vector<int>& tmp, double alpha, i
 
     if (0 == proc_num) {
         for (int i = 0; i < num_of_pixels[proc_num]; i++) {
-            tmp_res[i] = barrier((int)(alpha * tmp[i]) + beta);
+            tmp_res[i] = barrier(static_cast<int>(alpha * tmp[i]) + beta);
         }
     } else {
         int t = 0;
         proc_num1 = proc_num + 1;
         for (int i = displs[proc_num]; i < displs[proc_num1]; i++) {
-            tmp_res[t] = barrier((int)(alpha * tmp[i]) + beta);
+            tmp_res[t] = barrier(static_cast<int>(alpha * tmp[i]) + beta);
             t++;
         }
     }
