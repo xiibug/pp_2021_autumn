@@ -24,7 +24,7 @@ TEST(SORT_SHELL_BATCHER, IS_ONE_THREAD_VALID) {
     if (rank == 0) {
         auto v = randArr(128);
         shellSort(&v);
-        for (int i = 0; i < v.size() - 1; i++) {
+        for (int i = 0; i < static_cast<int>(v.size()) - 1; i++) {
             EXPECT_TRUE(v[i] <= v[i + 1]);
         }
     }
@@ -41,7 +41,7 @@ TEST(SORT_SHELL_BATCHER, IS_ODD_EVEN_MERGE_VALID) {
         auto result = v1;
         result.insert(result.end(), v2.begin(), v2.end());
         oddEvenMerge(&result, result.size());
-        for (int i = 0; i < result.size() - 1; i++) {
+        for (int i = 0; i < static_cast<int>(result.size()) - 1; i++) {
             EXPECT_TRUE(result[i] <= result[i + 1]);
         }
     }
@@ -65,7 +65,7 @@ TEST(SORT_SHELL_BATCHER, IS_GLOBAL_MERGE_VALID) {
         result.push_back(v3);
         result.push_back(v4);
         auto temp = merge(result);
-        for (int i = 0; i < temp.size() - 1; i++) {
+        for (int i = 0; i < static_cast<int>(temp.size()) - 1; i++) {
             EXPECT_TRUE(temp[i] <= temp[i + 1]);
         }
     }
@@ -80,7 +80,7 @@ TEST(SORT_SHELL_BATCHER, IS_MULTI_THREAD_VALID) {
     }
     temp = shellSortMPI(temp, 128);
     if (rank == 0) {
-        for (int i = 0; i < temp.size() - 1; i++) {
+        for (int i = 0; i < static_cast<int>(temp.size()) - 1; i++) {
             EXPECT_TRUE(temp[i] <= temp[i + 1]);
         }
     }
@@ -95,7 +95,7 @@ TEST(SORT_SHELL_BATCHER, BIG_DATA) {
     }
     temp = shellSortMPI(temp, pow(2, 16));
     if (rank == 0) {
-        for (int i = 0; i < temp.size() - 1; i++) {
+        for (int i = 0; i < static_cast<int>(temp.size()) - 1; i++) {
             EXPECT_TRUE(temp[i] <= temp[i + 1]);
         }
     }
@@ -110,7 +110,7 @@ TEST(SORT_SHELL_BATCHER, SMALL_DATA) {
     }
     temp = shellSortMPI(temp, 4);
     if (rank == 0) {
-        for (int i = 0; i < temp.size() - 1; i++) {
+        for (int i = 0; i < static_cast<int>(temp.size()) - 1; i++) {
             EXPECT_TRUE(temp[i] <= temp[i + 1]);
         }
     }

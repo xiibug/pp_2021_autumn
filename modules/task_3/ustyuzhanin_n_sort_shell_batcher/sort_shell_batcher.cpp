@@ -34,7 +34,7 @@ void oddEvenMerge(vector<int>* arr, int n, int lo, int r) {
 
 vector<int> merge(vector<vector<int>> vectors) {
     while (vectors.size() != 1) {
-        for (int i = 0; i < vectors.size(); i++) {
+        for (int i = 0; i < static_cast<int>(vectors.size()); i++) {
             auto temp1 = vectors[i];
             temp1.insert(temp1.end(),
                 vectors[i + 1].begin(), vectors[i + 1].end());
@@ -48,7 +48,7 @@ vector<int> merge(vector<vector<int>> vectors) {
 
 void shellSort(vector<int> *arr) {
     for (int s = (*arr).size() / 2; s > 0; s /= 2) {
-        for (int i = s; i < (*arr).size(); ++i) {
+        for (int i = s; i < static_cast<int>((*arr).size()); ++i) {
             for (int j = i - s; j >= 0 && (*arr)[j] > (*arr)[j + s]; j -= s) {
                 std::swap((*arr)[j], (*arr)[j + s]);
             }
