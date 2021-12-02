@@ -46,21 +46,7 @@ TEST(Sequential_Operations_MPI, getSequentialOperations_works_correctly_with_arb
     ASSERT_EQ(res, getSequentialOperations(matrix1, matrix2, 2, 4, 3));
 }
 
-TEST(Parallel_Operations_MPI, getParallelOperations_can_work_with_square_matrix) {
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int>::size_type row_count = 50, column_count = 50;
-    std::vector<int> matrix1(row_count * column_count), matrix2(row_count * column_count);
-
-    if (rank == 0) {
-        matrix1 = getRandomMatrix(row_count, column_count);
-        matrix2 = getRandomMatrix(column_count, row_count);
-    }
-
-    ASSERT_NO_THROW(getParallelOperations(matrix1, matrix2, row_count, column_count));
-}
-
-TEST(Parallel_Operations_MPI, getParallelOperations_can_work_with_arbitary_matrix) {
+TEST(Parallel_Operations_MPI, getParallelOperations_can_work) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int>::size_type row_count = 50, column_count = 60;
@@ -78,46 +64,6 @@ TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_square_
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int>::size_type row_count = 50, column_count = 50;
-    std::vector<int> matrix1(row_count * column_count), matrix2(row_count * column_count);
-
-    if (rank == 0) {
-        matrix1 = getRandomMatrix(row_count, column_count);
-        matrix2 = getRandomMatrix(column_count, row_count);
-    }
-
-    std::vector<int> res = getParallelOperations(matrix1, matrix2, row_count, column_count);
-
-    if (rank == 0) {
-        std::vector<int> expected_res = getSequentialOperations(matrix1, matrix2, row_count, column_count, row_count);
-
-        ASSERT_EQ(res, expected_res);
-    }
-}
-
-TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_more_columns) {
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int>::size_type row_count = 50, column_count = 60;
-    std::vector<int> matrix1(row_count * column_count), matrix2(row_count * column_count);
-
-    if (rank == 0) {
-        matrix1 = getRandomMatrix(row_count, column_count);
-        matrix2 = getRandomMatrix(column_count, row_count);
-    }
-
-    std::vector<int> res = getParallelOperations(matrix1, matrix2, row_count, column_count);
-
-    if (rank == 0) {
-        std::vector<int> expected_res = getSequentialOperations(matrix1, matrix2, row_count, column_count, row_count);
-
-        ASSERT_EQ(res, expected_res);
-    }
-}
-
-TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_more_rows) {
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int>::size_type row_count = 60, column_count = 50;
     std::vector<int> matrix1(row_count * column_count), matrix2(row_count * column_count);
 
     if (rank == 0) {
