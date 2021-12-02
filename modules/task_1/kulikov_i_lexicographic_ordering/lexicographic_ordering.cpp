@@ -20,8 +20,7 @@ int finding_in_part(const char* str1, const char* str2, int sz) {
         if (str1[i] > str2[i]) {
             count = 1;
             break;
-        }
-        else if (str1[i] < str2[i]) {
+        } else if (str1[i] < str2[i]) {
             count = -1;
             break;
         }
