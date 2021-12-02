@@ -28,7 +28,6 @@ double trapezoidMethodSequential(double (*f)(double, double), double a_x, double
 
 double trapezoidMethodParallel(double (*f)(double, double), double a_x, double b_x, double a_y, double b_y) {
   int ProcRank, ProcNum;
-
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
   const int n = 10000;
