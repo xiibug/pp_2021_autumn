@@ -21,16 +21,14 @@ void customer(int myrank) {
     int out_buffer[1] = { myrank };
     MPI_Status status;
     srand(time(NULL) + myrank);
-    std::ostringstream str;
-    std::ostringstream str1;
-    while (in_buffer[0]<0) {
+    while (in_buffer[0] < 0) {
        wait();
         MPI_Send(out_buffer, 1, MPI_INT, 1, CHAIR_REQUEST, MPI_COMM_WORLD);
         MPI_Recv(in_buffer, 1, MPI_INT, 1, CHAIR_RESPONSE,
           MPI_COMM_WORLD, &status);
         if (in_buffer[0] >= 0) {
-            MPI_Send(out_buffer, 1, MPI_INT, 1, HAIR_CUT_REQUEST, MPI_COMM_WORLD);
-          
+            MPI_Send(out_buffer, 1, MPI_INT, 1,
+                HAIR_CUT_REQUEST, MPI_COMM_WORLD);
         }
     }
 
@@ -41,45 +39,39 @@ void line(int chairs_count, int runs) {
     int out_buffer[1];
     int un_free_chairs = 0;
     int* chairs = new int[chairs_count];
-    int count = runs;
     MPI_Status status;
-    std::ostringstream str;
-    std::ostringstream str1;
-    std::ostringstream str2;
     for (int i = 0; i < runs; i++) {
-        MPI_Recv(in_buffer, 1, MPI_INT, MPI_ANY_SOURCE, CHAIR_REQUEST, MPI_COMM_WORLD, &status);
+        MPI_Recv(in_buffer, 1, MPI_INT, MPI_ANY_SOURCE,
+            CHAIR_REQUEST, MPI_COMM_WORLD, &status);
         if (un_free_chairs < chairs_count) {
             out_buffer[0] = un_free_chairs;
-            MPI_Send(out_buffer, 1, MPI_INT, in_buffer[0], CHAIR_RESPONSE, MPI_COMM_WORLD);
+            MPI_Send(out_buffer, 1, MPI_INT, in_buffer[0],
+                CHAIR_RESPONSE, MPI_COMM_WORLD);
 
             un_free_chairs++;
-            MPI_Recv(chairs + un_free_chairs, 1, MPI_INT, in_buffer[0], HAIR_CUT_REQUEST, MPI_COMM_WORLD, &status);
-
-        }
-        else {
+            MPI_Recv(chairs + un_free_chairs, 1, MPI_INT, in_buffer[0],
+                HAIR_CUT_REQUEST, MPI_COMM_WORLD, &status);
+        } else {
             out_buffer[0] = -1;
-
-            MPI_Send(out_buffer, 1, MPI_INT, in_buffer[0], CHAIR_RESPONSE, MPI_COMM_WORLD);
-
+            MPI_Send(out_buffer, 1, MPI_INT, in_buffer[0],
+                CHAIR_RESPONSE, MPI_COMM_WORLD);
         }
         if (un_free_chairs > 0) {
-
             MPI_Send(&un_free_chairs, 1, MPI_INT, 0, HAIR_CUT, MPI_COMM_WORLD);
-            MPI_Send(chairs + un_free_chairs, un_free_chairs, MPI_INT, 0, HAIR_CUT, MPI_COMM_WORLD);
-
-            count = count - un_free_chairs;
+            MPI_Send(chairs + un_free_chairs, un_free_chairs,
+                MPI_INT, 0, HAIR_CUT, MPI_COMM_WORLD);
             un_free_chairs = 0;
         }
     }
- 
+    return;
 }
 
 void barber(int myrank, int chairs_count, int ccount) {
-    int* clients= new int [chairs_count];
+    int* clients = new int[chairs_count];
     int in_buffer[1];
     int out_buffer[1];
     MPI_Status status;
-  for(int i=0;i<ccount;i++){
+  for (int i = 0; i < ccount; i++) {
         MPI_Recv(in_buffer, 1, MPI_INT, 1,
             HAIR_CUT, MPI_COMM_WORLD, &status);
         MPI_Recv(clients, in_buffer[0], MPI_INT, 1,
@@ -87,8 +79,6 @@ void barber(int myrank, int chairs_count, int ccount) {
         for (int i = 0; i < in_buffer[0]; i++) {
             cut_hair();
         }
-      
     }
- 
   return;
 }

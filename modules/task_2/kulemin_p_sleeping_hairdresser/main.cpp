@@ -9,11 +9,9 @@ TEST(Sleepeing_hairdresser, two_Chairs) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     if (rank == 0) {
         ASSERT_NO_THROW(barber(rank, 2, size-2));
-    }
-    else if (rank == 1) {
+    } else if (rank == 1) {
         ASSERT_NO_THROW(line(2, size - 2));
-    }
-    else {
+    } else {
         ASSERT_NO_THROW(customer(rank));
     }
     MPI_Barrier(MPI_COMM_WORLD);
@@ -25,11 +23,10 @@ TEST(Sleepeing_hairdresser, Five_chairs) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
     if (rank == 0) {
-        ASSERT_NO_THROW( barber(rank, 5, size-2));
-    } else if(rank==1){
+        ASSERT_NO_THROW(barber(rank, 5, size-2));
+    } else if (rank == 1) {
         ASSERT_NO_THROW(line(5, size-2));
-    }
-    else {
+    } else {
         ASSERT_NO_THROW(customer(rank));
     }
     MPI_Barrier(MPI_COMM_WORLD);
@@ -42,11 +39,9 @@ TEST(Sleepeing_hairdresser, Ten_chairs) {
 
     if (rank == 0) {
         ASSERT_NO_THROW(barber(rank, 10, size - 2));
-    }
-    else if (rank == 1) {
+    } else if (rank == 1) {
         ASSERT_NO_THROW(line(10, size - 2));
-    }
-    else {
+    } else {
         ASSERT_NO_THROW(customer(rank));
     }
     MPI_Barrier(MPI_COMM_WORLD);
@@ -59,11 +54,9 @@ TEST(Sleepeing_hairdresser, Fifteen_chairs) {
 
     if (rank == 0) {
         ASSERT_NO_THROW(barber(rank, 15, size - 2));
-    }
-    else if (rank == 1) {
+    } else if (rank == 1) {
         ASSERT_NO_THROW(line(15, size - 2));
-    }
-    else {
+    } else {
         ASSERT_NO_THROW(customer(rank));
     }
     MPI_Barrier(MPI_COMM_WORLD);
@@ -76,11 +69,9 @@ TEST(Sleepeing_hairdresser, one_chair) {
 
     if (rank == 0) {
         ASSERT_NO_THROW(barber(rank, 1, size - 2));
-    }
-    else if (rank == 1) {
+    } else if (rank == 1) {
         ASSERT_NO_THROW(line(1, size - 2));
-    }
-    else {
+    } else {
         ASSERT_NO_THROW(customer(rank));
     }
     MPI_Barrier(MPI_COMM_WORLD);
