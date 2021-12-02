@@ -24,6 +24,7 @@ int differElementsValue(const std::vector<int>& vector) {
         }
         return max;
     }
+
     return 0;
 }
 
@@ -34,19 +35,19 @@ int paralleldifferElementsValue(const std::vector<int>& vector, const int size) 
     int block = size / proc;
     int ostatok = size % proc;
 
-    int localMin = -9999999;
-    int globalMin;
-
     if (rank < ostatok) {
         block++;
     }
 
+    int localMax = INT_MIN;
+    int globalMax;
+
     // if proc > size
     if (ostatok > block) {
         if (rank == 0) {
-            localMin = differElementsValue(vector);
+            localMax = differElementsValue(vector);
         }
-        return localMin;
+        return localMax;
     }
 
     std::vector<int> blockVector(proc);
@@ -63,10 +64,10 @@ int paralleldifferElementsValue(const std::vector<int>& vector, const int size) 
     MPI_Scatterv(reinterpret_cast<const void*>(vector.data()), blockVector.data(), sdvig.data(),
         MPI_INT, resultData.data(), block, MPI_INT, 0, MPI_COMM_WORLD);
 
-    localMin = differElementsValue(resultData);
+    localMax = differElementsValue(resultData);
 
-    MPI_Reduce(reinterpret_cast<void*>(&localMin), reinterpret_cast<void*>(&globalMin),
+    MPI_Reduce(reinterpret_cast<void*>(&localMax), reinterpret_cast<void*>(&globalMax),
         1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
 
-    return globalMin;
+    return globalMax;
 }
