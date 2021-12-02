@@ -16,7 +16,11 @@ int left(int p, int s) {
 }
 
 int right(int p, int s) {
-    return (p + 1) % s;
+    if (p + 1 == s + 1) {
+        return 1;
+    } else {
+        return p + 1;
+    }
 }
 
 void think() {
