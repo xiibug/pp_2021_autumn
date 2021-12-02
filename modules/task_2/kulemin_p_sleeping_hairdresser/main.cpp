@@ -3,67 +3,85 @@
 #include "./sleeping_hairdresser.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(Sleepeing_hairdresser, No_Customers) {
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-    if (rank == 0) {
-        ASSERT_NO_THROW(barber(rank, 1, 0));
-    }
-}
-
-TEST(Sleepeing_hairdresser, Five_Customers) {
+TEST(Sleepeing_hairdresser, two_Chairs) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    int runs = 5;
-
     if (rank == 0) {
-        ASSERT_NO_THROW(barber(rank, 4, runs*(size-1)));
-    } else {
-        ASSERT_NO_THROW(customer(rank, runs));
+        ASSERT_NO_THROW(barber(rank, 2, size-2));
+    }
+    else if (rank == 1) {
+        ASSERT_NO_THROW(line(2, size - 2));
+    }
+    else {
+        ASSERT_NO_THROW(customer(rank));
     }
     MPI_Barrier(MPI_COMM_WORLD);
 }
 
-TEST(Sleepeing_hairdresser, Ten_Customers) {
+TEST(Sleepeing_hairdresser, Five_chairs) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    int runs = 10;
 
     if (rank == 0) {
-        ASSERT_NO_THROW(barber(rank, 10, runs));
-    } else {
-        ASSERT_NO_THROW(customer(rank, runs));
+        ASSERT_NO_THROW( barber(rank, 5, size-2));
+    } else if(rank==1){
+        ASSERT_NO_THROW(line(5, size-2));
+    }
+    else {
+        ASSERT_NO_THROW(customer(rank));
     }
     MPI_Barrier(MPI_COMM_WORLD);
 }
 
-TEST(Sleepeing_hairdresser, Twenty_Customers) {
+TEST(Sleepeing_hairdresser, Ten_chairs) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    int runs = 20;
 
     if (rank == 0) {
-        ASSERT_NO_THROW(barber(rank, 20, runs));
-    } else {
-        ASSERT_NO_THROW(customer(rank, runs));
+        ASSERT_NO_THROW(barber(rank, 10, size - 2));
+    }
+    else if (rank == 1) {
+        ASSERT_NO_THROW(line(10, size - 2));
+    }
+    else {
+        ASSERT_NO_THROW(customer(rank));
     }
     MPI_Barrier(MPI_COMM_WORLD);
 }
 
-TEST(Sleepeing_hairdresser, Forty_Customers) {
+TEST(Sleepeing_hairdresser, Fifteen_chairs) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    int runs = 40;
 
     if (rank == 0) {
-        ASSERT_NO_THROW(barber(rank, 40, runs));
-    } else {
-        ASSERT_NO_THROW(customer(rank, runs));
+        ASSERT_NO_THROW(barber(rank, 15, size - 2));
+    }
+    else if (rank == 1) {
+        ASSERT_NO_THROW(line(15, size - 2));
+    }
+    else {
+        ASSERT_NO_THROW(customer(rank));
+    }
+    MPI_Barrier(MPI_COMM_WORLD);
+}
+
+TEST(Sleepeing_hairdresser, one_chair) {
+    int rank, size;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    if (rank == 0) {
+        ASSERT_NO_THROW(barber(rank, 1, size - 2));
+    }
+    else if (rank == 1) {
+        ASSERT_NO_THROW(line(1, size - 2));
+    }
+    else {
+        ASSERT_NO_THROW(customer(rank));
     }
     MPI_Barrier(MPI_COMM_WORLD);
 }
