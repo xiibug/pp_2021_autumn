@@ -17,70 +17,60 @@ std::vector<int> getRandomVector(int size) {
 
 std::vector<int> BubbleSortOddEvenParallel(std::vector<int> vec) {
     int size, rank;
+    MPI_Status status;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    int sendCountsEven[size], displsEven[size];
-    int sendCountsOdd[size], displsOdd[size];
-    if (vec.size() < 2) {
-        return vec;
-    }
+    int sendCounts[size], displs[size], n;
 
-    int n = vec.size();
+    n = vec.size();
+    MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
     for (int i = 0; i < size; i++) {
-        sendCountsEven[i] = (n / 2) / size * 2;
+        sendCounts[i] = n / size;
     }
-    for (int i = 0; i < (n / 2) % size; i++) {
-        sendCountsEven[i] += 2;
+    for (int i = 0; i < n % size; i++) {
+        sendCounts[i] += 1;
     }
-    displsEven[0] = 0;
+    displs[0] = 0;
     for (int i = 1; i < size; i++) {
-        displsEven[i] = displsEven[i - 1] + sendCountsEven[i - 1];
+        displs[i] = displs[i - 1] + sendCounts[i - 1];
     }
 
-    for (int i = 0; i < size; i++) {
-        sendCountsOdd[i] = ((n - 1) / 2) / size * 2;
-    }
-    for (int i = 0; i < ((n - 1) / 2) % size; i++) {
-        sendCountsOdd[i] += 2;
-    }
-    displsOdd[0] = 1;
-    for (int i = 1; i < size - 1; i++) {
-        displsOdd[i] = displsOdd[i - 1] + sendCountsOdd[i - 1];
-    }
-
+    int part_vec[sendCounts[rank]];
+    int odd, a;
+    MPI_Scatterv(vec.data(), sendCounts, displs, MPI_INT, part_vec, sendCounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
     for (int i = 0; i < n; i++) {
         if (i % 2) {
-            MPI_Scatterv(vec.data(), sendCountsOdd, displsOdd, MPI_INT, 
-                         (rank == 0) ? MPI_IN_PLACE : vec.data() + displsOdd[rank], 
-                         sendCountsOdd[rank], MPI_INT, 0, MPI_COMM_WORLD);
-            for (int j = displsOdd[rank]; j < displsOdd[rank] + sendCountsOdd[rank]; j += 2) {
-                if (vec[j] > vec[j + 1]) {
-                    std::swap(vec[j], vec[j + 1]);
-                }
-            }
-            MPI_Gatherv((rank == 0) ? MPI_IN_PLACE : vec.data() + displsOdd[rank], 
-                         sendCountsOdd[rank], MPI_INT, vec.data(), sendCountsOdd, 
-                         displsOdd, MPI_INT, 0, MPI_COMM_WORLD);
+            odd = !(displs[rank] % 2);
         } else {
-            MPI_Scatterv(vec.data(), sendCountsEven, displsEven, MPI_INT, 
-                         (rank == 0) ? MPI_IN_PLACE : vec.data() + displsEven[rank], 
-                         sendCountsEven[rank], MPI_INT, 0, MPI_COMM_WORLD);
-            for (int j = displsEven[rank]; j < displsEven[rank] + sendCountsEven[rank]; j += 2) {
-                if (vec[j] > vec[j + 1]) {
-                    std::swap(vec[j], vec[j + 1]);
-                }
-            }
-            MPI_Gatherv((rank == 0) ? MPI_IN_PLACE : vec.data() + displsEven[rank], 
-                         sendCountsEven[rank], MPI_INT, vec.data(), sendCountsEven, 
-                         displsEven, MPI_INT, 0, MPI_COMM_WORLD);
+            odd = displs[rank] % 2;
         }
+        for (int j = odd; j < sendCounts[rank]; j += 2) {
+            if (j == sendCounts[rank] - 1) {
+                if (rank != size - 1) {
+                    MPI_Recv(&a, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+                    if (part_vec[sendCounts[rank] - 1] > a) std::swap(part_vec[sendCounts[rank] - 1], a);
+                    MPI_Send(&a, 1, MPI_INT, rank + 1, 0, MPI_COMM_WORLD);
+                }
+                break;
+            }
+            if (part_vec[j] > part_vec[j + 1]) {
+                std::swap(part_vec[j], part_vec[j + 1]);
+            }
+        }
+        if (odd && rank != 0) {
+            MPI_Send(&(part_vec[0]), 1, MPI_INT, rank - 1, 0, MPI_COMM_WORLD);
+            MPI_Recv(&(part_vec[0]), 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+        }
+        MPI_Barrier(MPI_COMM_WORLD);
     }
+    MPI_Gatherv(part_vec, sendCounts[rank], MPI_INT, vec.data(), sendCounts, displs, MPI_INT, 0, MPI_COMM_WORLD);
     return vec;
 }
 
 std::vector<int> BubbleSortOddEvenSequential(std::vector<int> vec) {
     int n = vec.size();
-    for (int i = 0; i < n - 1; i++) {
+    for (int i = 0; i < n; i++) {
         if (i % 2) {
             for (int j = 1; j < n - 1; j += 2) {
                 if (vec[j] > vec[j + 1]) {
