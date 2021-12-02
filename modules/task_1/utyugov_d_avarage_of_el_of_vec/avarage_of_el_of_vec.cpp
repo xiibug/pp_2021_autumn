@@ -32,7 +32,7 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
   int global_sum = 0;
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  // This funcs is int - they return result of work
+  // This funcs is int - they return result of work.
 
   /* MPI_Send - send data. (buff, count of data, Type of data, rank of
      proccess-recipient, Tag, comm) first 3 parametrs is deffualt MPI_Recv -
