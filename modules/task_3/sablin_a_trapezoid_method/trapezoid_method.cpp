@@ -1,7 +1,6 @@
 // Copyright 2021 Sablin Alexander
 
 #include <mpi.h>
-#include <cmath>
 #include "../../../modules/task_3/sablin_a_trapezoid_method/trapezoid_method.h"
 
 
