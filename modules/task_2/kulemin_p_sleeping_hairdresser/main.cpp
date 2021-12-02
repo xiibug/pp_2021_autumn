@@ -33,7 +33,7 @@ TEST(Sleepeing_hairdresser, Ten_Customers) {
     int runs = 10;
 
     if (rank == 0) {
-        ASSERT_NO_THROW(barber(rank, size, runs));
+        ASSERT_NO_THROW(barber(rank, 10, runs));
     } else {
         ASSERT_NO_THROW(customer(rank, runs));
     }
@@ -47,7 +47,7 @@ TEST(Sleepeing_hairdresser, Twenty_Customers) {
     int runs = 20;
 
     if (rank == 0) {
-        ASSERT_NO_THROW(barber(rank, size, runs));
+        ASSERT_NO_THROW(barber(rank, 20, runs));
     } else {
         ASSERT_NO_THROW(customer(rank, runs));
     }
@@ -61,7 +61,7 @@ TEST(Sleepeing_hairdresser, Forty_Customers) {
     int runs = 40;
 
     if (rank == 0) {
-        ASSERT_NO_THROW(barber(rank, size, runs));
+        ASSERT_NO_THROW(barber(rank, 40, runs));
     } else {
         ASSERT_NO_THROW(customer(rank, runs));
     }
