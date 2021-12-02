@@ -40,7 +40,6 @@ void barber(int myrank, int chairs_count, int total_runs) {
     int in_buffer[1];
     int out_buffer[1];
     int un_free_chairs = 0;
-    int count = 1;
     MPI_Status status;
     for (int i = 0; i < total_runs; i++) {
         MPI_Recv(in_buffer, 1, MPI_INT, MPI_ANY_SOURCE,
