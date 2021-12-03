@@ -19,7 +19,7 @@ std::vector<int> getRandomMatrix(std::vector<int>::size_type row_count, std::vec
     return vec;
 }
 
-std::vector<int> getSequentialOperations(std::vector<int> matrix1, std::vector<int> matrix2,
+std::vector<int> getSequentialOperations(const std::vector<int>& matrix1, const std::vector<int>& matrix2,
     std::vector<int>::size_type row_count_matrix1, std::vector<int>::size_type column_count_matrix1,
     std::vector<int>::size_type column_count_matrix2) {
 
@@ -39,7 +39,7 @@ std::vector<int> getSequentialOperations(std::vector<int> matrix1, std::vector<i
     return res;
 }
 
-std::vector<int> getParallelOperations(std::vector<int> matrix1, std::vector<int> matrix2,
+std::vector<int> getParallelOperations(const std::vector<int>& matrix1, const std::vector<int>& matrix2,
     std::vector<int>::size_type row_count_matrix1, std::vector<int>::size_type column_count_matrix1) {
 
     int size, rank;
@@ -108,8 +108,6 @@ std::vector<int> getParallelOperations(std::vector<int> matrix1, std::vector<int
     int sender = (rank + 1) % size;
     int reciever = (rank - 1) < 0 ? size - 1 : rank - 1;
 
-    printf("SizeProc=%i\nRankProc=%i\nSender=%i\nReciever=%i\n", size, rank, sender, reciever);
-
     for (int i = 0; i < size; i++) {
         std::vector<int>::size_type local_row_count_matrix1 = rank == 0 ? local_count + remaining : local_count;
         std::vector<int>::size_type local_column_count_matrix2 =
@@ -132,7 +130,6 @@ std::vector<int> getParallelOperations(std::vector<int> matrix1, std::vector<int
         MPI_Status status;
         MPI_Recv(local_vector_b.data(), static_cast<int>(local_vector_b.size()),
             MPI_INT, sender, i, MPI_COMM_WORLD, &status);
-
     }
 
     std::vector<int> res(row_count_matrix1 * column_count_matrix2, 0);

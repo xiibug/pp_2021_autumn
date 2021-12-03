@@ -49,7 +49,7 @@ TEST(Sequential_Operations_MPI, getSequentialOperations_works_correctly_with_arb
 TEST(Parallel_Operations_MPI, getParallelOperations_can_work_with_square_matrix) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int>::size_type row_count = 50, column_count = 50;
+    std::vector<int>::size_type row_count = 20, column_count = 20;
     std::vector<int> matrix1(row_count * column_count), matrix2(row_count * column_count);
 
     if (rank == 0) {
@@ -63,7 +63,7 @@ TEST(Parallel_Operations_MPI, getParallelOperations_can_work_with_square_matrix)
 TEST(Parallel_Operations_MPI, getParallelOperations_can_work_with_arbitary_matrix) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int>::size_type row_count = 50, column_count = 60;
+    std::vector<int>::size_type row_count = 20, column_count = 30;
     std::vector<int> matrix1(row_count * column_count), matrix2(row_count * column_count);
 
     if (rank == 0) {
@@ -77,7 +77,7 @@ TEST(Parallel_Operations_MPI, getParallelOperations_can_work_with_arbitary_matri
 TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_square_matrix) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int>::size_type row_count = 50, column_count = 50;
+    std::vector<int>::size_type row_count = 20, column_count = 20;
     std::vector<int> matrix1(row_count * column_count), matrix2(row_count * column_count);
 
     if (rank == 0) {
@@ -97,7 +97,7 @@ TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_square_
 TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_more_columns) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int>::size_type row_count = 50, column_count = 60;
+    std::vector<int>::size_type row_count = 20, column_count = 30;
     std::vector<int> matrix1(row_count * column_count), matrix2(row_count * column_count);
 
     if (rank == 0) {
@@ -117,7 +117,7 @@ TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_more_co
 TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_more_rows) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int>::size_type row_count = 60, column_count = 50;
+    std::vector<int>::size_type row_count = 30, column_count = 20;
     std::vector<int> matrix1(row_count * column_count), matrix2(row_count * column_count);
 
     if (rank == 0) {
@@ -137,7 +137,7 @@ TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_more_ro
 TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_odd_size_and_more_rows) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int>::size_type row_count = 67, column_count = 55;
+    std::vector<int>::size_type row_count = 27, column_count = 15;
     std::vector<int> matrix1(row_count * column_count), matrix2(row_count * column_count);
 
     if (rank == 0) {
@@ -157,7 +157,7 @@ TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_odd_siz
 TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly_with_odd_size_and_more_columns) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int>::size_type row_count = 55, column_count = 67;
+    std::vector<int>::size_type row_count = 15, column_count = 27;
     std::vector<int> matrix1(row_count * column_count), matrix2(row_count * column_count);
 
     if (rank == 0) {
