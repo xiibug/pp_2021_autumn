@@ -126,14 +126,13 @@ std::vector<int> getParallelOperations(std::vector<int> matrix1, std::vector<int
             local_res[step_matrix + step_row + step_column] += tmp_res[j];
         }
 
-        if (sender != reciever) {
-            MPI_Send(local_vector_b.data(), static_cast<int>(local_vector_b.size()),
-                MPI_INT, reciever, i, MPI_COMM_WORLD);
+        MPI_Send(local_vector_b.data(), static_cast<int>(local_vector_b.size()),
+            MPI_INT, reciever, i, MPI_COMM_WORLD);
 
-            MPI_Status status;
-            MPI_Recv(local_vector_b.data(), static_cast<int>(local_vector_b.size()),
-                MPI_INT, sender, i, MPI_COMM_WORLD, &status);
-        }
+        MPI_Status status;
+        MPI_Recv(local_vector_b.data(), static_cast<int>(local_vector_b.size()),
+            MPI_INT, sender, i, MPI_COMM_WORLD, &status);
+
     }
 
     std::vector<int> res(row_count_matrix1 * column_count_matrix2, 0);
