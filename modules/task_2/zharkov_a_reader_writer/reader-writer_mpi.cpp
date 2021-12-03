@@ -167,8 +167,7 @@ void work(int rank, int proc) {
                 set_buf[0] = activeReaders;
                 MPI_Send(set_buf, 1, MPI_INT, Activ_proc,
                     RC_Response, MPI_COMM_WORLD);
-            }
-            else {
+            } else {
                 set_buf[0] = -1;
                 MPI_Send(set_buf, 1, MPI_INT, Activ_proc,
                     RC_Response, MPI_COMM_WORLD);
