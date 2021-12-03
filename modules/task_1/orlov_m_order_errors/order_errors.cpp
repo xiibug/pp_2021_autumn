@@ -7,7 +7,7 @@
 #include "../../../modules/task_1/orlov_m_order_errors/order_errors.h"
 
 int orderErrors(std::vector<int> v) {
-    int procs, rank, rem, pairsPerProc, res, errors = 0;
+    int procs, rank, rem, pairsPerProc, res = 0, errors = 0;
     int n_ = static_cast<int>(v.size()) - 1;
     int* displs;
     int* scounts;
