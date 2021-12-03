@@ -144,24 +144,6 @@ void work(int rank, int proc) {
                 S = true;
             }
         }
-        if (status.MPI_TAG == RC_Request) {
-            if (RC == true) {
-                RC = false;
-                set_buf[0] = activeReaders;
-                MPI_Send(set_buf, 1, MPI_INT, Activ_proc,
-                    RC_Response, MPI_COMM_WORLD);
-            } else {
-                set_buf[0] = -1;
-                MPI_Send(set_buf, 1, MPI_INT, Activ_proc,
-                    RC_Response, MPI_COMM_WORLD);
-            }
-        }
-        if (status.MPI_TAG == RC_Release) {
-            if (RC == false) {
-                RC = true;
-                activeReaders = get_buf[0];
-            }
-        }
         if (status.MPI_TAG == Access_Request) {
             if (Access == true) {
                 Access = false;
@@ -177,6 +159,25 @@ void work(int rank, int proc) {
         if (status.MPI_TAG == Access_Release) {
             if (Access == false) {
                 Access = true;
+            }
+        }
+        if (status.MPI_TAG == RC_Request) {
+            if (RC == true) {
+                RC = false;
+                set_buf[0] = activeReaders;
+                MPI_Send(set_buf, 1, MPI_INT, Activ_proc,
+                    RC_Response, MPI_COMM_WORLD);
+            }
+            else {
+                set_buf[0] = -1;
+                MPI_Send(set_buf, 1, MPI_INT, Activ_proc,
+                    RC_Response, MPI_COMM_WORLD);
+            }
+        }
+        if (status.MPI_TAG == RC_Release) {
+            if (RC == false) {
+                RC = true;
+                activeReaders = get_buf[0];
             }
         }
         if (status.MPI_TAG == Finish) {
