@@ -11,7 +11,6 @@ double def_int(std::function<double(double)> funct, double a, double b, int coun
 	double res = h * sfc;
 	return res;
 }
-
 double parallel_int(std::function<double(double)> funct, double a, double b, int count) {
 	int rank, size;
 	double sfc = (b - a) / count;
@@ -33,5 +32,3 @@ double parallel_int(std::function<double(double)> funct, double a, double b, int
 double func(double x) {
 	return(2 * x * x * x - 7 * x + 4);
 }
-
-
