@@ -62,7 +62,7 @@ void odd_even_merge(std::vector<int> l, std::vector<int> r) {
         proc_allocation.push_back(std::pair<int, int>(l[0], r[0]));
         return;
     }
-    for (int i = 0; i < l.size(); i++) {
+    for (unsigned int i = 0; i < l.size(); i++) {
         if (i % 2) {
             l_odd.push_back(l[i]);
         } else {
@@ -78,10 +78,10 @@ void odd_even_merge(std::vector<int> l, std::vector<int> r) {
     }
     odd_even_merge(l_odd, r_odd);
     odd_even_merge(l_even, r_even);
-    for (int i = 0; i < l.size(); i++) {
+    for (unsigned int i = 0; i < l.size(); i++) {
         res.push_back(l[i]);
     }
-    for (int i = 0; i < r.size(); i++) {
+    for (unsigned int i = 0; i < r.size(); i++) {
         res.push_back(r[i]);
     }
     for (int i = 1; i < size - 1; i += 2) {
@@ -104,7 +104,7 @@ void q_sort_batcher_par(std::vector<int>* vec) {
     int count = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &num_of_proc);
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_num);
-    if (static_cast<int>(num_of_proc) >= vec->size()) {
+    if (static_cast<unsigned int>(num_of_proc) >= vec->size()) {
         if (proc_num == 0) {
             q_sort(vec, 0, vec->size() - 1);
         }
@@ -129,7 +129,7 @@ void q_sort_batcher_par(std::vector<int>* vec) {
     std::vector<int> near_part(size_of_part);
     MPI_Scatter(&(*vec)[0], size_of_part, MPI_INT, &part[0], size_of_part, MPI_INT, 0, MPI_COMM_WORLD);
     q_sort(&part, 0, part.size() - 1);
-    for (int i = 0; i < proc_allocation.size(); i++) {
+    for (unsigned int i = 0; i < proc_allocation.size(); i++) {
         if (proc_num == proc_allocation[i].second) {
             MPI_Status status;
             MPI_Recv(&near_part[0], size_of_part, MPI_INT, proc_allocation[i].first, 0, MPI_COMM_WORLD, &status);
