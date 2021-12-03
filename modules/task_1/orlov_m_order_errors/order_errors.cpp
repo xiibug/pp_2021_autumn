@@ -28,15 +28,13 @@ int orderErrors(std::vector<int> v) {
             scounts[i] = pairsPerProc + 1;
         }
     }
-    int* v_ = new int[scounts[rank]];
     //  MPI_Scatterv(v.data(), scounts, displs, MPI_INT, v_, scounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
     for (int i = displs[rank]; i < displs[rank] + scounts[rank] - 1; i++) {
         if (v[i] > v[i + 1])
             errors++;
     }
-    MPI_Reduce(&errors, &res, procs, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&errors, &res, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     delete[] displs;
     delete[] scounts;
-    delete[] v_;
     return res;
 }
