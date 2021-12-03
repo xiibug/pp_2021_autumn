@@ -39,7 +39,7 @@ int paralleldifferElementsValue(const std::vector<int>& vector, const int size) 
         block++;
     }
 
-    int localMax = -9999999;
+    int localMax = -2000000000;
     int globalMax;
 
     // if proc > size
@@ -51,9 +51,11 @@ int paralleldifferElementsValue(const std::vector<int>& vector, const int size) 
     }
 
     std::vector<int> blockVector(proc);
-    std::vector<int> sdvig(proc);
+    std::vector<int> sdvig;
     std::vector<int> resultData(block);
     if (rank == 0) {
+        blockVector.assign(proc, vector.size() / proc);
+        sdvig.resize(proc);
         for (int i = 0; i < proc; i++) {
             blockVector[i] = vector.size() / proc;
             if (i < proc - 1) {
