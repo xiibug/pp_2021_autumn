@@ -24,7 +24,7 @@ std::vector<int> BubbleSortOddEvenParallel(std::vector<int> vec) {
     int* displs = new int[size];
     int n;
 
-    n = (int)vec.size();
+    n = vec.size();
     MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     for (int i = 0; i < size; i++) {
@@ -74,7 +74,7 @@ std::vector<int> BubbleSortOddEvenParallel(std::vector<int> vec) {
 }
 
 std::vector<int> BubbleSortOddEvenSequential(std::vector<int> vec) {
-    int n = (int)vec.size();
+    int n = vec.size();
     for (int i = 0; i < n; i++) {
         if (i % 2) {
             for (int j = 1; j < n - 1; j += 2) {
