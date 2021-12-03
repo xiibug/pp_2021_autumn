@@ -12,20 +12,23 @@ std::vector<int> vec_gen(int size) {
     return vec;
 }
 
-int partition(std::vector<int>& vec, int l, int r) {
-    int pivot = vec[r];
+int partition(std::vector<int>* vec, int l, int r) {
+    int pivot = (*vec)[r];
     int i = (l - 1);
+    int tmp = 0;
     for (int j = l; j <= r - 1; j++) {
-        if (vec[j] <= pivot) {
+        if ((*vec)[j] <= pivot) {
             i++;
-            std::swap(vec[i], vec[j]);
+            tmp = (*vec)[i];
+            (*vec)[i] = (*vec)[j];
+            (*vec)[j] = tmp;
         }
     }
-    std::swap(vec[i + 1], vec[r]);
+    std::swap((*vec)[i + 1], (*vec)[r]);
     return (i + 1);
 }
 
-void q_sort(std::vector<int>& vec, int l, int r) {
+void q_sort(std::vector<int>* vec, int l, int r) {
     if (l < r) {
         int pi = partition(vec, l, r);
         q_sort(vec, l, pi - 1);
@@ -103,7 +106,7 @@ void q_sort_batcher_par(std::vector<int>* vec) {
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_num);
     if (static_cast<int>(num_of_proc) >= vec->size()) {
         if (proc_num == 0) {
-            q_sort(*vec, 0, vec->size() - 1);
+            q_sort(vec, 0, vec->size() - 1);
         }
         return;
     }
@@ -125,7 +128,7 @@ void q_sort_batcher_par(std::vector<int>* vec) {
     std::vector<int> tmp(size_of_part);
     std::vector<int> near_part(size_of_part);
     MPI_Scatter(&(*vec)[0], size_of_part, MPI_INT, &part[0], size_of_part, MPI_INT, 0, MPI_COMM_WORLD);
-    q_sort(part, 0, part.size() - 1);
+    q_sort(&part, 0, part.size() - 1);
     for (int i = 0; i < proc_allocation.size(); i++) {
         if (proc_num == proc_allocation[i].second) {
             MPI_Status status;

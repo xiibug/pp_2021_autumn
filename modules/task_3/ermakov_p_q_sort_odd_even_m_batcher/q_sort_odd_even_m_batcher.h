@@ -11,8 +11,8 @@
 #define MODULES_TASK_3_ERMAKOV_P_Q_SORT_ODD_EVEN_M_BATCHER_Q_SORT_ODD_EVEN_M_BATCHER_H_
 
 std::vector<int> vec_gen(int size);
-int partition(std::vector<int>& vec, int l, int r);
-void q_sort(std::vector<int>& vec, int l, int r);
+int partition(std::vector<int>* vec, int l, int r);
+void q_sort(std::vector<int>* vec, int l, int r);
 void _allocation(std::vector<int> vec);
 void odd_even_merge(std::vector<int> l, std::vector<int> r);
 void create_allocation(int _proc_num);
