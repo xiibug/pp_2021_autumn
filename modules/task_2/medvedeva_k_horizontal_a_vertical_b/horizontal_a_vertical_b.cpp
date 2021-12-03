@@ -108,6 +108,8 @@ std::vector<int> getParallelOperations(std::vector<int> matrix1, std::vector<int
     int sender = (rank + 1) % size;
     int reciever = (rank - 1) < 0 ? size - 1 : rank - 1;
 
+    printf("SizeProc=%i\nRankProc=%i\nSender=%i\nReciever=%i\n", size, rank, sender, reciever);
+
     for (int i = 0; i < size; i++) {
         std::vector<int>::size_type local_row_count_matrix1 = rank == 0 ? local_count + remaining : local_count;
         std::vector<int>::size_type local_column_count_matrix2 =
