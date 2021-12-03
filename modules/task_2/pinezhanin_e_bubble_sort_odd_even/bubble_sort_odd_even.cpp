@@ -20,7 +20,9 @@ std::vector<int> BubbleSortOddEvenParallel(std::vector<int> vec) {
     MPI_Status status;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    int sendCounts[size], displs[size], n;
+    int* sendCounts = new int[size];
+    int* displs = new int[size];
+    int n;
 
     n = vec.size();
     MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -36,7 +38,7 @@ std::vector<int> BubbleSortOddEvenParallel(std::vector<int> vec) {
         displs[i] = displs[i - 1] + sendCounts[i - 1];
     }
 
-    int part_vec[sendCounts[rank]];
+    int *part_vec = new int[sendCounts[rank]];
     int odd, a;
     MPI_Scatterv(vec.data(), sendCounts, displs, MPI_INT, part_vec, sendCounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
     for (int i = 0; i < n; i++) {
@@ -65,6 +67,9 @@ std::vector<int> BubbleSortOddEvenParallel(std::vector<int> vec) {
         MPI_Barrier(MPI_COMM_WORLD);
     }
     MPI_Gatherv(part_vec, sendCounts[rank], MPI_INT, vec.data(), sendCounts, displs, MPI_INT, 0, MPI_COMM_WORLD);
+    delete[] sendCounts;
+    delete[] displs;
+    delete[] part_vec;
     return vec;
 }
 
