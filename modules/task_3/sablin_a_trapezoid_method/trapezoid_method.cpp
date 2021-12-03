@@ -4,8 +4,8 @@
 #include "../../../modules/task_3/sablin_a_trapezoid_method/trapezoid_method.h"
 
 
-double trapezoidMethodSequential(double (*f)(double, double), double a_x, double b_x, double a_y, double b_y) {
-  const int n = 10000;
+double trapezoidMethodSequential(double (*f)(double, double), double a_x, double b_x,
+    double a_y, double b_y, const int n) {
   double ans = 0;
   double x_h = (b_x - a_x) / n;
   double y_h = (b_y - a_y) / n;
@@ -26,11 +26,12 @@ double trapezoidMethodSequential(double (*f)(double, double), double a_x, double
   return ans * x_h * y_h;
 }
 
-double trapezoidMethodParallel(double (*f)(double, double), double a_x, double b_x, double a_y, double b_y) {
+double trapezoidMethodParallel(double (*f)(double, double), double a_x, double b_x,
+    double a_y, double b_y, const int n) {
   int ProcRank, ProcNum;
+
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
-  const int n = 10000;
   double ans_all;
   double ans = 0.0;
 
