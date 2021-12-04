@@ -5,7 +5,7 @@
 #include <iostream>
 #include "./quicksort.h"
 #include <gtest-mpi-listener.hpp>
-int length = 1'000'000;
+int length = 1000000;
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
