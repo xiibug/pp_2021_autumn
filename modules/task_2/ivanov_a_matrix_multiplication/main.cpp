@@ -328,7 +328,30 @@ TEST(parallel_multiplication_test, can_work_with_float_matrix) {
         ASSERT_TRUE(c == a * b);
     }
 }
-
+/*
+TEST(parallel_multiplication_test, matrix_on_matrix_with_time) {
+    int procRank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
+    matrix<int> a, b;
+    if (procRank == 0) {
+        a.prepareSpace(1333, 1000);
+        b.prepareSpace(1000, 1444);
+        a.fillMatrix(generateRngValue, 0, 32, 0);
+        b.fillMatrix(generateRngValue, 0, 32, 0);
+    }
+    double parallel_before = MPI_Wtime();
+    matrix<int> c = parallelMultiplication(&a, &b, MPI_INT);
+    double parallel_after = MPI_Wtime();
+    if (procRank == 0) {
+        double sequential_before = MPI_Wtime();
+        matrix<int> c2 = a * b;
+        double sequential_after = MPI_Wtime();
+        std::cout << (sequential_after - sequential_before) / (parallel_after - parallel_before) << std::endl;
+        std::cout << (sequential_after - sequential_before) << " " << (parallel_after - parallel_before) << std::endl;
+        ASSERT_TRUE(c == c2);
+    }
+}
+*/
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
