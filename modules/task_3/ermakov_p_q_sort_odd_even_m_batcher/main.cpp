@@ -5,16 +5,16 @@ TEST(Parallel_Operations_MPI, size_100) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int size = 100;
-    std::vector<int> a(size);
-    std::vector<int> t(size);
+    std::vector<int> par(size);
+    std::vector<int> sq(size);
 
-    a = vec_gen(size);
-    t = a;
+    par = vec_gen(size);
+    sq = par;
 
-    q_sort_batcher_par(&a);
+    q_sort_batcher_par(&par);
     if (rank == 0) {
-        q_sort(&t, 0, t.size() - 1);
-        ASSERT_EQ(a, t);
+        q_sort(&sq, 0, sq.size() - 1);
+        ASSERT_EQ(par, sq);
     }
 }
 
