@@ -17,7 +17,6 @@ vector<type> getRandomVector(const size_t size)  {
     vector<type> vec(size);
     std::random_device dev;
     std::mt19937 gen(dev());
-
     for (size_t i = 0; i < size; ++i) {
         vec[i] = static_cast<type>(gen() % 100);
     }
