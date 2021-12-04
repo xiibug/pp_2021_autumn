@@ -9,9 +9,11 @@ void permormMPIOperation(void* buffer, void* recvbuf, int count, MPI_Datatype da
             if (datatype == MPI_INT)
                 static_cast<int*>(recvbuf)[i] = std::max(static_cast<int*>(recvbuf)[i], static_cast<int*>(buffer)[i]);
             if (datatype == MPI_FLOAT)
-                static_cast<float*>(recvbuf)[i] = std::max(static_cast<float*>(recvbuf)[i], static_cast<float*>(buffer)[i]);
+                static_cast<float*>(recvbuf)[i] = std::max(static_cast<float*>(recvbuf)[i],
+                static_cast<float*>(buffer)[i]);
             if (datatype == MPI_DOUBLE)
-                static_cast<double*>(recvbuf)[i] = std::max(static_cast<double*>(recvbuf)[i], static_cast<double*>(buffer)[i]);
+                static_cast<double*>(recvbuf)[i] = std::max(static_cast<double*>(recvbuf)[i],
+                static_cast<double*>(buffer)[i]);
         }
     }
     if (op == MPI_MIN) {
@@ -19,9 +21,11 @@ void permormMPIOperation(void* buffer, void* recvbuf, int count, MPI_Datatype da
             if (datatype == MPI_INT)
                 static_cast<int*>(recvbuf)[i] = std::min(static_cast<int*>(recvbuf)[i], static_cast<int*>(buffer)[i]);
             if (datatype == MPI_FLOAT)
-                static_cast<float*>(recvbuf)[i] = std::min(static_cast<float*>(recvbuf)[i], static_cast<float*>(buffer)[i]);
+                static_cast<float*>(recvbuf)[i] = std::min(static_cast<float*>(recvbuf)[i],
+                static_cast<float*>(buffer)[i]);
             if (datatype == MPI_DOUBLE)
-                static_cast<double*>(recvbuf)[i] = std::min(static_cast<double*>(recvbuf)[i], static_cast<double*>(buffer)[i]);
+                static_cast<double*>(recvbuf)[i] = std::min(static_cast<double*>(recvbuf)[i],
+                static_cast<double*>(buffer)[i]);
         }
     }
     if (op == MPI_SUM) {
