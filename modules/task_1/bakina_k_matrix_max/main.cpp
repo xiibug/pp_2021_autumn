@@ -1,8 +1,8 @@
 // Copyright 2021 Bakina Ksenia
 #include <gtest/gtest.h>
-#include "./max_matrix.h"
 #include <iostream>
 #include <gtest-mpi-listener.hpp>
+#include "./max_matrix.h"
 
 TEST(parallel_search_check, all_elements_equal) {
     int procRank = 0;
@@ -37,7 +37,6 @@ TEST(parallel_search_check, different_increasing_elements) {
     int procRank = 0;
     const int row_count = 7;
     const int column_count = 15;
-    const int matrix_size = row_count * column_count;
     int** matrix = nullptr;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
@@ -67,7 +66,6 @@ TEST(parallel_search_check, different_decreasing_elements) {
     int procRank = 0;
     const int row_count = 11;
     const int column_count = 4;
-    const int matrix_size = row_count * column_count;
     int** matrix = nullptr;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
@@ -97,7 +95,6 @@ TEST(parallel_search_check, random_elements_matrix_size_3000) {
     int procRank = 0;
     const int row_count = 150;
     const int column_count = 20;
-    int matrix_size = row_count * column_count;
     int** matrix = nullptr;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
@@ -135,7 +132,6 @@ TEST(parallel_search_check, random_elements_matrix_size_200) {
     int procRank = 0;
     const int row_count = 10;
     const int column_count = 20;
-    const int matrix_size = row_count * column_count;
     int** matrix = nullptr;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
