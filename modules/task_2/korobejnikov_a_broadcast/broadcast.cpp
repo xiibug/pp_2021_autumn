@@ -56,6 +56,7 @@ node* search(node* root, int val) {
             q.push(curr->rigth);
         }
     }
+    return nullptr;
 }
 
 int My_Bcast(void *buffer, int count,
@@ -63,17 +64,6 @@ int My_Bcast(void *buffer, int count,
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-    typedef int type;
-
-    if (datatype == MPI_DOUBLE) {
-        typedef double type;
-    }
-    if (datatype == MPI_FLOAT) {
-        typedef float type;
-    }
-
-    type* buf = static_cast<type*>(buffer);
 
     node* head = new node(nullptr, nullptr, nullptr, root);
     for (int i = 0; i < size; ++i) {
@@ -84,21 +74,25 @@ int My_Bcast(void *buffer, int count,
 
     if (rank == root) {
         if (head->left != nullptr) {
-            MPI_Send(buf, count, datatype, head->left->val, 0, MPI_COMM_WORLD);
+            MPI_Send(buffer, count,
+                datatype, head->left->val, 0, MPI_COMM_WORLD);
         }
         if (head->rigth != nullptr) {
-            MPI_Send(buf, count, datatype, head->rigth->val, 0, MPI_COMM_WORLD);
+            MPI_Send(buffer, count,
+                datatype, head->rigth->val, 0, MPI_COMM_WORLD);
         }
     } else {
         node* tmp = search(head, rank);
         MPI_Status status;
-        MPI_Recv(buf, count, datatype,
+        MPI_Recv(buffer, count, datatype,
            tmp->parent->val, 0, MPI_COMM_WORLD, &status);
         if (tmp->left != nullptr) {
-            MPI_Send(buf, count, datatype, tmp->left->val, 0, MPI_COMM_WORLD);
+            MPI_Send(buffer, count,
+                datatype, tmp->left->val, 0, MPI_COMM_WORLD);
         }
         if (tmp->rigth != nullptr) {
-            MPI_Send(buf, count, datatype, tmp->rigth->val, 0, MPI_COMM_WORLD);
+            MPI_Send(buffer, count,
+                datatype, tmp->rigth->val, 0, MPI_COMM_WORLD);
         }
     }
     return 0;
