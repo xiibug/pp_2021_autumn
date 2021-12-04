@@ -5,7 +5,7 @@
 #include <iostream>
 #include "./quicksort.h"
 #include <gtest-mpi-listener.hpp>
-int length = 10'000'000;
+int length = 1'000'000;
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
@@ -52,7 +52,7 @@ TEST(QuickSort, TimeComparsion) {
         quickSort(arr2, length);
         seq_end = clock();
         double seq_elapsed_seconds =
-            static_cast<double>(seq_end - seq_start) / CLOCKS_PER_SEC / 1000.0;
+            static_cast<double>(seq_end - seq_start) / CLOCKS_PER_SEC;
         std::cout << "Sequential time elapsed: "
             << seq_elapsed_seconds << " ms\n";
         delete[] arr1;
