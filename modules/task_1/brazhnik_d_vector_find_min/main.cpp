@@ -45,13 +45,19 @@ TEST(Parallel_Operations_MPI, TEST_PUT_NEGATIVE_SIZE_VALUE_TO_FUNCTION_FILL_VECT
     ASSERT_ANY_THROW(fillRandomValToVector(-15));
 }
 
-TEST(Parallel_Operations_MPI, TEST_PUT_NEGATIVE_SIZE_VALUE_TO_FUNCTION_PARALLEL_FIND_VAL) {
+TEST(Parallel_Operations_MPI, TEST_SIZE_VECTOR_LARGE_VALUE_TO_FUNCTION_PARALLEL_FIND_GET_MIN_VAL) {
     int commRank;
-    std::vector<int> vector = fillRandomValToVector(50);
+    std::vector<int> vector;
+    int minFirst, minSecond;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
     if (commRank == 0) {
-        ASSERT_ANY_THROW(parallelFindingMinVal(vector, -15));
+        vector = fillRandomValToVector(20000000);
+        minFirst = defaultFindingMinVal(vector);
+    }
+    minSecond = parallelFindingMinVal(vector, 20000000);
+    if (commRank == 0) {
+        ASSERT_EQ(minFirst, minSecond);
     }
 }
 
