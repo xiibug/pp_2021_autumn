@@ -74,11 +74,11 @@ TEST(Parallel_Operations_MPI, Matrix_37x1) {
 	}
 	
 	 std::vector<int> result = getParallelOperations(global_vec, rows, cols);
-	
-	if (rank == 0) {
+
+	 if (rank == 0) {
 		std::vector<int> control_result = getSequentialOperations(global_vec, rows, cols);
 		ASSERT_EQ(control_result, result);
-	}
+	 }
 }
 
 TEST(Parallel_Operations_MPI, Matrix_1x37) {
