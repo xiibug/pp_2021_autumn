@@ -1,12 +1,12 @@
 // Copyright 2021 Abuyassen Albara
 
-#include <gtest-mpi-listener.hpp>
+#include "../../../modules/task_1/Abuyassen_A_min_vec/min_vec.h"
 #include <gtest/gtest.h>
 #include <mpi.h>
+#include <gtest-mpi-listener.hpp>
 #include <vector>
-#include "../../../modules/task_1/Abuyassen_A_min_vec/min_vec.h"
 
-TEST(Parallel_Operations_MPI,min_of_120) {
+TEST(Parallel_Operations_MPI, min_of_120) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
