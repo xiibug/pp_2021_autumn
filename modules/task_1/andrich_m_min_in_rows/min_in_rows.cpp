@@ -1,4 +1,4 @@
-// Copyright 2021 Andrich Maria
+  // Copyright 2021 Andrich Maria
 #include <mpi.h>
 #include <vector>
 #include <random>
@@ -33,13 +33,16 @@ std::vector<int> getParallelOperations(std::vector<int> global_mat, int cols, in
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	const int delta = rows / size;
 	const int epsilon = rows % size;
+
 	if (rank == 0) {
 		for (int proc = 1; proc < size; proc++) {
 			MPI_Send(global_mat.data() + proc * delta * cols + epsilon * cols,
 				delta * cols, MPI_INT, proc, 0, MPI_COMM_WORLD);
 		}
 	}
+
 	std::vector<int> local_mat(rank == 0 ? (delta + epsilon) * cols : delta * cols);
+
 	if (rank == 0) {
 		local_mat = { global_mat.begin(), global_mat.begin() + (delta + epsilon) * cols };
 	}
@@ -47,8 +50,10 @@ std::vector<int> getParallelOperations(std::vector<int> global_mat, int cols, in
 		MPI_Status status;
 		MPI_Recv(local_mat.data(), delta * cols, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
 	}
+
 	std::vector<int> result(rows);
 	std::vector<int> local_result = getSequentialOperations(local_mat, cols, rank == 0 ? delta + epsilon : delta);
+
 	if (rank == 0) {
 		for (int i = 0; i < delta + epsilon; i++)
 			result[i] = local_result[i];
@@ -60,5 +65,6 @@ std::vector<int> getParallelOperations(std::vector<int> global_mat, int cols, in
 	else {
 		MPI_Send(local_result.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD);
 	}
+
 	return result;
 }

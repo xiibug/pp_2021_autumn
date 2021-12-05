@@ -1,7 +1,6 @@
 // Copyright 2021 Andrich Maria
 #ifndef MODULES_TASK_1_ANDRICH_M_MIN_IN_ROWS_H_
 #define MODULES_TASK_1_ANDRICH_M_MIN_IN_ROWS_H_
-
 #include <vector>
 
 std::vector<int> randomMatrix(int cols, int rows);
