@@ -1,9 +1,8 @@
 // Copyright 2021 Ershov Alexey
-
 #include "./matrix_min_line_mpi.h"
 
 #include <mpi.h>
-
+#include <algorithm>
 #include <climits>
 #include <random>
 #include <vector>
@@ -58,7 +57,7 @@ std::vector<double> getParallelMatrixMinLine(
   std::vector<double> local_matrix(local_size * column_count, 0);
 
   if (rank == 0) {
-    for (int i = 0; i < local_size * column_count; i++)
+    for (size_t i = 0; i < local_size * column_count; i++)
       local_matrix[i] = matrix[i];
   } else {
     MPI_Status status;
@@ -82,5 +81,4 @@ std::vector<double> getParallelMatrixMinLine(
              MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
   return global_res;
-
 }

@@ -1,10 +1,8 @@
 // Copyright 2021 Ershov Aleksey
 #include <gtest/gtest.h>
-
-#include <gtest-mpi-listener.hpp>
 #include <vector>
-
 #include "./matrix_min_line_mpi.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, Test_Parallel_Algorithm) {
   int rank;
@@ -125,5 +123,4 @@ int main(int argc, char** argv) {
 
   listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
   return RUN_ALL_TESTS();
-
 }
