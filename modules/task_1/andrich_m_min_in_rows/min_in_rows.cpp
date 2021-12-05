@@ -45,14 +45,15 @@ std::vector<int> getParallelOperations(std::vector<int> global_mat, int cols, in
 
 	if (rank == 0) {
 		local_mat = { global_mat.begin(), global_mat.begin() + (delta + epsilon) * cols };
-	} else {
+	}
+	else {
 		MPI_Status status;
 		MPI_Recv(local_mat.data(), delta * cols, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
 	}
 
 	std::vector<int> result(rows);
 	std::vector<int> local_result = getSequentialOperations(local_mat, cols, rank == 0 ? delta + epsilon : delta);
-
+	
 	if (rank == 0) {
 		for (int i = 0; i < delta + epsilon; i++)
 			result[i] = local_result[i];
@@ -60,7 +61,8 @@ std::vector<int> getParallelOperations(std::vector<int> global_mat, int cols, in
 			MPI_Status status;
 			MPI_Recv(result.data() + epsilon + delta * proc, delta, MPI_INT, proc, 0, MPI_COMM_WORLD, &status);
 		}
-	} else {
+	}
+	else {
 		MPI_Send(local_result.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD);
 	}
 
