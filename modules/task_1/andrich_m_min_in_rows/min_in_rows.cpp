@@ -4,7 +4,7 @@
 #include <random>
 #include <ctime>
 #include <algorithm>
-#include "./min_in_rows.h"
+#include "../../../modules/task_1/andrich_m_min_in_rows/min_in_rows.h"
 
 std::vector<int> randomMatrix(int cols, int rows) {
 	std::mt19937 gen;
@@ -61,8 +61,7 @@ std::vector<int> getParallelOperations(std::vector<int> global_mat, int cols, in
 			MPI_Status status;
 			MPI_Recv(result.data() + epsilon + delta * proc, delta, MPI_INT, proc, 0, MPI_COMM_WORLD, &status);
 		}
-	}
-	else {
+	} else {
 		MPI_Send(local_result.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD);
 	}
 
