@@ -1,10 +1,11 @@
 // Copyright 2021 Abuyassen Albara
 
-#include "../../../modules/task_1/Abuyassen_A_min_vec/min_vec.h"
 #include <gtest/gtest.h>
 #include <mpi.h>
-#include <gtest-mpi-listener.hpp>
 #include <vector>
+#include "../../../modules/task_1/Abuyassen_A_min_vec/min_vec.h"
+#include <gtest-mpi-listener.hpp>
+
 
 TEST(Parallel_Operations_MPI, min_of_120) {
     int rank;
