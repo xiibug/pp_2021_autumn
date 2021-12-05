@@ -1,4 +1,4 @@
-  // Copyright 2021 Andrich Maria
+// Copyright 2021 Andrich Maria
 #include <gtest/gtest.h>
 #include <vector>
 #include "./min_in_rows.h"
