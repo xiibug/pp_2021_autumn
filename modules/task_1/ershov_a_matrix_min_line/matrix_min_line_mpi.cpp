@@ -1,4 +1,5 @@
 // Copyright 2021 Ershov Alexey
+
 #include "./matrix_min_line_mpi.h"
 
 #include <mpi.h>
@@ -81,4 +82,5 @@ std::vector<double> getParallelMatrixMinLine(
              MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
   return global_res;
+
 }
