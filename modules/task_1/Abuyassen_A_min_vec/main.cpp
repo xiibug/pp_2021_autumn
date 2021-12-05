@@ -1,11 +1,10 @@
-//Copyright 2021 Abuyassen Albara
+// Copyright 2021 Abuyassen Albara
 
+#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <vector>
 #include "../../../modules/task_1/Abuyassen_A_min_vec/min_vec.h"
-#include <iostream>
-#include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI,min_of_120) {
     int rank;
@@ -18,7 +17,7 @@ TEST(Parallel_Operations_MPI,min_of_120) {
     }
 
     int global_min = getParallelOperations(global_vec, count_size_vector);
-    
+
     if (rank == 0) {
         int reference_min = getSequentialOperations(global_vec);
         ASSERT_EQ(reference_min, global_min);

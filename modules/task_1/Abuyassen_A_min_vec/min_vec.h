@@ -1,7 +1,7 @@
-//Copyright 2021 Abuyassen Albara
+// Copyright 2021 Abuyassen Albara
 
-#ifndef FIRST_TASK_MPI
-#define FIRST_TASK_MPI
+#ifndef MODULES_TASK_1_ABUYASSEN_A_MIN_VEC_MIN_VEC_H_
+#define MODULES_TASK_1_ABUYASSEN_A_MIN_VEC_MIN_VEC_H_
 
 #include <vector>
 
@@ -10,4 +10,4 @@ int getParallelOperations(std::vector<int> global_vec,
     int count_size_vector);
 int getSequentialOperations(std::vector<int> vec);
 
-#endif
+#endif // MODULES_TASK_1_ABUYASSEN_A_MIN_VEC_MIN_VEC_H_
