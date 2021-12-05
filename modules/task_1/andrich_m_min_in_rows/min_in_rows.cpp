@@ -1,4 +1,4 @@
-  // Copyright 2021 Andrich Maria
+// Copyright 2021 Andrich Maria
 #include <mpi.h>
 #include <vector>
 #include <random>
@@ -7,7 +7,7 @@
 #include "../../../modules/task_1/andrich_m_min_in_rows/min_in_rows.h"
 
 std::vector<int> randomMatrix(int cols, int rows) {
-	std::mt19937 gen;
+	std::mt19937 gen;  // NOLINT
 	gen.seed(static_cast<unsigned int>(time(0)));
 	std::vector<int> rmat(cols * rows);
 	for (int i = 0; i < cols * rows; i++) {
@@ -20,8 +20,9 @@ std::vector<int> getSequentialOperations(std::vector<int> mat, int cols, int row
 	std::vector<int> min_elems(rows);
 	for (int i = 0; i < rows; i++) {
 		int min_elem = mat[i * cols];
-		for (int j = 1; j < cols; j++)
+		for (int j = 1; j < cols; j++) {
 			min_elem = std::min(min_elem, mat[i * cols + j]);
+		}
 		min_elems[i] = min_elem;
 	}
 	return min_elems;
@@ -33,7 +34,7 @@ std::vector<int> getParallelOperations(std::vector<int> global_mat, int cols, in
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	const int delta = rows / size;
 	const int epsilon = rows % size;
-	
+
 	if (rank == 0) {
 		for (int proc = 1; proc < size; proc++) {
 			MPI_Send(global_mat.data() + proc * delta * cols + epsilon * cols,
@@ -42,10 +43,10 @@ std::vector<int> getParallelOperations(std::vector<int> global_mat, int cols, in
 	}
 
 	std::vector<int> local_mat(rank == 0 ? (delta + epsilon) * cols : delta * cols);
-
 	if (rank == 0) {
 		local_mat = { global_mat.begin(), global_mat.begin() + (delta + epsilon) * cols };
-	} else {
+	}
+	else {
 		MPI_Status status;
 		MPI_Recv(local_mat.data(), delta * cols, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
 	}
@@ -60,7 +61,8 @@ std::vector<int> getParallelOperations(std::vector<int> global_mat, int cols, in
 			MPI_Status status;
 			MPI_Recv(result.data() + epsilon + delta * proc, delta, MPI_INT, proc, 0, MPI_COMM_WORLD, &status);
 		}
-	} else {
+	}
+	else {
 		MPI_Send(local_result.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD);
 	}
 
