@@ -33,6 +33,7 @@ std::vector<int> getParallelOperations(std::vector<int> global_mat, int cols, in
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	const int delta = rows / size;
 	const int epsilon = rows % size;
+	
 	if (rank == 0) {
 		for (int proc = 1; proc < size; proc++) {
 			MPI_Send(global_mat.data() + proc * delta * cols + epsilon * cols,
@@ -51,7 +52,7 @@ std::vector<int> getParallelOperations(std::vector<int> global_mat, int cols, in
 
 	std::vector<int> result(rows);
 	std::vector<int> local_result = getSequentialOperations(local_mat, cols, rank == 0 ? delta + epsilon : delta);
-	
+
 	if (rank == 0) {
 		for (int i = 0; i < delta + epsilon; i++)
 			result[i] = local_result[i];

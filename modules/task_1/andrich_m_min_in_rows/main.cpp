@@ -18,7 +18,7 @@ TEST(Parallel_Operations_MPI, Matrix_16x16) {
 
 	 std::vector<int> result = getParallelOperations(global_vec, rows, cols);
 	
-     if (rank == 0) {
+	 if (rank == 0) {
 	     std::vector<int> control_result = getSequentialOperations(global_vec, rows, cols);
 		 ASSERT_EQ(control_result, result);
 	 }
@@ -30,13 +30,13 @@ TEST(Parallel_Operations_MPI, Matrix_100x100) {
 	 int rows = 100;
 	 int cols = 100;
 	 std::vector<int> global_vec;
-	 
+
 	if (rank == 0) {
 		global_vec = randomMatrix(cols, rows);
 	}
-	
+
 	 std::vector<int> result = getParallelOperations(global_vec, rows, cols);
-	
+
 	if (rank == 0) {
 		std::vector<int> control_result = getSequentialOperations(global_vec, rows, cols);
 		ASSERT_EQ(control_result, result);
@@ -49,13 +49,13 @@ TEST(Parallel_Operations_MPI, Matrix_68x48) {
 	 int rows = 68;
 	 int cols = 48;
 	 std::vector<int> global_vec;
-	
+
 	if (rank == 0) {
 		global_vec = randomMatrix(cols, rows);
 	}
-	
+
 	 std::vector<int> result = getParallelOperations(global_vec, rows, cols);
-	
+
 	if (rank == 0) {
 		std::vector<int> control_result = getSequentialOperations(global_vec, rows, cols);
 		ASSERT_EQ(control_result, result);
@@ -72,7 +72,7 @@ TEST(Parallel_Operations_MPI, Matrix_37x1) {
     if (rank == 0) {
 		global_vec = randomMatrix(cols, rows);
 	}
-	
+
 	 std::vector<int> result = getParallelOperations(global_vec, rows, cols);
 
 	 if (rank == 0) {
@@ -91,9 +91,9 @@ TEST(Parallel_Operations_MPI, Matrix_1x37) {
 	if (rank == 0) {
 		global_vec = randomMatrix(cols, rows);
 	}
-	
+
 	 std::vector<int> result = getParallelOperations(global_vec, rows, cols);
-	
+
 	if (rank == 0) {
 		std::vector<int> control_result = getSequentialOperations(global_vec, rows, cols);
 		ASSERT_EQ(control_result, result);
