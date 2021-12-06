@@ -20,8 +20,9 @@ void out_mat(std::vector<double> mat, std::vector<double> vec) {
     std::cout << std::endl;
 }
 
-std::vector<double> triangulation(std::vector<double> mat, int line, std::vector<double>& vec) {
+std::vector<double> triangulation(std::vector<double> mat, int line, std::vector<double>* vec) {
     double numerator, denominator;
+    std::vector<double> vec1=*vec;
     for (int i = 0; i < line - 1; i++) {
         for (int j = i + 1; j < line; j++) {
             denominator = mat[i * line + i];
@@ -29,13 +30,14 @@ std::vector<double> triangulation(std::vector<double> mat, int line, std::vector
             for (int k = 0; k < line; k++) {
                 mat[k + j * line] = mat[j * line + k] - (mat[k + i * line] * numerator / denominator);
             }
-            vec[j] = vec[j] - (vec[i] * numerator / denominator);
+            vec1[j] = vec1[j] - (vec1[i] * numerator / denominator);
         }
     }
+    *vec = vec1;
     return mat;
 }
 
-std::vector<double> triangulation_parall(std::vector<double> mat, int line, std::vector<double>& vec) {
+std::vector<double> triangulation_parall(std::vector<double> mat, int line, std::vector<double> vec) {
     double numerator, denominator;
     int size = pProcPivotIter.size();
     int rank1;
@@ -98,7 +100,7 @@ std::vector<double> res_parall(std::vector<double> mat, int line, std::vector<do
     return vec;
 }
 
-std::vector<double> getRandomVector(std::vector<double>& mat, int line) {
+std::vector<double> getRandomVector(std::vector<double>* mat, int line) {
     std::random_device rn;
     std::mt19937 gen(rn());
     std::uniform_int_distribution<> dist(1, 10);
@@ -107,7 +109,7 @@ std::vector<double> getRandomVector(std::vector<double>& mat, int line) {
     for (int i = 0; i < line * line; i++) {
         mat1[i] = dist(gen);
     }
-    mat = mat1;
+    *mat = mat1;
     for (int i = 0; i < line; i++) {
         vec1[i] = dist(gen);
     }
@@ -131,7 +133,7 @@ std::vector<double> res(std::vector<double> mat, std::vector<double> vec) {
     }
     return vec;
 }
-void DataDistribution(std::vector<double>& mat, std::vector<double>& vec, int& line, std::vector<double>& mat1) {
+void DataDistribution(std::vector<double> mat, std::vector<double> vec, int line, std::vector<double> mat1) {
     int pSendInd;
     int RowNum;
     MPI_Barrier(MPI_COMM_WORLD);

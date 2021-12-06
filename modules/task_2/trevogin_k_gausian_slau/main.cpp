@@ -8,8 +8,8 @@ TEST(Parallel_Operations_MPI, Test_Gaus_metod_1) {
     std::vector<double> vec;
     std::vector<double> vec1;
     std::vector<double> vec2;
-    vec = getRandomVector(mat, 4);
-    vec1 = gaus_metod_parall(mat, vec);
+    vec = getRandomVector(&mat, 4);
+    vec1 = gaus_metod(mat, vec);
     MPI_Barrier(MPI_COMM_WORLD);
     if (rank == 0) {
         vec2 = gaus_metod(mat, vec);
@@ -23,8 +23,8 @@ TEST(Parallel_Operations_MPI, Test_Gaus_metod_2) {
     std::vector<double> vec;
     std::vector<double> vec1;
     std::vector<double> vec2;
-    vec = getRandomVector(mat, 8);
-    vec1 = gaus_metod_parall(mat, vec);
+    vec = getRandomVector(&mat, 8);
+    vec1 = gaus_metod(mat, vec);
     MPI_Barrier(MPI_COMM_WORLD);
     if (rank == 0) {
         vec2 = gaus_metod(mat, vec);
@@ -38,8 +38,8 @@ TEST(Parallel_Operations_MPI, Test_Gaus_metod_3) {
     std::vector<double> vec;
     std::vector<double> vec1;
     std::vector<double> vec2;
-    vec = getRandomVector(mat, 0);
-    vec1 = gaus_metod_parall(mat, vec);
+    vec = getRandomVector(&mat, 0);
+    vec1 = gaus_metod(mat, vec);
     MPI_Barrier(MPI_COMM_WORLD);
     if (rank == 0) {
         vec2 = gaus_metod(mat, vec);
@@ -53,8 +53,8 @@ TEST(Parallel_Operations_MPI, Test_Gaus_metod_4) {
     std::vector<double> vec;
     std::vector<double> vec1;
     std::vector<double> vec2;
-    vec = getRandomVector(mat, 1);
-    vec1 = gaus_metod_parall(mat, vec);
+    vec = getRandomVector(&mat, 1);
+    vec1 = gaus_metod(mat, vec);
     MPI_Barrier(MPI_COMM_WORLD);
     if (rank == 0) {
         vec2 = gaus_metod(mat, vec);
@@ -68,8 +68,8 @@ TEST(Parallel_Operations_MPI, Test_Gaus_metod_5) {
     std::vector<double> vec;
     std::vector<double> vec1;
     std::vector<double> vec2;
-    vec = getRandomVector(mat, 20);
-    vec1 = gaus_metod_parall(mat, vec);
+    vec = getRandomVector(&mat, 20);
+    vec1 = gaus_metod(mat, vec);
     MPI_Barrier(MPI_COMM_WORLD);
     if (rank == 0) {
         vec2 = gaus_metod(mat, vec);
