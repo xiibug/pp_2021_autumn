@@ -13,8 +13,8 @@ std::vector<double> generateSLE(std::vector<double>* matrix_sle,
     std::random_device dev;
     std::mt19937 gen(dev());
     std::uniform_real_distribution<> urd(1, 500);
-
     std::vector<double> expected_solution(number_unknows, 0);
+
     for (std::vector<double>::size_type i = 0; i < number_unknows; i++) {
         (*vector_result)[i] = urd(gen);
         for (std::vector<double>::size_type j = 0; j < number_unknows; j++) {

@@ -11,7 +11,7 @@ TEST(GENERATE_MATRIX, can_generate_random_sle) {
     ASSERT_NO_THROW(generateSLE(&matrix, &vector, 10));
 }
 
-TEST(SEQUENTIAL_OPERATIONS, can_run_sequential_gauss) {
+TEST(SEQUENTIAL_GAUSS, can_run_sequential_gauss) {
     std::vector<double> matrix = { 1, 2, 3,
                                    4, 5, 6,
                                    7, 8, 9 };
@@ -19,7 +19,7 @@ TEST(SEQUENTIAL_OPERATIONS, can_run_sequential_gauss) {
     ASSERT_NO_THROW(sequentialGaussScheme(matrix, vector, 3));
 }
 
-TEST(SEQUENTIAL_OPERATIONS, sequential_gauss_works_correctly) {
+TEST(SEQUENTIAL_GAUSS, sequential_gauss_works_correctly) {
     std::vector<double> matrix = { 1, 2, 3,
                                    4, 5, 6,
                                    7, 8, 9 };
@@ -33,7 +33,7 @@ TEST(SEQUENTIAL_OPERATIONS, sequential_gauss_works_correctly) {
     }
 }
 
-TEST(SEQUENTIAL_OPERATIONS, sequential_gauss_works_correctly_with_random_sle) {
+TEST(SEQUENTIAL_GAUSS, sequential_gauss_works_correctly_with_random_sle) {
     const std::vector<double>::size_type number_unknows = 17;
     std::vector<double> matrix(number_unknows * number_unknows);
     std::vector<double> vector(number_unknows);
