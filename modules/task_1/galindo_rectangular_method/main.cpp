@@ -1,69 +1,79 @@
-#include "galindo_rectangular_method.h"
+#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <cmath>
 #include <limits>
-#include <gtest-mpi-listener.hpp>
+#include "galindo_rectangular_method.h"
 
-std::function<double(double)> funct = func;
+TEST(Parallel_Operations_MPI, INTEGRAL_FROM_0_TO_1) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-TEST(Parallel_Operations_MPI, RET_50) {
-	int rank;
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	double p_res = parallel_int(funct, 0, 2, 50);
-
-	if (rank == 0) {
-		double d_res = def_int(funct, 0, 2, 50);
-		ASSERT_LT(std::fabs(p_res - d_res), std::numeric_limits<double>::epsilon() * 100);
-	}
+    double parallel_result = integralParallel(static_cast<double(*)(double)>(&cos), 0, 1, 10000);
+    if (rank == 0) {
+        double sequential_result = integralSeqential(static_cast<double(*)(double)>(&cos), 0, 1, 10000);
+        ASSERT_LT(std::fabs(parallel_result - sequential_result), std::numeric_limits<double>::epsilon() * 1000);
+    }
 }
-TEST(Parallel_Operations_MPI, RET_500) {
-	int rank;
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	double p_res = parallel_int(funct, 0, 2, 500);
-	if (rank == 0) {
-		double d_res = def_int(funct, 0, 2, 500);
-		ASSERT_LT(std::fabs(p_res - d_res), std::numeric_limits<double>::epsilon() * 100);
-	}
-}
-TEST(Parallel_Operations_MPI, RET_1000) {
-	int rank;
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	double p_res = parallel_int(funct, 0, 2, 1000);
-	if (rank == 0) {
-		double d_res = def_int(funct, 0, 2, 1000);
-		ASSERT_LT(std::fabs(p_res - d_res), std::numeric_limits<double>::epsilon() * 100);
-	}
-}
-TEST(Parallel_Operations_MPI, RET_5000) {
-	int rank;
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	double p_res = parallel_int(funct, 0, 2, 5000);
-	if (rank == 0) {
-		double d_res = def_int(funct, 0, 2, 5000);
-		ASSERT_LT(std::fabs(p_res - d_res), std::numeric_limits<double>::epsilon() * 100);
-	}
-}
-TEST(Parallel_Operations_MPI, RET_10000) {
-	int rank;
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	double p_res = parallel_int(funct, 0, 2, 10000);
-	if (rank == 0) {
-		double d_res = def_int(funct, 0, 2, 10000);
-		ASSERT_LT(std::fabs(p_res - d_res), std::numeric_limits<double>::epsilon() * 100);
-	}
-}
-int main(int argc, char** argv) {
-	::testing::InitGoogleTest(&argc, argv);
-	MPI_Init(&argc, &argv);
 
-	::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-	::testing::TestEventListeners& listeners =
-		::testing::UnitTest::GetInstance()->listeners();
+TEST(Parallel_Operations_MPI, INTEGRAL_FROM_5_TO_0) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-	listeners.Release(listeners.default_result_printer());
-	listeners.Release(listeners.default_xml_generator());
+    double parallel_result = integralParallel(static_cast<double(*)(double)>(&cos), 5, 0, 10000);
+    if (rank == 0) {
+        double sequential_result = integralSeqential(static_cast<double(*)(double)>(&cos), 5, 0, 10000);
+        ASSERT_LT(std::fabs(parallel_result - sequential_result), std::numeric_limits<double>::epsilon() * 1000);
+    }
+}
 
-	listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
-	return RUN_ALL_TESTS();
+TEST(Parallel_Operations_MPI, INTEGRAL_FROM_0_TO_100) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    double parallel_result = integralParallel(static_cast<double(*)(double)>(&cos), 0, 100, 10000);
+    if (rank == 0) {
+        double sequential_result = integralSeqential(static_cast<double(*)(double)>(&cos), 0, 100, 10000);
+        ASSERT_LT(std::fabs(parallel_result - sequential_result), std::numeric_limits<double>::epsilon() * 1000);
+    }
+}
+
+TEST(Parallel_Operations_MPI, INTEGRAL_FROM_0_TO_709) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    double parallel_result = integralParallel(static_cast<double(*)(double)>(&cos), 0, 709, 10000);
+    if (rank == 0) {
+        double sequential_result = integralSeqential(static_cast<double(*)(double)>(&cos), 0, 709, 10000);
+        ASSERT_LT(std::fabs(parallel_result - sequential_result), std::numeric_limits<double>::epsilon() * 10000);
+    }
+}
+
+TEST(Parallel_Operations_MPI, INTEGRAL_WITH_LOW_RANGE) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    double parallel_result = integralParallel(static_cast<double(*)(double)>(&cos), 1, 1.01, 10000);
+    if (rank == 0) {
+        double sequential_result = integralSeqential(static_cast<double(*)(double)>(&cos), 1, 1.01, 10000);
+        ASSERT_LT(std::fabs(parallel_result - sequential_result), std::numeric_limits<double>::epsilon() * 1000);
+    }
+}
+
+TEST(Parallel_Operations_MPI, EXCETION_ON_ZERO_COUNT) {
+    EXPECT_THROW(integralParallel(static_cast<double(*)(double)>(&cos), 5, 0, 0), std::runtime_error);
+}
+
+int main(int argc, char* argv[]) {
+    ::testing::InitGoogleTest(&argc, argv);
+    MPI_Init(&argc, &argv);
+
+    ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
+    ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners();
+
+    listeners.Release(listeners.default_result_printer());
+    listeners.Release(listeners.default_xml_generator());
+
+    listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
+    return RUN_ALL_TESTS();
 }
