@@ -14,7 +14,7 @@ TEST(Parallel_Operations_MPI, Test_Gaus_metod_1) {
     if (rank == 0) {
         vec1 = mat;
         vec2 = mat;
-        ASSERT_EQ(vec1, vec2);
+        ASSERT_EQ(vec1, vec2) ;
     }
 }
 TEST(Parallel_Operations_MPI, Test_Gaus_metod_2) {
