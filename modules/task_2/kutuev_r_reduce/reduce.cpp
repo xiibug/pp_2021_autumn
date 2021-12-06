@@ -41,22 +41,6 @@ int my_reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
     buf = new float[count];
   } else if (datatype == MPI_INT) {
     buf = new int[count];
-  } else if (datatype == MPI_LONG) {
-    buf = new long[count];
-  } else if (datatype == MPI_LONG_DOUBLE) {
-    buf = new long double[count];
-  } else if (datatype == MPI_LONG_LONG_INT) {
-    buf = new long long int[count];
-  } else if (datatype == MPI_SHORT) {
-    buf = new short[count];
-  } else if (datatype == MPI_UNSIGNED) {
-    buf = new unsigned[count];
-  } else if (datatype == MPI_UNSIGNED_CHAR) {
-    buf = new unsigned char[count];
-  } else if (datatype == MPI_UNSIGNED_LONG) {
-    buf = new unsigned short[count];
-  } else if (datatype == MPI_UNSIGNED_SHORT) {
-    buf = new unsigned short[count];
   } else {
     return -6;
   }
@@ -140,7 +124,7 @@ int my_reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
               static_cast<int*>(recvbuf)[j] *= static_cast<int*>(sendbuf)[j];
             }
           }
-        } 
+        }
         continue;
       }
 
@@ -206,7 +190,7 @@ int my_reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
             static_cast<int*>(recvbuf)[j] *= static_cast<int*>(buf)[j];
           }
         }
-      } 
+      }
     }
   }
 
@@ -215,20 +199,6 @@ int my_reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
   } else if (datatype == MPI_FLOAT) {
     delete[] static_cast<float*>(buf);
   } else if (datatype == MPI_DOUBLE) {
-    delete[] static_cast<double*>(buf);
-  } else if (datatype == MPI_LONG) {
-    delete[] static_cast<double*>(buf);
-  } else if (datatype == MPI_LONG_DOUBLE) {
-    delete[] static_cast<double*>(buf);
-  } else if (datatype == MPI_LONG_LONG_INT) {
-    delete[] static_cast<double*>(buf);
-  } else if (datatype == MPI_SHORT) {
-    delete[] static_cast<double*>(buf);
-  } else if (datatype == MPI_UNSIGNED) {
-    delete[] static_cast<double*>(buf);
-  } else if (datatype == MPI_UNSIGNED_LONG) {
-    delete[] static_cast<double*>(buf);
-  } else if (datatype == MPI_UNSIGNED_SHORT) {
     delete[] static_cast<double*>(buf);
   }
 
