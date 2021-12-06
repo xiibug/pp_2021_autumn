@@ -384,7 +384,7 @@ int my_reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
             static_cast<int*>(recvbuf)[j] *= static_cast<int*>(buf)[j];
           }
         }
-      } else if (datatype == MPI_LONG) {
+      } /*else if (datatype == MPI_LONG) {
         if (op == MPI_MAX) {
           for (int j = 0; j < count; j++) {
             if (static_cast<long*>(recvbuf)[j] < static_cast<long*>(buf)[j])
@@ -530,7 +530,7 @@ int my_reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
           }
         }
 
-      } /*else if (datatype == MPI_UNSIGNED_SHORT) {
+      } else if (datatype == MPI_UNSIGNED_SHORT) {
         if (op == MPI_MAX) {
           for (int j = 0; j < count; j++) {
             if (static_cast<unsigned short*>(recvbuf)[j] <
