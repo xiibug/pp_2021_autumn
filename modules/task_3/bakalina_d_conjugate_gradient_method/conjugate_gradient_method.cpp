@@ -5,20 +5,6 @@
 #include <random>
 #include "../../../modules/task_3/bakalina_d_conjugate_gradient_method/conjugate_gradient_method.h"
 
-int check_equality(std::vector<double>& v1, std::vector<double>& v2) {
-    int flag = 1;
-    if (v1.size() != v2.size()) {
-        throw "Wrong size";
-    }
-    for (int i = 0; i < v1.size(); i++) {
-        if (v1[i] == v2[i])
-            flag = 1;
-        else
-            flag = 0;
-    }
-    return flag;
-}
-
 std::vector<double> create_random_vector(int size_n) {
     if (size_n <= 0) {
         throw "Wrong size";
@@ -56,9 +42,9 @@ double scalar_multiply(const std::vector<double>& vctr_x, const std::vector<doub
 
 std::vector<double> multiply_mtrx_to_v(const std::vector<double>& mtrx, const std::vector<double>& v) {
     std::vector<double> lin_res(mtrx.size() / v.size());
-    for (int i = 0; i < mtrx.size() / v.size(); ++i) {
+    for (size_t i = 0; i < mtrx.size() / v.size(); ++i) {
         lin_res[i] = 0;
-        for (int j = 0; j < v.size(); ++j) {
+        for (size_t j = 0; j < v.size(); ++j) {
             lin_res[i] += mtrx[i * v.size() + j] * v[j];
         }
     }
@@ -134,14 +120,12 @@ std::vector<double> parall_gradient_method(const std::vector<double>& mtrx, cons
             for (int i = 0; i < size_n * quotient + size_n * resd; i++) {
                 mtrx_A0[i] = mtrx_parl[i];
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < size_n * quotient; i++) {
                 mtrx_A0[i] = mtrx_parl[i];
             }
         }
-    }
-    else {
+    } else {
         MPI_Status status;
         if (quotient != 0) {
             MPI_Recv(&mtrx_A0[0], quotient * size_n, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD, &status);
@@ -157,8 +141,7 @@ std::vector<double> parall_gradient_method(const std::vector<double>& mtrx, cons
         }
         for (int i = 0; i < quotient + resd; i++)
             r_cur[i] = v_parl[i] - A[i];
-    }
-    else {
+    } else {
         for (int i = 0; i < quotient; i++)
             r_cur[i] = v_parl[ProcRank * quotient + resd + i] - A[i];
     }
@@ -167,8 +150,7 @@ std::vector<double> parall_gradient_method(const std::vector<double>& mtrx, cons
             for (int i = 0; i < quotient + resd; i++) {
                 p[i] = r_cur[i];
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < quotient; i++) {
                 p[i] = r_cur[i];
             }
@@ -180,8 +162,7 @@ std::vector<double> parall_gradient_method(const std::vector<double>& mtrx, cons
                     quotient, MPI_DOUBLE, ProcCount, 2, MPI_COMM_WORLD, &status);
             }
         }
-    }
-    else {
+    } else {
         if (quotient != 0) {
             MPI_Send(&r_cur[0], quotient, MPI_DOUBLE, 0, 2, MPI_COMM_WORLD);
         }
@@ -201,8 +182,7 @@ std::vector<double> parall_gradient_method(const std::vector<double>& mtrx, cons
             for (int i = 0; i < quotient + resd; i++) {
                 p_part[i] = p[i];
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < quotient; i++) {
                 p_part[i] = p[ProcRank * quotient + resd + i];
             }
@@ -219,8 +199,7 @@ std::vector<double> parall_gradient_method(const std::vector<double>& mtrx, cons
             for (int i = 0; i < quotient + resd; i++) {
                 r_nxt[i] = r_cur[i] - alfa * A[i];
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < quotient; i++) {
                 r_nxt[i] = r_cur[i] - alfa * A[i];
             }
@@ -240,8 +219,7 @@ std::vector<double> parall_gradient_method(const std::vector<double>& mtrx, cons
                         quotient, MPI_DOUBLE, ProcCount, 3, MPI_COMM_WORLD, &status);
                 }
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < quotient; i++) {
                 p_res[i] = r_nxt[i] + b * p[ProcRank * quotient + resd + i];
             }

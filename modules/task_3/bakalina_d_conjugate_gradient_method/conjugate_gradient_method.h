@@ -3,7 +3,6 @@
 #define MODULES_TASK_3_BAKALINA_D_CONJUGATE_GRADIENT_METHOD_CONJUGATE_GRADIENT_METHOD_H_
 
 #include <vector>
-int check_equality(std::vector<double>& v1, std::vector<double>& v2);
 std::vector<double> create_random_vector(int size_n);
 std::vector<double> create_random_matrix(int size_n);
 double scalar_multiply(const std::vector<double>& vctr_x, const std::vector<double>& vctr_y);

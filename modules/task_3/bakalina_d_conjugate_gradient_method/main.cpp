@@ -47,7 +47,7 @@ TEST(Parallel_Operations_MPI, multiply_mtrx_to_v_work_correct) {
     correct_res[2] = 24;
     if (ProcRank == 0) {
         std::vector<double> multpl_res = multiply_mtrx_to_v(mtrx, v);
-        for (int i = 0; i < multpl_res.size(); i++)
+        for (size_t i = 0; i < multpl_res.size(); i++)
             ASSERT_EQ(correct_res[i], multpl_res[i]);
     }
 }
@@ -68,7 +68,7 @@ TEST(Parallel_Operations_MPI, lin_gradient_method_in_small_matrix) {
     correct_res[1] = 3;
     if (ProcRank == 0) {
         std::vector<double> lin_res = lin_gradient_method(mtrx, v, n);
-        for (int i = 0; i < lin_res.size(); i++)
+        for (size_t i = 0; i < lin_res.size(); i++)
             ASSERT_NEAR(correct_res[i], lin_res[i], 0.5);
     }
 }
@@ -90,13 +90,12 @@ TEST(Parallel_Operations_MPI, parall_gradient_method_in_small_matrix) {
     correct_res[1] = 3;
     std::vector<double> parl_res = parall_gradient_method(mtrx, v, n);
     if (ProcRank == 0) {
-        for (int i = 0; i < parl_res.size(); i++)
+        for (size_t i = 0; i < parl_res.size(); i++)
             ASSERT_NEAR(correct_res[i], parl_res[i], 0.5);
     }
 }
 TEST(Parallel_Operations_MPI, linear_and_parallel_method_are_the_same_in_random_matrix_size_10) {
     int ProcRank;
-    int flag = 0;
     int n = 10;
     std::vector<double> v;
     std::vector<double> mtrx;
@@ -106,14 +105,13 @@ TEST(Parallel_Operations_MPI, linear_and_parallel_method_are_the_same_in_random_
     std::vector<double> parl_res = parall_gradient_method(mtrx, v, n);
     if (ProcRank == 0) {
         std::vector<double> lin_res = lin_gradient_method(mtrx, v, n);
-        for (int i = 0; i < lin_res.size(); i++) {
+        for (size_t i = 0; i < lin_res.size(); i++) {
             ASSERT_NEAR(lin_res[i], parl_res[i], 0.5);
         }
     }
 }
 TEST(Parallel_Operations_MPI, linear_and_parallel_method_are_the_same_in_random_matrix) {
     int ProcRank;
-    int flag = 0;
     int n = 15;
     std::vector<double> v;
     std::vector<double> mtrx;
@@ -123,7 +121,7 @@ TEST(Parallel_Operations_MPI, linear_and_parallel_method_are_the_same_in_random_
     std::vector<double> parl_res = parall_gradient_method(mtrx, v, n);
     if (ProcRank == 0) {
         std::vector<double> lin_res = lin_gradient_method(mtrx, v, n);
-        for (int i = 0; i < lin_res.size(); i++) {
+        for (size_t i = 0; i < lin_res.size(); i++) {
             ASSERT_NEAR(lin_res[i], parl_res[i], 0.5);
         }
     }
