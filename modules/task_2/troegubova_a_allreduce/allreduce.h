@@ -2,8 +2,8 @@
 #ifndef MODULES_TASK_2_TROEGUBOVA_A_ALLREDUCE_ALLREDUCE_H_
 #define MODULES_TASK_2_TROEGUBOVA_A_ALLREDUCE_ALLREDUCE_H_
 
-#include <vector>
 #include <mpi.h>
+#include <vector>
 
 template <typename T>
 std::vector<T> getRandomVec(int size);

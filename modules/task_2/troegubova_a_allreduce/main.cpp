@@ -10,18 +10,19 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_maximum_among_numbers_of_differe
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    float send_float = (float)rank + 0.5;
-    double send_double = (double)rank + 1.e-4;
+    float send_float = static_cast<float>rank + 0.5;
+    double send_double = static_cast<double>rank + 1.e-4;
 
     int control_max_int;
     float control_max_float;
     double control_max_double;
-   
+
     // double time_1 = MPI_Wtime();
     ALLreduce(&rank, &control_max_int, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     // double time_2 = MPI_Wtime();
-    // std::cout << "The time spent on the execution of the test function: " << (time_2 - time_1) << " process rank: " << rank << "\n";
-   
+    // std::cout << "The time spent on the execution of the test function: " 
+    //<< (time_2 - time_1) << " process rank: " << rank << "\n";
+
     ALLreduce(&send_float, &control_max_float, 1, MPI_FLOAT, MPI_MAX, MPI_COMM_WORLD);
     ALLreduce(&send_double, &control_max_double, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
 
@@ -36,10 +37,11 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_maximum_among_numbers_of_differe
 
     MPI_Allreduce(&send_float, &exemp_float, 1, MPI_FLOAT, MPI_MAX, MPI_COMM_WORLD);
     MPI_Allreduce(&send_double, &exemp_double, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
-   
+
     if (rank == 0) {
         int control = 1;
-        if ((control_max_int != exemp_int) || (control_max_float != exemp_float) || (control_max_double != exemp_double))
+        if ((control_max_int != exemp_int) || 
+            (control_max_float != exemp_float) || (control_max_double != exemp_double))
             control = 0;
         ASSERT_EQ(control, 1);
     }
@@ -49,8 +51,8 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_minimum_among_numbers_of_differe
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    float send_float = (float)rank + 2.5;
-    double send_double = (double)rank + 2.6e-4;
+    float send_float = static_cast<float>rank + 2.5;
+    double send_double = static_cast<double>rank + 2.6e-4;
 
     int control_min_int;
     float control_min_float;
@@ -70,7 +72,8 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_minimum_among_numbers_of_differe
 
     if (rank == 0) {
         int control = 1;
-        if ((control_min_int != exemp_int) || (control_min_float != exemp_float) || (control_min_double != exemp_double))
+        if ((control_min_int != exemp_int) || 
+            (control_min_float != exemp_float) || (control_min_double != exemp_double))
             control = 0;
         ASSERT_EQ(control, 1);
     }
@@ -80,8 +83,8 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_sum_of_numbers_of_different_type
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    float send_float = (float)rank + 3.5;
-    double send_double = (double)rank + 2.5;
+    float send_float = static_cast<float>rank + 3.5;
+    double send_double = static_cast<double>rank + 2.5;
 
     int control_sum_int;
     float control_sum_float;
@@ -101,7 +104,8 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_sum_of_numbers_of_different_type
 
     if (rank == 0) {
         int control = 1;
-        if ((control_sum_int != exemp_int) || (control_sum_float != exemp_float) || (control_sum_double != exemp_double))
+        if ((control_sum_int != exemp_int) || 
+            (control_sum_float != exemp_float) || (control_sum_double != exemp_double))
             control = 0;
         ASSERT_EQ(control, 1);
     }
@@ -110,8 +114,8 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_product_of_numbers_of_different_
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    float send_float = (float)rank / 6;
-    double send_double = (double)rank / 3;
+    float send_float = static_cast<float>rank / 6;
+    double send_double = static_cast<double>rank / 3;
 
     int control_prod_int;
     float control_prod_float;
@@ -131,7 +135,8 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_product_of_numbers_of_different_
 
     if (rank == 0) {
         int control = 1;
-        if ((control_prod_int != exemp_int) || (control_prod_float != exemp_float) || (control_prod_double != exemp_double))
+        if ((control_prod_int != exemp_int) || 
+            (control_prod_float != exemp_float) || (control_prod_double != exemp_double))
             control = 0;
         ASSERT_EQ(control, 1);
     }
@@ -164,7 +169,8 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_maximum_among_vectors_of_differe
 
     if (rank == 0) {
         int control = 1;
-        if ((control_max_int != exemp_int) || (control_max_float != exemp_float) || (control_max_double != exemp_double))
+        if ((control_max_int != exemp_int) || 
+            (control_max_float != exemp_float) || (control_max_double != exemp_double))
             control = 0;
         ASSERT_EQ(control, 1);
     }
@@ -197,7 +203,8 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_minimum_among_vectors_of_differe
 
     if (rank == 0) {
         int control = 1;
-        if ((control_min_int != exemp_int) || (control_min_float != exemp_float) || (control_min_double != exemp_double))
+        if ((control_min_int != exemp_int) || 
+            (control_min_float != exemp_float) || (control_min_double != exemp_double))
             control = 0;
         ASSERT_EQ(control, 1);
     }
@@ -230,7 +237,8 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_sum_of_vectors_of_different_type
 
     if (rank == 0) {
         int control = 1;
-        if ((control_sum_int != exemp_int) || (control_sum_float != exemp_float) || (control_sum_double != exemp_double))
+        if ((control_sum_int != exemp_int) || 
+            (control_sum_float != exemp_float) || (control_sum_double != exemp_double))
             control = 0;
         ASSERT_EQ(control, 1);
     }
@@ -242,7 +250,6 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_product_of_vectors_of_different_
 
     int size = 3;
     std::vector<int> send_int = getRandomVec<int>(size);
-   
     std::vector<float> send_float = getRandomVec<float>(size);
     std::vector<double> send_double = getRandomVec<double>(size);
 
@@ -264,7 +271,8 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_product_of_vectors_of_different_
 
     if (rank == 0) {
         int control = 1;
-        if ((control_prod_int != exemp_int) || (control_prod_float != exemp_float) || (control_prod_double != exemp_double))
+        if ((control_prod_int != exemp_int) || (control_prod_float != exemp_float)
+            || (control_prod_double != exemp_double))
             control = 0;
         ASSERT_EQ(control, 1);
     }

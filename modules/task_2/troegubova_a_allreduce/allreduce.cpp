@@ -13,7 +13,7 @@ std::vector<T> getRandomVec(int size) {
     std::uniform_int_distribution<> range(-10, 10);
     std::vector<T> vec(size);
     for (int i = 0; i < size; i++) {
-        vec[i] = static_cast<T>(range(gen)) / 2 ;
+        vec[i] = static_cast<T>(range(gen)) / 2;
     }
     return vec;
 }
@@ -28,7 +28,6 @@ template
 std::vector<double> getRandomVec<double>(int size);
 
 int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op op, MPI_Comm comm) {
-    
     MPI_Barrier(MPI_COMM_WORLD);
     int proc_count, proc_rank;
     MPI_Comm_size(comm, &proc_count);
@@ -45,12 +44,12 @@ int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op
     } else {
         MPI_Recv(&root, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
-    double depth_f = log2((double)proc_count);
-    int depth = (int)depth_f + ( ((double)((int)depth_f)) == depth ? 0 : 1);
+    double depth_f = log2(static_cast<double>proc_count);
+    int depth = static_cast<int>depth_f + ( ((double)((int)depth_f)) == depth_f ? 0 : 1);
     int dest = 0;
-    double n_val = log2((double)(proc_rank + 1));
-    int nitial_val = (int)n_val + ( ((double)((int)n_val)) == n_val ? 0 : 1);
-    int degree = (int)pow(2, nitial_val);
+    double n_val = log2(static_cast<double>(proc_rank + 1));
+    int nitial_val = static_cast<int>n_val + ( ((double)((int)n_val)) == n_val ? 0 : 1);
+    int degree = static_cast<int>pow(2, nitial_val);
     for (int i = nitial_val; i < depth; i++) {
         dest = degree + proc_rank;
         if (dest >= proc_count)
@@ -60,7 +59,7 @@ int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op
             continue;
         MPI_Send(&root, 1, MPI_INT, dest, proc_rank, MPI_COMM_WORLD);
     }
-    
+
     MPI_Barrier(MPI_COMM_WORLD);
 
     if (proc_rank == root) {
@@ -93,7 +92,7 @@ int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op
                 }
             }
             delete[] buf_int;
-        } else { 
+        } else {
             if (type == MPI_FLOAT) {
                 for (int i = 0; i < count; i++)
                     reinterpret_cast<float*>(recvbuf)[i] = reinterpret_cast<float*>(sendbuf)[i];
@@ -120,8 +119,7 @@ int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op
                     }
                 }
                 delete[] buf_float;
-            }
-            else {
+            } else {
                 for (int i = 0; i < count; i++)
                     reinterpret_cast<double*>(recvbuf)[i] = reinterpret_cast<double*>(sendbuf)[i];
                 double *buf_double = new double[count];
@@ -147,7 +145,7 @@ int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op
                     }
                 }
                 delete[] buf_double;
-            } 
+            }
         }
     } else {
         if (root > proc_rank) {
@@ -168,15 +166,14 @@ int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op
     }
 
     dest = 0;
-    degree = (int)pow(2, nitial_val);
+    degree = static_cast<int>pow(2, nitial_val);
     for (int i = nitial_val; i < depth; i++) {
-        
-        if (root < degree)
+        if (root < degree) {
             dest = degree + proc_rank;
-        else {
-            if (proc_rank == root)
+        } else {
+            if (proc_rank == root) {
                 dest = degree - 1;
-            else {
+            } else {
                 dest = degree + proc_rank;
                 if (dest >= root)
                     dest++;
