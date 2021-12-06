@@ -110,23 +110,6 @@ TEST(cannons_mult_test, mult_test_5) {
     }
 }
 
-TEST(cannons_mult_test, cant_multiply_matr_w_wrong_sizes) {
-    const int n = 11;
-    int procRank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-    matrix<double> a, b;
-    if (procRank == 0) {
-        a.prepareSpace(n, n);
-        b.prepareSpace(n, n);
-        a.fillMatrix(generateRngValue, 0, 15, 0);
-        b.fillMatrix(generateRngValue, 0, 15, 0);
-    }
-    matrix<double> ans = cannonsMultiplication(&a, &b);
-    if (procRank == 0) {
-        ASSERT_FALSE(ans == a * b);
-    }
-}
-
 #if USE_EFFECIENCY_TESTS == 1
 
 TEST(cannons_efficiency_test, test_1) {
