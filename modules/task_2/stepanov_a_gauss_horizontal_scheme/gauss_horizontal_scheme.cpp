@@ -12,11 +12,12 @@ std::vector<double> generateSLE(std::vector<double>* matrix_sle,
     std::vector<double>::size_type number_unknows) {
     std::random_device dev;
     std::mt19937 gen(dev());
-    std::uniform_real_distribution<> urd(1, 500);
+    std::uniform_real_distribution<> urd(-50, 50);
     std::vector<double> expected_solution(number_unknows, 0);
 
     for (std::vector<double>::size_type i = 0; i < number_unknows; i++) {
-        (*vector_result)[i] = urd(gen);
+        auto random = urd(gen);
+        expected_solution[i] = random == 0.0 ? 1.0 : random;
         for (std::vector<double>::size_type j = 0; j < number_unknows; j++) {
             (*matrix_sle)[i * number_unknows + j] = urd(gen);
         }
@@ -25,7 +26,7 @@ std::vector<double> generateSLE(std::vector<double>* matrix_sle,
     for (std::vector<double>::size_type i = 0; i < number_unknows; i++) {
         (*vector_result)[i] = 0;
         for (std::vector<double>::size_type j = 0; j < number_unknows; j++) {
-            (*vector_result)[i] += (*matrix_sle)[i * number_unknows + j] * expected_solution[i];
+            (*vector_result)[i] += (*matrix_sle)[i * number_unknows + j] * expected_solution[j];
         }
     }
 
@@ -53,19 +54,22 @@ std::vector<double> sequentialGaussScheme(const std::vector<double>& matrix_sle,
     for (auto i = number_unknows - 1; i > 0; i--) {
         double coeff = modiffed_vector_res[i];
         for (auto j = number_unknows - 1; j > i; j--) {
-            coeff -= modiffed_sle[i * number_unknows + j] * modiffed_vector_res[j];
+            coeff -= modiffed_sle[i * number_unknows + j] * solution[j];
         }
-        if (modiffed_sle[i * number_unknows + i])
-            solution[i] = coeff / modiffed_sle[i * number_unknows + i];
+        solution[i] = coeff / modiffed_sle[i * number_unknows + i];
     }
 
-    if (modiffed_sle[0]) {
-        double coeff = modiffed_vector_res[0];
-        for (std::vector<double>::size_type i = 1; i < number_unknows; i++) {
-            coeff -= modiffed_sle[i] * solution[i];
-        }
-        solution[0] = coeff / modiffed_sle[0];
+    double coeff = modiffed_vector_res[0];
+    for (std::vector<double>::size_type i = 1; i < number_unknows; i++) {
+        coeff -= modiffed_sle[i] * solution[i];
     }
+    solution[0] = coeff / modiffed_sle[0];
 
     return solution;
+}
+
+std::vector<double> parallelGauss(const std::vector<double>& matrix_sle,
+    const std::vector<double>& vector_result,
+    std::vector<double>::size_type number_unknows) {
+    return std::vector<double>{};
 }
