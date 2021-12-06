@@ -44,12 +44,12 @@ int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op
     } else {
         MPI_Recv(&root, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
-    double depth_f = log2(static_cast<double>proc_count);
-    int depth = static_cast<int>depth_f + ( ((double)((int)depth_f)) == depth_f ? 0 : 1);
+    double depth_f = log2(static_cast<double>(proc_count));
+    int depth = static_cast<int>(depth_f) + ( (static_cast<double>(static_cast<int>(depth_f))) == depth_f ? 0 : 1);
     int dest = 0;
     double n_val = log2(static_cast<double>(proc_rank + 1));
-    int nitial_val = static_cast<int>n_val + ( ((double)((int)n_val)) == n_val ? 0 : 1);
-    int degree = static_cast<int>pow(2, nitial_val);
+    int nitial_val = static_cast<int>(n_val) + ( (static_cast<double>(static_cast<int>(n_val))) == n_val ? 0 : 1);
+    int degree = static_cast<int>(pow(2, nitial_val));
     for (int i = nitial_val; i < depth; i++) {
         dest = degree + proc_rank;
         if (dest >= proc_count)
@@ -166,7 +166,7 @@ int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op
     }
 
     dest = 0;
-    degree = static_cast<int>pow(2, nitial_val);
+    degree = static_cast<int>(pow(2, nitial_val));
     for (int i = nitial_val; i < depth; i++) {
         if (root < degree) {
             dest = degree + proc_rank;
