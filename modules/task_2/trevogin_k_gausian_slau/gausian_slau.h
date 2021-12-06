@@ -18,4 +18,4 @@ std::vector<double> gaus_metod_parall(std::vector<double> mat, std::vector<doubl
 std::vector<double> triangulation_parall(std::vector<double> mat, int line, std::vector<double> vec);
 std::vector<double> res_parall(std::vector<double> mat, int line, std::vector<double> vec, std::vector<double> vec1);
 
-#endif // MODULES_TASK_2_TREVOGIN_K_GAUSIAN_SLAU_GAUSIAN_SLAU_H_
+#endif  // MODULES_TASK_2_TREVOGIN_K_GAUSIAN_SLAU_GAUSIAN_SLAU_H_

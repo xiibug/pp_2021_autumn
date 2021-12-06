@@ -22,7 +22,7 @@ void out_mat(std::vector<double> mat, std::vector<double> vec) {
 
 std::vector<double> triangulation(std::vector<double> mat, int line, std::vector<double>* vec) {
     double numerator, denominator;
-    std::vector<double> vec1=*vec;
+    std::vector<double> vec1 = *vec;
     for (int i = 0; i < line - 1; i++) {
         for (int j = i + 1; j < line; j++) {
             denominator = mat[i * line + i];
@@ -187,6 +187,6 @@ std::vector<double> gaus_metod(std::vector<double> mat, std::vector<double> vec)
         return vec;
     }
     std::vector<double> mat1;
-    mat1 = triangulation(mat, line,&vec);
+    mat1 = triangulation(mat, line, &vec);
     return res(mat1, vec);
 }
