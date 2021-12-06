@@ -29,19 +29,7 @@ int generateJumpingValue(int v1, int v2, int* feedback) {
     return ((*feedback)++ & 0x01) ? v2 : v1;
 }
 
-bool isSquare(int ch) {
-    // consider cases when ch <= 1
-    if (ch < 0)
-        return false;
-    if (ch == 1 || ch == 0)
-        return true;
-    int sqr = static_cast<int>(std::sqrt(ch));
-    if (sqr * sqr != ch)
-        return false;
-    return true;
-}
-
-bool isMultAcceptable(int* ms, int procCount) {
+bool isMultAcceptable(int* ms) {
     // rule 1: A[NxN] && B[NxN] && N!=0
     if (ms[0] != ms[1] || ms[0] != ms[2] || ms[0] != ms[3])
         return false;
@@ -51,24 +39,16 @@ bool isMultAcceptable(int* ms, int procCount) {
         return false;
     if (ms[0] == 0)
         return false;
-
-    // rule 3: procCount - full square
-    // to blocks(submatrices of matrices) also be square
-    if (!isSquare(procCount))
-        return false;
-
-    // rule 3: num of elems in raw/colums must be >== procCount
-    // so all processes will receive at least 1 elem
-    if (ms[0] < procCount)
-        return false;
-
-    // rule 4: number of elems in raw/colum of matrix must be
-    // divided entirely on square of procCount: N % sqrt(procCount) == 0
-    // so all blocks have the same sizes
-    if (ms[0] % static_cast<int>(std::sqrt(procCount)) != 0)
-        return false;
-
     return true;
+}
+
+int nearestSqrt(int procCount) {
+    // find nearest sqrt to procCount
+    int sqr = 1;
+    while (sqr * sqr <= procCount)
+        sqr++;
+    sqr--;
+    return sqr;
 }
 
 matrix<double> cannonsMultiplication(matrix<double>* A, matrix<double>* B) {
@@ -92,13 +72,25 @@ matrix<double> cannonsMultiplication(matrix<double>* A, matrix<double>* B) {
     }
     MPI_Bcast(reinterpret_cast<void*>(matSizes), 4, MPI_INT, 0, MPI_COMM_WORLD);
 
-    // check if Cannon's parallel multiplication is acceptable
-    if (!isMultAcceptable(matSizes, procCount))
+    // check if parallel multiplication is acceptable A[nxn] B[nxn] n>0
+    if (!isMultAcceptable(matSizes))
         return ans;
+
+    // !!!!
+    int sqrtProcCount = nearestSqrt(procCount);
+    // rule that n % sqr must be == 0
+    // so blocks could have the same size
+    while (matSizes[0] % sqrtProcCount != 0)
+        sqrtProcCount--;
+    procCount = sqrtProcCount * sqrtProcCount;
+    if (procRank >= procCount)
+        return ans;
+    if (procCount == 1)
+        return (*A) * (*B);
+    // !!!!
 
     // creating communicator with Cartesian(Decartova) topology
     MPI_Comm MPI_COMM_CART;
-    int sqrtProcCount = static_cast<int>(std::sqrt(procCount));
     int dims[2];
     dims[0] = dims[1] = sqrtProcCount;
     int periods[2] = { 1, 1 };
