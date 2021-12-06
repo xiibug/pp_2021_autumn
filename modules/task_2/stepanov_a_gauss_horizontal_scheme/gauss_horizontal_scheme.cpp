@@ -71,5 +71,33 @@ std::vector<double> sequentialGaussScheme(const std::vector<double>& matrix_sle,
 std::vector<double> parallelGauss(const std::vector<double>& matrix_sle,
     const std::vector<double>& vector_result,
     std::vector<double>::size_type number_unknows) {
+    int size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    std::vector<double>::size_type local_size = number_unknows / size;
+    std::vector<double>::size_type remains_proc0 = number_unknows % size;
+
+    if (rank == 0)
+        local_size += remains_proc0;
+
+    std::vector<double>local_matrix_sle(local_size * number_unknows, 0);
+    std::vector<double>local_vector_res(local_size, 0);
+
+    MPI_Scatter(matrix_sle.data(), static_cast<int>(local_size * number_unknows), MPI_DOUBLE,
+        local_matrix_sle.data(), static_cast<int>(local_size * number_unknows), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    MPI_Scatter(vector_result.data(), static_cast<int>(local_size), MPI_DOUBLE,
+        local_vector_res.data(), static_cast<int>(local_size), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    if (rank == 0) {
+        for (std::vector<double>::size_type i = 0; i < local_size; i++) {
+            local_vector_res[i] = vector_result[i];
+            for (std::vector<double>::size_type j = 0; j < number_unknows; j++) {
+                local_matrix_sle[i * number_unknows + j] = matrix_sle[i * number_unknows + j];
+            }
+        }
+    }
+
     return std::vector<double>{};
 }

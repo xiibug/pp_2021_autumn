@@ -47,11 +47,16 @@ TEST(SEQUENTIAL_GAUSS, sequential_gauss_works_correctly_with_random_sle) {
 }
 
 TEST(PARALLEL_GAUSS, can_run_parallel_gauss) {
-    const std::vector<double>::size_type number_unknows = 17;
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    const std::vector<double>::size_type number_unknows = 9;
     std::vector<double> matrix(number_unknows * number_unknows);
     std::vector<double> vector(number_unknows);
 
-    generateSLE(&matrix, &vector, number_unknows);
+    if (rank == 0) {
+        generateSLE(&matrix, &vector, number_unknows);
+    }
 
     ASSERT_NO_THROW(parallelGauss(matrix, vector, number_unknows));
 }
