@@ -23,7 +23,7 @@ TEST(Parallel_Operations_MPI, Test_Gaus_metod_2) {
     std::vector<double> vec;
     std::vector<double> vec1;
     std::vector<double> vec2;
-    vec = getRandomVector(&mat, 8);
+    vec = getRandomVector(&mat, 9);
     vec1 = gaus_metod(mat, vec);
     MPI_Barrier(MPI_COMM_WORLD);
     if (rank == 0) {
