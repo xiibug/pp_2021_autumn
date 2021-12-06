@@ -10,4 +10,4 @@
 
 int my_reduce(void*, void*, int, MPI_Datatype, MPI_Op, int, MPI_Comm);
 
-#endif  // MODULES_TASK_2_KUTUEV_R_MPI_REDUCE_MPI_REDUCE_H_
+#endif  //  MODULES_TASK_2_KUTUEV_R_MPI_REDUCE_MPI_REDUCE_H_
