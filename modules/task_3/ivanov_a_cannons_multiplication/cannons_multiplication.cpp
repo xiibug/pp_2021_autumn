@@ -52,19 +52,19 @@ bool isMultAcceptable(int* ms, int procCount) {
     if (ms[0] == 0)
         return false;
 
-    // rule 2: количество процессов - полный квадрат
-    // чтобы блоки(подматрицы исходных матриц) также были квадратными
+    // rule 3: procCount - full square
+    // to blocks(submatrices of matrices) also be square
     if (!isSquare(procCount))
         return false;
 
-    // rule 3: количество элементов строки||столбца должно быть >= количеству процессов
-    // чтобы все процессы получили хотя бы по одному элементу
+    // rule 3: num of elems in raw/colums must be >== procCount
+    // so all processes will receive at least 1 elem
     if (ms[0] < procCount)
         return false;
 
-    // rule 4: количество элементов в строке||столбце матрицы должно
-    // нацело делиться на корень из количества процессов: N % sqrt(procCount) == 0
-    // чтобы все блоки были равными по размерам
+    // rule 4: number of elems in raw/colum of matrix must be 
+    // divided entirely on square of procCount: N % sqrt(procCount) == 0
+    // so all blocks have the same sizes
     if (ms[0] % static_cast<int>(std::sqrt(procCount)) != 0)
         return false;
 
@@ -96,7 +96,7 @@ matrix<double> cannonsMultiplication(matrix<double>* A, matrix<double>* B) {
     if (!isMultAcceptable(matSizes, procCount))
         return ans;
 
-    // creating communicator with Cartesian(Декартова) topology 
+    // creating communicator with Cartesian(Decartova) topology 
     MPI_Comm MPI_COMM_CART;
     int sqrtProcCount = static_cast<int>(std::sqrt(procCount));
     int dims[2];
