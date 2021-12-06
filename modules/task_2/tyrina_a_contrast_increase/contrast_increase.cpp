@@ -94,7 +94,9 @@ double* getParallelContrastIncrease(double* image, int width, int height,
     return global_img;
   } else {
     if (rank == 0) {
-      getSequentialContrastIncrease(image, width, height, contrast);
+      return getSequentialContrastIncrease(image, width, height, contrast);
+    } else {
+      return nullptr;
     }
   }
 }
