@@ -187,6 +187,6 @@ std::vector<double> gaus_metod(std::vector<double> mat, std::vector<double> vec)
         return vec;
     }
     std::vector<double> mat1;
-    mat1 = triangulation(mat, line,&vec);
+    mat1 = triangulation(mat, line,&vec) ;
     return res(mat1, vec);
 }
