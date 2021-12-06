@@ -62,7 +62,7 @@ bool isMultAcceptable(int* ms, int procCount) {
     if (ms[0] < procCount)
         return false;
 
-    // rule 4: number of elems in raw/colum of matrix must be 
+    // rule 4: number of elems in raw/colum of matrix must be
     // divided entirely on square of procCount: N % sqrt(procCount) == 0
     // so all blocks have the same sizes
     if (ms[0] % static_cast<int>(std::sqrt(procCount)) != 0)
@@ -96,7 +96,7 @@ matrix<double> cannonsMultiplication(matrix<double>* A, matrix<double>* B) {
     if (!isMultAcceptable(matSizes, procCount))
         return ans;
 
-    // creating communicator with Cartesian(Decartova) topology 
+    // creating communicator with Cartesian(Decartova) topology
     MPI_Comm MPI_COMM_CART;
     int sqrtProcCount = static_cast<int>(std::sqrt(procCount));
     int dims[2];
@@ -111,7 +111,7 @@ matrix<double> cannonsMultiplication(matrix<double>* A, matrix<double>* B) {
     matrix<double> a(blockSideLen, blockSideLen);
     matrix<double> b(blockSideLen, blockSideLen);
     matrix<double> c(blockSideLen, blockSideLen);
-    //std::cout << "Prepared space on rank " << procRank << std::endl;
+    // std::cout << "Prepared space on rank " << procRank << std::endl;
 
     // root process sends blocks for other processes
     if (procRank == 0) {
@@ -146,15 +146,14 @@ matrix<double> cannonsMultiplication(matrix<double>* A, matrix<double>* B) {
                 b[i][j] = (*B)[i][j];
             }
         }
-    }
-    else {
+    } else {
         MPI_Status status;
         MPI_Recv(a.data(), blockSideLen * blockSideLen,
             MPI_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
         MPI_Recv(b.data(), blockSideLen * blockSideLen,
             MPI_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
     }
-    //std::cout << "Received all data on rank = " << procRank << std::endl;
+    // std::cout << "Received all data on rank = " << procRank << std::endl;
 
     // main computation cycle of sqrtProcCount iterations
     for (int i = 0; i < sqrtProcCount; i++) {
@@ -208,8 +207,7 @@ matrix<double> cannonsMultiplication(matrix<double>* A, matrix<double>* B) {
                 }
             }
         }
-    }
-    else {
+    } else {
         MPI_Send(c.data(), blockSideLen * blockSideLen, MPI_DOUBLE, 0, procRank, MPI_COMM_WORLD);
     }
     // std::cout << "Data gathered on rank = " << procRank << std::endl;

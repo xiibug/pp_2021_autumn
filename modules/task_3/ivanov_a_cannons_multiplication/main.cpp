@@ -37,8 +37,9 @@ TEST(cannons_mult_test, mult_test_1) {
         b.fillMatrix(generateRngValue, 0, 15, 0);
     }
     matrix<double> ans = cannonsMultiplication(&a, &b);
-    if (procRank == 0)
+    if (procRank == 0) {
         ASSERT_TRUE(ans == a * b);
+    }
 }
 
 TEST(cannons_mult_test, mult_test_2) {
@@ -53,8 +54,9 @@ TEST(cannons_mult_test, mult_test_2) {
         b.fillMatrix(generateRngValue, 0, 15, 0);
     }
     matrix<double> ans = cannonsMultiplication(&a, &b);
-    if (procRank == 0)
+    if (procRank == 0) {
         ASSERT_TRUE(ans == a * b);
+    }
 }
 
 TEST(cannons_mult_test, mult_test_3) {
@@ -69,8 +71,9 @@ TEST(cannons_mult_test, mult_test_3) {
         b.fillMatrix(generateRngValue, 0, 15, 0);
     }
     matrix<double> ans = cannonsMultiplication(&a, &b);
-    if (procRank == 0)
+    if (procRank == 0) {
         ASSERT_TRUE(ans == a * b);
+    }
 }
 
 TEST(cannons_mult_test, mult_test_4) {
@@ -85,8 +88,9 @@ TEST(cannons_mult_test, mult_test_4) {
         b.fillMatrix(generateRngValue, 0, 15, 0);
     }
     matrix<double> ans = cannonsMultiplication(&a, &b);
-    if (procRank == 0)
+    if (procRank == 0) {
         ASSERT_TRUE(ans == a * b);
+    }
 }
 
 TEST(cannons_mult_test, mult_test_5) {
@@ -101,8 +105,9 @@ TEST(cannons_mult_test, mult_test_5) {
         b.fillMatrix(generateRngValue, 0, 15, 0);
     }
     matrix<double> ans = cannonsMultiplication(&a, &b);
-    if (procRank == 0)
+    if (procRank == 0) {
         ASSERT_TRUE(ans == a * b);
+    }
 }
 
 TEST(cannons_mult_test, cant_multiply_matr_w_wrong_sizes) {
@@ -117,8 +122,9 @@ TEST(cannons_mult_test, cant_multiply_matr_w_wrong_sizes) {
         b.fillMatrix(generateRngValue, 0, 15, 0);
     }
     matrix<double> ans = cannonsMultiplication(&a, &b);
-    if (procRank == 0)
+    if (procRank == 0) {
         ASSERT_FALSE(ans == a * b);
+    }
 }
 
 #if USE_EFFECIENCY_TESTS == 1
