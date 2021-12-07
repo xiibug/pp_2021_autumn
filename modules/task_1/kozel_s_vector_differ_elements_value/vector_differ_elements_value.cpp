@@ -26,7 +26,8 @@ int differElementsValue(const std::vector<int>& vector) {
     }
     if (vector.size() == 1)
         return vector[0];
-    else return 0;
+    else 
+        return 0;
 }
 
 int paralleldifferElementsValue(const std::vector<int>& vector, const int size) {
@@ -53,14 +54,11 @@ int paralleldifferElementsValue(const std::vector<int>& vector, const int size) 
     std::vector<int> blockVector(procCount);
     std::vector<int> sdvig(procCount);
     std::vector<int> resultData(block);
-
     if (rank == 0) {
-        
         for (int i = 0; i < procCount; i++) {
             if (i < ostatok) {
                 blockVector[i] = vector.size() / procCount + 1;
-            }
-            else {
+            } else {
                 blockVector[i] = vector.size() / procCount;
             }
             if (i < procCount - 1) {
