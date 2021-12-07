@@ -1,7 +1,7 @@
-//copyright 2021 Javier Galindo
+// copyright 2021 Javier Galindo
 #include <mpi.h>
 #include <cmath>
-#include "./galindo_rectangular_method.h"
+#include "../../../modules/task_1/galindo_rectangular_method/galindo_rectangular_method.h"
 
 double integralSeqential(std::function<double(double)> integrable_function, double a, double b, size_t count) {
     if (count == 0) {

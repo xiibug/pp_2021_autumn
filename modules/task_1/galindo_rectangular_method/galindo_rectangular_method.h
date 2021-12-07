@@ -1,4 +1,4 @@
-//copyright 2021 Javier Galindo
+// copyright 2021 Javier Galindo
 #ifndef MODULES_TASK_1_GALINDO_RECTANGULAR_METHOD_GALINDO_RECTANGULAR_METHOD_H_
 #define MODULES_TASK_1_GALINDO_RECTANGULAR_METHOD_GALINDO_RECTANGULAR_METHOD_H_
 
@@ -11,5 +11,5 @@ double integralSeqential(std::function<double(double)> integrable_function, doub
 double integralParallel(std::function<double(double)> integrable_function, double a, double b, size_t count);
 
 
-#endif // MODULES_TASK_1_GALINDO_RECTANGULAR_METHOD_GALINDO_RECTANGULAR_METHOD_H_
+#endif  // MODULES_TASK_1_GALINDO_RECTANGULAR_METHOD_GALINDO_RECTANGULAR_METHOD_H_
 

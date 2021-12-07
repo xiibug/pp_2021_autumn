@@ -1,9 +1,9 @@
-//copyright 2021 Javier Galindo
+// copyright 2021 Javier Galindo
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <cmath>
 #include <limits>
-#include "./galindo_rectangular_method.h"
+#include "../../../modules/task_1/galindo_rectangular_method/galindo_rectangular_method.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, INTEGRAL_FROM_0_TO_1) {
