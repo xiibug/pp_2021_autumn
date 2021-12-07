@@ -1,5 +1,5 @@
 // Copyright 2021 Ustyuzhanin Nikita
-#include "../../task_2/ustyuzhanin_n_gather/gather.h"
+#include "../ustyuzhanin_n_gather/gather.h"
 
 void random(int* arr, int size) {
     std::random_device rd;
