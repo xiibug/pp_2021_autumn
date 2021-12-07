@@ -30,7 +30,7 @@ TEST(Simple_iteration_method, Sequential_test) {
 
     res = SequentialSimpleIterationMethod(matrix, vect, prec);
 
-    for (int i = 0; i < res.size(); i++) {
+    for (int i = 0; i < static_cast<int>(res.size()); i++) {
       if (std::abs(res[i] - ref_res[i]) > prec) {
         ok = false;
       }
@@ -64,7 +64,7 @@ TEST(Simple_iteration_method, Parallel_test) {
   res = ParallelSimpleIterationMethod(matrix, vect, prec);
 
   if (ProcRank == 0) {
-    for (int i = 0; i < res.size(); i++) {
+    for (int i = 0; i < static_cast<int>(res.size()); i++) {
       if (std::abs(res[i] - ref_res[i]) > prec) {
         ok = false;
       }

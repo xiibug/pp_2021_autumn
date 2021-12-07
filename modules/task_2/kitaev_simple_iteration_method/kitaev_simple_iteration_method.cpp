@@ -10,7 +10,7 @@ std::vector<double> SequentialSimpleIterationMethod(std::vector<double> matrix,
     throw "Error size";
   }
 
-  int matrix_size = vect.size();
+  int matrix_size = static_cast<int>(vect.size());
   double diagonal_elem;
 
   double spec_prec = 0;  // Specified precision
@@ -44,7 +44,7 @@ std::vector<double> SequentialSimpleIterationMethod(std::vector<double> matrix,
       }
 
       // Calculate the current precision
-      spec_prec = abs(x_new[i] - x_prev[i]);
+      spec_prec = std::abs(x_new[i] - x_prev[i]);
     }
   } while (spec_prec >= prec);
 
@@ -57,7 +57,7 @@ std::vector<double> ParallelSimpleIterationMethod(std::vector<double> matrix,
     throw "Error size";
   }
 
-  int matrix_size = vect.size();
+  int matrix_size = static_cast<int>(vect.size());
   int ProcNum, ProcRank;
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
@@ -125,7 +125,7 @@ std::vector<double> ParallelSimpleIterationMethod(std::vector<double> matrix,
         x_new[i] -= pers_matrix[i * matrix_size + j] * x_old[j];
       }
 
-      spec_prec = abs(x_new[i] - x_old[displs_vect[ProcRank] + i]);
+      spec_prec = std::abs(x_new[i] - x_old[displs_vect[ProcRank] + i]);
     }
 
     MPI_Gatherv(&x_new[0], counts_vect[ProcRank], MPI_DOUBLE, &x_old[0],
