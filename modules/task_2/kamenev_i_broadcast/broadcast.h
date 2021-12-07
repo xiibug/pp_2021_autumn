@@ -8,7 +8,7 @@
 #include <vector>
 
 template <typename T>
-std::vector<T> getRandomVector(int n, int max);
+T* getRandomArray(int n, int max);
 
 int Bcast(void* sendbuf, void* outbuf, int count, MPI_Datatype datatype,
           int root, MPI_Op op, MPI_Comm comm);

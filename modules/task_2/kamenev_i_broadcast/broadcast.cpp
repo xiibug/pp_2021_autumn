@@ -13,21 +13,21 @@ int randint(int min, int max) {
 }
 
 template <typename T>
-std::vector<T> getRandomVector(int n, int max) {
-  std::vector<T> rand_vec(n);
+T* getRandomArray(int n, int max) {
+  T* rand_arr = new T[n];
   std::random_device dev;
   std::mt19937 gen(dev());
   for (int i = 0; i < n; i++) {
-    rand_vec[i] = static_cast<T>(gen() % max);
+    rand_arr[i] = static_cast<T>(gen() % max);
   }
-  return rand_vec;
+  return rand_arr;
 }
 
-template std::vector<int> getRandomVector<int>(int n, int max);
+template int* getRandomArray(int n, int max);
 
-template std::vector<double> getRandomVector<double>(int n, int max);
+template double* getRandomArray(int n, int max);
 
-template std::vector<float> getRandomVector<float>(int n, int max);
+template float* getRandomArray(int n, int max);
 
 int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
           int root, MPI_Op op, MPI_Comm comm) {
