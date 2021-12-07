@@ -1,6 +1,7 @@
+//copyright 2021 Javier Galindo
 #include <mpi.h>
 #include <cmath>
-#include "galindo_rectangular_method.h"
+#include "./galindo_rectangular_method.h"
 
 double integralSeqential(std::function<double(double)> integrable_function, double a, double b, size_t count) {
     if (count == 0) {
@@ -27,8 +28,7 @@ double integralParallel(std::function<double(double)> integrable_function, doubl
     if (rank != process_count - 1) {
         local_result =
             integralSeqential(integrable_function, a + rank * (part * delta), a + (rank + 1) * (part * delta), part);
-    }
-    else {
+    } else {
         local_result =
             integralSeqential(integrable_function, a + rank * (part * delta), b, count - part * (process_count - 1));
     }

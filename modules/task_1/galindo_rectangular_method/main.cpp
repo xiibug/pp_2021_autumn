@@ -1,9 +1,10 @@
-#include <gtest-mpi-listener.hpp>
+//copyright 2021 Javier Galindo
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <cmath>
 #include <limits>
-#include "galindo_rectangular_method.h"
+#include "./galindo_rectangular_method.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, INTEGRAL_FROM_0_TO_1) {
     int rank;
