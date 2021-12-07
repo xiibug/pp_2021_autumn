@@ -87,7 +87,7 @@ std::vector<double> ParallelSimpleIterationMethod(std::vector<double> matrix,
 
   std::vector<double> pers_matrix(counts_matrix[ProcRank]),
     pers_vect(counts_vect[ProcRank]);
-  std::vector<double> x_new(matrix_size), x_old(matrix_size);
+  std::vector<double> x_new(matrix_size), x_prev(matrix_size);
 
   MPI_Scatterv(&matrix[0], &counts_matrix[0], &displs_matrix[0], MPI_DOUBLE,
     &pers_matrix[0], counts_matrix[ProcRank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -111,9 +111,9 @@ std::vector<double> ParallelSimpleIterationMethod(std::vector<double> matrix,
   }
 
   MPI_Gatherv(&pers_vect[0], counts_vect[ProcRank], MPI_DOUBLE,
-    &x_old[0], &counts_vect[0], &displs_vect[0], MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    &x_prev[0], &counts_vect[0], &displs_vect[0], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-  MPI_Bcast(&x_old[0], matrix_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Bcast(&x_prev[0], matrix_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   double spec_prec = 0, all_prec = 0;  // Specified precision
 
@@ -122,19 +122,19 @@ std::vector<double> ParallelSimpleIterationMethod(std::vector<double> matrix,
       x_new[i] = pers_vect[i];
 
       for (int j = 0; j < matrix_size; j++) {
-        x_new[i] -= pers_matrix[i * matrix_size + j] * x_old[j];
+        x_new[i] -= pers_matrix[i * matrix_size + j] * x_prev[j];
       }
 
-      spec_prec = std::abs(x_new[i] - x_old[displs_vect[ProcRank] + i]);
+      spec_prec = std::abs(x_new[i] - x_prev[displs_vect[ProcRank] + i]);
     }
 
-    MPI_Gatherv(&x_new[0], counts_vect[ProcRank], MPI_DOUBLE, &x_old[0],
+    MPI_Gatherv(&x_new[0], counts_vect[ProcRank], MPI_DOUBLE, &x_prev[0],
       &counts_vect[0], &displs_vect[0], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-    MPI_Bcast(&x_old[0], matrix_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&x_prev[0], matrix_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     MPI_Allreduce(&spec_prec, &all_prec, 1, MPI_DOUBLE,
       MPI_MAX, MPI_COMM_WORLD);
   } while (all_prec > prec);
-  return x_old;
+  return x_prev;
 }
