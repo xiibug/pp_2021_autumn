@@ -36,8 +36,8 @@ TEST(ReduceTest, MPI_SUM_INT) {
 
 TEST(ReduceTest, MPI_MAX_INT) {
   int ProcNum, ProcRank;
-  int Reduce = INT_MIN;
-  int reduce = INT_MIN;
+  int Reduce = -2147483647;
+  int reduce = -2147483647;
   double t1, t2, t3, t4;
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
@@ -64,8 +64,8 @@ TEST(ReduceTest, MPI_MAX_INT) {
 
 TEST(ReduceTest, MPI_MIN_INT) {
   int ProcNum, ProcRank;
-  int Reduce = INT_MAX;
-  int reduce = INT_MAX;
+  int Reduce = 2147483647;
+  int reduce = 2147483647;
   double t1, t2, t3, t4;
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
