@@ -2,6 +2,7 @@
 #include <mpi.h>
 #include <vector>
 #include <random>
+#include <iostream>
 #include <ctime>
 #include <algorithm>
 #include <cmath>
@@ -73,21 +74,23 @@ int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op
             for (int i = 1; i < proc_count; i++) {
                 MPI_Recv(buf_int, count, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, MPI_STATUS_IGNORE);
                 for (int k = 0; k < count; k++) {
-                    switch (op) {
-                    case MPI_MAX:
+                    if (op == MPI_MAX) {
                         if (buf_int[k] > reinterpret_cast<int*>(recvbuf)[k])
                             reinterpret_cast<int*>(recvbuf)[k] = buf_int[k];
-                        break;
-                    case MPI_MIN:
+                        continue;
+                    }
+                    if (op == MPI_MIN) {
                         if (buf_int[k] < reinterpret_cast<int*>(recvbuf)[k])
                             reinterpret_cast<int*>(recvbuf)[k] = buf_int[k];
-                        break;
-                    case MPI_SUM:
+                        continue;
+                    }
+                    if (op == MPI_SUM) {
                         reinterpret_cast<int*>(recvbuf)[k] += buf_int[k];
-                        break;
-                    case MPI_PROD:
+                        continue;
+                    }
+                    if (op == MPI_PROD) {
                         reinterpret_cast<int*>(recvbuf)[k] *= buf_int[k];
-                        break;
+                        continue;
                     }
                 }
             }
@@ -100,21 +103,23 @@ int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op
                 for (int i = 1; i < proc_count; i++) {
                     MPI_Recv(buf_float, count, MPI_FLOAT, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, MPI_STATUS_IGNORE);
                     for (int k = 0; k < count; k++) {
-                        switch (op) {
-                        case MPI_MAX:
+                        if (op == MPI_MAX) {
                             if (buf_float[k] > reinterpret_cast<float*>(recvbuf)[k])
                                 reinterpret_cast<float*>(recvbuf)[k] = buf_float[k];
-                            break;
-                        case MPI_MIN:
+                            continue;
+                        }
+                        if (op == MPI_MIN) {
                             if (buf_float[k] < reinterpret_cast<float*>(recvbuf)[k])
                                 reinterpret_cast<float*>(recvbuf)[k] = buf_float[k];
-                            break;
-                        case MPI_SUM:
+                            continue;
+                        }
+                        if (op == MPI_SUM) {
                             reinterpret_cast<float*>(recvbuf)[k] += buf_float[k];
-                            break;
-                        case MPI_PROD:
+                            continue;
+                        }
+                        if (op == MPI_PROD) {
                             reinterpret_cast<float*>(recvbuf)[k] *= buf_float[k];
-                            break;
+                            continue;
                         }
                     }
                 }
@@ -126,21 +131,23 @@ int ALLreduce(void *sendbuf, void *recvbuf, int count, MPI_Datatype type, MPI_Op
                 for (int i = 1; i < proc_count; i++) {
                     MPI_Recv(buf_double, count, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, MPI_STATUS_IGNORE);
                     for (int k = 0; k < count; k++) {
-                        switch (op) {
-                        case MPI_MAX:
+                        if (op == MPI_MAX) {
                             if (buf_double[k] > reinterpret_cast<double*>(recvbuf)[k])
                                 reinterpret_cast<double*>(recvbuf)[k] = buf_double[k];
-                            break;
-                        case MPI_MIN:
+                            continue;
+                        }
+                        if (op == MPI_MIN) {
                             if (buf_double[k] < reinterpret_cast<double*>(recvbuf)[k])
                                 reinterpret_cast<double*>(recvbuf)[k] = buf_double[k];
-                            break;
-                        case MPI_SUM:
+                            continue;
+                        }
+                        if (op == MPI_SUM) {
                             reinterpret_cast<double*>(recvbuf)[k] += buf_double[k];
-                            break;
-                        case MPI_PROD:
+                            continue;
+                        }
+                        if (op == MPI_PROD) {
                             reinterpret_cast<double*>(recvbuf)[k] *= buf_double[k];
-                            break;
+                            continue;
                         }
                     }
                 }

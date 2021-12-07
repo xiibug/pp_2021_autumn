@@ -214,7 +214,7 @@ TEST(MPI_Allreduce_test, correct_finding_of_the_sum_of_vectors_of_different_type
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int size = 25;
+    int size = 3;
     std::vector<int> send_int = getRandomVec<int>(size);
     std::vector<float> send_float = getRandomVec<float>(size);
     std::vector<double> send_double = getRandomVec<double>(size);
