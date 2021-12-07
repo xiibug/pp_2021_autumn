@@ -26,7 +26,7 @@ int differElementsValue(const std::vector<int>& vector) {
     }
     if (vector.size() == 1)
         return vector[0];
-    else 
+    else
         return 0;
 }
 

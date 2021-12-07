@@ -18,7 +18,6 @@ TEST(Parallel_Operations_MPI, PARALLEL_FIND_DIFFER_ELEMENT_VALUES_VECTOR_SIZE_3_
     int commRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
     std::vector<int> vector = { 55, -5055, 1};
-   
     int maxDiffer1;
     if (commRank == 0) {
         maxDiffer1 = differElementsValue(vector);
