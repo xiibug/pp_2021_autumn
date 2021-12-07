@@ -65,29 +65,29 @@ TEST(BroadcastTest, IntProd) {
   }
 }
 
-/*
+
 TEST(BroadcastTest, IntMin) {
   int length = 100;
   int root = 0;
   int mpi_result = 0;
   int seq_min = INT_MAX;
-  std::vector<int> vec;
+  int* arr = nullptr;
   int commSize, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &commSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    vec = getRandomArray<int>(length, 50);
+    arr = getRandomArray<int>(length, 50);
     for (int i = 0; i < length; i++) {
-      if (vec[i] < seq_min) {
-        seq_min = vec[i];
+      if (arr[i] < seq_min) {
+        seq_min = arr[i];
       }
     }
   }
-  Bcast(vec.data(), &mpi_result, length, MPI_INT, root, MPI_MIN,
+  Bcast(arr, &mpi_result, length, MPI_INT, root, MPI_MIN,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_min, 1e-2);
-    vec.clear();
+    delete[] arr;
   }
 }
 
@@ -96,23 +96,23 @@ TEST(BroadcastTest, IntMax) {
   int root = 0;
   int mpi_result = 0;
   int seq_max = INT_MIN;
-  std::vector<int> vec;
+  int* arr = nullptr;
   int commSize, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &commSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    vec = getRandomArray<int>(length, 50);
+    arr = getRandomArray<int>(length, 50);
     for (int i = 0; i < length; i++) {
-      if (vec[i] > seq_max) {
-        seq_max = vec[i];
+      if (arr[i] > seq_max) {
+        seq_max = arr[i];
       }
     }
   }
-  Bcast(vec.data(), &mpi_result, length, MPI_INT, root, MPI_MAX,
+  Bcast(arr, &mpi_result, length, MPI_INT, root, MPI_MAX,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_max, 1e-2);
-    vec.clear();
+    delete[] arr;
   }
 }
 
@@ -121,21 +121,21 @@ TEST(BroadcastTest, DoubleSum) {
   int root = 0;
   double mpi_result = 0;
   double seq_sum = 0;
-  std::vector<double> vec;
+  double* arr = nullptr;
   int commSize, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &commSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    vec = getRandomArray<double>(length, 50);
+    arr = getRandomArray<double>(length, 50);
     for (int i = 0; i < length; i++) {
-      seq_sum += vec[i];
+      seq_sum += arr[i];
     }
   }
-  Bcast(vec.data(), &mpi_result, length, MPI_DOUBLE, root, MPI_SUM,
+  Bcast(arr, &mpi_result, length, MPI_DOUBLE, root, MPI_SUM,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_sum, 1e-2);
-    vec.clear();
+    delete[] arr;
   }
 }
 
@@ -144,21 +144,21 @@ TEST(BroadcastTest, DoubleProd) {
   int root = 0;
   double mpi_result = 0;
   double seq_prod = 1;
-  std::vector<double> vec;
+  double* arr = nullptr;
   int commSize, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &commSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    vec = getRandomArray<double>(length, 3);
+    arr = getRandomArray<double>(length, 3);
     for (int i = 0; i < length; i++) {
-      seq_prod *= vec[i];
+      seq_prod *= arr[i];
     }
   }
-  Bcast(vec.data(), &mpi_result, length, MPI_DOUBLE, root, MPI_PROD,
+  Bcast(arr, &mpi_result, length, MPI_DOUBLE, root, MPI_PROD,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_prod, 1e-2);
-    vec.clear();
+    delete[] arr;
   }
 }
 
@@ -167,23 +167,23 @@ TEST(BroadcastTest, DoubleMin) {
   int root = 0;
   double mpi_result = 0;
   double seq_min = DBL_MAX;
-  std::vector<double> vec;
+  double* arr = nullptr;
   int commSize, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &commSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    vec = getRandomArray<double>(length, 50);
+    arr = getRandomArray<double>(length, 50);
     for (int i = 0; i < length; i++) {
-      if (vec[i] < seq_min) {
-        seq_min = vec[i];
+      if (arr[i] < seq_min) {
+        seq_min = arr[i];
       }
     }
   }
-  Bcast(vec.data(), &mpi_result, length, MPI_DOUBLE, root, MPI_MIN,
+  Bcast(arr, &mpi_result, length, MPI_DOUBLE, root, MPI_MIN,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_min, 1e-2);
-    vec.clear();
+    delete[] arr;
   }
 }
 
@@ -192,23 +192,23 @@ TEST(BroadcastTest, DoubleMax) {
   int root = 0;
   double mpi_result = 0;
   double seq_max = DBL_MIN;
-  std::vector<double> vec;
+  double* arr = nullptr;
   int commSize, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &commSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    vec = getRandomArray<double>(length, 50);
+    arr = getRandomArray<double>(length, 50);
     for (int i = 0; i < length; i++) {
-      if (vec[i] > seq_max) {
-        seq_max = vec[i];
+      if (arr[i] > seq_max) {
+        seq_max = arr[i];
       }
     }
   }
-  Bcast(vec.data(), &mpi_result, length, MPI_DOUBLE, root, MPI_MAX,
+  Bcast(arr, &mpi_result, length, MPI_DOUBLE, root, MPI_MAX,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_max, 1e-2);
-    vec.clear();
+    delete[] arr;
   }
 }
 
@@ -217,21 +217,21 @@ TEST(BroadcastTest, FloatSum) {
   int root = 0;
   float mpi_result = 0;
   float seq_sum = 0;
-  std::vector<float> vec;
+  float* arr = nullptr;
   int commSize, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &commSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    vec = getRandomArray<float>(length, 50);
+    arr = getRandomArray<float>(length, 50);
     for (int i = 0; i < length; i++) {
-      seq_sum += vec[i];
+      seq_sum += arr[i];
     }
   }
-  Bcast(vec.data(), &mpi_result, length, MPI_FLOAT, root, MPI_SUM,
+  Bcast(arr, &mpi_result, length, MPI_FLOAT, root, MPI_SUM,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_sum, 1e-2);
-    vec.clear();
+    delete[] arr;
   }
 }
 
@@ -240,21 +240,21 @@ TEST(BroadcastTest, FloatProd) {
   int root = 0;
   float mpi_result = 0;
   float seq_prod = 1;
-  std::vector<float> vec;
+  float* arr = nullptr;
   int commSize, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &commSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    vec = getRandomArray<float>(length, 3);
+    arr = getRandomArray<float>(length, 3);
     for (int i = 0; i < length; i++) {
-      seq_prod *= vec[i];
+      seq_prod *= arr[i];
     }
   }
-  Bcast(vec.data(), &mpi_result, length, MPI_FLOAT, root, MPI_PROD,
+  Bcast(arr, &mpi_result, length, MPI_FLOAT, root, MPI_PROD,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_prod, 1e-2);
-    vec.clear();
+    delete[] arr;
   }
 }
 
@@ -263,23 +263,23 @@ TEST(BroadcastTest, FloatMin) {
   int root = 0;
   float mpi_result = 0;
   float seq_min = FLT_MAX;
-  std::vector<float> vec;
+  float* arr = nullptr;
   int commSize, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &commSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    vec = getRandomArray<float>(length, 50);
+    arr = getRandomArray<float>(length, 50);
     for (int i = 0; i < length; i++) {
-      if (vec[i] < seq_min) {
-        seq_min = vec[i];
+      if (arr[i] < seq_min) {
+        seq_min = arr[i];
       }
     }
   }
-  Bcast(vec.data(), &mpi_result, length, MPI_FLOAT, root, MPI_MIN,
+  Bcast(arr, &mpi_result, length, MPI_FLOAT, root, MPI_MIN,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_min, 1e-2);
-    vec.clear();
+    delete[] arr;
   }
 }
 
@@ -288,23 +288,22 @@ TEST(BroadcastTest, FloatMax) {
   int root = 0;
   float mpi_result = 0;
   float seq_max = FLT_MIN;
-  std::vector<float> vec;
+  float* arr = nullptr;
   int commSize, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &commSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    vec = getRandomArray<float>(length, 50);
+    arr = getRandomArray<float>(length, 50);
     for (int i = 0; i < length; i++) {
-      if (vec[i] > seq_max) {
-        seq_max = vec[i];
+      if (arr[i] > seq_max) {
+        seq_max = arr[i];
       }
     }
   }
-  Bcast(vec.data(), &mpi_result, length, MPI_FLOAT, root, MPI_MAX,
+  Bcast(arr, &mpi_result, length, MPI_FLOAT, root, MPI_MAX,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_max, 1e-2);
-    vec.clear();
+    delete[] arr;
   }
 }
-*/
