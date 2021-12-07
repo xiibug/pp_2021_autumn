@@ -30,7 +30,7 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
   if (rank == root) {
     for (int i = 0; i < size; i++) {
       if (i != root) {
-        MPI_Send(buffer, count * size, datatype, i, 0, MPI_COMM_WORLD);
+        MPI_Send(buffer, count * size, datatype, i, 0, comm);
       }
     }
   }
@@ -38,7 +38,7 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
     int* recvbuf = nullptr;
     if (rank != root) {
       recvbuf = new int[count * size];
-      MPI_Recv(recvbuf, count * size, datatype, root, 0, MPI_COMM_WORLD,
+      MPI_Recv(recvbuf, count * size, datatype, root, 0, comm,
                MPI_STATUSES_IGNORE);
     } else {
       recvbuf = reinterpret_cast<int*>(buffer);
@@ -69,15 +69,15 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
       }
     }
     if (rank != root) {
-      MPI_Send(&partial_out, 1, datatype, root, 1, MPI_COMM_WORLD);
+      MPI_Send(&partial_out, 1, datatype, root, 1, comm);
     }
     if (rank == root) {
       int global_out = partial_out;
       for (int i = 0; i < size; i++) {
         if (i != root) {
           int partial_recv = 0;
-          MPI_Recv(&partial_recv, count * size, datatype, root, 1,
-                   MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
+          MPI_Recv(&partial_recv, count * size, datatype, root, 1, comm,
+                   MPI_STATUSES_IGNORE);
           if (op == MPI_SUM) {
             global_out += partial_recv;
           } else if (op == MPI_MAX) {
@@ -99,7 +99,7 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
     double* recvbuf;
     if (rank != root) {
       recvbuf = new double[count * size];
-      MPI_Recv(recvbuf, count * size, datatype, root, 0, MPI_COMM_WORLD,
+      MPI_Recv(recvbuf, count * size, datatype, root, 0, comm,
                MPI_STATUSES_IGNORE);
     } else {
       recvbuf = reinterpret_cast<double*>(buffer);
@@ -130,15 +130,15 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
       }
     }
     if (rank != root) {
-      MPI_Send(&partial_out, 1, datatype, root, 1, MPI_COMM_WORLD);
+      MPI_Send(&partial_out, 1, datatype, root, 1, comm);
     }
     if (rank == root) {
       double global_out = partial_out;
       for (int i = 0; i < size; i++) {
         if (i != root) {
           double partial_recv = 0;
-          MPI_Recv(&partial_recv, count * size, datatype, root, 1,
-                   MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
+          MPI_Recv(&partial_recv, count * size, datatype, root, 1, comm,
+                   MPI_STATUSES_IGNORE);
           if (op == MPI_SUM) {
             global_out += partial_recv;
           } else if (op == MPI_MAX) {
@@ -160,7 +160,7 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
     float* recvbuf;
     if (rank != root) {
       recvbuf = new float[count * size];
-      MPI_Recv(recvbuf, count * size, datatype, root, 0, MPI_COMM_WORLD,
+      MPI_Recv(recvbuf, count * size, datatype, root, 0, comm,
                MPI_STATUSES_IGNORE);
     } else {
       recvbuf = reinterpret_cast<float*>(buffer);
@@ -191,15 +191,15 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
       }
     }
     if (rank != root) {
-      MPI_Send(&partial_out, 1, datatype, root, 1, MPI_COMM_WORLD);
+      MPI_Send(&partial_out, 1, datatype, root, 1, comm);
     }
     if (rank == root) {
       float global_out = partial_out;
       for (int i = 0; i < size; i++) {
         if (i != root) {
           float partial_recv;
-          MPI_Recv(&partial_recv, count * size, datatype, root, 1,
-                   MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
+          MPI_Recv(&partial_recv, count * size, datatype, root, 1, comm,
+                   MPI_STATUSES_IGNORE);
           if (op == MPI_SUM) {
             global_out += partial_recv;
           } else if (op == MPI_MAX) {

@@ -25,16 +25,16 @@ TEST(BroadcastTest, IntSum) {
   int mpi_result = 0;
   int seq_sum = 0;
   int* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<int>(length, 50);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<int>(length*size, 50);
+    for (int i = 0; i < length * size; i++) {
       seq_sum += arr[i];
     }
   }
-  Bcast(arr, &mpi_result, length, MPI_INT, root, MPI_SUM,
+  Bcast(arr, &mpi_result, length * size, MPI_INT, root, MPI_SUM,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_sum, 1e-2);
@@ -48,16 +48,16 @@ TEST(BroadcastTest, IntProd) {
   int mpi_result = 1;
   int seq_prod = 1;
   int* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<int>(length, 3);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<int>(length * size, 3);
+    for (int i = 0; i < length * size; i++) {
       seq_prod *= arr[i];
     }
   }
-  Bcast(arr, &mpi_result, length, MPI_INT, root, MPI_PROD,
+  Bcast(arr, &mpi_result, length * size, MPI_INT, root, MPI_PROD,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_prod, 1e-2);
@@ -72,18 +72,18 @@ TEST(BroadcastTest, IntMin) {
   int mpi_result = 0;
   int seq_min = INT_MAX;
   int* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<int>(length, 50);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<int>(length * size, 50);
+    for (int i = 0; i < length * size; i++) {
       if (arr[i] < seq_min) {
         seq_min = arr[i];
       }
     }
   }
-  Bcast(arr, &mpi_result, length, MPI_INT, root, MPI_MIN,
+  Bcast(arr, &mpi_result, length * size, MPI_INT, root, MPI_MIN,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_min, 1e-2);
@@ -97,18 +97,18 @@ TEST(BroadcastTest, IntMax) {
   int mpi_result = 0;
   int seq_max = INT_MIN;
   int* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<int>(length, 50);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<int>(length * size, 50);
+    for (int i = 0; i < length * size; i++) {
       if (arr[i] > seq_max) {
         seq_max = arr[i];
       }
     }
   }
-  Bcast(arr, &mpi_result, length, MPI_INT, root, MPI_MAX,
+  Bcast(arr, &mpi_result, length * size, MPI_INT, root, MPI_MAX,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_max, 1e-2);
@@ -122,16 +122,16 @@ TEST(BroadcastTest, DoubleSum) {
   double mpi_result = 0;
   double seq_sum = 0;
   double* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<double>(length, 50);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<double>(length * size, 50);
+    for (int i = 0; i < length * size; i++) {
       seq_sum += arr[i];
     }
   }
-  Bcast(arr, &mpi_result, length, MPI_DOUBLE, root, MPI_SUM,
+  Bcast(arr, &mpi_result, length * size, MPI_DOUBLE, root, MPI_SUM,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_sum, 1e-2);
@@ -145,16 +145,16 @@ TEST(BroadcastTest, DoubleProd) {
   double mpi_result = 0;
   double seq_prod = 1;
   double* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<double>(length, 3);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<double>(length * size, 3);
+    for (int i = 0; i < length * size; i++) {
       seq_prod *= arr[i];
     }
   }
-  Bcast(arr, &mpi_result, length, MPI_DOUBLE, root, MPI_PROD,
+  Bcast(arr, &mpi_result, length * size, MPI_DOUBLE, root, MPI_PROD,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_prod, 1e-2);
@@ -168,18 +168,18 @@ TEST(BroadcastTest, DoubleMin) {
   double mpi_result = 0;
   double seq_min = DBL_MAX;
   double* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<double>(length, 50);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<double>(length * size, 50);
+    for (int i = 0; i < length * size; i++) {
       if (arr[i] < seq_min) {
         seq_min = arr[i];
       }
     }
   }
-  Bcast(arr, &mpi_result, length, MPI_DOUBLE, root, MPI_MIN,
+  Bcast(arr, &mpi_result, length * size, MPI_DOUBLE, root, MPI_MIN,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_min, 1e-2);
@@ -193,12 +193,12 @@ TEST(BroadcastTest, DoubleMax) {
   double mpi_result = 0;
   double seq_max = DBL_MIN;
   double* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<double>(length, 50);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<double>(length * size, 50);
+    for (int i = 0; i < length * size; i++) {
       if (arr[i] > seq_max) {
         seq_max = arr[i];
       }
@@ -218,16 +218,16 @@ TEST(BroadcastTest, FloatSum) {
   float mpi_result = 0;
   float seq_sum = 0;
   float* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<float>(length, 50);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<float>(length * size, 50);
+    for (int i = 0; i < length * size; i++) {
       seq_sum += arr[i];
     }
   }
-  Bcast(arr, &mpi_result, length, MPI_FLOAT, root, MPI_SUM,
+  Bcast(arr, &mpi_result, length * size, MPI_FLOAT, root, MPI_SUM,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_sum, 1e-2);
@@ -241,16 +241,16 @@ TEST(BroadcastTest, FloatProd) {
   float mpi_result = 0;
   float seq_prod = 1;
   float* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<float>(length, 3);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<float>(length * size, 3);
+    for (int i = 0; i < length * size; i++) {
       seq_prod *= arr[i];
     }
   }
-  Bcast(arr, &mpi_result, length, MPI_FLOAT, root, MPI_PROD,
+  Bcast(arr, &mpi_result, length * size, MPI_FLOAT, root, MPI_PROD,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_prod, 1e-2);
@@ -264,18 +264,18 @@ TEST(BroadcastTest, FloatMin) {
   float mpi_result = 0;
   float seq_min = FLT_MAX;
   float* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<float>(length, 50);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<float>(length * size, 50);
+    for (int i = 0; i < length * size; i++) {
       if (arr[i] < seq_min) {
         seq_min = arr[i];
       }
     }
   }
-  Bcast(arr, &mpi_result, length, MPI_FLOAT, root, MPI_MIN,
+  Bcast(arr, &mpi_result, length * size, MPI_FLOAT, root, MPI_MIN,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_min, 1e-2);
@@ -289,18 +289,18 @@ TEST(BroadcastTest, FloatMax) {
   float mpi_result = 0;
   float seq_max = FLT_MIN;
   float* arr = nullptr;
-  int commSize, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+  int size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
-    arr = getRandomArray<float>(length, 50);
-    for (int i = 0; i < length; i++) {
+    arr = getRandomArray<float>(length * size, 50);
+    for (int i = 0; i < length * size; i++) {
       if (arr[i] > seq_max) {
         seq_max = arr[i];
       }
     }
   }
-  Bcast(arr, &mpi_result, length, MPI_FLOAT, root, MPI_MAX,
+  Bcast(arr, &mpi_result, length * size, MPI_FLOAT, root, MPI_MAX,
         MPI_COMM_WORLD);
   if (rank == root) {
     EXPECT_NEAR(mpi_result, seq_max, 1e-2);
