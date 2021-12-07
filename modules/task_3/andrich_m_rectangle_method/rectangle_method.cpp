@@ -18,7 +18,7 @@ double function4(double x, double y, double z) {
   return x * x + x * y * z - 10 * z * z;
 }
 
-double integralFunction(double( *f)(double, double, double),
+double integralFunction(double(*f)(double, double, double),
   double ax, double bx,
   double ay, double by,
   double az, double bz,
@@ -43,7 +43,7 @@ double integralFunction(double( *f)(double, double, double),
   return ans;
 }
 
-double oneDimensionalIntegral(double( *f)(double, double, double),
+double oneDimensionalIntegral(double(*f)(double, double, double),
   double X, double Y,
   double az, double bz,
   int k, double hz) {
@@ -55,7 +55,7 @@ double oneDimensionalIntegral(double( *f)(double, double, double),
   return tmp;
 }
 
-double calcParallel(double( *f)(double, double, double),
+double calcParallel(double(*f)(double, double, double),
   double X, double Y,
   double az, double bz,
   int k, double hz) {
@@ -73,11 +73,11 @@ double calcParallel(double( *f)(double, double, double),
   } else {
     local_integral = oneDimensionalIntegral(f, X, Y, curr_az, curr_bz, local_size, hz);
   }
-  MPI_Reduce( &local_integral, &ans, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Reduce(&local_integral, &ans, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
   return ans;
 }
 
-double getCalculatedIntegral(double( *f)(double, double, double),
+double getCalculatedIntegral(double(*f)(double, double, double),
   double ax, double bx,
   double ay, double by,
   double az, double bz,
