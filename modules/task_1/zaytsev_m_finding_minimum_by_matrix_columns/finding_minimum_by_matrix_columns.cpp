@@ -1,141 +1,69 @@
 ﻿  // Copyright 2021 Zaytsev Mikhail
 #include <mpi.h>
+#include <random>
 #include "../../../modules/task_1/zaytsev_m_finding_minimum_by_matrix_columns/finding_minimum_by_matrix_columns.h"
 
-std::vector<std::vector<int>> fillMatrix(const int rows, const int columns) {
-    std::vector<std::vector<int>> matrix(rows);
+void getRandomMatrix(std::vector<int>* matrix, std::vector<int>::size_type matrixSize) {
+    std::random_device dev;
+    std::mt19937 gen(dev());
 
-    for (int i = 0; i < rows; ++i) {
-        matrix[i] = std::vector<int>(columns);
-        for (int j = 0; j < columns; ++j) {
-            matrix[i][j] = (columns - j) * (rows - i);
-        }
+    matrix->resize(matrixSize);
+    for (std::vector<int>::size_type i = 0; i < matrixSize; ++i) {
+        matrix->at(i) = gen() % 10000;
     }
-
-    return matrix;
 }
 
-// Print matrix
-void printMatrix(const std::vector<std::vector<int>>& matrix) {
-    int rows = matrix.size(), columns = matrix[0].size();
+std::vector<int> sequentialFindMinimum(const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
+                                                                    std::vector<int>::size_type matrixColumns) {
+    std::vector<int> vectorOfMinimum(matrixColumns);
 
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < columns; ++j) {
-            printf("%i ", matrix[i][j]);
+    for (std::vector<int>::size_type i = 0; i < matrixColumns; ++i) {
+        vectorOfMinimum[i] = matrix[i];
+        for (std::vector<int>::size_type j = 1; j < matrixRows; ++j) {
+            if (vectorOfMinimum[i] > matrix[matrixColumns * j + i]) vectorOfMinimum[i] = matrix[matrixColumns * j + i];
         }
-        printf("\n");
     }
-    printf("\n");
+
+    return vectorOfMinimum;
 }
+std::vector<int> parallelFindMinimum(const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
+                                                                  std::vector<int>::size_type matrixColumns) {
+    std::vector<int> localVectorOfMinimum, globalVectorOfMinimum;
+    int dataPerProcess = 0, lossData = 0;
 
-// Transponse matrix
-std::vector<std::vector<int>> transponseMatrix(const std::vector<std::vector<int>>& matrix) {
-    int rows = matrix.size(), columns = matrix[0].size();
-    std::vector<std::vector<int>> buff(columns);
+    int numberOfProcess, currentProcess;
+    MPI_Comm_size(MPI_COMM_WORLD, &numberOfProcess);
+    MPI_Comm_rank(MPI_COMM_WORLD, &currentProcess);
 
-    for (int i = 0; i < columns; ++i) {
-        buff[i] = std::vector<int>(rows);
-        for (int j = 0; j < rows; ++j) {
-            buff[i][j] = matrix[j][i];
-        }
+    dataPerProcess = matrixRows / numberOfProcess;
+    lossData = matrixRows % numberOfProcess;
+
+    if (currentProcess == 0) {
+        globalVectorOfMinimum.resize(matrixColumns);
     }
 
-    return buff;
-}
+    localVectorOfMinimum.resize(dataPerProcess * matrixColumns);
 
-// One process find minimum fucntion
-std::vector<int> singleFindingMinimum(const std::vector<std::vector<int>>& matrix) {
-    int rows = matrix.size(), columns = matrix[0].size();
-    std::vector<int> minimum(columns);
+    MPI_Scatter(matrix.data() + lossData * matrixColumns, dataPerProcess * matrixColumns, MPI_INT,
+          localVectorOfMinimum.data(), dataPerProcess * matrixColumns, MPI_INT, 0, MPI_COMM_WORLD);
 
-    for (int i = 0; i < columns; ++i) {
-        minimum[i] = matrix[0][i];
-        for (int j = 1; j < rows; ++j) {
-            if (minimum[i] > matrix[j][i]) minimum[i] = matrix[j][i];
-        }
-    }
+    localVectorOfMinimum = sequentialFindMinimum(localVectorOfMinimum, dataPerProcess, matrixColumns);
 
-    return minimum;
-}
+    MPI_Reduce(localVectorOfMinimum.data(), globalVectorOfMinimum.data(), matrixColumns,
+                                                    MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
 
-std::vector<int> parallelFindingMinimum(const std::vector<std::vector<int>>& matrix) {
-    int rows = 0, columns = 0, lossElement = 0, portionData = 0;
-    std::vector<std::vector<int>> localMatrix;
-    std::vector<int> globalMin, localMin;
+    if (currentProcess == 0) {
+        if (lossData) {
+            localVectorOfMinimum = std::vector<int>(matrix.begin(), matrix.begin() + lossData * matrixColumns);
+            localVectorOfMinimum = sequentialFindMinimum(localVectorOfMinimum, lossData, matrixColumns);
 
-    int countProcess;
-    MPI_Comm_size(MPI_COMM_WORLD, &countProcess);
-    int currentRank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &currentRank);
-
-    if (currentRank == 0) {
-        localMatrix = matrix;
-        rows = matrix.size(), columns = matrix[0].size();
-
-        localMatrix = transponseMatrix(localMatrix);
-        if (rows != columns) {
-            std::swap(rows, columns);
-        }
-
-        globalMin.resize(rows);
-
-        lossElement = rows % countProcess;
-        portionData = rows / countProcess;
-
-        for (int i = 1; i < countProcess; ++i) {
-            int counterRows = lossElement + portionData * i;
-            for (int j = counterRows; j < (counterRows + portionData); ++j) {
-                MPI_Send(localMatrix[j].data(), columns, MPI_INT, i, 0, MPI_COMM_WORLD);
-            }
-        }
-    }
-    MPI_Bcast(&rows, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&columns, 1, MPI_INT, 0, MPI_COMM_WORLD);
-
-    portionData = rows / countProcess;
-    if (currentRank != 0) {
-        localMatrix.resize(portionData);
-
-        for (int i = 0; i < portionData; ++i) {
-            localMatrix[i] = std::vector<int>(columns);
-        }
-
-        MPI_Status status;
-        for (int i = 0; i < portionData; ++i) {
-            MPI_Recv(localMatrix[i].data(), columns, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        }
-
-        localMin.resize(portionData);
-
-        for (int i = 0; i < portionData; ++i) {
-            localMin[i] = localMatrix[i][0];
-            for (int j = 1; j < columns; ++j) {
-                if (localMin[i] > localMatrix[i][j]) localMin[i] = localMatrix[i][j];
-            }
-            MPI_Send(&localMin[i], 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
-        }
-    } else {
-        localMin.resize(portionData + lossElement);
-
-        for (int i = 0; i < (portionData + lossElement); ++i) {
-            localMin[i] = localMatrix[i][0];
-            for (int j = 0; j < columns; ++j) {
-                if (localMin[i] > localMatrix[i][j]) localMin[i] = localMatrix[i][j];
-            }
-            globalMin[i] = localMin[i];
-        }
-    }
-
-
-
-    if (currentRank == 0) {
-        MPI_Status status;
-        for (int i = 1; i < countProcess; ++i) {
-            for (int j = (lossElement + portionData * i); j < ((lossElement + portionData * i) + portionData); ++j) {
-                MPI_Recv(&globalMin[j], 1, MPI_INT, i, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+            for (std::vector<int>::size_type i = 0; i < matrixColumns; ++i) {
+                if (globalVectorOfMinimum[i] > localVectorOfMinimum[i]) {
+                    globalVectorOfMinimum[i] = localVectorOfMinimum[i];
+                }
             }
         }
     }
 
-    return globalMin;
+    return globalVectorOfMinimum;
 }
