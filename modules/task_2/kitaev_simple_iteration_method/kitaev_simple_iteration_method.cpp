@@ -2,6 +2,7 @@
 
 #include "../../../modules/task_2/kitaev_simple_iteration_method/kitaev_simple_iteration_method.h"
 #include <mpi.h>
+#include <cmath>
 
 std::vector<double> SequentialSimpleIterationMethod(std::vector<double> matrix,
   std::vector<double> vect, double prec) {
@@ -43,7 +44,7 @@ std::vector<double> SequentialSimpleIterationMethod(std::vector<double> matrix,
       }
 
       // Calculate the current precision
-      spec_prec = std::abs(x_new[i] - x_prev[i]);
+      spec_prec = abs(x_new[i] - x_prev[i]);
     }
   } while (spec_prec >= prec);
 
@@ -124,7 +125,7 @@ std::vector<double> ParallelSimpleIterationMethod(std::vector<double> matrix,
         x_new[i] -= pers_matrix[i * matrix_size + j] * x_old[j];
       }
 
-      spec_prec = std::abs(x_new[i] - x_old[displs_vect[ProcRank] + i]);
+      spec_prec = abs(x_new[i] - x_old[displs_vect[ProcRank] + i]);
     }
 
     MPI_Gatherv(&x_new[0], counts_vect[ProcRank], MPI_DOUBLE, &x_old[0],
