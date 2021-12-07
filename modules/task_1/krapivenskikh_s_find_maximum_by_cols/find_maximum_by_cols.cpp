@@ -35,11 +35,11 @@ std::vector<int> getParallelFunction(std::vector<int> global_matrix, size_t matr
 
     const int delta = matrixRows / size;
     std::vector<int> localMatrix(delta * matrixCols), vectorOfMaximum;
-    
+
     if (rank == 0) {
         vectorOfMaximum.resize(matrixCols);
     }
-    
+
     MPI_Scatter(global_matrix.data(), delta * matrixCols, MPI_INT, localMatrix.data(), delta * matrixCols,
         MPI_INT, 0, MPI_COMM_WORLD);
 
