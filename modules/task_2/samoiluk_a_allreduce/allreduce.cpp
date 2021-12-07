@@ -43,13 +43,11 @@ std::queue<Node*> procTree(int root, int size) {
         Node* tmp;
         if (!sl.empty()) {
             tmp = sl.top();
-            if (!qnum.empty()) {
-                val = qnum.front();
-                qnum.pop();
-                Node* left = new Node(val);
-                sl.push(left);
-                tmp->l = left;
-            }
+            val = qnum.front();
+            qnum.pop();
+            Node* left = new Node(val);
+            sl.push(left);
+            tmp->l = left;
             if (!qnum.empty()) {
                 val = qnum.front();
                 qnum.pop();
@@ -221,7 +219,7 @@ int Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype type,
     } else {
         MPI_Send(sendbuf, count, type, root, rank, comm);
     }
-    Node* tmp;
+    Node* tmp = q.front();
     while (!q.empty()) {
         tmp = q.front();
         if (tmp->val == rank)
