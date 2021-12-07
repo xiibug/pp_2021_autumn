@@ -3,7 +3,7 @@
 #include <mpi.h>
 #include <random>
 #include <vector>
-#include "../../../modules/task_2/kamenev_i_broadcast/broadcast.h";
+#include "../../../modules/task_2/kamenev_i_broadcast/broadcast.h"
 
 int randint(int min, int max) {
   std::random_device dev;

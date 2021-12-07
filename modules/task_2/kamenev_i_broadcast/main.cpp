@@ -1,7 +1,7 @@
 // Copyright 2021 Kamenev Ilya
 
 #include <gtest/gtest.h>
-#include "../../../modules/task_2/kamenev_i_broadcast/broadcast.h";
+#include "../../../modules/task_2/kamenev_i_broadcast/broadcast.h"
 #include <gtest-mpi-listener.hpp>
 
 int main(int argc, char** argv) {
