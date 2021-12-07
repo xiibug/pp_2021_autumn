@@ -25,8 +25,7 @@ void initializeStructPoint2d(MPI_Datatype* structPoint2d) {
 }
 
 vector<Point2d> getRandomVector(const vector<int>::size_type vectorSize) {
-    std::random_device dev;
-    std::mt19937 gen(dev());
+    std::mt19937 gen(100);
 
     vector<Point2d> vectorOfVertex(vectorSize);
     for (vector<int>::size_type i = 0; i < vectorSize; i++) {
