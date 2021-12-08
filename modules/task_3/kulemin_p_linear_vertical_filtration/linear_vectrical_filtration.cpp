@@ -53,7 +53,7 @@ void getRandomImg(std::vector<float>* img, int weight, int height) {
     std::uniform_real_distribution<> urd(0, 1);
 
     img->resize(weight*height);
-    for (vector<double>::size_type i = 0; i < weight*height; ++i) {
+    for (int i = 0; i < (weight*height); ++i) {
         img->at(i) = urd(gen);
     }
 }
