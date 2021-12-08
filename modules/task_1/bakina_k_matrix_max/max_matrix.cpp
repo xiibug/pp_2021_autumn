@@ -67,9 +67,7 @@ int parallel_search_max_el(int** matrix, int row_count, int column_count) {
 
     int max_in_column = linear_search_max_el(recvbuf, size_recvbuf);
     int max_in_matrix = INT_MIN;
-    if (recvbuf != nullptr) {
-        delete[] recvbuf;
-    }
+    delete[] recvbuf;
 
     MPI_Reduce(reinterpret_cast<void*>(&max_in_column), reinterpret_cast<void*>(&max_in_matrix),
         1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
