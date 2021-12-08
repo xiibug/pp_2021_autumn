@@ -4,7 +4,7 @@
 #include <gtest-mpi-listener.hpp>
 #define SIZE 1000
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MPI_SUM_INT) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_OP_MPI_SUM_INT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -35,7 +35,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MP
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MPI_PROD_INT) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_OP_MPI_PROD_INT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -66,7 +66,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MP
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MPI_MIN_INT) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_OP_MPI_MIN_INT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -97,10 +97,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MP
     }
 }
 
-TEST(
-    Parallel_Operations_MPI,
-    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MPI_MAX_INT
-) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_OP_MPI_MAX_INT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -131,10 +128,7 @@ TEST(
     }
 }
 
-TEST(
-    Parallel_Operations_MPI,
-    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_INT
-) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_INT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -148,7 +142,7 @@ TEST(
     std::vector<int> MPIResult(sizeVector);
 
     timeMPIStart = MPI_Wtime();
-    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, 
+    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector,
         MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
     MPI_Barrier(MPI_COMM_WORLD);
@@ -157,7 +151,7 @@ TEST(
         timeMPIResult = timeMPIFinish - timeMPIStart;
     }
     timeCustomStart = MPI_Wtime();
-    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, 
+    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector,
         MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
     MPI_Barrier(MPI_COMM_WORLD);
@@ -169,10 +163,7 @@ TEST(
     }
 }
 
-TEST(
-    Parallel_Operations_MPI,
-    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_PROD_SHOW_TIME_WORKED_INT
-) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_PROD_SHOW_TIME_WORKED_INT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -206,10 +197,7 @@ TEST(
     }
 }
 
-TEST(
-    Parallel_Operations_MPI,
-    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_INT
-) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_INT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -243,10 +231,7 @@ TEST(
     }
 }
 
-TEST(
-    Parallel_Operations_MPI,
-    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_INT
-) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_INT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -280,10 +265,7 @@ TEST(
     }
 }
 
-TEST(
-    Parallel_Operations_MPI, 
-    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_DOUBLE
-) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_DOUBLE) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -319,10 +301,7 @@ TEST(
     }
 }
 
-TEST(
-    Parallel_Operations_MPI,
-    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_DOUBLE
-) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_DOUBLE) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -358,10 +337,7 @@ TEST(
     }
 }
 
-TEST(
-    Parallel_Operations_MPI,
-    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_DOUBLE
-) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_DOUBLE) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -397,10 +373,7 @@ TEST(
     }
 }
 
-TEST(
-    Parallel_Operations_MPI,
-    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_FLOAT
-) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_FLOAT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -436,10 +409,7 @@ TEST(
     }
 }
 
-TEST(
-    Parallel_Operations_MPI,
-    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_FLOAT
-) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_FLOAT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -475,10 +445,7 @@ TEST(
     }
 }
 
-TEST(
-    Parallel_Operations_MPI,
-    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_FLOAT
-) {
+TEST( Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_FLOAT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
