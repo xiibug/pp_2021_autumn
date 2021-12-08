@@ -61,7 +61,7 @@ int customReduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
         switch (datatype) {
         case MPI_INT:
             for (int i = 0; i < count; i++) {
-                switch (op) {
+                switch (static_cast<int>(op)) {
                 case MPI_SUM:
                     reinterpret_cast<int*>(recvbuf)[i] = 0;
                     break;
@@ -79,9 +79,8 @@ int customReduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
             for (int i = 0; i < countProc; i++) {
                 if (i != root)
                     MPI_Recv(sendbuf, count, datatype, MPI_ANY_SOURCE, 0, comm, MPI_STATUS_IGNORE);
-
                 for (int i = 0; i < count; i++) {
-                    switch (op) {
+                    switch (static_cast<int>(op)) {
                     case MPI_SUM:
                         reinterpret_cast<int*>(recvbuf)[i] += reinterpret_cast<int*>(sendbuf)[i];
                         break;
@@ -102,7 +101,7 @@ int customReduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
             break;
         case MPI_DOUBLE:
             for (int i = 0; i < count; i++) {
-                switch (op) {
+                switch (static_cast<int>(op)) {
                 case MPI_SUM:
                     reinterpret_cast<double*>(recvbuf)[i] = 0.0;
                     break;
@@ -123,7 +122,7 @@ int customReduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
                     MPI_Recv(sendbuf, count, datatype, MPI_ANY_SOURCE, 0, comm, MPI_STATUS_IGNORE);
 
                 for (int i = 0; i < count; i++) {
-                    switch (op) {
+                    switch (static_cast<int>(op)) {
                     case MPI_SUM:
                         reinterpret_cast<double*>(recvbuf)[i] += reinterpret_cast<double*>(sendbuf)[i];
                         break;
@@ -144,7 +143,7 @@ int customReduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
             break;
         case MPI_FLOAT:
             for (int i = 0; i < count; i++) {
-                switch (op) {
+                switch (static_cast<int>(op)) {
                 case MPI_SUM:
                     reinterpret_cast<float*>(recvbuf)[i] = 0.0f;
                     break;
@@ -164,7 +163,7 @@ int customReduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
                     MPI_Recv(sendbuf, count, datatype, MPI_ANY_SOURCE, 0, comm, MPI_STATUS_IGNORE);
 
                 for (int i = 0; i < count; i++) {
-                    switch (op) {
+                    switch (static_cast<int>(op)) {
                     case MPI_SUM:
                         reinterpret_cast<float*>(recvbuf)[i] += reinterpret_cast<float*>(sendbuf)[i];
                         break;
