@@ -7,7 +7,7 @@ double function2(double x, double y, double z);
 double function3(double x, double y, double z);
 double function4(double x, double y, double z);
 
-<double> integralFunction(double(*f)(double, double, double),
+double integralFunction(double(*f)(double, double, double),
   double ax, double bx,
   double ay, double by,
   double az, double bz,
