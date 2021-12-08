@@ -119,7 +119,7 @@ int customReduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
             }
 
             for (int k = 0; k < countProc; k++) {
-                if (k != root) 
+                if (k != root)
                     MPI_Recv(sendbuf, count, datatype, MPI_ANY_SOURCE, 0, comm, MPI_STATUS_IGNORE);
 
                 for (int i = 0; i < count; i++) {
@@ -160,7 +160,7 @@ int customReduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
                 }
             }
             for (int k = 0; k < countProc; k++) {
-                if (k != root) 
+                if (k != root)
                     MPI_Recv(sendbuf, count, datatype, MPI_ANY_SOURCE, 0, comm, MPI_STATUS_IGNORE);
 
                 for (int i = 0; i < count; i++) {
