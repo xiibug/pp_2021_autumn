@@ -445,7 +445,7 @@ TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_W
     }
 }
 
-TEST( Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_FLOAT) {
+TEST(Parallel_Operations_MPI, TEST_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_FLOAT) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
