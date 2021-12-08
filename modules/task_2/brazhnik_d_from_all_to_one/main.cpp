@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include "../../../modules/task_2/brazhnik_d_from_all_to_one/from_all_to_one.h"
 #include <gtest-mpi-listener.hpp>
+#define SIZE 1000
 
 TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MPI_SUM_INT) {
     int countProc, commRank;
@@ -135,7 +136,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     double timeMPIStart, timeMPIFinish, timeMPIResult;
     double timeCustomStart, timeCustomFinish, timeCustomResult;
 
-    int sizeVector = 1000;
+    int sizeVector = SIZE;
     std::vector<int> data = fillRandomValToVectorInt(sizeVector);
     std::vector<int> customResult(sizeVector);
     std::vector<int> MPIResult(sizeVector);
@@ -170,7 +171,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     double timeMPIStart, timeMPIFinish, timeMPIResult;
     double timeCustomStart, timeCustomFinish, timeCustomResult;
 
-    int sizeVector = 1000;
+    int sizeVector = SIZE;
     std::vector<int> data = fillRandomValToVectorInt(sizeVector);
     std::vector<int> customResult(sizeVector);
     std::vector<int> MPIResult(sizeVector);
@@ -204,7 +205,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     double timeMPIStart, timeMPIFinish, timeMPIResult;
     double timeCustomStart, timeCustomFinish, timeCustomResult;
 
-    int sizeVector = 1000;
+    int sizeVector = SIZE;
     std::vector<int> data = fillRandomValToVectorInt(sizeVector);
     std::vector<int> customResult(sizeVector);
     std::vector<int> MPIResult(sizeVector);
@@ -238,7 +239,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     double timeMPIStart, timeMPIFinish, timeMPIResult;
     double timeCustomStart, timeCustomFinish, timeCustomResult;
 
-    int sizeVector = 1000;
+    int sizeVector = SIZE;
     std::vector<int> data = fillRandomValToVectorInt(sizeVector);
     std::vector<int> customResult(sizeVector);
     std::vector<int> MPIResult(sizeVector);
@@ -272,7 +273,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     double timeMPIStart, timeMPIFinish, timeMPIResult;
     double timeCustomStart, timeCustomFinish, timeCustomResult;
 
-    int sizeVector = 1000;
+    int sizeVector = SIZE;
     std::vector<double> data = fillRandomValToVectorDouble(sizeVector);
     std::vector<double> customResult(sizeVector);
     std::vector<double> MPIResult(sizeVector);
@@ -294,7 +295,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
-        for (int i = 0; i < customResult.size(); i++) {
+        for (int i = 0; i < SIZE; i++) {
             ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
@@ -308,7 +309,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     double timeMPIStart, timeMPIFinish, timeMPIResult;
     double timeCustomStart, timeCustomFinish, timeCustomResult;
 
-    int sizeVector = 1000;
+    int sizeVector = SIZE;
     std::vector<double> data = fillRandomValToVectorDouble(sizeVector);
     std::vector<double> customResult(sizeVector);
     std::vector<double> MPIResult(sizeVector);
@@ -330,7 +331,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
-        for (int i = 0; i < customResult.size(); i++) {
+        for (int i = 0; i < SIZE; i++) {
             ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
@@ -344,7 +345,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     double timeMPIStart, timeMPIFinish, timeMPIResult;
     double timeCustomStart, timeCustomFinish, timeCustomResult;
 
-    int sizeVector = 1000;
+    int sizeVector = SIZE;
     std::vector<double> data = fillRandomValToVectorDouble(sizeVector);
     std::vector<double> customResult(sizeVector);
     std::vector<double> MPIResult(sizeVector);
@@ -366,7 +367,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
-        for (int i = 0; i < customResult.size(); i++) {
+        for (int i = 0; i < SIZE; i++) {
             ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
@@ -380,7 +381,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     double timeMPIStart, timeMPIFinish, timeMPIResult;
     double timeCustomStart, timeCustomFinish, timeCustomResult;
 
-    int sizeVector = 1000;
+    int sizeVector = SIZE;
     std::vector<float> data = fillRandomValToVectorFloat(sizeVector);
     std::vector<float> customResult(sizeVector);
     std::vector<float> MPIResult(sizeVector);
@@ -402,7 +403,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
-        for (int i = 0; i < customResult.size(); i++) {
+        for (int i = 0; i < SIZE; i++) {
             ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
@@ -416,7 +417,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     double timeMPIStart, timeMPIFinish, timeMPIResult;
     double timeCustomStart, timeCustomFinish, timeCustomResult;
 
-    int sizeVector = 1000;
+    int sizeVector = SIZE;
     std::vector<float> data = fillRandomValToVectorFloat(sizeVector);
     std::vector<float> customResult(sizeVector);
     std::vector<float> MPIResult(sizeVector);
@@ -438,7 +439,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
-        for (int i = 0; i < customResult.size(); i++) {
+        for (int i = 0; i < SIZE; i++) {
             ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
@@ -452,7 +453,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     double timeMPIStart, timeMPIFinish, timeMPIResult;
     double timeCustomStart, timeCustomFinish, timeCustomResult;
 
-    int sizeVector = 1000;
+    int sizeVector = SIZE;
     std::vector<float> data = fillRandomValToVectorFloat(sizeVector);
     std::vector<float> customResult(sizeVector);
     std::vector<float> MPIResult(sizeVector);
@@ -474,7 +475,7 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
-        for (int i = 0; i < customResult.size(); i++) {
+        for (int i = 0; i < SIZE; i++) {
             ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
