@@ -1,12 +1,13 @@
 /// Copyright 2021 Shmanalov Alexander
 #include <gtest/gtest.h>
+#include <cmath>
 #include <iostream>
 #include "./iterative_jacobi_method.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(iterativeJacobiMethod, dimension_10) {
+TEST(iterativeJacobiMethod, dimension_5) {
     const double epsilon = 0.001;
-    int rank, equationsNumber = 10;
+    int rank, equationsNumber = 5;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int* matrixA = 0;
     int* matrixB = 0;
@@ -25,14 +26,46 @@ TEST(iterativeJacobiMethod, dimension_10) {
     }
     parallelJacobi(matrixA, matrixB, resultParallel, epsilon, equationsNumber);
     if (rank == 0) {
-        double* resultSeq = new double[equationsNumber];
-        sequentialJacobi(matrixA, matrixB, resultSeq, epsilon, equationsNumber);
+        double* reference = new double[equationsNumber];
         for (int i = 0; i < equationsNumber; i++) {
-            EXPECT_TRUE(std::abs(resultSeq[i] - resultParallel[i]) <= epsilon);
+            double tempRef = 0;
+            for (int j = 0; j < equationsNumber; j++) {
+                tempRef += matrixA[i * equationsNumber + j] * resultParallel[j];
+                reference[i] = tempRef;
+            }
         }
-        /*for (int i = 0; i < equationsNumber; i++) {
-            std::cout << resultSeq[i] << ' ' << resultParallel[i] << std::endl;
-        }*/
+        for (int i = 0; i < equationsNumber; i++) {
+            ASSERT_EQ(round(reference[i]), matrixB[i]);
+        }
+    }
+}
+
+TEST(iterativeJacobiMethod, dimension_10) {
+    const double epsilon = 0.001;
+    int rank, equationsNumber = 10;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    int* matrixA = 0;
+    int* matrixB = 0;
+    double* resultParallel = 0;
+    if (rank == 0) {
+        matrixA = new int[equationsNumber * equationsNumber];
+        matrixB = new int[equationsNumber];
+        resultParallel = new double[equationsNumber];
+        generationRandomData(matrixA, matrixB, equationsNumber);
+    }
+    parallelJacobi(matrixA, matrixB, resultParallel, epsilon, equationsNumber);
+    if (rank == 0) {
+        double* reference = new double[equationsNumber];
+        for (int i = 0; i < equationsNumber; i++) {
+            double tempRef = 0;
+            for (int j = 0; j < equationsNumber; j++) {
+                tempRef += matrixA[i * equationsNumber + j] * resultParallel[j];
+                reference[i] = tempRef;
+            }
+        }
+        for (int i = 0; i < equationsNumber; i++) {
+            ASSERT_EQ(round(reference[i]), matrixB[i]);
+        }
     }
 }
 
@@ -51,17 +84,23 @@ TEST(iterativeJacobiMethod, dimension_15) {
     }
     parallelJacobi(matrixA, matrixB, resultParallel, epsilon, equationsNumber);
     if (rank == 0) {
-        double* resultSeq = new double[equationsNumber];
-        sequentialJacobi(matrixA, matrixB, resultSeq, epsilon, equationsNumber);
+        double* reference = new double[equationsNumber];
         for (int i = 0; i < equationsNumber; i++) {
-            EXPECT_TRUE(std::abs(resultSeq[i] - resultParallel[i]) < epsilon);
+            double tempRef = 0;
+            for (int j = 0; j < equationsNumber; j++) {
+                tempRef += matrixA[i * equationsNumber + j] * resultParallel[j];
+                reference[i] = tempRef;
+            }
+        }
+        for (int i = 0; i < equationsNumber; i++) {
+            ASSERT_EQ(round(reference[i]), matrixB[i]);
         }
     }
 }
 
-TEST(iterativeJacobiMethod, dimension_25) {
+TEST(iterativeJacobiMethod, dimension_20) {
     const double epsilon = 0.001;
-    int rank, equationsNumber = 25;
+    int rank, equationsNumber = 20;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int* matrixA = 0;
     int* matrixB = 0;
@@ -74,10 +113,16 @@ TEST(iterativeJacobiMethod, dimension_25) {
     }
     parallelJacobi(matrixA, matrixB, resultParallel, epsilon, equationsNumber);
     if (rank == 0) {
-        double* resultSeq = new double[equationsNumber];
-        sequentialJacobi(matrixA, matrixB, resultSeq, epsilon, equationsNumber);
+        double* reference = new double[equationsNumber];
         for (int i = 0; i < equationsNumber; i++) {
-            EXPECT_TRUE(std::abs(resultSeq[i] - resultParallel[i]) < epsilon);
+            double tempRef = 0;
+            for (int j = 0; j < equationsNumber; j++) {
+                tempRef += matrixA[i * equationsNumber + j] * resultParallel[j];
+                reference[i] = tempRef;
+            }
+        }
+        for (int i = 0; i < equationsNumber; i++) {
+            ASSERT_EQ(round(reference[i]), matrixB[i]);
         }
     }
 }
@@ -97,33 +142,16 @@ TEST(iterativeJacobiMethod, dimension_50) {
     }
     parallelJacobi(matrixA, matrixB, resultParallel, epsilon, equationsNumber);
     if (rank == 0) {
-        double* resultSeq = new double[equationsNumber];
-        sequentialJacobi(matrixA, matrixB, resultSeq, epsilon, equationsNumber);
+        double* reference = new double[equationsNumber];
         for (int i = 0; i < equationsNumber; i++) {
-            EXPECT_TRUE(std::abs(resultSeq[i] - resultParallel[i]) < epsilon);
+            double tempRef = 0;
+            for (int j = 0; j < equationsNumber; j++) {
+                tempRef += matrixA[i * equationsNumber + j] * resultParallel[j];
+                reference[i] = tempRef;
+            }
         }
-    }
-}
-
-TEST(iterativeJacobiMethod, dimension_100) {
-    const double epsilon = 0.001;
-    int rank, equationsNumber = 100;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    int* matrixA = 0;
-    int* matrixB = 0;
-    double* resultParallel = 0;
-    if (rank == 0) {
-        matrixA = new int[equationsNumber * equationsNumber];
-        matrixB = new int[equationsNumber];
-        resultParallel = new double[equationsNumber];
-        generationRandomData(matrixA, matrixB, equationsNumber);
-    }
-    parallelJacobi(matrixA, matrixB, resultParallel, epsilon, equationsNumber);
-    if (rank == 0) {
-        double* resultSeq = new double[equationsNumber];
-        sequentialJacobi(matrixA, matrixB, resultSeq, epsilon, equationsNumber);
         for (int i = 0; i < equationsNumber; i++) {
-            EXPECT_TRUE(std::abs(resultSeq[i] - resultParallel[i]) < epsilon);
+            ASSERT_EQ(round(reference[i]), matrixB[i]);
         }
     }
 }
