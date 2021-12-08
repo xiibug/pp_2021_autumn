@@ -61,60 +61,42 @@ int customReduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
         switch (datatype) {
         case MPI_INT:
             for (int i = 0; i < count; i++) {
-                switch (static_cast<int>(op)) {
-                case MPI_SUM:
+                if (op == MPI_SUM) 
                     reinterpret_cast<int*>(recvbuf)[i] = 0;
-                    break;
-                case MPI_PROD:
+                if (op == MPI_PROD)
                     reinterpret_cast<int*>(recvbuf)[i] = 1;
-                    break;
-                case MPI_MAX:
+                if (op == MPI_MAX)
                     reinterpret_cast<int*>(recvbuf)[i] = -1;
-                    break;
-                case MPI_MIN:
+                if (op == MPI_MIN)
                     reinterpret_cast<int*>(recvbuf)[i] = 101;
-                    break;
-                }
             }
             for (int i = 0; i < countProc; i++) {
                 if (i != root)
                     MPI_Recv(sendbuf, count, datatype, MPI_ANY_SOURCE, 0, comm, MPI_STATUS_IGNORE);
                 for (int i = 0; i < count; i++) {
-                    switch (static_cast<int>(op)) {
-                    case MPI_SUM:
+                    if (op == MPI_SUM)
                         reinterpret_cast<int*>(recvbuf)[i] += reinterpret_cast<int*>(sendbuf)[i];
-                        break;
-                    case MPI_PROD:
+                    if (op == MPI_PROD)
                         reinterpret_cast<int*>(recvbuf)[i] *= reinterpret_cast<int*>(sendbuf)[i];
-                        break;
-                    case MPI_MAX:
+                    if (op == MPI_MAX)
                         if (reinterpret_cast<int*>(recvbuf)[i] < reinterpret_cast<int*>(sendbuf)[i])
                             reinterpret_cast<int*>(recvbuf)[i] = reinterpret_cast<int*>(sendbuf)[i];
-                        break;
-                    case MPI_MIN:
+                    if (op == MPI_MIN)
                         if (reinterpret_cast<int*>(recvbuf)[i] > reinterpret_cast<int*>(sendbuf)[i])
                             reinterpret_cast<int*>(recvbuf)[i] = reinterpret_cast<int*>(sendbuf)[i];
-                        break;
-                    }
                 }
             }
             break;
         case MPI_DOUBLE:
             for (int i = 0; i < count; i++) {
-                switch (static_cast<int>(op)) {
-                case MPI_SUM:
+                if (op == MPI_SUM)
                     reinterpret_cast<double*>(recvbuf)[i] = 0.0;
-                    break;
-                case MPI_PROD:
+                if (op == MPI_PROD)
                     reinterpret_cast<double*>(recvbuf)[i] = 1.0;
-                    break;
-                case MPI_MAX:
+                if (op == MPI_MAX)
                     reinterpret_cast<double*>(recvbuf)[i] = -1.0;
-                    break;
-                case MPI_MIN:
+                if (op == MPI_MIN)
                     reinterpret_cast<double*>(recvbuf)[i] = 101.0;
-                    break;
-                }
             }
 
             for (int k = 0; k < countProc; k++) {
@@ -143,20 +125,14 @@ int customReduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
             break;
         case MPI_FLOAT:
             for (int i = 0; i < count; i++) {
-                switch (static_cast<int>(op)) {
-                case MPI_SUM:
-                    reinterpret_cast<float*>(recvbuf)[i] = 0.0f;
-                    break;
-                case MPI_PROD:
-                    reinterpret_cast<float*>(recvbuf)[i] = 1.0f;
-                    break;
-                case MPI_MAX:
-                    reinterpret_cast<float*>(recvbuf)[i] = -1.0f;
-                    break;
-                case MPI_MIN:
+                if (op == MPI_SUM)
+                    reinterpret_cast<float*>(recvbuf)[i] = 0.0;
+                if (op == MPI_PROD)
+                    reinterpret_cast<float*>(recvbuf)[i] = 1.0;
+                if (op == MPI_MAX)
+                    reinterpret_cast<float*>(recvbuf)[i] = -1.0;
+                if (op == MPI_MIN)
                     reinterpret_cast<float*>(recvbuf)[i] = 101.0;
-                    break;
-                }
             }
             for (int k = 0; k < countProc; k++) {
                 if (k != root)
