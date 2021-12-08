@@ -32,8 +32,9 @@ TEST(Parallel_Tests, Parallel_count_of_words_in_a_line_test_line_one) {
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
 
     std::string my_text;
-    if (ProcRank == 0)
+    if (ProcRank == 0) {
         my_text = GetReadyText(0);
+    }
 
     int actual_count = ParallelCountWordsInALine(my_text);
     if (ProcRank == 0) {
