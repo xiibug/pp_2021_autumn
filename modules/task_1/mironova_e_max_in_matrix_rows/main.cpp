@@ -1,4 +1,6 @@
+// Copyright 2021 Mironova Ekaterina
 #include <gtest/gtest.h>
+#include <vector>
 #include "./max_in_matrix_rows.h"
 #include <gtest-mpi-listener.hpp>
 
@@ -9,12 +11,13 @@ TEST(MPI_TASK_1, work_correct_with_matrix_3_on_3) {
 	int procRank;
 	MPI_Comm_rank(MPI_COMM_WORLD, &procRank); 
 	if (procRank == 0) {
-		matrix = fillRandomMatrix(rows, columns);
-		result1 = findMaxesInMatrixRows(matrix, columns);
+	    matrix = fillRandomMatrix(rows, columns);
+	    result1 = findMaxesInMatrixRows(matrix, columns);
 	}
 	result2 = parallelFindMaxesInMatrixRows(matrix, rows, columns);
-	if (procRank == 0)
+	if (procRank == 0) {
 		ASSERT_EQ(result1, result2);
+	}
 }
 
 TEST(MPI_TASK_1, work_correct_with_matrix_4_on_5) {
@@ -28,8 +31,9 @@ TEST(MPI_TASK_1, work_correct_with_matrix_4_on_5) {
 		result1 = findMaxesInMatrixRows(matrix, columns);
 	}
 	result2 = parallelFindMaxesInMatrixRows(matrix, rows, columns);
-	if (procRank == 0)
+	if (procRank == 0) {
 		ASSERT_EQ(result1, result2);
+	}
 }
 
 TEST(MPI_TASK_1, work_correct_with_matrix_6_on_3) {
@@ -43,8 +47,9 @@ TEST(MPI_TASK_1, work_correct_with_matrix_6_on_3) {
 		result1 = findMaxesInMatrixRows(matrix, columns);
 	}
 	result2 = parallelFindMaxesInMatrixRows(matrix, rows, columns);
-	if (procRank == 0)
-		ASSERT_EQ(result1, result2);
+	if (procRank == 0) {
+		ASSERT_EQ(result1, result2); \
+	}
 }
 
 TEST(MPI_TASK_1, work_correct_with_matrix_1_on_7) {
@@ -56,50 +61,52 @@ TEST(MPI_TASK_1, work_correct_with_matrix_1_on_7) {
 	if (procRank == 0) {
 		matrix = fillRandomMatrix(rows, columns);
 		result1 = findMaxesInMatrixRows(matrix, columns);
-	}
-	result2 = parallelFindMaxesInMatrixRows(matrix, rows, columns);
-	if (procRank == 0)
+    }
+    result2 = parallelFindMaxesInMatrixRows(matrix, rows, columns);
+	if (procRank == 0) {
 		ASSERT_EQ(result1, result2);
+	}
 }
 
 TEST(MPI_TASK_1, work_correct_with_matrix_8_on_1) {
-	int rows = 8, columns = 1;
-	std::vector<int> matrix;
-	std::vector<int> result1, result2;
-	int procRank;
-	MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
+    int rows = 8, columns = 1;
+    std::vector<int> matrix;
+    std::vector<int> result1, result2;
+    int procRank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
+    if (procRank == 0) {
+	    matrix = fillRandomMatrix(rows, columns);
+	    result1 = findMaxesInMatrixRows(matrix, columns);
+    }
+    result2 = parallelFindMaxesInMatrixRows(matrix, rows, columns);
 	if (procRank == 0) {
-		matrix = fillRandomMatrix(rows, columns);
-		result1 = findMaxesInMatrixRows(matrix, columns);
-	}
-	result2 = parallelFindMaxesInMatrixRows(matrix, rows, columns);
-	if (procRank == 0)
 		ASSERT_EQ(result1, result2);
+	}
 }
 
 TEST(MPI_TASK_1, cant_fill_uncorrect_matrix) {
-	int rows = -8, columns = 1;
-	std::vector<int> matrix;
-	ASSERT_ANY_THROW(fillRandomMatrix(rows, columns));
+    int rows = -8, columns = 1;
+    std::vector<int> matrix;
+    ASSERT_ANY_THROW(matrix=fillRandomMatrix(rows, columns));
 }
 
 TEST(MPI_TASK_1, cant_find_maxes_in_empty_matrix) {
-	int rows = 0, columns = 0;
-	std::vector<int> matrix;
-	ASSERT_ANY_THROW(findMaxesInMatrixRows(matrix, columns));
+    int columns = 0;
+    std::vector<int> matrix;
+    ASSERT_ANY_THROW(findMaxesInMatrixRows(matrix, columns));
 }
 
 int main(int argc, char** argv) {
-	::testing::InitGoogleTest(&argc, argv);
-	MPI_Init(&argc, &argv);
+    ::testing::InitGoogleTest(&argc, argv);
+    MPI_Init(&argc, &argv);
 
-	::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-	::testing::TestEventListeners& listeners =
-		::testing::UnitTest::GetInstance()->listeners();
+    ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
+    ::testing::TestEventListeners& listeners =
+	    ::testing::UnitTest::GetInstance()->listeners();
 
-	listeners.Release(listeners.default_result_printer());
-	listeners.Release(listeners.default_xml_generator());
+    listeners.Release(listeners.default_result_printer());
+    listeners.Release(listeners.default_xml_generator());
 
-	listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
-	return RUN_ALL_TESTS();
+    listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
+    return RUN_ALL_TESTS();
 }
