@@ -2,6 +2,8 @@
 #ifndef MODULES_TASK_2_BRAZHNIK_D_FROM_ALL_TO_ONE_FROM_ALL_TO_ONE_H_
 #define MODULES_TASK_2_BRAZHNIK_D_FROM_ALL_TO_ONE_FROM_ALL_TO_ONE_H_
 
+#include <vector>
+#include <random>
 #include <mpi.h>
 
 std::vector<int> fillRandomValToVectorInt(const int size);

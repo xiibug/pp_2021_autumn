@@ -141,15 +141,18 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     std::vector<int> MPIResult(sizeVector);
 
     timeMPIStart = MPI_Wtime();
-    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, 
+        MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeMPIFinish = MPI_Wtime();
         timeMPIResult = timeMPIFinish - timeMPIStart;
     }
-
     timeCustomStart = MPI_Wtime();
-    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, 
+        MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeCustomFinish = MPI_Wtime();
@@ -173,7 +176,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     std::vector<int> MPIResult(sizeVector);
 
     timeMPIStart = MPI_Wtime();
-    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, MPI_INT, MPI_PROD, 0, MPI_COMM_WORLD);
+    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector,
+        MPI_INT, MPI_PROD, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeMPIFinish = MPI_Wtime();
@@ -181,7 +185,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 
     timeCustomStart = MPI_Wtime();
-    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, MPI_INT, MPI_PROD, 0, MPI_COMM_WORLD);
+    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector,
+        MPI_INT, MPI_PROD, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeCustomFinish = MPI_Wtime();
@@ -205,7 +210,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     std::vector<int> MPIResult(sizeVector);
 
     timeMPIStart = MPI_Wtime();
-    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
+    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector,
+        MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeMPIFinish = MPI_Wtime();
@@ -213,7 +219,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 
     timeCustomStart = MPI_Wtime();
-    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
+    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector,
+        MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeCustomFinish = MPI_Wtime();
@@ -237,7 +244,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     std::vector<int> MPIResult(sizeVector);
 
     timeMPIStart = MPI_Wtime();
-    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
+    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector,
+        MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeMPIFinish = MPI_Wtime();
@@ -245,7 +253,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 
     timeCustomStart = MPI_Wtime();
-    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
+    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector,
+        MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeCustomFinish = MPI_Wtime();
@@ -269,7 +278,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     std::vector<double> MPIResult(sizeVector);
 
     timeMPIStart = MPI_Wtime();
-    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector,
+        MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeMPIFinish = MPI_Wtime();
@@ -277,14 +287,15 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 
     timeCustomStart = MPI_Wtime();
-    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector,
+        MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
         for (int i = 0; i < customResult.size(); i++) {
-            ASSERT_EQ(floor(customResult[i]), floor(MPIResult[i]));
+            ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
 }
@@ -303,7 +314,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     std::vector<double> MPIResult(sizeVector);
 
     timeMPIStart = MPI_Wtime();
-    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector,
+        MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeMPIFinish = MPI_Wtime();
@@ -311,14 +323,15 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 
     timeCustomStart = MPI_Wtime();
-    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector,
+        MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
         for (int i = 0; i < customResult.size(); i++) {
-            ASSERT_EQ(floor(customResult[i]), floor(MPIResult[i]));
+            ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
 }
@@ -337,7 +350,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     std::vector<double> MPIResult(sizeVector);
 
     timeMPIStart = MPI_Wtime();
-    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector,
+        MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeMPIFinish = MPI_Wtime();
@@ -345,14 +359,15 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 
     timeCustomStart = MPI_Wtime();
-    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector,
+        MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
         for (int i = 0; i < customResult.size(); i++) {
-            ASSERT_EQ(floor(customResult[i]), floor(MPIResult[i]));
+            ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
 }
@@ -371,7 +386,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     std::vector<float> MPIResult(sizeVector);
 
     timeMPIStart = MPI_Wtime();
-    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector,
+        MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeMPIFinish = MPI_Wtime();
@@ -379,14 +395,15 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 
     timeCustomStart = MPI_Wtime();
-    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
+    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector,
+        MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
         for (int i = 0; i < customResult.size(); i++) {
-            ASSERT_EQ(floor(customResult[i]), floor(MPIResult[i]));
+            ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
 }
@@ -405,7 +422,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     std::vector<float> MPIResult(sizeVector);
 
     timeMPIStart = MPI_Wtime();
-    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, MPI_FLOAT, MPI_MIN, 0, MPI_COMM_WORLD);
+    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector,
+        MPI_FLOAT, MPI_MIN, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeMPIFinish = MPI_Wtime();
@@ -413,14 +431,15 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 
     timeCustomStart = MPI_Wtime();
-    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, MPI_FLOAT, MPI_MIN, 0, MPI_COMM_WORLD);
+    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector,
+        MPI_FLOAT, MPI_MIN, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
         for (int i = 0; i < customResult.size(); i++) {
-            ASSERT_EQ(floor(customResult[i]), floor(MPIResult[i]));
+            ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
 }
@@ -439,7 +458,8 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     std::vector<float> MPIResult(sizeVector);
 
     timeMPIStart = MPI_Wtime();
-    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector, MPI_FLOAT, MPI_MAX, 0, MPI_COMM_WORLD);
+    MPI_Reduce(static_cast<void*>(data.data()), static_cast<void*>(MPIResult.data()), sizeVector,
+        MPI_FLOAT, MPI_MAX, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeMPIFinish = MPI_Wtime();
@@ -447,14 +467,15 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 
     timeCustomStart = MPI_Wtime();
-    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector, MPI_FLOAT, MPI_MAX, 0, MPI_COMM_WORLD);
+    customReduce(static_cast<void*>(data.data()), static_cast<void*>(customResult.data()), sizeVector,
+        MPI_FLOAT, MPI_MAX, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (commRank == 0) {
         timeCustomFinish = MPI_Wtime();
         timeCustomResult = timeCustomFinish - timeCustomStart;
         printf("MPI:\t%lf \nCustom:\t%lf\n", timeMPIResult, timeCustomResult);
         for (int i = 0; i < customResult.size(); i++) {
-            ASSERT_EQ(floor(customResult[i]), floor(MPIResult[i]));
+            ASSERT_TRUE(customResult[i] - MPIResult[i] < 0.01);
         }
     }
 }
