@@ -79,8 +79,7 @@ bool HypercubeData(MPI_Comm hypercube_comm, int ndims, int dims) {
     }
   }
 
-  if (res)
-  {
+  if (res) {
     if (ProcRank == 0) {
       local_data = 1;
     }
