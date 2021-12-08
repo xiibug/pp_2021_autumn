@@ -97,7 +97,10 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MP
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MPI_MAX_INT) {
+TEST(
+    Parallel_Operations_MPI,
+    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MPI_MAX_INT
+) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -128,7 +131,10 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_OP_MP
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_INT) {
+TEST(
+    Parallel_Operations_MPI,
+    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_INT
+) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -163,7 +169,10 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_PROD_SHOW_TIME_WORKED_INT) {
+TEST(
+    Parallel_Operations_MPI,
+    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_PROD_SHOW_TIME_WORKED_INT
+) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -197,7 +206,10 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_INT) {
+TEST(
+    Parallel_Operations_MPI,
+    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_INT
+) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -231,7 +243,10 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_INT) {
+TEST(
+    Parallel_Operations_MPI,
+    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_INT
+) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -265,7 +280,10 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_DOUBLE) {
+TEST(
+    Parallel_Operations_MPI, 
+    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_DOUBLE
+) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -301,7 +319,10 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_DOUBLE) {
+TEST(
+    Parallel_Operations_MPI,
+    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_DOUBLE
+) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -337,7 +358,10 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_DOUBLE) {
+TEST(
+    Parallel_Operations_MPI,
+    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_DOUBLE
+) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -373,7 +397,10 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_FLOAT) {
+TEST(
+    Parallel_Operations_MPI,
+    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_SUM_SHOW_TIME_WORKED_FLOAT
+) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -409,7 +436,10 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_FLOAT) {
+TEST(
+    Parallel_Operations_MPI,
+    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MIN_SHOW_TIME_WORKED_FLOAT
+) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
@@ -445,7 +475,10 @@ TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_V
     }
 }
 
-TEST(Parallel_Operations_MPI, TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_FLOAT) {
+TEST(
+    Parallel_Operations_MPI,
+    TEST_MPI_Reduce_AND_customReduce_SAME_RESULT_FOR_VECTOR_OP_MPI_MAX_SHOW_TIME_WORKED_FLOAT
+) {
     int countProc, commRank;
     MPI_Comm_size(MPI_COMM_WORLD, &countProc);
     MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
