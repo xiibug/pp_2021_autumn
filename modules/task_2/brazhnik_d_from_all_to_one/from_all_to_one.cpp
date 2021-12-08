@@ -61,7 +61,7 @@ int customReduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
         switch (datatype) {
         case MPI_INT:
             for (int i = 0; i < count; i++) {
-                if (op == MPI_SUM) 
+                if (op == MPI_SUM)
                     reinterpret_cast<int*>(recvbuf)[i] = 0;
                 if (op == MPI_PROD)
                     reinterpret_cast<int*>(recvbuf)[i] = 1;
