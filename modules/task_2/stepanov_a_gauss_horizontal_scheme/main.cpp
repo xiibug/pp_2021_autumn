@@ -29,7 +29,7 @@ TEST(SEQUENTIAL_GAUSS, sequential_gauss_works_correctly) {
     std::vector<double> expected_solution = { -5. / 72., -1. / 9., 31./72. };
 
     for (std::size_t i = 0; i < solution.size(); i++) {
-       ASSERT_NEAR(solution[i], expected_solution[i], 0.01);
+       ASSERT_NEAR(solution[i], expected_solution[i], 0.001);
     }
 }
 
@@ -42,7 +42,7 @@ TEST(SEQUENTIAL_GAUSS, sequential_gauss_works_correctly_with_random_sle) {
     auto solution = sequentialGaussScheme(matrix, vector, number_unknows);
 
     for (std::size_t i = 0; i < solution.size(); i++) {
-        ASSERT_NEAR(solution[i], expected_solution[i], 0.01);
+        ASSERT_NEAR(solution[i], expected_solution[i], 0.001);
     }
 }
 

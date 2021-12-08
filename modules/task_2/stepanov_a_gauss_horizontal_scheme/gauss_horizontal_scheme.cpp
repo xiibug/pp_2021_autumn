@@ -75,7 +75,7 @@ std::vector<double> parallelGaussScheme(const std::vector<double>& matrix_sle,
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (size > number_unknows || size == 1) {
+    if (size > static_cast<int>(number_unknows) || size == 1) {
         return rank == 0 ? sequentialGaussScheme(matrix_sle, vector_result, number_unknows) :
             std::vector<double>();
     }
@@ -107,8 +107,7 @@ std::vector<double> parallelGaussScheme(const std::vector<double>& matrix_sle,
                 local_matrix_sle[i * number_unknows + j] = matrix_sle[i * number_unknows + j];
             }
         }
-    }
-    else {
+    } else {
         MPI_Status status;
 
         MPI_Recv(local_matrix_sle.data(), static_cast<int>(local_size * number_unknows),
@@ -126,7 +125,8 @@ std::vector<double> parallelGaussScheme(const std::vector<double>& matrix_sle,
             auto current_size = iter == 0 ? local_size + remains_proc0 : local_size;
             for (std::size_t i = 0; i < current_size; i++) {
                 for (std::size_t j = i + 1; j < current_size; j++) {
-                    double coeff = local_matrix_sle[j * number_unknows + i + offset] / local_matrix_sle[i * number_unknows + i + offset];
+                    double coeff = local_matrix_sle[j * number_unknows + i + offset] /
+                        local_matrix_sle[i * number_unknows + i + offset];
                     local_vector_res[j] -= local_vector_res[i] * coeff;
                     for (std::size_t k = i + offset + 1; k < number_unknows; k++) {
                         local_matrix_sle[j * number_unknows + k] -= local_matrix_sle[i * number_unknows + k] * coeff;
@@ -141,8 +141,7 @@ std::vector<double> parallelGaussScheme(const std::vector<double>& matrix_sle,
                 MPI_Send(local_vector_res.data(), static_cast<int>(local_vector_res.size()),
                     MPI_DOUBLE, num_proc, vector_tag, MPI_COMM_WORLD);
             }
-        }
-        else {
+        } else {
             MPI_Status status;
             MPI_Recv(recivied_part_sle.data(), static_cast<int>(recivied_part_sle.size()),
                 MPI_DOUBLE, iter, matrix_tag, MPI_COMM_WORLD, &status);
@@ -154,7 +153,8 @@ std::vector<double> parallelGaussScheme(const std::vector<double>& matrix_sle,
 
             for (std::size_t i = 0; i < local_size; i++) {
                 for (std::size_t j = 0; j < size_reciv_sle; j++) {
-                    double coeff = local_matrix_sle[i * number_unknows + j + offset] / recivied_part_sle[j * number_unknows + j + offset];
+                    double coeff = local_matrix_sle[i * number_unknows + j + offset] /
+                        recivied_part_sle[j * number_unknows + j + offset];
                     local_vector_res[i] -= recivied_part_vector[j] * coeff;
                     for (std::size_t k = j + offset + 1; k < number_unknows; k++) {
                         local_matrix_sle[i * number_unknows + k] -= recivied_part_sle[j * number_unknows + k] * coeff;
@@ -172,6 +172,7 @@ std::vector<double> parallelGaussScheme(const std::vector<double>& matrix_sle,
 
     if (rank != size - 1) {
         MPI_Status status;
+
         MPI_Recv(solution.data(), static_cast<int>(number_unknows),
             MPI_DOUBLE, sender, solution_tag, MPI_COMM_WORLD, &status);
     }
@@ -184,9 +185,11 @@ std::vector<double> parallelGaussScheme(const std::vector<double>& matrix_sle,
     for (std::size_t i = 0; i < local_size; i++) {
         double coeff = local_vector_res[local_size - 1 - i];
         for (std::size_t j = 0; j < i + offset; j++) {
-            coeff -= local_matrix_sle[local_size * number_unknows - 1 - i * number_unknows - j] * solution[number_unknows - 1 - j];
+            coeff -= local_matrix_sle[local_size * number_unknows - 1 - i * number_unknows - j] *
+                solution[number_unknows - 1 - j];
         }
-        solution[number_unknows - 1 - i - offset] = coeff / local_matrix_sle[local_size * number_unknows - 1 - number_unknows * i - i - offset];
+        solution[number_unknows - 1 - i - offset] = coeff /
+            local_matrix_sle[local_size * number_unknows - 1 - number_unknows * i - i - offset];
     }
 
     if (rank != 0) {
