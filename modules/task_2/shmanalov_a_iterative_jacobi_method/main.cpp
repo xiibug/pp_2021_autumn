@@ -1,6 +1,5 @@
 /// Copyright 2021 Shmanalov Alexander
 #include <gtest/gtest.h>
-#include <cmath>
 #include <iostream>
 #include "./iterative_jacobi_method.h"
 #include <gtest-mpi-listener.hpp>
@@ -26,16 +25,13 @@ TEST(iterativeJacobiMethod, dimension_5) {
     }
     parallelJacobi(matrixA, matrixB, resultParallel, epsilon, equationsNumber);
     if (rank == 0) {
-        double* reference = new double[equationsNumber];
+        double* resultSeq = new double[equationsNumber];
         for (int i = 0; i < equationsNumber; i++) {
-            double tempRef = 0;
-            for (int j = 0; j < equationsNumber; j++) {
-                tempRef += matrixA[i * equationsNumber + j] * resultParallel[j];
-                reference[i] = tempRef;
-            }
+            resultSeq[i] = 0.0;
         }
+        sequentialJacobi(matrixA, matrixB, resultSeq, epsilon, equationsNumber);
         for (int i = 0; i < equationsNumber; i++) {
-            ASSERT_EQ(round(reference[i]), matrixB[i]);
+            ASSERT_EQ(resultSeq[i], resultParallel[i]);
         }
     }
 }
@@ -55,16 +51,13 @@ TEST(iterativeJacobiMethod, dimension_10) {
     }
     parallelJacobi(matrixA, matrixB, resultParallel, epsilon, equationsNumber);
     if (rank == 0) {
-        double* reference = new double[equationsNumber];
+        double* resultSeq = new double[equationsNumber];
         for (int i = 0; i < equationsNumber; i++) {
-            double tempRef = 0;
-            for (int j = 0; j < equationsNumber; j++) {
-                tempRef += matrixA[i * equationsNumber + j] * resultParallel[j];
-                reference[i] = tempRef;
-            }
+            resultSeq[i] = 0.0;
         }
+        sequentialJacobi(matrixA, matrixB, resultSeq, epsilon, equationsNumber);
         for (int i = 0; i < equationsNumber; i++) {
-            ASSERT_EQ(round(reference[i]), matrixB[i]);
+            ASSERT_EQ(resultSeq[i], resultParallel[i]);
         }
     }
 }
@@ -84,16 +77,13 @@ TEST(iterativeJacobiMethod, dimension_15) {
     }
     parallelJacobi(matrixA, matrixB, resultParallel, epsilon, equationsNumber);
     if (rank == 0) {
-        double* reference = new double[equationsNumber];
+        double* resultSeq = new double[equationsNumber];
         for (int i = 0; i < equationsNumber; i++) {
-            double tempRef = 0;
-            for (int j = 0; j < equationsNumber; j++) {
-                tempRef += matrixA[i * equationsNumber + j] * resultParallel[j];
-                reference[i] = tempRef;
-            }
+            resultSeq[i] = 0.0;
         }
+        sequentialJacobi(matrixA, matrixB, resultSeq, epsilon, equationsNumber);
         for (int i = 0; i < equationsNumber; i++) {
-            ASSERT_EQ(round(reference[i]), matrixB[i]);
+            ASSERT_EQ(resultSeq[i], resultParallel[i]);
         }
     }
 }
@@ -113,16 +103,13 @@ TEST(iterativeJacobiMethod, dimension_20) {
     }
     parallelJacobi(matrixA, matrixB, resultParallel, epsilon, equationsNumber);
     if (rank == 0) {
-        double* reference = new double[equationsNumber];
+        double* resultSeq = new double[equationsNumber];
         for (int i = 0; i < equationsNumber; i++) {
-            double tempRef = 0;
-            for (int j = 0; j < equationsNumber; j++) {
-                tempRef += matrixA[i * equationsNumber + j] * resultParallel[j];
-                reference[i] = tempRef;
-            }
+            resultSeq[i] = 0.0;
         }
+        sequentialJacobi(matrixA, matrixB, resultSeq, epsilon, equationsNumber);
         for (int i = 0; i < equationsNumber; i++) {
-            ASSERT_EQ(round(reference[i]), matrixB[i]);
+            ASSERT_EQ(resultSeq[i], resultParallel[i]);
         }
     }
 }
@@ -142,16 +129,13 @@ TEST(iterativeJacobiMethod, dimension_50) {
     }
     parallelJacobi(matrixA, matrixB, resultParallel, epsilon, equationsNumber);
     if (rank == 0) {
-        double* reference = new double[equationsNumber];
+        double* resultSeq = new double[equationsNumber];
         for (int i = 0; i < equationsNumber; i++) {
-            double tempRef = 0;
-            for (int j = 0; j < equationsNumber; j++) {
-                tempRef += matrixA[i * equationsNumber + j] * resultParallel[j];
-                reference[i] = tempRef;
-            }
+            resultSeq[i] = 0.0;
         }
+        sequentialJacobi(matrixA, matrixB, resultSeq, epsilon, equationsNumber);
         for (int i = 0; i < equationsNumber; i++) {
-            ASSERT_EQ(round(reference[i]), matrixB[i]);
+            ASSERT_EQ(resultSeq[i], resultParallel[i]);
         }
     }
 }

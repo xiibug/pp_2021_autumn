@@ -3,7 +3,6 @@
 #include <random>
 #include <cmath>
 #include <cstring>
-#include <iostream>
 #include "../../../modules/task_2/shmanalov_a_iterative_jacobi_method/iterative_jacobi_method.h"
 
 void generationRandomData(int* matrixA, int* matrixB, int size) {
@@ -18,7 +17,7 @@ void generationRandomData(int* matrixA, int* matrixB, int size) {
                 sumElemRow += abs(matrixA[i * size + j]);
             }
         }
-        matrixA[i * size + i] = sumElemRow + size;
+        matrixA[i * size + i] = sumElemRow + 15;
         matrixB[i] = range(generate);
     }
 }
@@ -38,8 +37,9 @@ void sequentialJacobi(int* matrixA, int* matrixB, double* resultX,
         }
         norm = fabs(resultX[0] - tempX[0]);
         for (int i = 0; i < size; i++) {
-            if (fabs(resultX[i] - tempX[i]) > norm)
+            if (fabs(resultX[i] - tempX[i]) > norm) {
                 norm = fabs(resultX[i] - tempX[i]);
+            }
             resultX[i] = tempX[i];
         }
     } while (norm > epsilon);
@@ -115,6 +115,9 @@ void parallelJacobi(int* matrixA, int* matrixB, double* resultX,
         delete[]tempX;
     } else {
         if (processRank == 0) {
+            for (int i = 0; i < size; i++) {
+                resultX[i] = 0.0;
+            }
             sequentialJacobi(matrixA, matrixB, resultX, epsilon, size);
         }
     }
