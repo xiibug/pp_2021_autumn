@@ -70,14 +70,13 @@ int calcParallelAverage(std::vector<int> parallel_vec, int size) {
   }
 
   int sum = sum_all = 0;
-  for (int i = 0; i < local_vec.size(); i++) {
-    sum += local_vec[i];
+  if (ProcessRank != 0) {
+    offset = 0;
   }
+  for (int i = 0; i < (partSize + offset); i++) sum += local_vec[i];
 
   MPI_Reduce(&sum, &sum_all, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
   averageVal = static_cast<float>(sum_all) / size;
   return averageVal;
 }
-
-
