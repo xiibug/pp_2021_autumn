@@ -14,6 +14,7 @@ void getMatrix(std::vector<int>* matrix,
   }
 }
 
+// Sequential
 std::vector<int> sequentialFindMin(
     const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
     std::vector<int>::size_type matrixColumns) {
@@ -30,6 +31,7 @@ std::vector<int> sequentialFindMin(
   return vectorMinimum;
 }
 
+// Parallel
 std::vector<int> parallelFindMin(
     const std::vector<int>& matrix, std::vector<int>::size_type matrixRows,
     std::vector<int>::size_type matrixColumns) {
