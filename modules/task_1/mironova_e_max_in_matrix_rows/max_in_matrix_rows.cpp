@@ -63,7 +63,7 @@ std::vector<int> parallelFindMaxesInMatrixRows(std::vector<int> matrix, const si
     MPI_Gather(maxesInRows.data(), dataPiece, MPI_INT, resultMaxesInRows.data(), dataPiece, MPI_INT, 0, MPI_COMM_WORLD);
 
     if ((procRank == 0) && (remainingData != 0)) {
-        for (std::vector<int>::size_type i = dataPiece * columns; i < matrix.size(); i += columns) {
+        for (std::vector<int>::size_type i = dataPiece * columns * procNum; i < matrix.size(); i += columns) {
             max = matrix[i];
             for (std::vector<int>::size_type j = 1; j < columns; j++) {
                 if (matrix[i + j] > max) {

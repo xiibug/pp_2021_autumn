@@ -10,8 +10,8 @@ TEST(MPI_TASK_1, cant_find_maxes_in_empty_matrix) {
     ASSERT_ANY_THROW(findMaxesInMatrixRows(matrix, columns));
 }
 
-TEST(MPI_TASK_1, work_correct_with_matrix_3_on_3) {
-    size_t rows = 3, columns = 3;
+TEST(MPI_TASK_1, work_correct_with_matrix_4_on_5) {
+    size_t rows = 4, columns = 5;
     std::vector<int> matrix;
     std::vector<int> result1, result2;
     int procRank;
@@ -26,8 +26,8 @@ TEST(MPI_TASK_1, work_correct_with_matrix_3_on_3) {
     }
 }
 
-TEST(MPI_TASK_1, work_correct_with_matrix_4_on_5) {
-    size_t rows = 4, columns = 5;
+TEST(MPI_TASK_1, work_correct_with_matrix_3_on_3) {
+    size_t rows = 3, columns = 3;
     std::vector<int> matrix;
     std::vector<int> result1, result2;
     int procRank;
