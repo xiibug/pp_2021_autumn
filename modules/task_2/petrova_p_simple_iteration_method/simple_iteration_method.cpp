@@ -4,7 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <cstdlib>
-#include <stdexcept>
+#include <iostream>
 #include"../../../modules/task_2/petrova_p_simple_iteration_method/simple_iteration_method.h"
 
 std::vector<double> fillRandomVector(int len) {
@@ -55,7 +55,7 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> mat,
             for (int j = 0; j < n; j++) {
                 if (i != j)
                     currentSol[i] = currentSol[i] - mat[i][j]
-                    / b[i] * firstSolv[i];  //  ! /mat[i][i]
+                    / mat[i][i] * firstSolv[i];  //  ! /mat[i][i]
             }
         }
         double err = 0.0;
@@ -71,10 +71,10 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> mat,
 std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
     const std::vector<double> &b, int n) {
     int procNum, procRank;
+    int k = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &procNum);
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-
-    if ((n < procNum) || (procNum == 1)) {
+    if ((n < procNum) || (procNum == 1)|| (procNum == 2) || (procNum == 3)) {
         if (procRank == 0) {
             return seqMethod(mat, b, n);
         } else {
@@ -97,12 +97,14 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
             MPI_Send(mat[startI].data(), n * count,
                 MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
         }
+        count = littleLen;
     } else {
         MPI_Status status;
-        if (procNum == procNum - 1)
+        if (procRank == procNum - 1)
             count = n - littleLen * (procNum - 1);
-        locMat = mat;
-        locMat.resize(count * 2);
+        //  locMat = mat;
+        //  locMat.resize(count);
+        locMat.resize(count);
         MPI_Recv(locMat[0].data(), n * count,
             MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &status);
     }
@@ -129,7 +131,7 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
         }
         std::vector<double> currentSolv(n, 0.0);
         for (int i = 0; i < locLen; i++) {
-            currentSolv[i] = locMat[i][locMat.size() - 1]
+            currentSolv[i] = locMat[i][locLen - 1]
                 / locMat[i][i + procRank * littleLen];
             for (int j = 0; j < locLen - 1; j++) {
                 if (i + procRank * littleLen != j)
