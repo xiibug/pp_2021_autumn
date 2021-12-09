@@ -2,10 +2,10 @@
 
 #include <gtest/gtest.h>
 
-#include <gtest-mpi-listener.hpp>
 #include <vector>
-
+#include <gtest-mpi-listener.hpp>
 #include "./jacoby_method.h"
+
 
 TEST(JACOBI_METHOD_MPI, TEST_Equation_1) {
   fflush(stdout);
