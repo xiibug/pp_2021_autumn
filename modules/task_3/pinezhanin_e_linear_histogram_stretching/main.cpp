@@ -7,7 +7,6 @@ TEST(Linear_histogram_stretching_test, res_opencv_3x3_test) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<uchar> image, ref_image, opencv_image;
-    int width;
 
     if (rank == 0) {
         image = std::vector<uchar>{ 77, 74, 118,
@@ -17,10 +16,9 @@ TEST(Linear_histogram_stretching_test, res_opencv_3x3_test) {
         opencv_image = std::vector<uchar>{ 19, 11, 130,
                                            179, 54, 19,
                                            0, 255, 16 };
-        width = 3;
     }
 
-    image = LinearHistogramStretchingParallel(image, width);
+    image = LinearHistogramStretchingParallel(image);
 
     if (rank == 0) {
         ref_image = LinearHistogramStretchingSequential(ref_image);
@@ -33,7 +31,6 @@ TEST(Linear_histogram_stretching_test, res_opencv_5x5_test) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<uchar> image, ref_image, opencv_image;
-    int width;
 
     if (rank == 0) {
         image = std::vector<uchar>{ 182, 175, 191, 103, 120,
@@ -47,10 +44,9 @@ TEST(Linear_histogram_stretching_test, res_opencv_5x5_test) {
                                            110, 110, 123, 204, 169,
                                            115, 100, 126, 26, 185,
                                            5, 65, 72, 0, 33 };
-        width = 5;
     }
 
-    image = LinearHistogramStretchingParallel(image, width);
+    image = LinearHistogramStretchingParallel(image);
 
     if (rank == 0) {
         ref_image = LinearHistogramStretchingSequential(ref_image);
@@ -71,7 +67,7 @@ TEST(Linear_histogram_stretching_test, 5x5_test) {
         ref_image = image;
     }
 
-    image = LinearHistogramStretchingParallel(image, width);
+    image = LinearHistogramStretchingParallel(image);
 
     if (rank == 0) {
         ref_image = LinearHistogramStretchingSequential(ref_image);
@@ -87,11 +83,11 @@ TEST(Linear_histogram_stretching_test, 10x10_test) {
 
     if (rank == 0) {
         width = 10, height = 10;
-        image = getRandomMatrix(height, width, 10, 189);
+        image = getRandomMatrix(height, width, 10, 234);
         ref_image = image;
     }
 
-    image = LinearHistogramStretchingParallel(image, width);
+    image = LinearHistogramStretchingParallel(image);
 
     if (rank == 0) {
         ref_image = LinearHistogramStretchingSequential(ref_image);
@@ -107,11 +103,11 @@ TEST(Linear_histogram_stretching_test, 100x100_test) {
 
     if (rank == 0) {
         width = 100, height = 100;
-        image = getRandomMatrix(height, width, 10, 189);
+        image = getRandomMatrix(height, width, 13, 240);
         ref_image = image;
     }
 
-    image = LinearHistogramStretchingParallel(image, width);
+    image = LinearHistogramStretchingParallel(image);
 
     if (rank == 0) {
         ref_image = LinearHistogramStretchingSequential(ref_image);
@@ -134,7 +130,7 @@ TEST(Linear_histogram_stretching_test, white_test) {
         ref_image = image;
     }
 
-    image = LinearHistogramStretchingParallel(image, width);
+    image = LinearHistogramStretchingParallel(image);
 
     if (rank == 0) {
         ref_image = LinearHistogramStretchingSequential(ref_image);
@@ -157,7 +153,7 @@ TEST(Linear_histogram_stretching_test, black_test) {
         ref_image = image;
     }
 
-    image = LinearHistogramStretchingParallel(image, width);
+    image = LinearHistogramStretchingParallel(image);
 
     if (rank == 0) {
         ref_image = LinearHistogramStretchingSequential(ref_image);
