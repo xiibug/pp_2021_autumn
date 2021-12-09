@@ -66,7 +66,7 @@ int parallel_counting(std::string S) {  // Parallel counting
             if (i == 0) {
                 st[c] += S[i];
                 continue;
-            } 
+            }
             if (i % (S.size() / ProcNum) != 0) {  // fff
                 st[c] += S[i];
             } else {
