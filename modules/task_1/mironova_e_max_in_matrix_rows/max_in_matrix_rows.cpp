@@ -5,7 +5,7 @@
 #include <algorithm>
 
 std::vector<int> fillRandomMatrix(const size_t rows, const size_t columns) {
-    if (rows <=0 ||columns <= 0) throw "Matrix size is uncorrect";
+    if (rows == 0 ||columns == 0) throw "Matrix size is uncorrect";
     std::random_device dev;
     std::mt19937 gen(dev());
     std::vector<int> matrix(rows * columns);
@@ -16,7 +16,7 @@ std::vector<int> fillRandomMatrix(const size_t rows, const size_t columns) {
 }
 
 std::vector<int> findMaxesInMatrixRows(std::vector<int> matrix, const size_t columns) {
-    if (matrix.size() == 0 || columns <= 0) throw "Matrix is empty or number of columns is uncorrect";
+    if (matrix.size() == 0 || columns == 0) throw "Matrix is empty or number of columns is uncorrect";
     std::vector<int> maxesInRows;
     int max;
     for (std::vector<int>::size_type i = 0; i < matrix.size(); i += columns) {
@@ -32,7 +32,6 @@ std::vector<int> findMaxesInMatrixRows(std::vector<int> matrix, const size_t col
 }
 
 std::vector<int> parallelFindMaxesInMatrixRows(std::vector<int> matrix, const size_t rows, const size_t columns) {
-    if (matrix.size() == 0 || columns <= 0 || rows <= 0) throw "Matrix is empty or size is uncorrect";
     std::vector<int> partOfMatrix, maxesInRows, resultMaxesInRows;
     size_t dataPiece = 0;
     int remainingData = 0;
@@ -45,7 +44,9 @@ std::vector<int> parallelFindMaxesInMatrixRows(std::vector<int> matrix, const si
     remainingData = rows % procNum;
 
     partOfMatrix.resize(dataPiece * columns);
-    resultMaxesInRows.resize(dataPiece);
+    if (procRank == 0) {
+        resultMaxesInRows.resize(rows - remainingData);
+    }
 
     MPI_Scatter(matrix.data(), dataPiece * columns, MPI_INT,
         partOfMatrix.data(), dataPiece * columns, MPI_INT, 0, MPI_COMM_WORLD);
@@ -63,7 +64,7 @@ std::vector<int> parallelFindMaxesInMatrixRows(std::vector<int> matrix, const si
     MPI_Gather(maxesInRows.data(), dataPiece, MPI_INT, resultMaxesInRows.data(), dataPiece, MPI_INT, 0, MPI_COMM_WORLD);
 
     if ((procRank == 0) && (remainingData != 0)) {
-        for (std::vector<int>::size_type i = dataPiece * columns * procNum; i < matrix.size(); i += columns) {
+        for (std::vector<int>::size_type i = (rows - remainingData) * columns; i < matrix.size(); i += columns) {
             max = matrix[i];
             for (std::vector<int>::size_type j = 1; j < columns; j++) {
                 if (matrix[i + j] > max) {
