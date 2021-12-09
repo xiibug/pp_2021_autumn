@@ -4,11 +4,12 @@
 #include "./gauss_seidel_method.h"
 #include <gtest-mpi-listener.hpp>
 #include <cstdlib>
+#include <chrono>
 
 TEST(MPI, small_matrix) {
     std::vector<std::vector<double>> A = { {5, 1, 3}, {1, 8, 2}, {3, 2, 9} };
     std::vector<double> b = { 9, 11, 14 };
-    std::vector<double> res = sequentialGaussSeidel(A, b, 0.0001);
+    std::vector<double> res = gaussSeidel(A, b, 0.0001);
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
@@ -35,9 +36,16 @@ TEST(MPI, random_matrix_0) {
         A[i][i] = static_cast<double>(rand()) / RAND_MAX * 100 + exceptDiagonal;
         b.push_back(static_cast<double>(rand()) / RAND_MAX * 10);
     }
-    std::vector<double> res = sequentialGaussSeidel(A, b, 0.00001);
+    int t1 = MPI_Wtime();
+    std::vector<double> res = gaussSeidel(A, b, 0.00001);
+    int t2 = MPI_Wtime();
+    int time_span = t2 - t1;
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    /*
+    if (rank == 0)
+        std::cout << static_cast<double>(time_span.count()) / 1000 << " seconds";
+        */
     if (rank == 0) {
         for (int i = 0; i < 1000; i++) {
             double sum = 0;
@@ -47,6 +55,15 @@ TEST(MPI, random_matrix_0) {
             ASSERT_NEAR(sum, b[i], 0.1);
         }
     }
+    /*
+    if (rank == 0) {
+        std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+        res = sequentialGaussSeidel(A, b, 0.00001);
+        std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+        std::cout << time_span.count() << " seconds";
+    }
+    */
 }
 
 TEST(MPI, random_matrix_1) {
@@ -66,9 +83,16 @@ TEST(MPI, random_matrix_1) {
         A[i][i] = static_cast<double>(rand()) / RAND_MAX * 100 + exceptDiagonal;
         b.push_back(static_cast<double>(rand()) / RAND_MAX * 10);
     }
-    std::vector<double> res = sequentialGaussSeidel(A, b, 0.00001);
+    int t1 = MPI_Wtime();
+    std::vector<double> res = gaussSeidel(A, b, 0.00001);
+    int t2 = MPI_Wtime();
+    int time_span = t2 - t1;
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    /*
+    if (rank == 0)
+        std::cout << static_cast<double>(time_span.count()) / 1000 << " seconds";
+        */
     if (rank == 0) {
         for (int i = 0; i < 1000; i++) {
             double sum = 0;
@@ -78,6 +102,15 @@ TEST(MPI, random_matrix_1) {
             ASSERT_NEAR(sum, b[i], 0.1);
         }
     }
+    /*
+    if (rank == 0) {
+        std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+        res = sequentialGaussSeidel(A, b, 0.00001);
+        std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+        std::cout << time_span.count() << " seconds";
+    }
+    */
 }
 
 TEST(MPI, random_matrix_2) {
@@ -97,9 +130,16 @@ TEST(MPI, random_matrix_2) {
         A[i][i] = static_cast<double>(rand()) / RAND_MAX * 100 + exceptDiagonal;
         b.push_back(static_cast<double>(rand()) / RAND_MAX * 10);
     }
-    std::vector<double> res = sequentialGaussSeidel(A, b, 0.00001);
+    int t1 = MPI_Wtime();
+    std::vector<double> res = gaussSeidel(A, b, 0.00001);
+    int t2 = MPI_Wtime();
+    int time_span = t2 - t1;
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    /*
+    if (rank == 0)
+        std::cout << static_cast<double>(time_span.count()) / 1000 << " seconds";
+        */
     if (rank == 0) {
         for (int i = 0; i < 1000; i++) {
             double sum = 0;
@@ -109,6 +149,15 @@ TEST(MPI, random_matrix_2) {
             ASSERT_NEAR(sum, b[i], 0.1);
         }
     }
+    /*
+    if (rank == 0) {
+        std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+        res = sequentialGaussSeidel(A, b, 0.00001);
+        std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+        std::cout << time_span.count() << " seconds";
+    }
+    */
 }
 
 TEST(MPI, random_matrix_3) {
@@ -128,9 +177,16 @@ TEST(MPI, random_matrix_3) {
         A[i][i] = static_cast<double>(rand()) / RAND_MAX * 100 + exceptDiagonal;
         b.push_back(static_cast<double>(rand()) / RAND_MAX * 10);
     }
-    std::vector<double> res = sequentialGaussSeidel(A, b, 0.00001);
+    int t1 = MPI_Wtime();
+    std::vector<double> res = gaussSeidel(A, b, 0.00001);
+    int t2 = MPI_Wtime();
+    int time_span = t2 - t1;
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    /*
+    if (rank == 0)
+        std::cout << static_cast<double>(time_span.count()) / 1000 << " seconds";
+        */
     if (rank == 0) {
         for (int i = 0; i < 1000; i++) {
             double sum = 0;
@@ -140,6 +196,15 @@ TEST(MPI, random_matrix_3) {
             ASSERT_NEAR(sum, b[i], 0.1);
         }
     }
+    /*
+    if (rank == 0) {
+        std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+        res = sequentialGaussSeidel(A, b, 0.00001);
+        std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+        std::cout << time_span.count() << " seconds";
+    }
+    */
 }
 
 int main(int argc, char** argv) {
