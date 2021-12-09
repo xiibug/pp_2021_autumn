@@ -3,14 +3,13 @@
 #include <random>
 #include <vector>
 #include <algorithm>
-#include <cstdlib> 
+#include <cstdlib>
 #include"../../../modules/task_2/petrova_p_simple_iteration_method/simple_iteration_method.h"
 
 std::vector<double> fillRandomVector(int len) {
     if (len < 0) {
         throw "error! lenght vector < 0!";
-    }
-    else {
+    } else {
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> dist(1, 10);  // values 1-100 // check commit
@@ -24,12 +23,11 @@ std::vector<double> fillRandomVector(int len) {
 std::vector< std::vector<double>> fillRandomMatrix(int n) {
     if (n < 0) {
         throw "error! lenght vector < 0!";
-    }
-    else {
+    } else {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dist(1, 10);  // values 1-10 // check commit
-        std::uniform_int_distribution<> dist1(10, 20); //for diagonal
+        std::uniform_int_distribution<> dist(1, 10);  //  values 1-10
+        std::uniform_int_distribution<> dist1(10, 20);  //  for diagonal
         std::vector<std::vector<double>> v(n);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -42,7 +40,6 @@ std::vector< std::vector<double>> fillRandomMatrix(int n) {
     }
 }
 std::vector<double> seqMethod(std::vector< std::vector<double>> mat, std::vector<double> b, int n) {
-    //n = mat.size();
     std::vector<double> firstSolv(n, 0.0);
     int it = 0;
     double eps = 0.0001;
@@ -60,7 +57,7 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> mat, std::vector
         }
         double err = 0.0;
         for (int i = 0; i < n; i++) {
-            err = err + abs(currentSol[i] - firstSolv[i]);
+            err = err + std::abs(currentSol[i] - firstSolv[i]);
         }
         if (err < eps)
             break;
@@ -76,8 +73,7 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, std::
     if ((n < procNum) || (procNum == 1)) {
         if (procRank == 0) {
             return seqMethod(mat, b, n);
-        }
-        else {
+        } else {
             return std::vector<double>();
         }
     }
@@ -95,10 +91,9 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, std::
                 count = n - startI;
             MPI_Send(mat[startI].data(), n * count, MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
         }
-    }
-    else {
+    } else {
         MPI_Status status;
-        if (procNum = procNum - 1)
+        if (procNum == procNum - 1)
             count = n - littleLen * (procNum - 1);
         locMat = mat;
         locMat.resize(count);
@@ -126,15 +121,17 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, std::
         }
         std::vector<double> currentSolv(n, 0.0);
         for (int i; i < locMat.size(); i++) {
-            currentSolv[i] = locMat[i][locMat.size() - 1] / locMat[i][i + procRank * littleLen];
+            currentSolv[i] = locMat[i][locMat.size() - 1]
+                / locMat[i][i + procRank * littleLen];
             for (int j = 0; j < locMat.size() - 1; j++) {
                 if (i + procRank * littleLen != j)
-                    currentSolv[i] = currentSolv[i] - (locMat[i][j] / locMat[i][i + procRank * littleLen]) * firstSolv[j];
+                    currentSolv[i] = currentSolv[i] - (locMat[i][j]
+                        / locMat[i][i + procRank * littleLen]) * firstSolv[j];
             }
         }
         double err = 0.0;
         for (int i = 0; i < locMat.size(); i++) {
-            err = err + abs(currentSolv[i] - firstSolv[i + procRank * littleLen]);
+            err = err + std::abs(currentSolv[i] - firstSolv[i + procRank * littleLen]);
         }
         MPI_Allreduce(MPI_IN_PLACE, &err, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
         if (err < eps) {

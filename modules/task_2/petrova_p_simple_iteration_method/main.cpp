@@ -21,9 +21,9 @@ TEST(simple_iteration, can_create_random_matrix_1) {
 }
 TEST(simple_iteration, test_0) {
     std::vector< std::vector<double>> A{
-        {4,1,1},
-        {1,6,-1},
-        {1,2,5}
+        {4, 1, 1},
+        {1, 6, -1},
+        {1, 2, 5}
     };
     std::vector<double> b{ 9, 10, 20 };
     std::vector<double> x;
@@ -35,20 +35,21 @@ TEST(simple_iteration, test_0) {
 }
 TEST(simple_iteration, test_1) {
     std::vector< std::vector<double>> A{
-        {4,1,1},
-        {1,6,-1},
-        {1,2,5}
+        {4, 1, 1},
+        {1, 6, -1},
+        {1, 2, 5}
     };
     std::vector<double> b{ 9, 10, 20 };
-    std::vector<double> ans{ 1.0001, 2 ,3.0001 };
+    std::vector<double> ans{ 1.0001, 2, 3.0001 };
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     double eps = 0.0001;
     std::vector<double> x = parallelMethod(A, b, 3);
-    if (procRank == 0)
+    if (procRank == 0) {
         for (int i = 0; i < 3; i++) {
-            EXPECT_TRUE((x[i] - ans[i]) < 0.0001);
+            EXPECT_TRUE((x[i] - ans[i]) < eps);
         }
+    }
 }
 TEST(simple_iteration, test_2) {
     std::vector< std::vector<double>> A{
@@ -59,7 +60,6 @@ TEST(simple_iteration, test_2) {
     std::vector<double> b{ 9, 10, 20 };
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-    double eps = 0.0001;
     std::vector<double> x = parallelMethod(A, b, 3);
     if (procRank == 0) {
         std::vector<double> seqX = seqMethod(A, b, 3);
@@ -75,12 +75,10 @@ TEST(simple_iteration, test_3) {
         A = fillRandomMatrix(5);
         b = fillRandomVector(5);
     }
-    double eps = 0.01;
     std::vector<double> x = parallelMethod(A, b, 3);
     if (procRank == 0) {
         EXPECT_NO_THROW();
     }
-
 }
 TEST(simple_iteration, test_4) {
     std::vector< std::vector<double> >A;
@@ -91,13 +89,11 @@ TEST(simple_iteration, test_4) {
         A = fillRandomMatrix(33);
         b = fillRandomVector(33);
     }
-    double eps = 0.01;
     std::vector<double> x = parallelMethod(A, b, 3);
     if (procRank == 0) {
         std::vector<double> xSeq = seqMethod(A, b, 3);
         EXPECT_EQ(x, xSeq);
     }
-
 }
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
