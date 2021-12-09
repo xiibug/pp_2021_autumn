@@ -58,7 +58,7 @@ TEST(bus_topology_check, neighbors_matching_check) {
                     if (i == proc_count - 1) {
                         ASSERT_EQ(i - 1, neighbors[0]);
                     } else {
-                        ASSERT_TRUE((i-1 == neighbors[0] && i + 1 == neighbors[1]) || 
+                        ASSERT_TRUE((i-1 == neighbors[0] && i + 1 == neighbors[1]) ||
                             (i + 1 == neighbors[0] && i - 1 == neighbors[1]));
                     }
                 }
