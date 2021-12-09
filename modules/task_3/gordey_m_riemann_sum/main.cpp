@@ -187,7 +187,7 @@ TEST(RIEMANN_SUM_MPI, TEST_Function_5) {
 
   std::vector<std::pair<double, double>> limits(3);
   limits = {{0, 2}, {-1, 2}, {1, exp(1)}};
-  int n = 200;
+  int n = 100;
   double reference_result;
 
   const std::function<double(std::vector<double>)> f =
@@ -200,7 +200,7 @@ TEST(RIEMANN_SUM_MPI, TEST_Function_5) {
 
   if (rank == 0) {
     start = MPI_Wtime();
-    reference_result = 0;
+    reference_result = getSequentialIntegrals(n, limits, f);
     end = MPI_Wtime();
     stime = end - start;
     std::cout << "Seqeuntial time: " << stime << std::endl;
