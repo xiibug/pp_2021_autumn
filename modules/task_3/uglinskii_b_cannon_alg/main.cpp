@@ -96,8 +96,8 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_10) {
       }
     }
     ASSERT_EQ(0, errors);
-    std::cout << "---Seq = " << t_seq << "\n"
-              << "===Parallel = " << t_parallel << std::endl;
+    std::cout << "--Seq = " << t_seq << "\n"
+              << "==Parallel = " << t_parallel << std::endl;
     std::cout << "Acceleration = " << t_seq / t_parallel << std::endl;
   }
 }
@@ -139,8 +139,8 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_100) {
       }
     }
     ASSERT_EQ(0, errors);
-    std::cout << "---Seq = " << t_seq << "\n"
-              << "===Parallel = " << t_parallel << std::endl;
+    std::cout << "--Seq = " << t_seq << "\n"
+              << "==Parallel = " << t_parallel << std::endl;
     std::cout << "Acceleration = " << t_seq / t_parallel << std::endl;
   }
 }
@@ -182,8 +182,8 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_500) {
       }
     }
     ASSERT_EQ(0, errors);
-    std::cout << "---Seq = " << t_seq << "\n"
-              << "===Parallel = " << t_parallel << std::endl;
+    std::cout << "--Seq = " << t_seq << "\n"
+              << "==Parallel = " << t_parallel << std::endl;
     std::cout << "Acceleration = " << t_seq / t_parallel << std::endl;
   }
 }
