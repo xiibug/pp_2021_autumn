@@ -45,7 +45,6 @@ int num_of_sentences_par(std::string str) {
     }
 
     if (rank == 0) {
-
         for (int i = 1; i < size; i++) {
             start_part = 0;
             end_part = 0;
