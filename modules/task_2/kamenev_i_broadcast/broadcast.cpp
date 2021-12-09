@@ -6,21 +6,21 @@
 #include "../../../modules/task_2/kamenev_i_broadcast/broadcast.h"
 
 template <typename T>
-T* getRandomArray(int n, int max) {
-  T* rand_arr = new T[n];
+std::vector<T> getRandomVector(int n, int max) {
+  std::vector<T> rand_vec(n);
   std::random_device dev;
   std::mt19937 gen(dev());
   for (int i = 0; i < n; i++) {
-    rand_arr[i] = static_cast<T>(gen() % max);
+    rand_vec[i] = static_cast<T>(gen() % max);
   }
-  return rand_arr;
+  return rand_vec;
 }
 
-template int* getRandomArray(int n, int max);
+template std::vector<int> getRandomVector(int n, int max);
 
-template double* getRandomArray(int n, int max);
+template std::vector<double> getRandomVector(int n, int max);
 
-template float* getRandomArray(int n, int max);
+template std::vector<float> getRandomVector(int n, int max);
 
 int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
           int root, MPI_Op op, MPI_Comm comm) {
@@ -35,7 +35,7 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
     }
   }
   if (datatype == MPI_INT) {
-    int* recvbuf = nullptr;
+    int* recvbuf;
     if (rank != root) {
       recvbuf = new int[count * size];
       MPI_Recv(recvbuf, count * size, datatype, root, 0, comm,
@@ -70,13 +70,12 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
     }
     if (rank != root) {
       MPI_Send(&partial_out, 1, datatype, root, 1, comm);
-    }
-    if (rank == root) {
+    } else {
       int global_out = partial_out;
       for (int i = 0; i < size; i++) {
         if (i != root) {
           int partial_recv = 0;
-          MPI_Recv(&partial_recv, count * size, datatype, root, 1, comm,
+          MPI_Recv(&partial_recv, 1, datatype, i, 1, comm,
                    MPI_STATUSES_IGNORE);
           if (op == MPI_SUM) {
             global_out += partial_recv;
@@ -131,13 +130,12 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
     }
     if (rank != root) {
       MPI_Send(&partial_out, 1, datatype, root, 1, comm);
-    }
-    if (rank == root) {
+    } else {
       double global_out = partial_out;
       for (int i = 0; i < size; i++) {
         if (i != root) {
           double partial_recv = 0;
-          MPI_Recv(&partial_recv, count * size, datatype, root, 1, comm,
+          MPI_Recv(&partial_recv, 1, datatype, i, 1, comm,
                    MPI_STATUSES_IGNORE);
           if (op == MPI_SUM) {
             global_out += partial_recv;
@@ -192,13 +190,12 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
     }
     if (rank != root) {
       MPI_Send(&partial_out, 1, datatype, root, 1, comm);
-    }
-    if (rank == root) {
+    } else {
       float global_out = partial_out;
       for (int i = 0; i < size; i++) {
         if (i != root) {
           float partial_recv;
-          MPI_Recv(&partial_recv, count * size, datatype, root, 1, comm,
+          MPI_Recv(&partial_recv, 1, datatype, i, 1, comm,
                    MPI_STATUSES_IGNORE);
           if (op == MPI_SUM) {
             global_out += partial_recv;
@@ -218,5 +215,5 @@ int Bcast(void* buffer, void* outbuf, int count, MPI_Datatype datatype,
       *reinterpret_cast<float*>(outbuf) = global_out;
     }
   }
-  return 0;
+  return MPI_SUCCESS;
 }
