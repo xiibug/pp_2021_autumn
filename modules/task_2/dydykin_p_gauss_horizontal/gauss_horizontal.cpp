@@ -50,6 +50,9 @@ std::vector<double> GaussParallel(const std::vector<double>& matrix,
 
     std::vector<double> local_result(n * cols);
 
+    if (local_result.size() == 0)
+        local_result.resize(1);
+
     std::vector<int> sendcounts(ProcNum);
     std::vector<int> displs(ProcNum);
 
