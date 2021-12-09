@@ -1,10 +1,11 @@
 // Copyright 2021 Votyakova Daria
 
 #include <gtest/gtest.h>
-#include <vector>
-#include "./jacoby_method.h"
-#include <gtest-mpi-listener.hpp>
 
+#include <gtest-mpi-listener.hpp>
+#include <vector>
+
+#include "./jacoby_method.h"
 
 TEST(JACOBI_METHOD_MPI, TEST_Equation_1) {
   fflush(stdout);
@@ -180,8 +181,8 @@ TEST(JACOBI_METHOD_MPI, TEST_Random_Equation_5) {
 
     double error = getError(A, x, b);
     stime = end - start;
-    //printf("Sequential error: %f\n", error);
-    //printf("Sequential time: %f\n", stime);
+    // printf("Sequential error: %f\n", error);
+    // printf("Sequential time: %f\n", stime);
     ASSERT_LE(error, eps);
     start = MPI_Wtime();
   }
@@ -192,9 +193,9 @@ TEST(JACOBI_METHOD_MPI, TEST_Random_Equation_5) {
     end = MPI_Wtime();
     double error = getError(A, x, b);
     ptime = end - start;
-    //printf("Parallel error: %f\n", error);
-    //printf("Parallel time: %f\n", ptime);
-    //printf("Speedup: %f\n", stime / ptime);
+    // printf("Parallel error: %f\n", error);
+    // printf("Parallel time: %f\n", ptime);
+    // printf("Speedup: %f\n", stime / ptime);
     ASSERT_LE(error, eps);
   }
   fflush(stdout);
