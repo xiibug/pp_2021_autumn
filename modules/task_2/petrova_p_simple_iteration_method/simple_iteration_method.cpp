@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <cstdlib>
+#include <stdexcept>
 #include"../../../modules/task_2/petrova_p_simple_iteration_method/simple_iteration_method.h"
 
 std::vector<double> fillRandomVector(int len) {
@@ -39,7 +40,7 @@ std::vector< std::vector<double>> fillRandomMatrix(int n) {
         return v;
     }
 }
-std::vector<double> seqMethod(std::vector< std::vector<double>> mat, const std::vector<double> b, int n) {
+std::vector<double> seqMethod(std::vector< std::vector<double>> mat, std::vector<double> b, int n) {
     std::vector<double> firstSolv(n, 0.0);
     int it = 0;
     double eps = 0.0001;
@@ -52,7 +53,7 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> mat, const std::
             currentSol[i] = mat[i][n] / mat[i][i];
             for (int j = 0; j < n; j++) {
                 if (i != j)
-                    currentSol[i] = currentSol[i] - mat[i][j] / mat[i][i] * firstSolv[i];
+                    currentSol[i] = currentSol[i] - mat[i][j] / b[i] * firstSolv[i];  //  ! /mat[i][i]
             }
         }
         double err = 0.0;
@@ -65,7 +66,7 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> mat, const std::
     }
     return firstSolv;
 }
-std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, const std::vector<double> b, int n) {
+std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, std::vector<double> b, int n) {
     int procNum, procRank;
     MPI_Comm_size(MPI_COMM_WORLD, &procNum);
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
@@ -85,7 +86,7 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, const
     if (procRank == 0) {
         locMat = mat;
         locMat.resize(mat[0][0] + littleLen * n);
-        for (size_t i = 1; i < procNum; i++) {
+        for (long unsigned int i = 1; i < procNum; i++) {
             startI = littleLen * i;
             if (i == procNum - 1)
                 count = n - startI;
@@ -101,7 +102,7 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, const
     }
     std::vector<int> resCount(procNum);
     std::vector<int> extra(procNum);
-    for (size_t i = 0; i < procNum; i++) {
+    for (long unsigned int i = 0; i < procNum; i++) {
         if (i == procNum - 1)
             resCount[i] = n - littleLen * (procNum - 1);
         else
