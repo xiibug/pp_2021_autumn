@@ -39,7 +39,7 @@ std::vector< std::vector<double>> fillRandomMatrix(int n) {
         return v;
     }
 }
-std::vector<double> seqMethod(std::vector< std::vector<double>> mat, std::vector<double> b, int n) {
+std::vector<double> seqMethod(std::vector< std::vector<double>> mat, const std::vector<double> b, int n) {
     std::vector<double> firstSolv(n, 0.0);
     int it = 0;
     double eps = 0.0001;
@@ -65,7 +65,7 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> mat, std::vector
     }
     return firstSolv;
 }
-std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, std::vector<double> b, int n) {
+std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, const std::vector<double> b, int n) {
     int procNum, procRank;
     MPI_Comm_size(MPI_COMM_WORLD, &procNum);
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
@@ -85,7 +85,7 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, std::
     if (procRank == 0) {
         locMat = mat;
         locMat.resize(mat[0][0] + littleLen * n);
-        for (int i = 1; i < procNum; i++) {
+        for (size_t i = 1; i < procNum; i++) {
             startI = littleLen * i;
             if (i == procNum - 1)
                 count = n - startI;
@@ -101,7 +101,7 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, std::
     }
     std::vector<int> resCount(procNum);
     std::vector<int> extra(procNum);
-    for (int i = 0; i < procNum; i++) {
+    for (size_t i = 0; i < procNum; i++) {
         if (i == procNum - 1)
             resCount[i] = n - littleLen * (procNum - 1);
         else
@@ -120,17 +120,17 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat, std::
             break;
         }
         std::vector<double> currentSolv(n, 0.0);
-        for (int i; i < locMat.size(); i++) {
+        for (size_t i = 0; i < locMat.size(); i++) {
             currentSolv[i] = locMat[i][locMat.size() - 1]
                 / locMat[i][i + procRank * littleLen];
-            for (int j = 0; j < locMat.size() - 1; j++) {
+            for (size_t j = 0; j < locMat.size() - 1; j++) {
                 if (i + procRank * littleLen != j)
                     currentSolv[i] = currentSolv[i] - (locMat[i][j]
                         / locMat[i][i + procRank * littleLen]) * firstSolv[j];
             }
         }
         double err = 0.0;
-        for (int i = 0; i < locMat.size(); i++) {
+        for (size_t i = 0; i < locMat.size(); i++) {
             err = err + std::abs(currentSolv[i] - firstSolv[i + procRank * littleLen]);
         }
         MPI_Allreduce(MPI_IN_PLACE, &err, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
