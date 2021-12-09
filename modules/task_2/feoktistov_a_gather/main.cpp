@@ -11,8 +11,9 @@ bool Compare(int* arr1, int* arr2, int size) {
     if (arr1[i] != arr2[i]) {
       return false;
     }
-    return true;
+    
   }
+  return true;
 }
 
 TEST(GATHER, IS_GATHER_INT) {
