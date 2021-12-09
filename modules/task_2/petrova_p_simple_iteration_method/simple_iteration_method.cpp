@@ -55,7 +55,7 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> mat,
             for (int j = 0; j < n; j++) {
                 if (i != j)
                     currentSol[i] = currentSol[i] - mat[i][j]
-                    / mat[i][i] * firstSolv[i];  //  ! /mat[i][i]
+                    / b[i] * firstSolv[i];  //  mat[i][i]
             }
         }
         double err = 0.0;
@@ -71,7 +71,6 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> mat,
 std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
     const std::vector<double> &b, int n) {
     int procNum, procRank;
-    int k = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &procNum);
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     if ((n < procNum) || (procNum == 1)|| (procNum == 2) || (procNum == 3)) {
