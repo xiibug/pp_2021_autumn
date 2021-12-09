@@ -28,8 +28,9 @@ TEST(bus_topology_check, check_proc_neighbors_count) {
                 MPI_Graph_neighbors_count(bus_comm, i, &proc_neighbors_count);
                 ASSERT_EQ(2, proc_neighbors_count);
             }
-        } else
+        } else {
             ASSERT_EQ(true, true);
+        }
         MPI_Comm_free(&bus_comm);
     }
 }
@@ -57,13 +58,15 @@ TEST(bus_topology_check, neighbors_matching_check) {
                     if (i == proc_count - 1) {
                         ASSERT_EQ(i - 1, neighbors[0]);
                     } else {
-                        ASSERT_TRUE((i-1 == neighbors[0] && i + 1 == neighbors[1]) || (i + 1 == neighbors[0] && i - 1 == neighbors[1]));
+                        ASSERT_TRUE((i-1 == neighbors[0] && i + 1 == neighbors[1]) || 
+                            (i + 1 == neighbors[0] && i - 1 == neighbors[1]));
                     }
                 }
                 delete[] neighbors;
             }
-        } else
+        } else {
             ASSERT_TRUE(true);
+        }
         MPI_Comm_free(&bus_comm);
     }
 }
