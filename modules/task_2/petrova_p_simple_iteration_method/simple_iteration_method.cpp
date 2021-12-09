@@ -88,7 +88,8 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
     int count = littleLen;
     if (procRank == 0) {
         locMat = mat;
-        locMat.resize(mat[0][0] + littleLen * n);
+        auto reSize = static_cast<int>(mat[0][0] + littleLen * n);
+        locMat.resize(reSize);
         for (int32_t i = 1; i < procNum; i++) {
             startI = littleLen * i;
             if (i == procNum - 1)
@@ -120,23 +121,24 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
 
     int it = 0;
     double eps = 0.0001;
+    auto locLen = locMat.size();
     while (true) {
         it++;
         if (it == 1000) {
             break;
         }
         std::vector<double> currentSolv(n, 0.0);
-        for (int i = 0; i < locMat.size(); i++) {
+        for (int i = 0; i < locLen; i++) {
             currentSolv[i] = locMat[i][locMat.size() - 1]
                 / locMat[i][i + procRank * littleLen];
-            for (int j = 0; j < locMat.size() - 1; j++) {
+            for (int j = 0; j < locLen - 1; j++) {
                 if (i + procRank * littleLen != j)
                     currentSolv[i] = currentSolv[i] - (locMat[i][j]
                         / locMat[i][i + procRank * littleLen]) * firstSolv[j];
             }
         }
         double err = 0.0;
-        for (int i = 0; i < locMat.size(); i++) {
+        for (int i = 0; i < locLen; i++) {
             err = err + std::abs(currentSolv[i] -
                 firstSolv[i + procRank * littleLen]);
         }
