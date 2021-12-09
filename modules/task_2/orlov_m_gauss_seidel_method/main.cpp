@@ -1,10 +1,10 @@
 //  Copyright 2021 Maksim Orlov
 
+#include <cstdlib>
+//  #include <chrono>
 #include <gtest/gtest.h>
 #include "./gauss_seidel_method.h"
 #include <gtest-mpi-listener.hpp>
-#include <cstdlib>
-#include <chrono>
 
 TEST(MPI, small_matrix) {
     std::vector<std::vector<double>> A = { {5, 1, 3}, {1, 8, 2}, {3, 2, 9} };
@@ -20,7 +20,9 @@ TEST(MPI, small_matrix) {
 }
 
 TEST(MPI, random_matrix_0) {
-    srand(0);
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    rng.seed(0);
     std::vector<std::vector<double>> A;
     std::vector<double> b;
     for (int i = 0; i < 1000; i++) {
@@ -28,18 +30,22 @@ TEST(MPI, random_matrix_0) {
         double exceptDiagonal = 0;
         for (int j = 0; j < 1000; j++) {
             if (i != j) {
-                A[i].push_back(static_cast<double>(rand()) / RAND_MAX * 10);
+                A[i].push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
                 exceptDiagonal += A[i][j];
-            }
-            else A[i].push_back(0);
+            } else
+                A[i].push_back(0);
         }
-        A[i][i] = static_cast<double>(rand()) / RAND_MAX * 100 + exceptDiagonal;
-        b.push_back(static_cast<double>(rand()) / RAND_MAX * 10);
+        A[i][i] = static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 100 + exceptDiagonal;
+        b.push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
     }
+    /*
     int t1 = MPI_Wtime();
+    */
     std::vector<double> res = gaussSeidel(A, b, 0.00001);
+    /*
     int t2 = MPI_Wtime();
     int time_span = t2 - t1;
+    */
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     /*
@@ -67,7 +73,9 @@ TEST(MPI, random_matrix_0) {
 }
 
 TEST(MPI, random_matrix_1) {
-    srand(1);
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    rng.seed(1);
     std::vector<std::vector<double>> A;
     std::vector<double> b;
     for (int i = 0; i < 1000; i++) {
@@ -75,18 +83,23 @@ TEST(MPI, random_matrix_1) {
         double exceptDiagonal = 0;
         for (int j = 0; j < 1000; j++) {
             if (i != j) {
-                A[i].push_back(static_cast<double>(rand()) / RAND_MAX * 10);
+                A[i].push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
                 exceptDiagonal += A[i][j];
             }
-            else A[i].push_back(0);
+            else
+                A[i].push_back(0);
         }
-        A[i][i] = static_cast<double>(rand()) / RAND_MAX * 100 + exceptDiagonal;
-        b.push_back(static_cast<double>(rand()) / RAND_MAX * 10);
+        A[i][i] = static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 100 + exceptDiagonal;
+        b.push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
     }
+    /*
     int t1 = MPI_Wtime();
+    */
     std::vector<double> res = gaussSeidel(A, b, 0.00001);
+    /*
     int t2 = MPI_Wtime();
     int time_span = t2 - t1;
+    */
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     /*
@@ -114,7 +127,9 @@ TEST(MPI, random_matrix_1) {
 }
 
 TEST(MPI, random_matrix_2) {
-    srand(2);
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    rng.seed(2);
     std::vector<std::vector<double>> A;
     std::vector<double> b;
     for (int i = 0; i < 1000; i++) {
@@ -122,18 +137,23 @@ TEST(MPI, random_matrix_2) {
         double exceptDiagonal = 0;
         for (int j = 0; j < 1000; j++) {
             if (i != j) {
-                A[i].push_back(static_cast<double>(rand()) / RAND_MAX * 10);
+                A[i].push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
                 exceptDiagonal += A[i][j];
             }
-            else A[i].push_back(0);
+            else
+                A[i].push_back(0);
         }
-        A[i][i] = static_cast<double>(rand()) / RAND_MAX * 100 + exceptDiagonal;
-        b.push_back(static_cast<double>(rand()) / RAND_MAX * 10);
+        A[i][i] = static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 100 + exceptDiagonal;
+        b.push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
     }
+    /*
     int t1 = MPI_Wtime();
+    */
     std::vector<double> res = gaussSeidel(A, b, 0.00001);
+    /*
     int t2 = MPI_Wtime();
     int time_span = t2 - t1;
+    */
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     /*
@@ -161,7 +181,9 @@ TEST(MPI, random_matrix_2) {
 }
 
 TEST(MPI, random_matrix_3) {
-    srand(3);
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    rng.seed(3);
     std::vector<std::vector<double>> A;
     std::vector<double> b;
     for (int i = 0; i < 1000; i++) {
@@ -169,18 +191,23 @@ TEST(MPI, random_matrix_3) {
         double exceptDiagonal = 0;
         for (int j = 0; j < 1000; j++) {
             if (i != j) {
-                A[i].push_back(static_cast<double>(rand()) / RAND_MAX * 10);
+                A[i].push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
                 exceptDiagonal += A[i][j];
             }
-            else A[i].push_back(0);
+            else
+                A[i].push_back(0);
         }
-        A[i][i] = static_cast<double>(rand()) / RAND_MAX * 100 + exceptDiagonal;
-        b.push_back(static_cast<double>(rand()) / RAND_MAX * 10);
+        A[i][i] = static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 100 + exceptDiagonal;
+        b.push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
     }
+    /*
     int t1 = MPI_Wtime();
+    */
     std::vector<double> res = gaussSeidel(A, b, 0.00001);
+    /*
     int t2 = MPI_Wtime();
     int time_span = t2 - t1;
+    */
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     /*

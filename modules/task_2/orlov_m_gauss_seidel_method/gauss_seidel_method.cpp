@@ -5,9 +5,16 @@
 #include <ctime>
 #include <iostream>
 #include <cmath>
+#include <random>
 #include "../../../modules/task_2/orlov_m_gauss_seidel_method/gauss_seidel_method.h"
 
-std::vector<double> sequentialGaussSeidel(std::vector<std::vector<double>> coeffMatrix, std::vector<double> rightSide, double eps) {
+int randNumber(std::random_device& dev, std::mt19937& rng, int max) {
+    std::uniform_int_distribution<std::mt19937::result_type> dist(0, max - 1);
+    return dist(rng);
+}
+
+std::vector<double> sequentialGaussSeidel(std::vector<std::vector<double>> coeffMatrix,
+    std::vector<double> rightSide, double eps) {
     int dimension = static_cast<int>(coeffMatrix.size());
     std::vector<double> res;
     std::vector<double> prev;
@@ -25,7 +32,7 @@ std::vector<double> sequentialGaussSeidel(std::vector<std::vector<double>> coeff
                 res[i] -= coeffMatrix[i][j] * prev[j];
             }
             res[i] /= coeffMatrix[i][i];
-            if (abs(res[i] - prev[i]) >= eps) {
+            if (std::abs(res[i] - prev[i]) >= eps) {
                 flag = false;
             }
         }
@@ -33,7 +40,8 @@ std::vector<double> sequentialGaussSeidel(std::vector<std::vector<double>> coeff
     return res;
 }
 
-std::vector<double> gaussSeidel(std::vector<std::vector<double>> coeffMatrix, std::vector<double> rightSide, double eps) {
+std::vector<double> gaussSeidel(std::vector<std::vector<double>> coeffMatrix,
+    std::vector<double> rightSide, double eps) {
     int dimension = static_cast<int>(coeffMatrix.size()), rem, linesPerProc, procs, rank;
     std::vector<double> res;
     std::vector<double> prev;
@@ -53,8 +61,7 @@ std::vector<double> gaussSeidel(std::vector<std::vector<double>> coeffMatrix, st
         if (i < rem) {
             offset += linesPerProc + 1;
             scounts[i] = linesPerProc + 1;
-        }
-        else {
+        } else {
             offset += linesPerProc;
             scounts[i] = linesPerProc;
         }
@@ -76,7 +83,7 @@ std::vector<double> gaussSeidel(std::vector<std::vector<double>> coeffMatrix, st
             MPI_Allreduce(&sum, &fullSum, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
             res[i] = rightSide[i] - fullSum;
             res[i] /= coeffMatrix[i][i];
-            if (abs(res[i] - prev[i]) >= eps) {
+            if (std::abs(res[i] - prev[i]) >= eps) {
                 flag = 0;
             }
         }
