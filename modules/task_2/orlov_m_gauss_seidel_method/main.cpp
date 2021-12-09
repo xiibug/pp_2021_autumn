@@ -1,6 +1,6 @@
 //  Copyright 2021 Maksim Orlov
 
-#include <cstdlib>
+
 //  #include <chrono>
 #include <gtest/gtest.h>
 #include "./gauss_seidel_method.h"
@@ -30,13 +30,14 @@ TEST(MPI, random_matrix_0) {
         double exceptDiagonal = 0;
         for (int j = 0; j < 1000; j++) {
             if (i != j) {
-                A[i].push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
+                A[i].push_back(static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 10);
                 exceptDiagonal += A[i][j];
-            } else
+            } else {
                 A[i].push_back(0);
+            }
         }
-        A[i][i] = static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 100 + exceptDiagonal;
-        b.push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
+        A[i][i] = static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 100 + exceptDiagonal;
+        b.push_back(static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 10);
     }
     /*
     int t1 = MPI_Wtime();
@@ -83,14 +84,14 @@ TEST(MPI, random_matrix_1) {
         double exceptDiagonal = 0;
         for (int j = 0; j < 1000; j++) {
             if (i != j) {
-                A[i].push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
+                A[i].push_back(static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 10);
                 exceptDiagonal += A[i][j];
-            }
-            else
+            } else {
                 A[i].push_back(0);
+            }
         }
-        A[i][i] = static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 100 + exceptDiagonal;
-        b.push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
+        A[i][i] = static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 100 + exceptDiagonal;
+        b.push_back(static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 10);
     }
     /*
     int t1 = MPI_Wtime();
@@ -137,14 +138,14 @@ TEST(MPI, random_matrix_2) {
         double exceptDiagonal = 0;
         for (int j = 0; j < 1000; j++) {
             if (i != j) {
-                A[i].push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
+                A[i].push_back(static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 10);
                 exceptDiagonal += A[i][j];
-            }
-            else
+            } else {
                 A[i].push_back(0);
+            }
         }
-        A[i][i] = static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 100 + exceptDiagonal;
-        b.push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
+        A[i][i] = static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 100 + exceptDiagonal;
+        b.push_back(static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 10);
     }
     /*
     int t1 = MPI_Wtime();
@@ -191,14 +192,14 @@ TEST(MPI, random_matrix_3) {
         double exceptDiagonal = 0;
         for (int j = 0; j < 1000; j++) {
             if (i != j) {
-                A[i].push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
+                A[i].push_back(static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 10);
                 exceptDiagonal += A[i][j];
-            }
-            else
+            } else {
                 A[i].push_back(0);
+            }
         }
-        A[i][i] = static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 100 + exceptDiagonal;
-        b.push_back(static_cast<double>(randNumber(dev, rng)) / RAND_MAX * 10);
+        A[i][i] = static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 100 + exceptDiagonal;
+        b.push_back(static_cast<double>(randNumber(&dev, &rng)) / RAND_MAX * 10);
     }
     /*
     int t1 = MPI_Wtime();

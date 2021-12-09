@@ -8,9 +8,9 @@
 #include <random>
 #include "../../../modules/task_2/orlov_m_gauss_seidel_method/gauss_seidel_method.h"
 
-int randNumber(std::random_device& dev, std::mt19937& rng, int max) {
+int randNumber(std::random_device* dev, std::mt19937* rng, int max) {
     std::uniform_int_distribution<std::mt19937::result_type> dist(0, max - 1);
-    return dist(rng);
+    return dist(*rng);
 }
 
 std::vector<double> sequentialGaussSeidel(std::vector<std::vector<double>> coeffMatrix,
