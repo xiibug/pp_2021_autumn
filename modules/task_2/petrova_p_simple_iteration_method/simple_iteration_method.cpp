@@ -121,7 +121,7 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
 
     int it = 0;
     double eps = 0.0001;
-    auto locLen = locMat.size();
+    auto locLen = static_cast<int>(locMat.size());
     while (true) {
         it++;
         if (it == 1000) {
