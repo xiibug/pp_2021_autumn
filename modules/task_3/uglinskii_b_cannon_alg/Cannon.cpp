@@ -81,7 +81,7 @@ double* ParallelMulti(int size, double* A, double* B) {
        ProcNum) ||
       (size % static_cast<int>(sqrt(ProcNum)) != 0)) {
     if (ProcRank ==
-        0){
+        0) {
       return SeqMulti(size, A, B);
     } else {
       return CreateZeroMatrix(size);
