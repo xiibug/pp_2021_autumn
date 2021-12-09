@@ -19,7 +19,7 @@ TEST(Cannon_MPI, Test_Seq_Multiply_Fixed) {
     int errors = 0;
 
     for (int i = 0; i < size * size; i++) {
-      if (std::abs(exp_C[i] - C[i]) > 0.0001) {
+      if (std::abs(exp_C[i] - C[i]) > 0.001) {
         errors = 1;
         break;
       }
@@ -50,7 +50,7 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Fixed) {
     int errors = 0;
 
     for (int i = 0; i < size * size; i++) {
-      if (std::abs(exp_C[i] - C[i]) > 0.0001) {
+      if (std::abs(exp_C[i] - C[i]) > 0.001) {
         errors = 1;
         break;
       }
@@ -90,7 +90,7 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_10) {
     int errors = 0;
 
     for (int i = 0; i < size * size; i++) {
-      if (std::abs(C_seq[i] - C_par[i]) > 0.0001) {
+      if (std::abs(C_seq[i] - C_par[i]) > 0.001) {
         errors = 1;
         break;
       }
@@ -133,7 +133,7 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_100) {
     int errors = 0;
 
     for (int i = 0; i < size * size; i++) {
-      if (std::abs(C_seq[i] - C_par[i]) > 0.0001) {
+      if (std::abs(C_seq[i] - C_par[i]) > 0.001) {
         errors = 1;
         break;
       }
@@ -176,7 +176,7 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_500) {
     int errors = 0;
 
     for (int i = 0; i < size * size; i++) {
-      if (std::abs(C_seq[i] - C_par[i]) > 0.0001) {
+      if (std::abs(C_seq[i] - C_par[i]) > 0.001) {
         errors = 1;
         break;
       }
