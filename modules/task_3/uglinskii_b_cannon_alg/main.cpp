@@ -34,8 +34,8 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Fixed) {
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
 
   int size = 6;
-  double* A;
-  double* B;
+  double* A=nullptr;
+  double* B=nullptr;
   if (ProcRank == 0) {
     A = CreateEasyMatrix(size);
     B = CreateEasyMatrix(size);
@@ -65,9 +65,9 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_10) {
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
 
   int size = 10;
-  double* A;
-  double* B;
-  double* C_seq = new double[size * size];
+  double* A=nullptr;
+  double* B=nullptr;
+  double* C_seq=nullptr;
 
   double t1, t2;
   double t_seq, t_parallel;
@@ -108,9 +108,9 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_100) {
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
 
   int size = 100;
-  double* A;
-  double* B;
-  double* C_seq = new double[size * size];
+  double* A=nullptr;
+  double* B=nullptr;
+  double* C_seq=nullptr;
 
   double t1, t2;
   double t_seq, t_parallel;
@@ -151,9 +151,9 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_500) {
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
 
   int size = 500;
-  double* A;
-  double* B;
-  double* C_seq = new double[size * size];
+  double* A=nullptr;
+  double* B=nullptr;
+  double* C_seq=nullptr;
 
   double t1, t2;
   double t_seq, t_parallel;
