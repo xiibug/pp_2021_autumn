@@ -4,8 +4,8 @@
 
 #include <vector>
 #include <gtest-mpi-listener.hpp>
-#include "./jacoby_method.h"
 
+#include "./jacoby_method.h"
 
 TEST(JACOBI_METHOD_MPI, TEST_Equation_1) {
   fflush(stdout);
@@ -117,7 +117,7 @@ TEST(JACOBI_METHOD_MPI, TEST_Random_Equation_5) {
 
   std::vector<double> A, b;
   // double start, end, stime, ptime;
-  int size = 3000;
+  int size = 1000;
 
   if (rank == 0) {
     A = getDiagonallyDominantMatrix(size);
