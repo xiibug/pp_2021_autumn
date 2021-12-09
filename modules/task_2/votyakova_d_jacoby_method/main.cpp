@@ -43,13 +43,13 @@ TEST(JACOBI_METHOD_MPI, TEST_Equation_2) {
          3.,  1., 1., 2., 3., 56., 1., 1., 2., 1., 3., 32.};
     b = {43., 14., -3., 169., -19.};
 
-    std::vector<double> x = getJacobiSequential(A, b, 3);
+    std::vector<double> x = getJacobiSequential(A, b, 5);
     double error = getError(A, x, b);
     fflush(stdout);
     ASSERT_LE(error, eps);
   }
 
-  std::vector<double> x = getJacobiParallel(A, b, 3);
+  std::vector<double> x = getJacobiParallel(A, b, 5);
 
   if (rank == 0) {
     double error = getError(A, x, b);
