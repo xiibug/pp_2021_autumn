@@ -38,20 +38,9 @@ int feoktistovGather(void* sendbuf, int sendcount, MPI_Datatype sendtype,
   char* recvBuffer = static_cast<char*>(recvbuf);
   char* sendBuffer = static_cast<char*>(sendbuf);
   int type_size = 0;
-  switch (sendtype) {
-    case MPI_INT:
-      type_size = sizeof(int);
-      break;
-    case MPI_DOUBLE:
-      type_size = sizeof(double);
-      break;
-    case MPI_FLOAT:
-      type_size = sizeof(float);
-      break;
-
-    default:
-      break;
-  }
+  if (sendtype == MPI_INT) type_size = sizeof(int);
+  if (sendtype == MPI_DOUBLE) type_size = sizeof(double);
+  if (sendtype == MPI_FLOAT) type_size = sizeof(float);
 
   if (rank == root) {
     for (int i = root * recvcount * type_size;
@@ -62,7 +51,7 @@ int feoktistovGather(void* sendbuf, int sendcount, MPI_Datatype sendtype,
       if (i == root) {
         continue;
       }
-      MPI_Recv(recvBuffer + i * recvcount * type_size, recvcount, recvtype, i,
+      MPI_Recv(recvBuffer + (i * recvcount * type_size), recvcount, recvtype, i,
                MPI_ANY_TAG, comm, MPI_STATUSES_IGNORE);
     }
   } else {
