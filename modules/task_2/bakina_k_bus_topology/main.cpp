@@ -4,10 +4,6 @@
 #include <gtest-mpi-listener.hpp>
 #include "./bus_topology.h"
 
-
-//std::cout << proc_rank << std::endl;
-//MPI_Barrier(MPI_COMM_WORLD);
-
 TEST(bus_topology_check, can_create_bus_comm) {
     ASSERT_NO_THROW(get_Bus_Comm(MPI_COMM_WORLD));
 }
@@ -32,8 +28,7 @@ TEST(bus_topology_check, check_proc_neighbors_count) {
                 MPI_Graph_neighbors_count(bus_comm, i, &proc_neighbors_count);
                 ASSERT_EQ(2, proc_neighbors_count);
             }
-        }
-        else
+        } else
             ASSERT_EQ(true, true);
         MPI_Comm_free(&bus_comm);
     }
@@ -58,17 +53,16 @@ TEST(bus_topology_check, neighbors_matching_check) {
                 MPI_Graph_neighbors(bus_comm, i, proc_neighbors_count, neighbors);
                 if (i == 0) {
                     ASSERT_EQ(1, neighbors[0]);
-                }
-                else if (i == proc_count - 1) {
-                    ASSERT_EQ(i - 1, neighbors[0]);
-                }
-                else {
-                    ASSERT_TRUE((i-1 == neighbors[0] && i + 1 == neighbors[1]) || (i + 1 == neighbors[0] && i - 1 == neighbors[1]));
+                } else {
+                    if (i == proc_count - 1) {
+                        ASSERT_EQ(i - 1, neighbors[0]);
+                    } else {
+                        ASSERT_TRUE((i-1 == neighbors[0] && i + 1 == neighbors[1]) || (i + 1 == neighbors[0] && i - 1 == neighbors[1]));
+                    }
                 }
                 delete[] neighbors;
             }
-        }
-        else
+        } else
             ASSERT_TRUE(true);
         MPI_Comm_free(&bus_comm);
     }
@@ -91,12 +85,14 @@ TEST(bus_topology_check, first_sent_message_to_last_proc) {
     int sent_message = 77;
     if (proc_rank == 0) {
         MPI_Send(&sent_message, 1, MPI_INT, proc_count - 1, 0, bus_comm);
-    }else if (proc_rank == proc_count - 1) {
-        int received_message = 0;
-        MPI_Status status;
-        MPI_Recv(&received_message, 1, MPI_INT, 0, MPI_ANY_TAG, bus_comm, &status);
-        ASSERT_EQ(received_message, sent_message);
-        MPI_Comm_free(&bus_comm);
+    } else {
+        if (proc_rank == proc_count - 1) {
+            int received_message = 0;
+            MPI_Status status;
+            MPI_Recv(&received_message, 1, MPI_INT, 0, MPI_ANY_TAG, bus_comm, &status);
+            ASSERT_EQ(received_message, sent_message);
+            MPI_Comm_free(&bus_comm);
+        }
     }
 }
 
@@ -117,13 +113,14 @@ TEST(bus_topology_check, last_sent_message_to_first_proc) {
     int sent_message = 77;
     if (proc_rank == proc_count - 1) {
         MPI_Send(&sent_message, 1, MPI_INT, 0, 0, bus_comm);
-    }
-    else if (proc_rank == 0) {
-        int received_message = 0;
-        MPI_Status status;
-        MPI_Recv(&received_message, 1, MPI_INT, proc_count - 1, MPI_ANY_TAG, bus_comm, &status);
-        ASSERT_EQ(received_message, sent_message);
-        MPI_Comm_free(&bus_comm);
+    } else {
+        if (proc_rank == 0) {
+            int received_message = 0;
+            MPI_Status status;
+            MPI_Recv(&received_message, 1, MPI_INT, proc_count - 1, MPI_ANY_TAG, bus_comm, &status);
+            ASSERT_EQ(received_message, sent_message);
+            MPI_Comm_free(&bus_comm);
+        }
     }
 }
 
