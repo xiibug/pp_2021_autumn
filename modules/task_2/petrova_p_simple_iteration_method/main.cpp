@@ -17,7 +17,8 @@ TEST(simple_iteration, can_create_random_matrix_0) {
     ASSERT_NO_THROW();
 }
 TEST(simple_iteration, can_create_random_matrix_1) {
-    ASSERT_ANY_THROW(std::vector< std::vector<double> > a = fillRandomMatrix(-777););
+    ASSERT_ANY_THROW(std::vector< std::vector<double> > a =
+        fillRandomMatrix(-777));
 }
 TEST(simple_iteration, test_0) {
     std::vector< std::vector<double>> A{

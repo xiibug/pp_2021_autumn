@@ -6,7 +6,9 @@
 
 std::vector<double> fillRandomVector(int len);
 std::vector< std::vector<double>> fillRandomMatrix(int n);
-std::vector<double> seqMethod(std::vector< std::vector<double>> matrix, std::vector<double> b, int n);
-std::vector<double> parallelMethod(std::vector<std::vector<double> > matrix, std::vector<double> b, int n);
+std::vector<double> seqMethod(std::vector< std::vector<double>> matrix,
+    std::vector<double> b, int n);
+std::vector<double> parallelMethod(std::vector<std::vector<double> > matrix,
+    const std::vector<double> &b, int n);
 
 #endif  // MODULES_TASK_2_PETROVA_P_SIMPLE_ITERATION_METHOD_SIMPLE_ITERATION_METHOD_H_
