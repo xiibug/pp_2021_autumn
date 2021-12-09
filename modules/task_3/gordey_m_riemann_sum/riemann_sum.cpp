@@ -39,7 +39,7 @@ double getParallelIntegrals(
 
   int dimension = static_cast<int>(limits.size());
   std::vector<double> h(n);
-  unsigned int count;
+  int count;
 
   if (rank == 0) {
     count = 1;
