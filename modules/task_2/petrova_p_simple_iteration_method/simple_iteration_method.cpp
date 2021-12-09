@@ -102,7 +102,7 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
         if (procNum == procNum - 1)
             count = n - littleLen * (procNum - 1);
         locMat = mat;
-        locMat.resize(count);
+        locMat.resize(count * 2);
         MPI_Recv(locMat[0].data(), n * count,
             MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &status);
     }
