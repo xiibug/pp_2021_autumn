@@ -6,18 +6,16 @@
 
 
 TEST(simple_iteration, can_create_random_vector_0) {
-    std::vector<double> a = fillRandomVector(100);
-    ASSERT_NO_THROW();
+    EXPECT_NO_THROW(std::vector<double> a = fillRandomVector(100););
 }
 TEST(simple_iteration, can_create_random_vector_1) {
-    ASSERT_ANY_THROW(std::vector<double> a = fillRandomVector(-777));
+    EXPECT_ANY_THROW(std::vector<double> a = fillRandomVector(-777));
 }
 TEST(simple_iteration, can_create_random_matrix_0) {
-    std::vector< std::vector<double> > a = fillRandomMatrix(100);
-    ASSERT_NO_THROW();
+    EXPECT_NO_THROW(std::vector< std::vector<double> > a = fillRandomMatrix(100););
 }
 TEST(simple_iteration, can_create_random_matrix_1) {
-    ASSERT_ANY_THROW(std::vector< std::vector<double> > a =
+    EXPECT_ANY_THROW(std::vector< std::vector<double> > a =
         fillRandomMatrix(-777));
 }
 TEST(simple_iteration, test_0) {
@@ -63,8 +61,8 @@ TEST(simple_iteration, test_2) {
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
     std::vector<double> x = parallelMethod(A, b, 3);
     if (procRank == 0) {
-        std::vector<double> seqX = seqMethod(A, b, 3);
-        EXPECT_EQ(x, seqX);
+        std::vector<double> ans = seqMethod(A, b, 3);
+        EXPECT_EQ(x, ans);
     }
 }
 TEST(simple_iteration, test_3) {
@@ -76,10 +74,7 @@ TEST(simple_iteration, test_3) {
         A = fillRandomMatrix(5);
         b = fillRandomVector(5);
     }
-    std::vector<double> x = parallelMethod(A, b, 3);
-    if (procRank == 0) {
-        EXPECT_NO_THROW();
-    }
+    EXPECT_NO_THROW(std::vector<double> x = parallelMethod(A, b, 3););
 }
 TEST(simple_iteration, test_4) {
     std::vector< std::vector<double> >A;

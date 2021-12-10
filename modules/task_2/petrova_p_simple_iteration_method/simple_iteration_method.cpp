@@ -40,6 +40,19 @@ std::vector< std::vector<double>> fillRandomMatrix(int n) {
         return v;
     }
 }
+std::vector<double> Convert(std::vector<std::vector<double> > M,
+    std::vector<double> b, int n) {
+    std::vector<double> V;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            V.push_back(M[i][j]);
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        V.push_back(b[i]);
+    }
+    return V;
+}
 std::vector<double> seqMethod(std::vector< std::vector<double>> mat,
     std::vector<double> b, int n) {
     std::vector<double> firstSolv(n, 0.0);
@@ -73,27 +86,31 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
     int procNum, procRank;
     MPI_Comm_size(MPI_COMM_WORLD, &procNum);
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-    if ((n < procNum) || (procNum == 1)|| (procNum == 2) || (procNum == 3)) {
+    if (n < 0) {
+        throw "error matrix";
+    }
+    if ((n < procNum) || (procNum == 1) || (procNum == 2) || (procNum == 3)) {
         if (procRank == 0) {
             return seqMethod(mat, b, n);
         } else {
             return std::vector<double>();
         }
     }
+    const std::vector<double> &matV = Convert(mat, b, n);
     std::vector<double> firstSolv(n, 0.0);
     int littleLen = n / procNum;
     int startI;
-    std::vector< std::vector<double> > locMat;
+    std::vector<double> locMat;
     int count = littleLen;
     if (procRank == 0) {
-        locMat = mat;
-        auto reSize = static_cast<int>(mat[0][0] + littleLen * n);
+        locMat = matV;
+        auto reSize = static_cast<int>(matV[0] + littleLen * n);
         locMat.resize(reSize);
         for (int32_t i = 1; i < procNum; i++) {
             startI = littleLen * i;
             if (i == procNum - 1)
                 count = n - startI;
-            MPI_Send(mat[startI].data(), n * count,
+            MPI_Send(&matV[startI], n * count,
                 MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
         }
         count = littleLen;
@@ -104,7 +121,7 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
         //  locMat = mat;
         //  locMat.resize(count);
         locMat.resize(count);
-        MPI_Recv(locMat[0].data(), n * count,
+        MPI_Recv(& locMat[0], n * count,
             MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &status);
     }
     std::vector<int> resCount(procNum);
@@ -130,12 +147,12 @@ std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
         }
         std::vector<double> currentSolv(n, 0.0);
         for (int i = 0; i < locLen; i++) {
-            currentSolv[i] = locMat[i][locLen - 1]
-                / locMat[i][i + procRank * littleLen];
+            currentSolv[i] = locMat[i * (locLen - 1) * n]
+                / locMat[i * (i + procRank * littleLen * n)];  //  [i + procRank * littleLen] ;
             for (int j = 0; j < locLen - 1; j++) {
                 if (i + procRank * littleLen != j)
-                    currentSolv[i] = currentSolv[i] - (locMat[i][j]
-                        / locMat[i][i + procRank * littleLen]) * firstSolv[j];
+                    currentSolv[i] = currentSolv[i] - (locMat[i*j*n]
+                        / locMat[i*(i + procRank * littleLen)*n]) * firstSolv[j];
             }
         }
         double err = 0.0;
