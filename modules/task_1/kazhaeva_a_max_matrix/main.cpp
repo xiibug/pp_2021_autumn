@@ -86,9 +86,23 @@ TEST(Parallel_Max_MPI_4, Size_100x100) {
     }
   }
 }
-
-
-
+TEST(Parallel_Max_MPI_5, Size_100x100) {
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  int Matrix[100 * 100];
+  int* resmatr1 = nullptr;
+  if (rank == 0) {
+    Rand(Matrix, 100, 100);
+    resmatr1 = CalcMaxNumber(Matrix, 150, 150);
+  }
+  int* resmatr2 = nullptr;
+  resmatr2 = Max_Matrix(Matrix, 100, 100);
+  if (rank == 0) {
+    for (int i = 0; i < 100; i++) {
+      ASSERT_EQ(resmatr2[i], resmatr1[i]);
+    }
+  }
+}
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
