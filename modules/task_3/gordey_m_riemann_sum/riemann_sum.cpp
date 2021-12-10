@@ -46,8 +46,8 @@ double getParallelIntegrals(
     count *= n;
   }
 
-  size_t delta = static_cast<size_t>(count / size);
-  int rem = count % size, temp = 0;
+  int delta = count / size;
+  int rem = count % size;
 
   int interval_start = 0;
   if (rank != 0) interval_start = rank * delta + rem;
@@ -55,7 +55,7 @@ double getParallelIntegrals(
 
   std::vector<double> combinations(dimension);
   double local_result = 0.0;
-  for (size_t j = interval_start; j < interval_end; j++) {
+  for (int j = interval_start; j < interval_end; j++) {
     for (int i = 0; i < dimension; i++) {
       combinations[i] = limits[i].first + (j % n) * h[i] + h[i] * 0.5;
     }
