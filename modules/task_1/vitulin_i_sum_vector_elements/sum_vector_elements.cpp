@@ -1,4 +1,4 @@
-//Copyright 2021 Vitulin Ivan
+//Copyright 2021 Vitulin Ivan 381908-1
 #include <mpi.h>
 #include <vector>
 #include <random>

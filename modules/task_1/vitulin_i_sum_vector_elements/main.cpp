@@ -1,4 +1,4 @@
-// Copyright 2021 Vitulin Ivan
+// Copyright 2021 Vitulin Ivan 381908-1
 #include <gtest/gtest.h>
 #include <vector>
 #include "./sum_vector_elements.h"
