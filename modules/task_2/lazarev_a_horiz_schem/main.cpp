@@ -28,7 +28,7 @@ TEST(Horiz_schem, Multiplication_16x16) {
     a = random_vector(size);
     b = random_vector(size);
     c = multiplication(a, b, size);
-    //ASSERT_NO_THROW(true);
+    // ASSERT_NO_THROW(true);
   }
 }
 
