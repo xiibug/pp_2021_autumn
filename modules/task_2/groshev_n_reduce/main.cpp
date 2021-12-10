@@ -8,7 +8,7 @@
 TEST(MyReduce, Sum) {
   int ProcNum, ProcRank;
   int my_value = 0, reduce_value = 0;
-  int data = rand() % 10;
+  int data = 10;
   double begin1, begin2, end1, end2;
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
@@ -41,7 +41,7 @@ TEST(MyReduce, Sum_Vector_2) {
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
   for (int i = 0; i < count; i++) {
     my_value[i] = 0;
-    data[i] = rand() % 10;
+    data[i] = (i + 7) / 2;
   }
   begin1 = MPI_Wtime();
   MPI_Reduce(data, reduce_value, count, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
@@ -75,7 +75,7 @@ TEST(MyReduce, Multiplication_Vector_10) {
   for (int i = 0; i < count; i++) {
     my_value[i] = 1;
     reduce_value[i] = 1;
-    data[i] = rand() % 10;
+    data[i] = (i + 7) / 2;
   }
   begin1 = MPI_Wtime();
   MPI_Reduce(data, reduce_value, count, MPI_INT, MPI_PROD, 0, MPI_COMM_WORLD);
@@ -109,7 +109,7 @@ TEST(MyReduce, Max_Vector_20) {
   for (int i = 0; i < count; i++) {
     my_value[i] = -2147483647;
     reduce_value[i] = -2147483647;
-    data[i] = rand() % 10;
+    data[i] = (i + 7) / 2;
   }
   begin1 = MPI_Wtime();
   MPI_Reduce(data, reduce_value, count, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
@@ -143,7 +143,7 @@ TEST(MyReduce, Min_Vector_13) {
   for (int i = 0; i < count; i++) {
     my_value[i] = 2147483647;
     reduce_value[i] = 2147483647;
-    data[i] = rand() % 10;
+    data[i] = (i + 7) / 2;
   }
   begin1 = MPI_Wtime();
   MPI_Reduce(data, reduce_value, count, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
