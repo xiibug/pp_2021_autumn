@@ -28,7 +28,7 @@ double* CreateRandomMatrix(int size) {
   std::mt19937 gen(dev());
   double* matrix = new double[size * size];
   for (int i = 0; i < size; i++) {
-    matrix[i] = (gen() % 100 + 1) / static_cast<double>((gen() % 10 + 1));
+    matrix[i] = (gen() % 10 + 1) / static_cast<double>((gen() % 10 + 1));
   }
   return matrix;
 }
