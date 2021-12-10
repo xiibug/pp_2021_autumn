@@ -27,7 +27,7 @@ TEST(Parallel_Operations_MPI, Test_Gather_INT) {
         std::cout << std::endl;
     }
     MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Scatter(input_vec.data(),range, MPI_INT, local.data(), range, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatter(input_vec.data(), range, MPI_INT, local.data(), range, MPI_INT, 0, MPI_COMM_WORLD);
 
 
     if (my_rank == root) time1 = MPI_Wtime();
@@ -45,7 +45,7 @@ TEST(Parallel_Operations_MPI, Test_Gather_INT) {
         time2 = MPI_Wtime() - time2;
         for (int i = 0; i < 20; i++) {
             if (res1[i] != res2[i]) {
-                //std::cout << "Not a match!" << std::endl;
+                // std::cout << "Not a match!" << std::endl;
                 ASSERT_EQ(res1[i], res2[i]);
             }
         }
@@ -93,7 +93,7 @@ TEST(Parallel_Operations_MPI, Test_Gather_FLOAT) {
         time2 = MPI_Wtime() - time2;
         for (int i = 0; i < 20; i++) {
             if (res1[i] != res2[i]) {
-                //std::cout << "Not a match!" << std::endl;
+                // std::cout << "Not a match!" << std::endl;
                 ASSERT_EQ(res1[i], res2[i]);
             }
         }
@@ -141,7 +141,7 @@ TEST(Parallel_Operations_MPI, Test_Gather_DOUBLE) {
         time2 = MPI_Wtime() - time2;
         for (int i = 0; i < 20; i++) {
             if (res1[i] != res2[i]) {
-                //std::cout << "Not a match!" << std::endl;
+                // std::cout << "Not a match!" << std::endl;
                 ASSERT_EQ(res1[i], res2[i]);
             }
         }
@@ -161,7 +161,8 @@ TEST(Parallel_Operations_MPI, Test_Gather_CHAR) {
     std::vector<char> local(range);
 
     if (my_rank == 0) {
-        input_vec = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't'};
+        input_vec = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+            'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't'};
         std::random_device dev;
         std::mt19937 gen(dev());
         root = gen() % tasks;
@@ -189,7 +190,7 @@ TEST(Parallel_Operations_MPI, Test_Gather_CHAR) {
         time2 = MPI_Wtime() - time2;
         for (int i = 0; i < 20; i++) {
             if (res1[i] != res2[i]) {
-                //std::cout << "Not a match!" << std::endl;
+                // std::cout << "Not a match!" << std::endl;
                 ASSERT_EQ(res1[i], res2[i]);
             }
         }
@@ -236,7 +237,7 @@ TEST(Parallel_Operations_MPI, Big_Data_Test) {
         time2 = MPI_Wtime() - time2;
         for (int i = 0; i < datasize * tasks; i++) {
             if (res1[i] != res2[i]) {
-                //std::cout << "Not a match!" << std::endl;
+                // std::cout << "Not a match!" << std::endl;
                 ASSERT_EQ(res1[i], res2[i]);
             }
         }
@@ -245,8 +246,6 @@ TEST(Parallel_Operations_MPI, Big_Data_Test) {
 }
 
 int main(int argc, char** argv) {
-    
-
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
 
