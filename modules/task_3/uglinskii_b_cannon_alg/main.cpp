@@ -18,7 +18,7 @@ TEST(Cannon_MPI, Test_Seq_Multiply_Fixed) {
     double* C = SeqMulti(size, A, B);
 
     for (int i = 0; i < size * size; i++) {
-      ASSERT_NEAR(exp_C[i], C[i], 0.001);
+      ASSERT_NEAR(exp_C[i], C[i], 0.0001);
     }
   }
 }
@@ -43,7 +43,7 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Fixed) {
                    21, 42, 63, 84, 105, 126, 21, 42, 63, 84, 105, 126};
 
     for (int i = 0; i < size * size; i++) {
-      ASSERT_NEAR(exp_C[i], C[i], 0.001);
+      ASSERT_NEAR(exp_C[i], C[i], 0.0001);
     }
   }
 }
@@ -77,7 +77,7 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_10) {
     t2 = MPI_Wtime();
     t_parallel = t2 - t1;
     for (int i = 0; i < size * size; i++) {
-      ASSERT_NEAR(C_seq[i], C_par[i], 0.001);
+      ASSERT_NEAR(C_seq[i], C_par[i], 0.0001);
     }
 
     std::cout << "--Seq = " << t_seq << "\n"
@@ -115,7 +115,7 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_100) {
     t2 = MPI_Wtime();
     t_parallel = t2 - t1;
     for (int i = 0; i < size * size; i++) {
-      ASSERT_NEAR(C_seq[i], C_par[i], 0.001);
+      ASSERT_NEAR(C_seq[i], C_par[i], 0.0001);
     }
 
     std::cout << "--Seq = " << t_seq << "\n"
@@ -153,7 +153,7 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_500) {
     t2 = MPI_Wtime();
     t_parallel = t2 - t1;
     for (int i = 0; i < size * size; i++) {
-      ASSERT_NEAR(C_seq[i], C_par[i], 0.001);
+      ASSERT_NEAR(C_seq[i], C_par[i], 0.0001);
     }
 
     std::cout << "--Seq = " << t_seq << "\n"

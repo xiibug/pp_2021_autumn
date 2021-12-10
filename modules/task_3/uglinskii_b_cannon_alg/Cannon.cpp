@@ -1,6 +1,7 @@
 // Copyright 2021 Uglinskii Bogdan
 #include "../../../modules/task_3/uglinskii_b_cannon_alg/Cannon.h"
 #include <random>
+#include <ctime>
 
 double* CreateZeroMatrix(int size) {
   double* matrix = new double[size * size];
@@ -24,11 +25,11 @@ double* CreateEasyMatrix(int size) {
 }
 
 double* CreateRandomMatrix(int size) {
-  std::random_device dev;
-  std::mt19937 gen(dev());
+  std::mt19937 gen(time(0)); 
+  std::uniform_real_distribution<> urd(-10, 10);
   double* matrix = new double[size * size];
-  for (int i = 0; i < size; i++) {
-    matrix[i] = (gen() % 10 + 1) / static_cast<double>((gen() % 10 + 1));
+  for (int i = 0; i < size*size; i++) {
+    matrix[i] = urd(gen);
   }
   return matrix;
 }
