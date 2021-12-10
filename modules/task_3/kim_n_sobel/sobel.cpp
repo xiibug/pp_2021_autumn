@@ -47,7 +47,7 @@ int calcNewPixelColor(std::vector<int> image, int x, int y, int size, int kernel
   return clamp(new_pixel, 0, size - 1);
 }
 
-std::vector<std::vector<int>> getSobelImage(std::vector<std::vector<int>> image, int size, char type) {
+std::vector<std::vector<int>> getSobelImage(const std::vector<std::vector<int>>& image, int size, char type) {
   std::vector<std::vector<int>> sobel_image(size);
   int kernel[3][3];
   if (type == 'x') {
@@ -79,7 +79,7 @@ std::vector<std::vector<int>> getSobelImage(std::vector<std::vector<int>> image,
   return sobel_image;
 }
 
-std::vector<std::vector<int>> getSobelImageParall(std::vector<std::vector<int>> image, int size, char type) {
+std::vector<std::vector<int>> getSobelImageParall(const std::vector<std::vector<int>>& image, int size, char type) {
   int proc_num, proc_rank;
   int kernel[3][3];
   if (type == 'x') {
