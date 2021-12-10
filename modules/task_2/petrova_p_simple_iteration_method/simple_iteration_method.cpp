@@ -40,8 +40,7 @@ std::vector< std::vector<double>> fillRandomMatrix(int n) {
         return v;
     }
 }
-std::vector<double> Convert(std::vector<std::vector<double> > M,
-    std::vector<double> b, int n) {
+std::vector<double> Convert(std::vector<std::vector<double> > M, int n) {
     std::vector<double> V;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -115,10 +114,10 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> matrix,
     }
     return firstSolv;*/
 }
-std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
+std::vector<double> parallelMethod(const std::vector<std::vector <double> > &mat,
     std::vector<double> b, int n) {
     int procNum, procRank;
-    std::vector<double> matV = Convert(mat, b, n);
+    std::vector<double> matV = Convert(mat, n);
     int chek = static_cast<int>(matV.size());
     if ((n < 0) || (chek != n * n)) {
         throw "error matrix";
