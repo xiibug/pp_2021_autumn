@@ -51,7 +51,7 @@ TEST(WordCount, parallelCount) {
   int count = 0;
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
-  st = "sdggh gfjfg ### jfg ghj df";
+  st = "sdggh gfjfg drr jfg ghj df";
   count = Count_pp(st);
   if (ProcRank == 0) {
     i = GetCountString(st);

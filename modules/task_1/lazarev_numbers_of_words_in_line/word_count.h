@@ -8,6 +8,7 @@
 #include <random>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 int Count_pp(std::string);
 int GetCountString(std::string);
