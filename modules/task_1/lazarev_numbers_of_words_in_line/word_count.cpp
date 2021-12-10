@@ -6,7 +6,7 @@ int GetCountString(std::string st) {
   int word = 0;
   int size = st.size();
   if (size > 0) {
-    word = count(st.begin(), st.end(), ' ');
+    word = std::count(st.begin(), st.end(), ' ');
     word++;
     if (st[0] == ' ') {
       word--;
