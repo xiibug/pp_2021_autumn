@@ -25,14 +25,14 @@ int* CalcMaxNumber(int* matrix, int row, int col) {
   return max;
 }
 
-int* Max_Matrix(int* a, const int A_col, const int A_row) {
+int* Max_Matrix(int* a, const int A_row, const int A_col) {
   int* sendcounts = nullptr;
   int* displs = nullptr;
   int ProcNum, ProcRank, cim = 0;
-  int* max, * max_all;
+  int* max, * max_m;
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
-  max_all = new int[A_col];
+  max_m = new int[A_col];
   if (ProcRank == 0) {
     sendcounts = new int[ProcNum];
     displs = new int[ProcNum];
@@ -54,10 +54,10 @@ int* Max_Matrix(int* a, const int A_col, const int A_row) {
   MPI_Scatterv(a, sendcounts, displs, MPI_INT,
     b, cim, MPI_INT, 0, MPI_COMM_WORLD);
   max = CalcMaxNumber(b, cim / A_col, A_col);
-  MPI_Reduce(max, max_all, A_col, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
+  MPI_Reduce(max, max_m, A_col, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
   if (ProcRank == 0) {
     delete[] displs;
     delete[] sendcounts;
   }
-  return max_all;
+  return max_m;
 }

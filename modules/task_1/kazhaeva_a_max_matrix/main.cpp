@@ -17,7 +17,7 @@ TEST(Parallel_Max_MPI_1, Size_5x5) {
   const int A_row = 5;
   int* b;
 
-  b = Max_Matrix(a, A_col, A_row);
+  b = Max_Matrix(a, A_row, A_col);
   if (rank == 0) {
     int res[5] = { 1, 7, 9, 9, 7, };
     for (int i = 0; i < A_col; i++) {
@@ -38,7 +38,7 @@ TEST(Parallel_Max_MPI_2, Size_5x5) {
   const int A_col = 5;
   const int A_row = 5;
   int* b;
-  b = Max_Matrix(a, A_col, A_row);
+  b = Max_Matrix(a, A_row, A_col);
   if (rank == 0) {
     int res[5] = { 100, 8, 9, 50, 7, };
     for (int i = 0; i < A_col; i++) {
@@ -60,7 +60,7 @@ TEST(Parallel_Max_MPI_3, Size_5x4) {
   const int A_row = 5;
   int* b;
 
-  b = Max_Matrix(a, A_col, A_row);
+  b = Max_Matrix(a, A_row, A_col);
   int res[5] = { 9, 8, 9, 6, };
   if (rank == 0) {
     for (int i = 0; i < A_col; i++) {
@@ -89,16 +89,16 @@ TEST(Parallel_Max_MPI_4, Size_100x100) {
 TEST(Parallel_Max_MPI_5, Size_100x100) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  int Matrix[100 * 100];
+  int Matrix[20 * 50];
   int* resmatr1 = nullptr;
   if (rank == 0) {
-    Rand(Matrix, 100, 100);
-    resmatr1 = CalcMaxNumber(Matrix, 150, 150);
+    Rand(Matrix, 20, 50);
+    resmatr1 = CalcMaxNumber(Matrix, 20, 50);
   }
   int* resmatr2 = nullptr;
-  resmatr2 = Max_Matrix(Matrix, 100, 100);
+  resmatr2 = Max_Matrix(Matrix, 20, 50);
   if (rank == 0) {
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 50; i++) {
       ASSERT_EQ(resmatr2[i], resmatr1[i]);
     }
   }
