@@ -25,7 +25,7 @@ double* CreateEasyMatrix(int size) {
 }
 
 double* CreateRandomMatrix(int size) {
-  std::mt19937 gen(time(0)); 
+  std::mt19937 gen(time(0));
   std::uniform_real_distribution<> urd(-10, 10);
   double* matrix = new double[size * size];
   for (int i = 0; i < size*size; i++) {
