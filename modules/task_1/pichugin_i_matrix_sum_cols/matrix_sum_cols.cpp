@@ -41,7 +41,7 @@ int* MPIMethod(int* Matrix_init, int rs, int cs) {
     throw -1;
   }
   int rows = 0, cols = 0, req = 0;
-  int *Matrix = nullptr, *sum;
+  int* Matrix = nullptr;
   int* all_sum_cols = new int[cols];
   int Size, Rank;
   MPI_Comm_size(MPI_COMM_WORLD, &Size);
@@ -77,7 +77,8 @@ int* MPIMethod(int* Matrix_init, int rs, int cs) {
               MPI_COMM_WORLD);
 
   all_sum_cols = new int[cols];
-  sum = LinearMetod(BuffMatrix, rows, cols);
+
+  int* sum = LinearMetod(BuffMatrix, rows, cols);
 
   MPI_Reduce(sum, all_sum_cols, cols, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
