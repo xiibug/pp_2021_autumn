@@ -48,14 +48,48 @@ std::vector<double> Convert(std::vector<std::vector<double> > M,
             V.push_back(M[i][j]);
         }
     }
-    for (int i = 0; i < n; i++) {
+    /*for (int i = 0; i < n; i++) {
         V.push_back(b[i]);
-    }
+    }*/
     return V;
 }
-std::vector<double> seqMethod(std::vector< std::vector<double>> mat,
+std::vector<double> seqMethod(std::vector< std::vector<double>> matrix,
     std::vector<double> b, int n) {
-    std::vector<double> firstSolv(n, 0.0);
+
+    std::vector<double> res(n);
+    std::vector<double> x(n);
+    for (int i = 0; i < n; i++) {
+        res[i] = matrix[i][i] / b[i];
+    }
+    double eps = 0.0001;
+
+    do {
+        for (int i = 0; i < n; i++) {
+            x[i] = b[i] / matrix[i][i];
+            for (int j = 0; j < n; j++) {
+                if (i == j) {
+                    continue;
+                } else {
+                    x[i] -= matrix[i][j] / matrix[i][i] * res[j];
+                }
+            }
+        }
+        bool f = true;
+        for (int i = 0; i < n - 1; i++) {
+            if (abs(x[i] - res[i]) > eps) {
+                f = false;
+                break;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            res[i] = x[i];
+        }
+        if (f)
+            break;
+    } while (1);
+    return res;
+
+   /* std::vector<double> firstSolv(n, 0.0);
     int it = 0;
     double eps = 0.0001;
     while (true) {
@@ -79,26 +113,83 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> mat,
             break;
         firstSolv = currentSol;
     }
-    return firstSolv;
+    return firstSolv;*/
 }
-std::vector<double> parallelMethod(const std::vector<std::vector <double> > &mat,
-    const std::vector<double> &b, int n) {
+std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
+    std::vector<double> b, int n) {
     int procNum, procRank;
-    MPI_Comm_size(MPI_COMM_WORLD, &procNum);
-    MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-    if (n < 0) {
+    std::vector<double> matV = Convert(mat, b, n);
+    int chek = static_cast<int>(matV.size());
+    if ((n < 0) || (chek != n * n)) {
         throw "error matrix";
     }
-    if ((n < procNum) || (procNum == 1) || (procNum == 2) || (procNum == 3)) {
-        if (procRank == 0) {
-            return seqMethod(mat, b, n);
-        } else {
-            return std::vector<double>();
+    MPI_Comm_size(MPI_COMM_WORLD, &procNum);
+    MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
+    int size = static_cast<int>(b.size());
+    if (size < procNum) {
+        return (seqMethod(mat, b, n));
+    }
+
+    int littleLen = size / procNum;
+    int d = size % procNum;
+    std::vector<int> matCount(procNum);
+    std::vector<int> matExtra(procNum);
+    std::vector<int> bCount(procNum);
+    std::vector<int> bExtra(procNum);
+    matCount.push_back((d + littleLen) * size);
+    matExtra.push_back(0);
+    bCount.push_back(littleLen + d);
+    bExtra.push_back(0);
+    for (int i = 1; i < procNum; i++) {
+        matCount[i] = littleLen * size;
+        bCount[i] = littleLen;
+        matExtra[i] = (d + littleLen * i) * size;
+        bExtra[i] = d + littleLen * i;
+    }
+
+    std::vector<double> firstSolv(size);
+    std::vector<double> currentSolv(size);
+    std::vector<double> locMat(matCount[procRank]);
+    std::vector<double> locV(bCount[procRank]);
+
+    MPI_Scatterv(matV.data(), matCount.data(), matExtra.data(), MPI_DOUBLE,
+        locMat.data(), matCount[procRank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Scatterv(b.data(), bCount.data(), bExtra.data(), MPI_DOUBLE,
+        locV.data(), bCount[procRank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    double de;
+    for (int i = 0; i < bCount[procRank]; i++) {
+        de = locMat[bExtra[procRank] + i * size + i];
+        locV[i] = locV[i] / de;
+        for (int j = 0; j < size; j++) {
+            if (j == bExtra[procRank] + i)
+                locMat[size * i + j] = 0;
+            else
+                locMat[size * i + j] = locMat[size * i + j] / de;
         }
     }
-    const std::vector<double> &matV = Convert(mat, b, n);
-    std::vector<double> firstSolv(n, 0.0);
-    int littleLen = n / procNum;
+    MPI_Gatherv(locV.data(), bCount[procRank], MPI_DOUBLE,
+        firstSolv.data(), bCount.data(), bExtra.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast(firstSolv.data(), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    double locErr = 0;
+    double err = 0;
+    double eps = 0.0001;
+    do {
+        for (int i = 0; i < bCount[procRank]; i++) {
+            currentSolv[i] = locV[i];
+            for (int j = 0; j < size; j++)
+                currentSolv[i] = currentSolv[i] - locMat[i * size + j] * firstSolv[j];
+            locErr = std::abs(currentSolv[i] - firstSolv[bExtra[procRank] + i]);
+        }
+        MPI_Gatherv(currentSolv.data(), bCount[procRank], MPI_DOUBLE, firstSolv.data(),
+            bCount.data(), bExtra.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        MPI_Bcast(firstSolv.data(), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        MPI_Allreduce(&locErr, &err, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
+        //  if (err < eps)
+        //  break;
+    } while (err > eps);
+    return firstSolv;
+    /*
     int startI;
     std::vector<double> locMat;
     int count = littleLen;
@@ -136,7 +227,6 @@ std::vector<double> parallelMethod(const std::vector<std::vector <double> > &mat
         else
             extra[i] = extra[i - 1] + littleLen;
     }
-
     int it = 0;
     double eps = 0.0001;
     auto locLen = static_cast<int>(locMat.size());
@@ -168,5 +258,5 @@ std::vector<double> parallelMethod(const std::vector<std::vector <double> > &mat
         MPI_Allgatherv(currentSolv.data(), count, MPI_DOUBLE, firstSolv.data(),
             resCount.data(), extra.data(), MPI_DOUBLE, MPI_COMM_WORLD);
     }
-    return firstSolv;
+    return firstSolv;*/
 }
