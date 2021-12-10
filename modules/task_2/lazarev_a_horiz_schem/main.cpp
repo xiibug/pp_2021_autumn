@@ -27,7 +27,7 @@ TEST(Horiz_schem, Multiplication_16x16) {
   if (ProcRank == 0) {
     a = random_vector(size);
     b = random_vector(size);
-    c = multiplication(a, b, 16);
+    c = multiplication(a, b, size);
     ASSERT_NO_THROW(true);
   }
 }
@@ -41,9 +41,9 @@ TEST(Horiz_schem, Multiplication_and_parallel_1x1) {
   std::vector<int> C;
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
   if (ProcRank == 0) {
-    c = multiplication(a, b, 1);
+    c = multiplication(a, b, size);
   }
-  C = multiplication_parallel(a, b, 1);
+  C = multiplication_parallel(a, b, size);
   if (ProcRank == 0) {
     ASSERT_EQ(c, C);
   }
@@ -59,11 +59,11 @@ TEST(Horiz_schem, Multiplication_and_parallel_50x50) {
     a = random_vector(size);
     b = random_vector(size);
     t1 = MPI_Wtime();
-    c = multiplication(a, b, 50);
+    c = multiplication(a, b, size);
     t2 = MPI_Wtime();
   }
   t3 = MPI_Wtime();
-  C = multiplication_parallel(a, b, 50);
+  C = multiplication_parallel(a, b, size);
   MPI_Barrier(MPI_COMM_WORLD);
   if (ProcRank == 0) {
     t4 = MPI_Wtime();
@@ -85,11 +85,11 @@ TEST(Horiz_schem, Multiplication_and_parallel_458x458) {
     a = random_vector(size);
     b = random_vector(size);
     t1 = MPI_Wtime();
-    c = multiplication(a, b, 458);
+    c = multiplication(a, b, size);
     t2 = MPI_Wtime();
   }
   t3 = MPI_Wtime();
-  C = multiplication_parallel(a, b, 458);
+  C = multiplication_parallel(a, b, size);
   MPI_Barrier(MPI_COMM_WORLD);
   if (ProcRank == 0) {
     t4 = MPI_Wtime();
