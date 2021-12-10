@@ -14,7 +14,7 @@ TEST(Horiz_schem, Multiplication_1x1) {
   std::vector<int> flag(1, -30);
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
   if (ProcRank == 0) {
-    c = multiplication(a, b, 1);
+    c = multiplication(a, b, size);
     ASSERT_EQ(c, flag);
   }
 }
