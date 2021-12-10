@@ -13,12 +13,11 @@ int* CreateRandMatrix(int rows, int cols) {
 
   if (rows <= 0 || cols <= 0) {
     throw -1;
-  } else {
+  }
     for (int i = 0; i < rows * cols; i++) {
       Matrix[i] =
           min + (std::rand() * static_cast<int>((max + 1) - min) / RAND_MAX);
     }
-  }
   return Matrix;
 }
 
@@ -45,7 +44,7 @@ int* MPIMethod(int* M, int rs, int cs) {
 
   if (rs <= 0 || cs <= 0) {
     throw -1;
-  } else {
+  }
     int Size, Rank;
     MPI_Comm_size(MPI_COMM_WORLD, &Size);
     MPI_Comm_rank(MPI_COMM_WORLD, &Rank);
@@ -83,7 +82,7 @@ int* MPIMethod(int* M, int rs, int cs) {
     sum = LinearMetod(BuffMatrix, rows, cols);
 
     MPI_Reduce(sum, all_sum_cols, cols, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
-  }
+
 
   return all_sum_cols;
 }
