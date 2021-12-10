@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
-#include "../../../modules/task_2/galindo_contrast_enhancement/galindo_contrast_enhancement.h"
+#include "modules/task_2/galindo_constrast_enhancement/galindo_contrast_enhancement.h"
 
 #define CLR 256
 
@@ -33,7 +33,7 @@ std::vector<int> changeContrast(const std::vector<int>& pic, int _width, int _hi
     if (_width * _high != static_cast<int>(pic.size())) throw "Error";
     if (_size_img < 1) throw "Error";
     std::vector<int> color_pallete(CLR);
-    
+
     if (_correction == 0) return pic;
 
     int lAB = 0;
