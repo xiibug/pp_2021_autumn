@@ -16,15 +16,10 @@ TEST(Cannon_MPI, Test_Seq_Multiply_Fixed) {
     double* A = CreateEasyMatrix(size);
     double* B = CreateEasyMatrix(size);
     double* C = SeqMulti(size, A, B);
-    int errors = 0;
 
     for (int i = 0; i < size * size; i++) {
-      if (std::abs(exp_C[i] - C[i]) > 0.001) {
-        errors = 1;
-        break;
-      }
+      ASSERT_NEAR(exp_C[i],C[i],0.001);
     }
-    ASSERT_EQ(0, errors);
   }
 }
 
@@ -47,15 +42,9 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Fixed) {
                    21, 42, 63, 84, 105, 126, 21, 42, 63, 84, 105, 126,
                    21, 42, 63, 84, 105, 126, 21, 42, 63, 84, 105, 126};
 
-    int errors = 0;
-
     for (int i = 0; i < size * size; i++) {
-      if (std::abs(exp_C[i] - C[i]) > 0.001) {
-        errors = 1;
-        break;
-      }
+      ASSERT_NEAR(exp_C[i],C[i],0.001);
     }
-    ASSERT_EQ(0, errors);
   }
 }
 
@@ -87,15 +76,10 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_10) {
   if (ProcRank == 0) {
     t2 = MPI_Wtime();
     t_parallel = t2 - t1;
-    int errors = 0;
-
     for (int i = 0; i < size * size; i++) {
-      if (std::abs(C_seq[i] - C_par[i]) > 0.001) {
-        errors = 1;
-        break;
-      }
+      ASSERT_NEAR(C_seq[i],C_par[i],0.001);
     }
-    ASSERT_EQ(0, errors);
+
     std::cout << "--Seq = " << t_seq << "\n"
               << "==Parallel = " << t_parallel << std::endl;
     std::cout << "Acceleration = " << t_seq / t_parallel << std::endl;
@@ -130,15 +114,10 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_100) {
   if (ProcRank == 0) {
     t2 = MPI_Wtime();
     t_parallel = t2 - t1;
-    int errors = 0;
-
     for (int i = 0; i < size * size; i++) {
-      if (std::abs(C_seq[i] - C_par[i]) > 0.001) {
-        errors = 1;
-        break;
-      }
+      ASSERT_NEAR(C_seq[i],C_par[i],0.001);
     }
-    ASSERT_EQ(0, errors);
+
     std::cout << "--Seq = " << t_seq << "\n"
               << "==Parallel = " << t_parallel << std::endl;
     std::cout << "Acceleration = " << t_seq / t_parallel << std::endl;
@@ -173,15 +152,10 @@ TEST(Cannon_MPI, Test_Parallel_Multiply_Random_500) {
   if (ProcRank == 0) {
     t2 = MPI_Wtime();
     t_parallel = t2 - t1;
-    int errors = 0;
-
     for (int i = 0; i < size * size; i++) {
-      if (std::abs(C_seq[i] - C_par[i]) > 0.001) {
-        errors = 1;
-        break;
-      }
+      ASSERT_NEAR(C_seq[i],C_par[i],0.001);
     }
-    ASSERT_EQ(0, errors);
+
     std::cout << "--Seq = " << t_seq << "\n"
               << "==Parallel = " << t_parallel << std::endl;
     std::cout << "Acceleration = " << t_seq / t_parallel << std::endl;
