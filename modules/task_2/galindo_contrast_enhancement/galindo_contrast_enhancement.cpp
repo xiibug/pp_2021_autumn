@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
-#include "modules/task_2/galindo_contrast_enhancement/galindo_contrast_enhancement.h"
+#include "../../../modules/task_2/galindo_contrast_enhancement/galindo_contrast_enhancement.h"
 
 #define CLR 256
 

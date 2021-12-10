@@ -4,7 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <random>
-#include "modules/task_2/galindo_contrast_enhancement/galindo_contrast_enhancement.h"
+#include "../../../modules/task_2/galindo_contrast_enhancement/galindo_contrast_enhancement.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Change_contrast_MPI, test1) {
