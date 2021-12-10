@@ -75,7 +75,7 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> matrix,
         }
         bool f = true;
         for (int i = 0; i < n - 1; i++) {
-            if (abs(x[i] - res[i]) > eps) {
+            if (std::abs(x[i] - res[i]) > eps) {
                 f = false;
                 break;
             }

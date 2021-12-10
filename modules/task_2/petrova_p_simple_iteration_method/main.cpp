@@ -28,7 +28,7 @@ TEST(simple_iteration, test_0) {
     std::vector<double> ans{ 1.0001, 2, 3.0001 };
     x = seqMethod(A, b, 3);
     for (int i = 0; i < 3; i++) {
-        EXPECT_TRUE((x[i] - ans[i]) < 0.0001);
+        EXPECT_NEAR(x[i], ans[i], 0.002);
     }
 }
 TEST(simple_iteration, test_1) {
