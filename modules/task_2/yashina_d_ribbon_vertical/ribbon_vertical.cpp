@@ -3,6 +3,8 @@
 
 #include <mpi.h>
 
+#include <algorithm>
+#include <iostream>
 #include <random>
 
 int* initEmptyMatrix(int rows) {
@@ -42,7 +44,7 @@ void ParallelMatrixMultiplication(const int* A, const int ARows,
   if (ACols != BRows) {
     throw -1;
   }
-
+  double start = MPI_Wtime();
   int world_size, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -52,25 +54,39 @@ void ParallelMatrixMultiplication(const int* A, const int ARows,
   int* ribbon = nullptr;
   int* local_vector = nullptr;
 
-  int temp = 0;
+  int new_width = ribbon_width + remainder;
+
   if (rank == 0) {
-    temp = remainder;
+    ribbon = new int[ARows * new_width];
+  } else {
+    ribbon = new int[ARows * ribbon_width];
   }
-
-  ribbon = new int[ARows * (ribbon_width + temp)];
   local_vector = initEmptyMatrix(ARows);
-
-  for (int i = 0; i < ARows; i++) {
-    MPI_Scatter(A + remainder + i * ACols, ribbon_width, MPI_INT,
-                ribbon + temp + i * (ribbon_width + temp), ribbon_width,
-                MPI_INT, 0, MPI_COMM_WORLD);
-    if (rank == 0) {
+  //double end = MPI_Wtime();
+  //if (rank == 0) {
+  //  std::cout << "Current time variables: " << end - start << std::endl;
+  //}
+  //start = MPI_Wtime();
+  if (rank == 0) {
+    for (int i = 0; i < ARows; i++) {
+      MPI_Scatter(A + remainder + i * ACols, ribbon_width, MPI_INT,
+                  ribbon + remainder + i * new_width, ribbon_width, MPI_INT, 0,
+                  MPI_COMM_WORLD);
       for (int j = 0; j < remainder; j++) {
-        ribbon[j + i * (ribbon_width + temp)] = A[j + i * ACols];
+        ribbon[j + i * new_width] = A[j + i * ACols];
       }
     }
+  } else {
+    for (int i = 0; i < ARows; i++) {
+      MPI_Scatter(A + remainder + i * ACols, ribbon_width, MPI_INT,
+                  ribbon + i * ribbon_width, ribbon_width, MPI_INT, 0,
+                  MPI_COMM_WORLD);
+    }
   }
-
+  //end = MPI_Wtime();
+  //if (rank == 0) {
+  //  std::cout << "Current time scatter: " << end - start << std::endl;
+  //}
   // printf("Rank %d\n", rank);
   // for (int i = 0; i < ARows; i++) {
   //  for (int j = 0; j < ribbon_width + temp; j++) {
@@ -79,18 +95,20 @@ void ParallelMatrixMultiplication(const int* A, const int ARows,
   //  printf("\n");
   //}
   // fflush(stdout);
-
-  for (int i = 0; i < ribbon_width + temp; i++) {
-    for (int j = 0; j < ARows; j++) {
-      if (rank == 0) {
-        local_vector[j] +=
-            ribbon[i + j * (ribbon_width + temp)] * B[i + ribbon_width * rank];
-      } else {
-        local_vector[j] += ribbon[i + j * (ribbon_width + temp)] *
-                           B[i + ribbon_width * rank + remainder];
-      }
-    }
+  //start = MPI_Wtime();
+  if (rank == 0) {
+    SequentialMatrixMultiplication(ribbon, ARows, new_width, B, new_width,
+                                   local_vector);
+  } else {
+    int* new_B = new int[ribbon_width];
+    std::copy(B + ribbon_width * rank + remainder,
+              B + ribbon_width * rank + remainder + ribbon_width, new_B);
+    SequentialMatrixMultiplication(ribbon, ARows, ribbon_width, new_B,
+                                   ribbon_width, local_vector);
   }
+  //end = MPI_Wtime();
+  //std::cout << "Rank: " << rank << " Current time calc local: " << end - start
+  //          << std::endl;
 
   // printf("Result: Rank %d\n", rank);
   // for (int i = 0; i < ARows; i++) {
@@ -98,6 +116,10 @@ void ParallelMatrixMultiplication(const int* A, const int ARows,
   //  printf("\n");
   //}
   // fflush(stdout);
-
+  //start = MPI_Wtime();
   MPI_Reduce(local_vector, C, ARows, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+  //end = MPI_Wtime();
+  //if (rank == 0) {
+  //  std::cout << "Current time reduce: " << end - start << std::endl;
+  //}
 }

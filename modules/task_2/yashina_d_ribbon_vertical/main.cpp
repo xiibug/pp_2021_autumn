@@ -121,12 +121,12 @@ TEST(Ribbon_Vertical_MPI, A_21x43_B_43) {
   }
 }
 
-TEST(Ribbon_Vertical_MPI, A_100x50_B_50) {
+TEST(Ribbon_Vertical_MPI, A_1x500_B_500) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   int *A = nullptr, *B = nullptr, *parallel_C = nullptr,
       *sequential_C = nullptr;
-  int ARows = 100, ACols = 50, BRows = 50;
+  int ARows = 1, ACols = 500, BRows = 500;
   if (rank == 0) {
     A = getRandomMatrix(ARows, ACols);
     parallel_C = initEmptyMatrix(ARows);
