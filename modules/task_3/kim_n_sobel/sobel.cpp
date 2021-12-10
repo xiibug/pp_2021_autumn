@@ -139,9 +139,10 @@ std::vector<std::vector<int>> getSobelImageParall(std::vector<std::vector<int>> 
         global_sobel[(i-start) * size + j] = local_sobel[(i-start) * size + j];
     MPI_Status status;
     int i = 1;
-    for (i; i < proc_num - 1; i++)
+    for (; i < proc_num - 1; i++)
       MPI_Recv(global_sobel.data() + range * size * i, range * size, MPI_INT, i, 1, MPI_COMM_WORLD, &status);
-    MPI_Recv(global_sobel.data() + range * size * i, (size - range * i) * size, MPI_INT, proc_num - 1, 1, MPI_COMM_WORLD, &status);
+    MPI_Recv(global_sobel.data() + range * size * i, (size - range * i) * size,
+      MPI_INT, proc_num - 1, 1, MPI_COMM_WORLD, &status);
     for (int i = 0; i < size; i++)
       for (int j = 0; j < size; j++)
         vectomat[i][j] = global_sobel[i * size + j];
