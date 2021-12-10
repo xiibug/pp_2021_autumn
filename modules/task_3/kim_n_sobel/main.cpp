@@ -87,15 +87,15 @@ TEST(Parallel_Operations_MPI, Test_Sobel_X_Large) {
   std::vector<std::vector<int>> image;
 
   if (rank == 0) {
-    image = getRandomImage(100);
+    image = getRandomImage(20);
   }
 
-  std::vector<std::vector<int>> res = getSobelImageParall(image, 100, 'x');
+  std::vector<std::vector<int>> res = getSobelImageParall(image, 20, 'x');
 
   if (rank == 0) {
-    std::vector<std::vector<int>> exp_res = getSobelImage(image, 100, 'x');
-    for (int i = 0; i < 100; i++)
-      for (int j = 0; j < 100; j++)
+    std::vector<std::vector<int>> exp_res = getSobelImage(image, 20, 'x');
+    for (int i = 0; i < 20; i++)
+      for (int j = 0; j < 20; j++)
         if (res[i][j] != exp_res[i][j]) {
           ASSERT_EQ(exp_res[i][j], res[i][j]);
         }
@@ -109,15 +109,15 @@ TEST(Parallel_Operations_MPI, Test_Sobel_Y_Large) {
   std::vector<std::vector<int>> image;
 
   if (rank == 0) {
-    image = getRandomImage(100);
+    image = getRandomImage(20);
   }
 
-  std::vector<std::vector<int>> res = getSobelImageParall(image, 100, 'y');
+  std::vector<std::vector<int>> res = getSobelImageParall(image, 20, 'y');
 
   if (rank == 0) {
-    std::vector<std::vector<int>> exp_res = getSobelImage(image, 100, 'y');
-    for (int i = 0; i < 100; i++)
-      for (int j = 0; j < 100; j++)
+    std::vector<std::vector<int>> exp_res = getSobelImage(image, 20, 'y');
+    for (int i = 0; i < 20; i++)
+      for (int j = 0; j < 20; j++)
         if (res[i][j] != exp_res[i][j]) {
           ASSERT_EQ(exp_res[i][j], res[i][j]);
         }
@@ -131,26 +131,26 @@ TEST(Parallel_Operations_MPI, Test_Sobel_XY_Large) {
   std::vector<std::vector<int>> image1;
 
   if (rank == 0) {
-    image1 = getRandomImage(100);
+    image1 = getRandomImage(20);
   }
 
-  std::vector<std::vector<int>> image2 = getSobelImageParall(image1, 100, 'x');
+  std::vector<std::vector<int>> image2 = getSobelImageParall(image1, 20, 'x');
 
   if (rank == 0) {
-    std::vector<std::vector<int>> exp_res = getSobelImage(image1, 100, 'x');
-    for (int i = 0; i < 100; i++)
-      for (int j = 0; j < 100; j++)
+    std::vector<std::vector<int>> exp_res = getSobelImage(image1, 20, 'x');
+    for (int i = 0; i < 20; i++)
+      for (int j = 0; j < 20; j++)
         if (image2[i][j] != exp_res[i][j]) {
           ASSERT_EQ(exp_res[i][j], image2[i][j]);
         }
   }
 
-  std::vector<std::vector<int>> res = getSobelImageParall(image2, 100, 'y');
+  std::vector<std::vector<int>> res = getSobelImageParall(image2, 20, 'y');
 
   if (rank == 0) {
-    std::vector<std::vector<int>> exp_res = getSobelImage(image2, 100, 'y');
-    for (int i = 0; i < 100; i++)
-      for (int j = 0; j < 100; j++)
+    std::vector<std::vector<int>> exp_res = getSobelImage(image2, 20, 'y');
+    for (int i = 0; i < 20; i++)
+      for (int j = 0; j < 20; j++)
         if (res[i][j] != exp_res[i][j]) {
           ASSERT_EQ(exp_res[i][j], res[i][j]);
         }
