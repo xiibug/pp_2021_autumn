@@ -11,6 +11,6 @@ std::vector<int> random_vector(int size);
 std::vector<int> transposition(std::vector<int> b, int size);
 std::vector<int> multiplication(std::vector<int> a, std::vector<int> b,
                                 int size);
-std::vector<int> multiplication_parallel(std::vector<int> A, std::vector<int> B,
-                                         int data);
+std::vector<int> multiplication_parallel(std::vector<int> A,
+                                         const std::vector<int>& B, int data);
 #endif  // MODULES_TASK_2_LAZAREV_A_HORIZ_SCHEM_HORIZ_SCHEM_H_

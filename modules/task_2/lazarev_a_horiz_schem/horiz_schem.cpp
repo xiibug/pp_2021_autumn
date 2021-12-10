@@ -36,8 +36,8 @@ std::vector<int> multiplication(std::vector<int> a, std::vector<int> b,
   return c;
 }
 
-std::vector<int> multiplication_parallel(std::vector<int> A, std::vector<int> B,
-                                         int data) {
+std::vector<int> multiplication_parallel(std::vector<int> A,
+                                         const std::vector<int>& B, int data) {
   std::vector<int> b(data * data);
   std::vector<int> C(data * data);
   int ProcRank, ProcNum;
@@ -86,9 +86,7 @@ std::vector<int> multiplication_parallel(std::vector<int> A, std::vector<int> B,
   for (int i = 1; i < ProcNum; i++) {
     displs[i] = displs[i - 1] + local_matrix[i - 1];
   }
-  MPI_Gatherv(
-      c.data(), local_matrix[ProcRank], MPI_INT, C.data(), local_matrix,
-      displs.data(), MPI_INT, 0,
-      MPI_COMM_WORLD);
+  MPI_Gatherv(c.data(), local_matrix[ProcRank], MPI_INT, C.data(), local_matrix,
+              displs.data(), MPI_INT, 0, MPI_COMM_WORLD);
   return C;
 }
