@@ -1,6 +1,6 @@
 // Copyright 2021 Lazarev Alexey
-#ifndef MODULES_TASK_1_LAZAREV_A_WORD_COUNT_WORD_COUNT_H_
-#define MODULES_TASK_1_LAZAREV_A_WORD_COUNT_WORD_COUNT_H_
+#ifndef MODULES_TASK_1_LAZAREV_NUMBERS_OF_WORDS_IN_LINE_WORD_COUNT_H_
+#define MODULES_TASK_1_LAZAREV_NUMBERS_OF_WORDS_IN_LINE_WORD_COUNT_H_
 #include <mpi.h>
 
 #include <ctime>
@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-int Count(std::string);           // параллельный
-int GetCountString(std::string);  // последовательный
+int Count(std::string);           
+int GetCountString(std::string);  
 
-#endif  // MODULES_TASK_1_LAZAREV_A_WORD_COUNT_WORD_COUNT_H_
+#endif  // MODULES_TASK_1_LAZAREV_NUMBERS_OF_WORDS_IN_LINE_WORD_COUNT_H_
