@@ -3,13 +3,20 @@
 #include "./dining_philosophers.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(Dining_philosophers_MPI, No_philosophers) {
-    int rank;
+TEST(Dining_philosophers_MPI, One_pizza) {
+    int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    int runs = 1;
 
     if (rank == 0) {
-        ASSERT_NO_THROW(table(rank, 1, 0));
+        table(rank, size, runs);
+    } else {
+        philosopher(rank, runs);
     }
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    ASSERT_NO_THROW();
 }
 
 TEST(Dining_philosophers_MPI, Three_pizzas) {

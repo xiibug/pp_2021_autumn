@@ -41,29 +41,6 @@ TEST(scalar_muliplication  , simple_random_vectors) {
 }
 
 
-TEST(scalar_muliplication , size_less_pcount) {
-  int prank = 0 , pcount;
-  int size;
-
-  std::vector<int> first , second;
-  MPI_Comm_rank(MPI_COMM_WORLD ,  &prank);
-  MPI_Comm_size(MPI_COMM_WORLD ,  &pcount);
-  if ( pcount == 1 ) {
-    ASSERT_EQ(1 , 1);
-  }
-  size = pcount-1;
-  if (prank == 0) {
-    first = generate_random_vector(size);
-    second = generate_random_vector(size);
-  }
-  int answer = scalar_muliply(first , second , size);
-  if (prank == 0) {
-    int right_ans = non_parallel_scalar_muliply(first , second , size);
-    ASSERT_EQ(right_ans , answer);
-  }
-}
-
-
 TEST(scalar_muliplication , simple_with_zero) {
   int prank = 0 , pcount;
   int size = 12;
@@ -97,27 +74,12 @@ TEST(scalar_muliplication , prime_size) {
   }
 }
 
-
-TEST(scalar_muliplication , zero_size) {
-  int prank = 0;
-  const int size = 0;
-  std::vector<int> first , second;
-  MPI_Comm_rank(MPI_COMM_WORLD ,  &prank);
-  if (prank == 0) {
-    first = generate_random_vector(size);
-    second = generate_random_vector(size);
-  }
-  int answer = scalar_muliply(first , second , size);
-  if (prank == 0) {
-      int right_ans = non_parallel_scalar_muliply(first , second , size);
-      ASSERT_EQ(right_ans , answer);
-  }
-}
-
 TEST(scalar_muliplication , stress_test) {
   std::random_device dev;
   std::mt19937 gen(dev());
-  for (int it=1 ; it < 1000 ; it++) {
+  int pcount = 0;
+  MPI_Comm_size(MPI_COMM_WORLD ,  &pcount);
+  for (int it = pcount+1 ; it < 1000 ; it++) {
         int prank = 0;
     const int size = it;
     std::vector<int> first , second;
