@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-int Count(std::string);
+int Count_pp(std::string);
 int GetCountString(std::string);
 
 #endif  // MODULES_TASK_1_LAZAREV_NUMBERS_OF_WORDS_IN_LINE_WORD_COUNT_H_

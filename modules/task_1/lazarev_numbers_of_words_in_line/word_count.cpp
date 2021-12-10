@@ -1,12 +1,12 @@
 // Copyright 2021 Lazarev Alexey
 
 #include "../../../modules/task_1/lazarev_numbers_of_words_in_line/word_count.h"
-using namespace std;
+
 int GetCountString(std::string st) {
   int word = 0;
   int size = st.size();
   if (size > 0) {
-    word = count(st.begin(), st.end(), ' ');
+    word = std::count(st.begin(), st.end(), ' ');
     word++;
     if (st[0] == ' ') {
       word--;
@@ -18,7 +18,7 @@ int GetCountString(std::string st) {
   return word;
 }
 
-int Count(const std::string st) {
+int Count_pp(const std::string st) {
   int ProcNum, ProcRank;
   int size_string = st.size();
   int local_count = 0;

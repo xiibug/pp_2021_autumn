@@ -38,7 +38,7 @@ TEST(WordCount, parallel) {
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
   st = "sdhdf dfjdf drjd fffd dffg jg ";
-  res = Count(st);
+  res = Count_pp(st);
   if (ProcRank == 0) {
     ASSERT_EQ(res, 6);
   }
@@ -52,7 +52,7 @@ TEST(WordCount, parallelCount) {
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
   st = "sdggh gfjfg ### jfg ghj df";
-  count = Count(st);
+  count = Count_pp(st);
   if (ProcRank == 0) {
     i = GetCountString(st);
     ASSERT_EQ(i, count);
