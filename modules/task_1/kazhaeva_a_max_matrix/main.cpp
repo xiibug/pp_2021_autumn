@@ -68,7 +68,6 @@ TEST(Parallel_Max_MPI_3, Size_5x4) {
     }
   }
 }
-
 TEST(Parallel_Max_MPI_4, Size_100x100) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -86,7 +85,7 @@ TEST(Parallel_Max_MPI_4, Size_100x100) {
     }
   }
 }
-TEST(Parallel_Max_MPI_5, Size_100x100) {
+TEST(Parallel_Max_MPI_5, Size_20x50) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   int Matrix[20 * 50];

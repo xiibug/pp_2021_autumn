@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-int* Max_Matrix(int* a, int A_col, int A_row);
+int* Max_Matrix(int* a, int A_row , int A_col);
 int* CalcMaxNumber(int* matrix, int row, int col);
 void Rand(int* matrix, int rows, int columns);
 
