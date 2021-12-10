@@ -23,7 +23,7 @@ int Count(const std::string st) {
   int size_string = st.size();
   int local_count = 0;
   int result = 0;
-  int step=0;
+  int step = 0;
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
 
