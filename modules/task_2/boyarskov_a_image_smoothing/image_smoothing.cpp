@@ -17,12 +17,6 @@ int* getRandomImage(int width, int height) {
   return img;
 }
 
-int clamp(int value, int max, int min) {
-  if (value > max) return max;
-  if (value < min) return min;
-  return value;
-}
-
 float calcNewPixelColor(int* img, int x, int y, int width, int height,
                         int radius) {
   int size = 2 * radius + 1;
@@ -65,13 +59,6 @@ int* getSequentialGauss(int* image, int width, int height, int radius) {
     }
   }
   return new_image;
-}
-
-int trunc(int value) {
-  if (value < 0) return 0;
-  if (value > 255) return 255;
-
-  return value;
 }
 
 int* getParallelGauss(int* image, int width, int height, int radius) {
