@@ -39,39 +39,27 @@ double getParallelIntegrals(
 
   int dimension = static_cast<int>(limits.size());
   std::vector<double> h(n);
-  int count;
+  int count = 1;
 
-  if (rank == 0) {
-    count = 1;
-    for (int i = 0; i < dimension; i++) {
-      h[i] = (limits[i].second - limits[i].first) / n;
-    }
-    int j = 0;
-    while (j != dimension - 1) {
-      count *= n;
-      j++;
-    }
+  for (int i = 0; i < dimension; i++) {
+    h[i] = (limits[i].second - limits[i].first) / n;
+    count *= n;
   }
-
-  MPI_Bcast(&count, 1, MPI_UNSIGNED, 0, MPI_COMM_WORLD);
-  MPI_Bcast(h.data(), dimension, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   size_t delta = static_cast<size_t>(count / size);
+  int rem = count % size, temp = 0;
 
-  if (rank < count % size) {
-    delta += 1;
-  }
+  int interval_start = 0;
+  if (rank != 0) interval_start = rank * delta + rem;
+  int interval_end = (rank + 1) * delta + rem;
 
-  std::vector<std::vector<double>> combinations(delta);
+  std::vector<double> combinations(dimension);
   double local_result = 0.0;
-  for (size_t i = 0; i < delta; i++) {
-    int number = static_cast<int>(rank * delta + i);
-    for (int j = 0; j < dimension; j++) {
-      combinations[i].push_back(limits[j].first + h[j] * (number % n) +
-                                h[j] * 0.5);
+  for (size_t j = interval_start; j < interval_end; j++) {
+    for (int i = 0; i < dimension; i++) {
+      combinations[i] = limits[i].first + (j % n) * h[i] + h[i] * 0.5;
     }
-
-    local_result += f(combinations[i]) * n;
+    local_result += f(combinations);
   }
 
   double global_result = 0.0;
