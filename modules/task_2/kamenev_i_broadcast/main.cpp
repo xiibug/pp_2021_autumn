@@ -269,7 +269,7 @@ TEST(BroadcastTest, FloatMin) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == root) {
     vec = getRandomVector<float>(length * size, 50);
-    for (int i = 0; i < length; i++) {
+    for (int i = 0; i < length * size; i++) {
       if (vec[i] < seq_min) {
         seq_min = vec[i];
       }
