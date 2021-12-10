@@ -89,6 +89,6 @@ std::vector<int> multiplication_parallel(std::vector<int> A, std::vector<int> B,
   MPI_Gatherv(
       c.data(), local_matrix[ProcRank], MPI_INT, C.data(), local_matrix,
       displs.data(), MPI_INT, 0,
-      MPI_COMM_WORLD);  
+      MPI_COMM_WORLD);
   return C;
 }
