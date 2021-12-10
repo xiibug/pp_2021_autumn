@@ -58,6 +58,6 @@ int* Max_Matrix(int* a, const int A_col, const int A_row) {
   if (ProcRank == 0) {
     delete[] displs;
     delete[] sendcounts;
-    return max_all;
   }
+  return max_all;
 }
