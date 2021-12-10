@@ -10,6 +10,8 @@ int clamp(int value, int min, int max);
 
 int calcNewPixelColor(std::vector<std::vector<int>> image, int x, int y, int size, int kernel[3][3]);
 
+int calcNewPixelColor(std::vector<int> image, int x, int y, int size, int kernel[3][3]);
+
 std::vector<std::vector<int>> getSobelImage(std::vector<std::vector<int>> image, int size, char type);
 
 std::vector<std::vector<int>> getSobelImageParall(std::vector<std::vector<int>> image, int size, char type);
