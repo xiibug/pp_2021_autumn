@@ -18,7 +18,7 @@ int GetCountString(std::string st) {
   return word;
 }
 
-int Count_pp(const std::string st) {
+int Count_pp(std::string st) {
   int ProcNum, ProcRank;
   int size_string = st.size();
   int local_count = 0;
