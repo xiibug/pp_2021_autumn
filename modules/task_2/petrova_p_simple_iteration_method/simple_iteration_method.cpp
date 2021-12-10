@@ -81,7 +81,7 @@ std::vector<double> seqMethod(std::vector< std::vector<double>> mat,
     }
     return firstSolv;
 }
-std::vector<double> parallelMethod(std::vector<std::vector <double> > mat,
+std::vector<double> parallelMethod(const std::vector<std::vector <double> > &mat,
     const std::vector<double> &b, int n) {
     int procNum, procRank;
     MPI_Comm_size(MPI_COMM_WORLD, &procNum);
