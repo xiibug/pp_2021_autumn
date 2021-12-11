@@ -51,7 +51,7 @@ TEST(Parallel_Max_MPI_3, Size_5x4) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  int a[5 * 4] = { 1, 2, 3, 4,
+  int a[5 * 4] = { 1, 3, 3, 4,
                    6, 7, 8, 3,
                    2, 8, 4, 5,
                    9, 0, 9, 1,
