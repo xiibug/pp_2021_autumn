@@ -4,7 +4,7 @@
 #include "./minimum_value_of_vector.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(Parallel_Operations_MPI, Test_Sum_1) {
+TEST(Parallel_Operations_MPI, Test_Min_1) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
@@ -22,7 +22,7 @@ TEST(Parallel_Operations_MPI, Test_Sum_1) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Sum_2) {
+TEST(Parallel_Operations_MPI, Test_Min_2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
@@ -39,7 +39,7 @@ TEST(Parallel_Operations_MPI, Test_Sum_2) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Sum_3) {
+TEST(Parallel_Operations_MPI, Test_Min_3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
@@ -56,7 +56,7 @@ TEST(Parallel_Operations_MPI, Test_Sum_3) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Sum_4) {
+TEST(Parallel_Operations_MPI, Test_Min_4) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
@@ -73,7 +73,7 @@ TEST(Parallel_Operations_MPI, Test_Sum_4) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Sum_5) {
+TEST(Parallel_Operations_MPI, Test_Min_5) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
