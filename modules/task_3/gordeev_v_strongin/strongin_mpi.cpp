@@ -67,7 +67,6 @@ double StronginParallel(double left, double right, const double _Epsilon,
     double curr_left, curr_right;
     double m_small = 1., M_big;
     double* x_new = new double[procs];
-    double solutionX = 0;
     double solutionZ = 0;
     MPI_Status status;
     double inBuffer[1] = { 0 };
@@ -139,11 +138,12 @@ double StronginParallel(double left, double right, const double _Epsilon,
     ++k;
     while (k < _Steps && (abs(curr_left - curr_right) > eps)) {
         Pointer = --Intervals.end();
-        for (register int i = 0; i < procs * 2 - 2; i += 2) {
+        for (int i = 0; i < procs * 2 - 2; i += 2) {
             WorkVector[i] = *Pointer;
             Intervals.erase(Pointer--);
         }
-        WorkVector[procs * 2 - 2] = *Pointer; Intervals.erase(Pointer);
+        WorkVector[procs * 2 - 2] = *Pointer;
+        Intervals.erase(Pointer);
         size_bank_intervals = Intervals.size();
         for (int i = 0; i < procs; i++) {
             x_new[i] = 0.5 * (WorkVector[i * 2].x_right
@@ -152,7 +152,7 @@ double StronginParallel(double left, double right, const double _Epsilon,
                 / (2 * m_small);
             WorkVector[i * 2 + 1].z_left = func(x_new[i]);
         }
-        for (register int i = 0; i < procs * 2; i += 2) {
+        for (int i = 0; i < procs * 2; i += 2) {
             WorkVector[i + 1].x_right = WorkVector[i].x_right;
             WorkVector[i + 1].z_right = WorkVector[i].z_right;
             WorkVector[i + 1].x_left = WorkVector[i].x_right = x_new[i / 2];
@@ -166,7 +166,7 @@ double StronginParallel(double left, double right, const double _Epsilon,
         double M_max_array = WorkVector[0].M;
         {
             {
-                for (register int i = 1; i < procs * 2; i++) {
+                for (int i = 1; i < procs * 2; i++) {
                     if (M_max_array < WorkVector[i].M)
                         M_max_array = WorkVector[i].M;
                 }
@@ -196,17 +196,17 @@ double StronginParallel(double left, double right, const double _Epsilon,
         }
         if (size_bank_intervals != 0) {
             std::vector<block> R_vec(Intervals.begin(), Intervals.end());
-            for (register int i = 0; i < size_bank_intervals; i++) {
+            for (int i = 0; i < size_bank_intervals; i++) {
                 R_vec[i].R = R(m_small, R_vec[i].z_right, R_vec[i].z_left,
                     R_vec[i].x_right, R_vec[i].x_left);
             }
-            register int j = 0;
+            int j = 0;
             for (auto i = Intervals.begin(); i != Intervals.end(); i++) {
                 i->R = R_vec[j++].R;
             }
             R_vec.clear();
         }
-        for (register int i = 0; i < procs * 2; i++) {
+        for (int i = 0; i < procs * 2; i++) {
             Intervals.push_back(WorkVector[i]);
         }
         Intervals.sort();
@@ -214,7 +214,6 @@ double StronginParallel(double left, double right, const double _Epsilon,
         curr_left = Intervals.back().x_left;
         curr_right = Intervals.back().x_right;
     }
-    solutionX = curr_right;
     solutionZ = Intervals.back().z_right;
     WorkVector.clear();
     InitVector.clear();
