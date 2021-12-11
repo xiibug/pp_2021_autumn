@@ -37,21 +37,15 @@ class Manager {
     bool full, empty;
     int producerCount;
     int consumerCount;
-    MPI_Request* requests;
-    MPI_Request* pRequests;
-    MPI_Request* cRequests;
     std::vector<int> recvData;
 
  private:
-    void producer(int index);
-    void consumer(int index);
+    void producer(int index, MPI_Request* requests, MPI_Request* cRequests);
+    void consumer(int index, MPI_Request* requests, MPI_Request* pRequests);
     int next(int border);
 
  public:
     Manager(int resNumber, int bufSize);
-    Manager(const Manager& m);
-    Manager& operator=(const Manager& m);
-    ~Manager();
     void Run();
 };
 
