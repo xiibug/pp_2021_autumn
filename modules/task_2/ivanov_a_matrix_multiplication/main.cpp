@@ -265,6 +265,22 @@ TEST(parallel_multiplication_test, vector_on_matrix) {
     }
 }
 
+TEST(parallel_multiplication_test, matrix2_on_matrix) {
+    int procRank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
+    matrix<int> a, b;
+    if (procRank == 0) {
+        a.prepareSpace(2, 6);
+        b.prepareSpace(6, 11);
+        a.fillMatrix(generateRngValue, 0, 496845, 0);
+        b.fillMatrix(generateRngValue, 0, 912341, 0);
+    }
+    matrix<int> c = parallelMultiplication(&a, &b, MPI_INT);
+    if (procRank == 0) {
+        ASSERT_TRUE(c == a * b);
+    }
+}
+
 TEST(parallel_multiplication_test, matrix_on_vector) {
     int procRank;
     MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
