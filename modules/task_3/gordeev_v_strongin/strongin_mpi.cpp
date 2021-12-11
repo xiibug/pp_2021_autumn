@@ -176,7 +176,7 @@ double StronginParallel(double left, double right, const double _Epsilon,
                     Pointer = Intervals.begin();
                     double tmp_M;
                     double M_max_list = (*Pointer++).M;
-                    for (; Pointer != Intervals.end(); Pointer++) {
+                    for (; Pointer != Intervals.end(); ++Pointer) {
                         tmp_M = (*Pointer).M;
                         if (M_max_list < tmp_M)
                             M_max_list = tmp_M;
