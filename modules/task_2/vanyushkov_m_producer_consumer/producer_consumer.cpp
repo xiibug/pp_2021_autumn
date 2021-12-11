@@ -73,6 +73,9 @@ Manager::Manager(const Manager& m) {
 }
 
 Manager& Manager::operator=(const Manager& m) {
+    if (this == &m) {
+        return *this;
+    }
     procCount = m.producerCount;
     resourceNumber = m.resourceNumber;
     bufferSize = m.bufferSize;
