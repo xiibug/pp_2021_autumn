@@ -1,73 +1,55 @@
-// Copyright 2021 Vanyushkov Maxim
+// Copyr 2021 Vanyushkov Maxim
 #ifndef MODULES_TASK_2_VANYUSHKOV_M_PRODUCER_CONSUMER_PRODUCER_CONSUMER_H_
 #define MODULES_TASK_2_VANYUSHKOV_M_PRODUCER_CONSUMER_PRODUCER_CONSUMER_H_
 
-#include <queue>
 #include <mpi.h>
+#include <vector>
 
-#define MANAGER 0
-#define PRODUCER 2 
-#define CONSUMER 1
-
-const int PUT_RESOURCE = 1;
-const int GET_RESOURCE = 2;
-const int EXITP = 3;
-const int EXITC = 4;
-const int STOP = -1;
-
-struct info {
-    int procRank;
-    int whatDoYouNeed;
-    int res;
-};
+#define PRODUCER 1 
+#define CONSUMER 2
+#define MANAGER 3
 
 class Consumer {
 private:
-    int resources_to_consume;
-    std::queue<int> resources;
-    info info;
-    MPI_Status status;
-private:
-    void RequestResource();
-    void RecieveResource();
+    int resourcesCount;
 
 public:
-    Consumer(int in_rank, int in_resource_num = 5);
+    Consumer();
     void Run();
 };
 
 class Producer {
 private:
-    int resources_to_produce;
-    std::queue<int> resources;
-    MPI_Status status;
-    info info;
-    int k;
-
-private:
-    bool SendResourceToManager();
-    void CreateResource();
+    int resourcesCount;
 
 public:
-    Producer(int in_rank, int num = 5);
+    Producer();
     void Run();
 };
 
 class Manager {
 private:
-    int total_resources;
-    int* buffer;
-    int N, p_size, prod, cons;
-    MPI_Status status;
-    info info;
+    int procCount;
+    int resourceNumber;
+    int bufferSize;
+    std::vector<int> cyclicBuffer;
+    int lBorder, rBorder;
+    bool full, empty;
+    int producerCount;
+    int consumerCount;
+    MPI_Request* requests;
+    MPI_Request* pRequests;
+    MPI_Request* cRequests;
+    std::vector<int> recvData;
 
 private:
-    void Put(int producer_id, int resource);
-    void Get(int consumer_id);
-    void Stop();
+	void producer(int index);
+	void consumer(int index);
+	void next(int& border);
 
 public:
-    Manager(int in_total_resources, int proc_size, int p, int c);
+    Manager(int resNumber, int bufSize);
+    ~Manager();
     void Run();
 };
 
