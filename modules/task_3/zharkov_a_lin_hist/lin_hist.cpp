@@ -7,11 +7,11 @@
 #include <iostream>
 
 int* getRandomArr(int width, int height) {
-    std::mt19937 gen(time(0));
-    std::uniform_real_distribution<> urd(0.3, 0.7);
+    std::random_device dev;
+    std::mt19937 gen(dev());
     int* img = new int[width * height];
     for (int i = 0; i < width * height; i++) {
-        img[i] = rand() % 255;
+        img[i] = gen() % 255;
     }
     return img;
 }
@@ -75,10 +75,8 @@ int* get_Parallel_lin_hist(int* image, int width, int height) {
 
     int delta = height / size;
     int rem = height % size;
-
     int local_min;
     int local_max;
-    rem;
     if (delta) {
         if (rank == 0) {
             for (int proc = 1; proc < size; proc++) {
@@ -112,7 +110,7 @@ int* get_Parallel_lin_hist(int* image, int width, int height) {
         if (rank == 0) {
             min = get_global_min(local_min_arr, size);
             max = get_global_max(local_max_arr, size);
-        }     
+        }
         int* global_img = nullptr;
         int temp = 0;
         if (rank == 0) {
