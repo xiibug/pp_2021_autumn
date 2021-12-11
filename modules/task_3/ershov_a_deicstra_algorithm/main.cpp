@@ -1,10 +1,10 @@
 // Copyright 2021 Ershov Aleksey
 #include <gtest/gtest.h>
 
-#include <gtest-mpi-listener.hpp>
 #include <vector>
 
 #include "./deicstra_mpi.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Deicstra_MPI, Test_Deicstra) {
   int rank;
