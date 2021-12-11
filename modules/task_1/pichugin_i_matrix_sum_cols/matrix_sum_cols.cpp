@@ -48,7 +48,7 @@ int* MPIMethod(int* Matrix_init, int rs, int cs) {
 
   if (Rank == 0) {
     if (rs % Size > 0) {
-      req = ((rs / Size) + 1) * (Size - rs);
+      req = ((rs / Size) + 1) * Size - rs;
     }
 
     Matrix = new int[(rs + req) * cs];
@@ -56,7 +56,6 @@ int* MPIMethod(int* Matrix_init, int rs, int cs) {
     for (int i = 0; i < rs * cs; i++) {
       Matrix[i] = Matrix_init[i];
     }
-
     for (int i = rs * cs; i < (rs + req) * cs; i++) {
       Matrix[i] = 0;
     }
