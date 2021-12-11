@@ -107,14 +107,12 @@ int* get_Parallel_lin_hist(int* image, int width, int height) {
             local_min_arr[rank] = local_min;
             local_max_arr[rank] = local_max;
         }
-        
         int min;
         int max;
         if (rank == 0) {
             min = get_global_min(local_min_arr, size);
             max = get_global_max(local_max_arr, size);
-        }
-              
+        }     
         int* global_img = nullptr;
         int temp = 0;
         if (rank == 0) {
