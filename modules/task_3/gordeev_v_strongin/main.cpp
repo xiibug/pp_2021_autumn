@@ -9,9 +9,19 @@ TEST(strongin_MPI, Minimal_Example) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     double left_x = 1.;
     double right_x = 8.;
-    int N = 10;
     double Epsilon = 0.001;
-    double k = StronginParallel(left_x, right_x, N, Epsilon, size, rank);
+    int N = 1000;
+    double r = 2.;
+    double d;
+
+    if (rank == 0) {
+        d = StronginParallel(left_x,
+            right_x, Epsilon, N, r, size);
+        printf("Strongin res %f\n", d);
+        fflush(stdout);
+    } else {
+        StronginSeq(left_x, right_x, r, size, rank);
+    }
     MPI_Barrier(MPI_COMM_WORLD);
     ASSERT_NO_THROW();
 }
@@ -22,9 +32,19 @@ TEST(strongin_MPI, More_left_right_interval) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     double left_x = 20.;
     double right_x = 45.;
-    int N = 10;
     double Epsilon = 0.001;
-    double k = StronginParallel(left_x, right_x, N, Epsilon, size, rank);
+    int N = 1000;
+    double r = 2.;
+    double d;
+
+    if (rank == 0) {
+        d = StronginParallel(left_x,
+            right_x, Epsilon, N, r, size);
+        printf("Strongin res %f\n", d);
+        fflush(stdout);
+    } else {
+        StronginSeq(left_x, right_x, r, size, rank);
+    }
     MPI_Barrier(MPI_COMM_WORLD);
 
     ASSERT_NO_THROW();
@@ -36,9 +56,19 @@ TEST(strongin_MPI, More_accuracy) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     double left_x = 20.;
     double right_x = 45.;
-    int N = 10;
     double Epsilon = 0.0001;
-    double k = StronginParallel(left_x, right_x, N, Epsilon, size, rank);
+    int N = 2000;
+    double r = 2.;
+    double d;
+
+    if (rank == 0) {
+        d = StronginParallel(left_x,
+            right_x, Epsilon, N, r, size);
+        printf("Strongin res %f\n", d);
+        fflush(stdout);
+    } else {
+        StronginSeq(left_x, right_x, r, size, rank);
+    }
     MPI_Barrier(MPI_COMM_WORLD);
 
     ASSERT_NO_THROW();
@@ -50,9 +80,19 @@ TEST(strongin_MPI, Big_left_right) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     double left_x = 10000.;
     double right_x = 20000.;
-    int N = 10;
     double Epsilon = 0.001;
-    double k = StronginParallel(left_x, right_x, N, Epsilon, size, rank);
+    int N = 1000;
+    double r = 2.;
+    double d;
+
+    if (rank == 0) {
+       d = StronginParallel(left_x,
+            right_x, Epsilon, N, r, size);
+       printf("Strongin res %f\n", d);
+       fflush(stdout);
+    } else {
+        StronginSeq(left_x, right_x, r, size, rank);
+    }
     MPI_Barrier(MPI_COMM_WORLD);
 
     ASSERT_NO_THROW();
@@ -64,9 +104,20 @@ TEST(strongin_MPI, Big_Nearly_Equal_left_right) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     double left_x = 10000.;
     double right_x = 10002.;
-    int N = 10;
     double Epsilon = 0.001;
-    double k = StronginParallel(left_x, right_x, N, Epsilon, size, rank);
+    int N = 1000;
+    double r = 2.;
+    double d;
+
+    if (rank == 0) {
+        d = StronginParallel(left_x,
+            right_x, Epsilon, N, r, size);
+        printf("Strongin res %f\n", d);
+        fflush(stdout);
+    } else {
+        StronginSeq(left_x, right_x, r, size, rank);
+    }
+
     MPI_Barrier(MPI_COMM_WORLD);
 
     ASSERT_NO_THROW();

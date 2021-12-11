@@ -1,7 +1,15 @@
 // Copyright 2021 Gordeev Viktor
 #include "./strongin_mpi.h"
-#include <random>
+#include <mpi.h>
 #include <algorithm>
+
+bool operator<(const block& i1, const block& i2) {
+    return (i1.R < i2.R) ? true : false;
+}
+
+bool operator>(const block& i1, const block& i2) {
+    return (i1.R > i2.R) ? true : false;
+}
 
 double R(const double& _m_small, const double& _z_curr,
     const double& _z_prev, const double& _x_curr, const double& _x_prev) {
@@ -14,220 +22,206 @@ double M(const double& _z_curr, const double& _z_prev,
     return abs((_z_curr - _z_prev) / (_x_curr - _x_prev));
 }
 
-double StronginParallel(const double _left, const double _right,
-    const int _N_max, const double _Eps, int procs, int rank) {
-    std::vector<std::list<double>> parallel_z;
-    std::vector<std::list<double>> parallel_x;
-    parallel_x.resize(procs);
-    parallel_z.resize(procs);
-    segment opt_value;
-    double out;
+void StronginSeq(double left, double right, double r, int procs, int rank) {
+    double m_small = 1., M_big;
+    block blockInit;
 
-    opt_value.yi = StronginSeq(_left + (_right - _left) * (rank) / procs,
-        _left + (_right - _left) * (rank+1) / procs, _N_max, _Eps);
-    opt_value.yj = func(opt_value.yi);
-    MPI_Allreduce(&opt_value.yi, &out, 1, MPI_DOUBLE,
-        MPI_MIN, MPI_COMM_WORLD);
-    return out;
+    double len = right - left;
+    double li = len / procs;
+    double tmp = 0.;
+
+    tmp = (-len) + (rank * li);
+    blockInit.x_left = tmp;
+    blockInit.x_right = tmp + li;
+    blockInit.z_left = func(tmp);
+    blockInit.z_right = func(tmp + li);
+    blockInit.M = M(blockInit.z_right, blockInit.z_left,
+        blockInit.x_right, blockInit.x_left);
+
+    MPI_Allreduce(&blockInit.M, &M_big, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
+
+    m_small = (M_big == 0) ? 1 : r * M_big;
+
+    blockInit.R = R(m_small, blockInit.z_right, blockInit.z_left,
+        blockInit.x_right, blockInit.x_left);
+
+    double outBuffer[1] = { 0 };
+    outBuffer[0] = blockInit.x_left;
+    MPI_Send(outBuffer, 1, MPI_DOUBLE, 0, XLEFT, MPI_COMM_WORLD);
+    outBuffer[0] = blockInit.x_right;
+    MPI_Send(outBuffer, 1, MPI_DOUBLE, 0, XRIGHT, MPI_COMM_WORLD);
+    outBuffer[0] = blockInit.z_left;
+    MPI_Send(outBuffer, 1, MPI_DOUBLE, 0, ZLEFT, MPI_COMM_WORLD);
+    outBuffer[0] = blockInit.z_right;
+    MPI_Send(outBuffer, 1, MPI_DOUBLE, 0, ZRIGHT, MPI_COMM_WORLD);
+    outBuffer[0] = blockInit.M;
+    MPI_Send(outBuffer, 1, MPI_DOUBLE, 0, MSEND, MPI_COMM_WORLD);
+    outBuffer[0] = blockInit.R;
+    MPI_Send(outBuffer, 1, MPI_DOUBLE, 0, RSEND, MPI_COMM_WORLD);
 }
 
-double StronginSeq(const double _left, const double _right,
-    const int _N_max, const double _Eps) {
-    double curr_left = _left;
-    double curr_right = _right;
-    double r = 2.;
+double StronginParallel(double left, double right, const double _Epsilon,
+    const int _Steps, double r, int procs) {
+    int k = 0;
+    double eps = _Epsilon;
+    double curr_left, curr_right;
+    double m_small = 1., M_big;
+    double* x_new = new double[procs];
+    double solutionX = 0;
+    double solutionZ = 0;
+    MPI_Status status;
+    double inBuffer[1] = { 0 };
+    int number;
 
-    double z_begin = func(curr_left);
-    double z_end = func(curr_right);
-    double temp = 0.;
-    int k = 1;
-    int new_size;
-    double M_big, m_small = 1.;
-    int R_max_index = 0;
-    double new_point;
-    double R_max_mpi;
-    double M_max_mpi;
+    curr_left = left;
+    curr_right = right;
 
-    std::list<double> z;
-    std::list<double> x;
-    std::list<double> M_vector;
-    std::list<double> R_vector;
+    std::vector<block> InitVector(procs);
+    std::vector<block> WorkVector(procs * 2);
+    std::priority_queue<block> Queue;
+    std::list<block> Intervals;
 
-    segment val_z;
-    segment arg_x;
+    int size_bank_intervals;
 
-    std::list<double>::iterator place_M, place_R;
-    std::list<double>::iterator iter_x, iter_z, iter_R, iter_M;
+    std::list<block>::iterator Pointer;
+    double len = right - left;
+    double li = len / procs;
+    double tmp = 0.;
 
-    M_big = M(z_end, z_begin, curr_right, curr_left);
-    MPI_Allreduce(&M_big, &M_max_mpi, 1, MPI_DOUBLE,
-        MPI_MIN, MPI_COMM_WORLD);
-    m_small = (M_big == 0) ? 1 : r * M_big;
+    tmp = (-len);
+    InitVector[0].x_left = tmp;
+    InitVector[0].x_right = tmp + li;
+    InitVector[0].z_left = func(tmp);
+    InitVector[0].z_right = func(tmp + li);
+    InitVector[0].M = M(InitVector[0].z_right, InitVector[0].z_left,
+        InitVector[0].x_right, InitVector[0].x_left);
 
-    new_point = (curr_right + curr_left)
-        / 2 - (z_end - z_begin) / (2 * m_small);
-
-    x.push_back(curr_left);
-    x.push_back(new_point);
-    x.push_back(curr_right);
-
-    iter_x = x.begin();
-    for (int i = 0; i < 3; i++) {
-    z.push_back(func(*iter_x++));
-    }
-
-    iter_z = z.begin();
-    iter_x = x.begin();
-
-    {
-    for (int i = 1; i < 3; i++) {
-        val_z.yi = *iter_z++;
-        val_z.yj = *iter_z;
-        arg_x.yi = *iter_x++;
-        arg_x.yj = *iter_x;
-        M_vector.push_back(M(val_z.yj, val_z.yi, arg_x.yj, arg_x.yi));
-    }
-
-    if (M_max_mpi < M_vector.back()) M_max_mpi = M_vector.back();
-    M_big = M_max_mpi;
+    MPI_Allreduce(&InitVector[0].M, &M_big, 1,
+        MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
 
     m_small = (M_big == 0) ? 1 : r * M_big;
 
-    R_max_index = 1;
+    InitVector[0].R = R(m_small, InitVector[0].z_right, InitVector[0].z_left,
+        InitVector[0].x_right, InitVector[0].x_left);
 
-    iter_z = z.begin();
-    iter_x = x.begin();
-    for (int i = 1; i < 3; i++) {
-    val_z.yi = *iter_z++;
-    val_z.yj = *iter_z;
-    arg_x.yi = *iter_x++;
-    arg_x.yj = *iter_x;
-
-    temp = R(m_small, val_z.yj, val_z.yi, arg_x.yj, arg_x.yi);
-    MPI_Allreduce(&temp, &R_max_mpi, 1, MPI_DOUBLE,
-        MPI_MIN, MPI_COMM_WORLD);
-    R_vector.push_back(temp);
-    if (i == 1) M_max_mpi = temp;
-
-    if (M_max_mpi < temp) {
-        M_max_mpi = temp;
-        R_max_index = i;
+    Intervals.push_back(InitVector[0]);
+    for (int i = 0; i < (procs - 1) * 6; i++) {
+        MPI_Recv(inBuffer, 1, MPI_DOUBLE, MPI_ANY_SOURCE,
+            MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+        number = status.MPI_SOURCE;
+        if (status.MPI_TAG == XRIGHT) {
+            InitVector[number].x_right = inBuffer[0];
+        }
+        if (status.MPI_TAG == XLEFT) {
+            InitVector[number].x_left = inBuffer[0];
+        }
+        if (status.MPI_TAG == ZRIGHT) {
+            InitVector[number].z_right = inBuffer[0];
+        }
+        if (status.MPI_TAG == ZLEFT) {
+            InitVector[number].z_left = inBuffer[0];
+        }
+        if (status.MPI_TAG == MSEND) {
+            InitVector[number].M = inBuffer[0];
+        }
+        if (status.MPI_TAG == RSEND) {
+            InitVector[number].R = inBuffer[0];
+        }
     }
+    for (int i = 0; i < procs; i++) {
+        Intervals.push_back(InitVector[i]);
     }
+    Intervals.sort();
 
-    iter_z = z.begin();
-    iter_x = x.begin();
+    curr_left = Intervals.back().x_left;
+    curr_right = Intervals.back().x_right;
 
-    for (int i = 0; i < R_max_index; i++) {
-    iter_z++;
-    iter_x++;
-    }
-
-    curr_right = *iter_x;
-    curr_left = *--iter_x;
-    }
-
-    while (k < _N_max && (abs(curr_left - curr_right) > _Eps)) {
-    new_size = 2 + k;
-
-    iter_z = z.begin();
-    iter_x = x.begin();
-
-    for (register int i = 0; i < R_max_index; i++) {
-    iter_z++;
-    iter_x++;
-    }
-
-    val_z.yj = *iter_z--;
-    val_z.yi = *iter_z++;
-
-
-    new_point = (curr_right + curr_left)
-        / 2 - (val_z.yj - val_z.yi) / (2 * m_small);
-
-    z.insert(iter_z, func(new_point));
-    x.insert(iter_x, new_point);
-
-    iter_z = z.begin();
-    iter_x = x.begin();
-    place_M = M_vector.begin();
-    place_R = R_vector.begin();
-
-    for (int i = 0; i < R_max_index - 1; i++) {
-    iter_z++;
-    iter_x++;
-    if (i == R_max_index - 1) break;
-    place_M++;
-    place_R++;
-    }
-
-    for (int i = 0; i < 2; i++) {
-    val_z.yi = *iter_z++;
-    val_z.yj = *iter_z;
-    arg_x.yi = *iter_x++;
-    arg_x.yj = *iter_x;
-    if (i == 0) M_vector.insert(place_M, M(val_z.yj,
-        val_z.yi, arg_x.yj, arg_x.yi));
-    else
-        *place_M = M(val_z.yj, val_z.yi, arg_x.yj, arg_x.yi);
-    }
-
-    iter_M = M_vector.begin();
-
-    double max = *iter_M;
-    temp = M_vector.back();
-
-    for (int i = 0; i < new_size - 1; i++) {
-    if (max < temp) max = temp;
-    temp = *++iter_M;
-    }
-    M_big = max;
-
-    m_small = (M_big == 0) ? 1 : r * M_big;
-
-    iter_z = z.begin(); iter_x = x.begin();
-
-    R_max_index = 1;
-    place_R = R_vector.begin();
-
-    for (int i = 0; i < new_size; i++) {
-    val_z.yi = *iter_z++;
-    val_z.yj = *iter_z;
-    arg_x.yi = *iter_x++;
-    arg_x.yj = *iter_x;
-    if (i == 0)
-        R_vector.insert(place_R, R(m_small,
-            val_z.yj, val_z.yi, arg_x.yj, arg_x.yi));
-    else
-        *place_R++ = R(m_small, val_z.yj, val_z.yi, arg_x.yj, arg_x.yi);
-    }
-
-    iter_R = R_vector.begin();
-    max = *iter_R;
-    for (register int i = 1; i < new_size; i++) {
-    temp = *++iter_R;
-    if (max < temp) {
-    max = temp;
-    R_max_index = i + 1;
-    }
-    }
-
-    iter_x = x.begin();
-    iter_z = z.begin();
-
-    for (register int i = 0; i < R_max_index; i++) {
-    iter_z++;
-    iter_x++;
-    }
-
-    curr_right = *iter_x;
-    curr_left = *--iter_x;
     ++k;
+    while (k < _Steps && (abs(curr_left - curr_right) > eps)) {
+        Pointer = --Intervals.end();
+        for (register int i = 0; i < procs * 2 - 2; i += 2) {
+            WorkVector[i] = *Pointer;
+            Intervals.erase(Pointer--);
+        }
+        WorkVector[procs * 2 - 2] = *Pointer; Intervals.erase(Pointer);
+        size_bank_intervals = Intervals.size();
+        for (int i = 0; i < procs; i++) {
+            x_new[i] = 0.5 * (WorkVector[i * 2].x_right
+                + WorkVector[i * 2].x_left)
+                - (WorkVector[i * 2].z_right - WorkVector[i * 2].z_left)
+                / (2 * m_small);
+            WorkVector[i * 2 + 1].z_left = func(x_new[i]);
+        }
+        for (register int i = 0; i < procs * 2; i += 2) {
+            WorkVector[i + 1].x_right = WorkVector[i].x_right;
+            WorkVector[i + 1].z_right = WorkVector[i].z_right;
+            WorkVector[i + 1].x_left = WorkVector[i].x_right = x_new[i / 2];
+            WorkVector[i].z_right = WorkVector[i + 1].z_left;
+        }
+        for (int i = 0; i < procs * 2; i++) {
+            WorkVector[i].M = M(WorkVector[i].z_right, WorkVector[i].z_left,
+                WorkVector[i].x_right, WorkVector[i].x_left);
+        }
+
+        double M_max_array = WorkVector[0].M;
+        {
+            {
+                for (register int i = 1; i < procs * 2; i++) {
+                    if (M_max_array < WorkVector[i].M)
+                        M_max_array = WorkVector[i].M;
+                }
+            }
+            {
+                if (size_bank_intervals != 0) {
+                    Pointer = Intervals.begin();
+                    double tmp_M;
+                    double M_max_list = (*Pointer++).M;
+                    for (; Pointer != Intervals.end(); Pointer++) {
+                        tmp_M = (*Pointer).M;
+                        if (M_max_list < tmp_M)
+                            M_max_list = tmp_M;
+                    }
+                    M_big = (M_max_array < M_max_list)
+                        ? M_max_list : M_max_array;
+                } else {
+                    M_big = M_max_array;
+                }
+            }
+        }
+        m_small = (M_big == 0) ? 1 : r * M_big;
+        for (int i = 0; i < procs * 2; i++) {
+            WorkVector[i].R = R(m_small, WorkVector[i].z_right,
+                WorkVector[i].z_left, WorkVector[i].x_right,
+                WorkVector[i].x_left);
+        }
+        if (size_bank_intervals != 0) {
+            std::vector<block> R_vec(Intervals.begin(), Intervals.end());
+            for (register int i = 0; i < size_bank_intervals; i++) {
+                R_vec[i].R = R(m_small, R_vec[i].z_right, R_vec[i].z_left,
+                    R_vec[i].x_right, R_vec[i].x_left);
+            }
+            register int j = 0;
+            for (auto i = Intervals.begin(); i != Intervals.end(); i++) {
+                i->R = R_vec[j++].R;
+            }
+            R_vec.clear();
+        }
+        for (register int i = 0; i < procs * 2; i++) {
+            Intervals.push_back(WorkVector[i]);
+        }
+        Intervals.sort();
+        ++k;
+        curr_left = Intervals.back().x_left;
+        curr_right = Intervals.back().x_right;
     }
+    solutionX = curr_right;
+    solutionZ = Intervals.back().z_right;
+    WorkVector.clear();
+    InitVector.clear();
+    delete[] x_new;
 
-    return curr_right;
+    return solutionZ;
 }
-
 double func(const double& _x) {
     return 2 * sin(3 * _x) + 3 * cos(5 * _x);
 }
