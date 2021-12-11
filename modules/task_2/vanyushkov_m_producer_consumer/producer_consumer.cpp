@@ -54,16 +54,40 @@ Manager::Manager(int resNumber, int bufSize) {
 }
 
 Manager::Manager(const Manager& m) {
+    procCount = m.producerCount;
+    resourceNumber = m.resourceNumber;
+    bufferSize = m.bufferSize;
+    cyclicBuffer = m.cyclicBuffer;
+    lBorder = m.lBorder; rBorder = m.rBorder;
+    full = m.full; empty = m.empty;
+    producerCount = m.producerCount;
+    consumerCount = m.consumerCount;
     requests = new MPI_Request[procCount - 1];
+    pRequests = requests;  // { requests[0], requests[producerCount-1] }
+    cRequests = requests + producerCount;  // { requests[producerCount], requests[procCount-1] }
+    recvData = m.recvData;
+
     for (int i = 0; i < procCount - 1; i++) {
-        requests[i] = MPI_REQUEST_NULL;
+        requests[i] = m.requests[i];
     }
 }
 
 Manager& Manager::operator=(const Manager& m) {
+    procCount = m.producerCount;
+    resourceNumber = m.resourceNumber;
+    bufferSize = m.bufferSize;
+    cyclicBuffer = m.cyclicBuffer;
+    lBorder = m.lBorder; rBorder = m.rBorder;
+    full = m.full; empty = m.empty;
+    producerCount = m.producerCount;
+    consumerCount = m.consumerCount;
     requests = new MPI_Request[procCount - 1];
+    pRequests = requests;  // { requests[0], requests[producerCount-1] }
+    cRequests = requests + producerCount;  // { requests[producerCount], requests[procCount-1] }
+    recvData = m.recvData;
+
     for (int i = 0; i < procCount - 1; i++) {
-        requests[i] = MPI_REQUEST_NULL;
+        requests[i] = m.requests[i];
     }
     return *this;
 }
