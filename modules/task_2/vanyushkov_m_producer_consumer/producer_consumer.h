@@ -45,7 +45,7 @@ class Manager {
  private:
     void producer(int index);
     void consumer(int index);
-    void next(int& border);
+    int next(int border);
 
  public:
     Manager(int resNumber, int bufSize);

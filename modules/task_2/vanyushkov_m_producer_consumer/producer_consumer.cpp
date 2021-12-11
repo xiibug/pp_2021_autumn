@@ -85,14 +85,14 @@ void Manager::producer(int index) {
         MPI_Ssend(&(cyclicBuffer[lBorder]), 1, MPI_INT, tmpIndex, MANAGER, MPI_COMM_WORLD);
         MPI_Irecv(nullptr, 0, MPI_INT, tmpIndex, CONSUMER, MPI_COMM_WORLD, &(cRequests[cIndex]));
         // write value to buffer
-        next(lBorder);
+        lBorder = next(lBorder);
         cyclicBuffer[rBorder] = recvData[index];
-        next(rBorder);
+        rBorder = next(rBorder);
     } else {
         empty = false;
         // write value to buffer
         cyclicBuffer[rBorder] = recvData[index];
-        next(rBorder);
+        rBorder = next(rBorder);
         // check full
         if (lBorder == rBorder) {
             full = true;
@@ -111,7 +111,7 @@ void Manager::consumer(int index) {
     } else {
         full = false;
         MPI_Ssend(&(cyclicBuffer[lBorder]), 1, MPI_INT, index + 1, MANAGER, MPI_COMM_WORLD);
-        next(lBorder);
+        lBorder = next(lBorder);
         // check empty
         if (lBorder == rBorder) {
             empty = true;
@@ -120,19 +120,19 @@ void Manager::consumer(int index) {
     MPI_Irecv(nullptr, 0, MPI_INT, index + 1, CONSUMER, MPI_COMM_WORLD, &(requests[index]));
 }
 
-void Manager::next(int& border) {
-    border = (border + 1) % bufferSize;
+int Manager::next(int border) {
+    return (border + 1) % bufferSize;
 }
 
 void Manager::Run() {
     int resourcesCount;
     std::vector<int> resources = { 0 };
     for (int i = 0; i < producerCount; i++) {
-        resources.push_back(resourceNumber / producerCount + 
+        resources.push_back(resourceNumber / producerCount +
             ((resourceNumber % producerCount - i > 0) ? 1 : 0));
     }
     for (int i = 0; i < consumerCount; i++) {
-        resources.push_back(resourceNumber / consumerCount + 
+        resources.push_back(resourceNumber / consumerCount +
             ((resourceNumber % consumerCount - i > 0) ? 1 : 0));
     }
     MPI_Scatter(&(resources[0]), 1, MPI_INT, &resourcesCount, 1, MPI_INT, 0, MPI_COMM_WORLD);
