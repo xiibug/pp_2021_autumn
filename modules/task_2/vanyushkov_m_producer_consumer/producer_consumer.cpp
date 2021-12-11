@@ -1,7 +1,7 @@
-// Copyr 2021 Vanyushkov Maxim
+// Copyright 2021 Vanyushkov Maxim
 #include "../../../modules/task_2/vanyushkov_m_producer_consumer/producer_consumer.h"
-#include <chrono>
-#include <thread>
+#include <chrono>  // NOLINT [build/c++11]
+#include <thread>  // NOLINT [build/c++11]
 #include <random>
 
 Consumer::Consumer() {
@@ -14,7 +14,7 @@ void Consumer::Run() {
     int resource;
     for (int i = 0; i < resourcesCount; i++) {
         MPI_Ssend(nullptr, 0, MPI_INT, 0, CONSUMER, MPI_COMM_WORLD);
-        MPI_Recv(&resource, 1, MPI_INT, 0, MANAGER, MPI_COMM_WORLD, MPI_STATUS_IGNORE); // Get(data)
+        MPI_Recv(&resource, 1, MPI_INT, 0, MANAGER, MPI_COMM_WORLD, MPI_STATUS_IGNORE);  // Get(data)
         // std::this_thread::sleep_for(std::chrono::milliseconds(gen() % 20)); // UseData()
     }
 }
@@ -28,9 +28,9 @@ void Producer::Run() {
     std::mt19937 gen(dev());
     int resource;
     for (int i = 0; i < resourcesCount; i++) {
-        resource = gen() % 1000; // PrepareData()
-        // std::this_thread::sleep_for(std::chrono::milliseconds(gen() % 20)); // PrepareData()
-        MPI_Ssend(&resource, 1, MPI_INT, 0, PRODUCER, MPI_COMM_WORLD); // Put(data)
+        resource = gen() % 1000;  // PrepareData()
+        // std::this_thread::sleep_for(std::chrono::milliseconds(gen() % 20));  // PrepareData()
+        MPI_Ssend(&resource, 1, MPI_INT, 0, PRODUCER, MPI_COMM_WORLD);  // Put(data)
     }
 }
 
@@ -44,13 +44,28 @@ Manager::Manager(int resNumber, int bufSize) {
     producerCount = (procCount - 1) / 2;
     consumerCount = procCount - producerCount - 1;
     requests = new MPI_Request[procCount - 1];
-    pRequests = requests; // { requests[0], requests[producerCount-1] }
-    cRequests = requests + producerCount; // { requests[producerCount], requests[procCount-1] }
+    pRequests = requests;  // { requests[0], requests[producerCount-1] }
+    cRequests = requests + producerCount;  // { requests[producerCount], requests[procCount-1] }
     recvData.resize(producerCount);
 
     for (int i = 0; i < procCount - 1; i++) {
         requests[i] = MPI_REQUEST_NULL;
     }
+}
+
+Manager::Manager(const Manager& m) {
+    requests = new MPI_Request[procCount - 1];
+    for (int i = 0; i < procCount - 1; i++) {
+        requests[i] = MPI_REQUEST_NULL;
+    }
+}
+
+Manager& Manager::operator=(const Manager& m) {
+    requests = new MPI_Request[procCount - 1];
+    for (int i = 0; i < procCount - 1; i++) {
+        requests[i] = MPI_REQUEST_NULL;
+    }
+    return *this;
 }
 
 Manager::~Manager() {
@@ -78,7 +93,8 @@ void Manager::producer(int index) {
         // write value to buffer
         cyclicBuffer[rBorder] = recvData[index];
         next(rBorder);
-        if (lBorder == rBorder) { // check full
+        // check full
+        if (lBorder == rBorder) {
             full = true;
         }
     }
@@ -96,7 +112,8 @@ void Manager::consumer(int index) {
         full = false;
         MPI_Ssend(&(cyclicBuffer[lBorder]), 1, MPI_INT, index + 1, MANAGER, MPI_COMM_WORLD);
         next(lBorder);
-        if (lBorder == rBorder) { // check empty
+        // check empty
+        if (lBorder == rBorder) {
             empty = true;
         }
     }

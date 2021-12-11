@@ -1,34 +1,34 @@
-// Copyr 2021 Vanyushkov Maxim
+// Copyright 2021 Vanyushkov Maxim
 #ifndef MODULES_TASK_2_VANYUSHKOV_M_PRODUCER_CONSUMER_PRODUCER_CONSUMER_H_
 #define MODULES_TASK_2_VANYUSHKOV_M_PRODUCER_CONSUMER_PRODUCER_CONSUMER_H_
 
 #include <mpi.h>
 #include <vector>
 
-#define PRODUCER 1 
+#define PRODUCER 1
 #define CONSUMER 2
 #define MANAGER 3
 
 class Consumer {
-private:
+ private:
     int resourcesCount;
 
-public:
+ public:
     Consumer();
     void Run();
 };
 
 class Producer {
-private:
+ private:
     int resourcesCount;
 
-public:
+ public:
     Producer();
     void Run();
 };
 
 class Manager {
-private:
+ private:
     int procCount;
     int resourceNumber;
     int bufferSize;
@@ -42,13 +42,15 @@ private:
     MPI_Request* cRequests;
     std::vector<int> recvData;
 
-private:
-	void producer(int index);
-	void consumer(int index);
-	void next(int& border);
+ private:
+    void producer(int index);
+    void consumer(int index);
+    void next(int& border);
 
-public:
+ public:
     Manager(int resNumber, int bufSize);
+    Manager(const Manager& m);
+    Manager& operator=(const Manager& m);
     ~Manager();
     void Run();
 };
