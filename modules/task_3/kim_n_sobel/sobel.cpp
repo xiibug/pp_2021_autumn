@@ -133,6 +133,7 @@ std::vector<std::vector<int>> getSobelImageParall(const std::vector<std::vector<
   for (int i = start; i < end; i++)
     for (int j = 0; j < size; j++)
       local_sobel[(i-start) * size + j] = calcNewPixelColor(local_image, i, j, size, kernel);
+  // наверно тут надо апать производительность, больше негде
   if (proc_rank == 0) {
     for (int i = start; i < end; i++)
       for (int j = 0; j < size; j++)
