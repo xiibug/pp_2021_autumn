@@ -1,6 +1,5 @@
 // Copyright 2021 Vanyushkov Maxim
 #include "../../../modules/task_3/vanyushkov_m_odd_even_sort/odd_even_sort.h"
-#include <mpi.h>
 #include <random>
 #include <vector>
 
@@ -156,14 +155,14 @@ void odd_even_sort(int* _vec, int _len) {
         reinterpret_cast<void*>(partVecResult), lenProc, MPI_INT, 0, MPI_COMM_WORLD);
     q_sort(partVecResult, 0, lenProc - 1);
 
+    int posResult, posCurrect;
     for (unsigned int i = 0; i < comparator.size(); i++) {
         if (procRank == comparator[i].second) {
             MPI_Recv(reinterpret_cast<void*>(partVecCurrect), lenProc, MPI_INT,
                 comparator[i].first, 0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
             MPI_Send(reinterpret_cast<void*>(partVecResult), lenProc, MPI_INT,
                 comparator[i].first, 0, MPI_COMM_WORLD);
-            int posResult = lenProc - 1;
-            int posCurrect = lenProc - 1;
+            posResult = posCurrect = lenProc - 1;
             for (int t = lenProc - 1; t >= 0; t--) {
                 int result = partVecResult[posResult];
                 int current = partVecCurrect[posCurrect];
@@ -181,8 +180,7 @@ void odd_even_sort(int* _vec, int _len) {
                 comparator[i].second, 0, MPI_COMM_WORLD);
             MPI_Recv(reinterpret_cast<void*>(partVecCurrect), lenProc, MPI_INT,
                 comparator[i].second, 0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
-            int posResult = 0;
-            int posCurrect = 0;
+            posResult = posCurrect = 0;
             for (int t = 0; t < lenProc; t++) {
                 int result = partVecResult[posResult];
                 int current = partVecCurrect[posCurrect];
