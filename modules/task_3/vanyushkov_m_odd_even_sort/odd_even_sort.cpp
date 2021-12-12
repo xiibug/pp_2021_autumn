@@ -54,8 +54,7 @@ void separation(int* odd, int* even, int* vec, int len) {
     for (int i = 0, j = 0, k = 0; i < len; i++) {
         if (i % 2) {
             odd[j++] = vec[i];
-        }
-        else {
+        } else {
             even[k++] = vec[i];
         }
     }
@@ -75,7 +74,7 @@ void _merge(int* up, int* down, int lenUp, int lenDown) {
     int* upEven = new int[lenUp - lenUp / 2];
     int* downOdd = new int[lenDown / 2];
     int* downEven = new int[lenDown - lenDown / 2];
-    
+
     separation(upOdd, upEven, up, lenUp);
     separation(downOdd, downEven, down, lenDown);
     _merge(upOdd, downOdd, lenUp / 2, lenDown / 2);
@@ -153,13 +152,16 @@ void odd_even_sort(int* _vec, int _len) {
     int* partVecCurrect = new int[lenProc];
     int* partVecTemp = new int[lenProc];
 
-    MPI_Scatter(reinterpret_cast<void*>(vec), lenProc, MPI_INT, reinterpret_cast<void*>(partVecResult), lenProc, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatter(reinterpret_cast<void*>(vec), lenProc, MPI_INT,
+        reinterpret_cast<void*>(partVecResult), lenProc, MPI_INT, 0, MPI_COMM_WORLD);
     q_sort(partVecResult, 0, lenProc - 1);
 
     for (unsigned int i = 0; i < comparator.size(); i++) {
         if (procRank == comparator[i].second) {
-            MPI_Recv(reinterpret_cast<void*>(partVecCurrect), lenProc, MPI_INT, comparator[i].first, 0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
-            MPI_Send(reinterpret_cast<void*>(partVecResult), lenProc, MPI_INT, comparator[i].first, 0, MPI_COMM_WORLD);
+            MPI_Recv(reinterpret_cast<void*>(partVecCurrect), lenProc, MPI_INT,
+                comparator[i].first, 0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
+            MPI_Send(reinterpret_cast<void*>(partVecResult), lenProc, MPI_INT,
+                comparator[i].first, 0, MPI_COMM_WORLD);
             int posResult = lenProc - 1;
             int posCurrect = lenProc - 1;
             for (int t = lenProc - 1; t >= 0; t--) {
@@ -168,17 +170,17 @@ void odd_even_sort(int* _vec, int _len) {
                 if (result > current) {
                     partVecTemp[t] = result;
                     posResult--;
-                }
-                else {
+                } else {
                     partVecTemp[t] = current;
                     posCurrect--;
                 }
             }
             copy_vec(partVecResult, partVecTemp, lenProc);
-        }
-        else if (procRank == comparator[i].first) {
-            MPI_Send(reinterpret_cast<void*>(partVecResult), lenProc, MPI_INT, comparator[i].second, 0, MPI_COMM_WORLD);
-            MPI_Recv(reinterpret_cast<void*>(partVecCurrect), lenProc, MPI_INT, comparator[i].second, 0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
+        } else if (procRank == comparator[i].first) {
+            MPI_Send(reinterpret_cast<void*>(partVecResult), lenProc, MPI_INT,
+                comparator[i].second, 0, MPI_COMM_WORLD);
+            MPI_Recv(reinterpret_cast<void*>(partVecCurrect), lenProc, MPI_INT,
+                comparator[i].second, 0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
             int posResult = 0;
             int posCurrect = 0;
             for (int t = 0; t < lenProc; t++) {
@@ -187,8 +189,7 @@ void odd_even_sort(int* _vec, int _len) {
                 if (result < current) {
                     partVecTemp[t] = result;
                     posResult++;
-                }
-                else {
+                } else {
                     partVecTemp[t] = current;
                     posCurrect++;
                 }
@@ -197,7 +198,8 @@ void odd_even_sort(int* _vec, int _len) {
         }
     }
 
-    MPI_Gather(reinterpret_cast<void*>(partVecResult), lenProc, MPI_INT, reinterpret_cast<void*>(vec), lenProc, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Gather(reinterpret_cast<void*>(partVecResult), lenProc, MPI_INT,
+        reinterpret_cast<void*>(vec), lenProc, MPI_INT, 0, MPI_COMM_WORLD);
     if (procRank == 0) {
         int t = 0;
         for (int i = 0; i < _len; i++) {
