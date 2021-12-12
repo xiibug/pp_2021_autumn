@@ -45,9 +45,13 @@ class pointSender {
 class singleDimensionR {
  public:
     const double r;
-    const double variable;
-    const double functionValue;
-    singleDimensionR(double r_value, double variable_value, double f_value) : r(r_value), variable(variable_value), functionValue(f_value) {}
+    const double variableFirst;
+    const double functionValueFirst;
+    const double variableSecond;
+    const double functionValueSecond;
+    const int rank;
+    singleDimensionR(double r_value, double variable_f, double f_f, double variable_s, double f_s, int r)
+    : r(r_value), variableFirst(variable_f), functionValueFirst(f_f), variableSecond(variable_s),  functionValueSecond(f_s), rank(r) {}
     friend bool operator<(const singleDimensionR& left, const singleDimensionR& right) {return left.r > right.r;}
 };
 
@@ -60,11 +64,11 @@ class doubleDimensionChar {
     friend bool operator<(const doubleDimensionChar& left, const doubleDimensionChar& right) {return left.y < right.y;}
 };
 
-class DimensionChar{
-    public:
-        double variable();
-        double functionValue();
-}
+// class DimensionChar{
+//     public:
+//         double variable();
+//         double functionValue();
+// }
 
 point singleDimensionMin(double left_x, double right_x, double const_y, double(*func)(double x, double y));
 

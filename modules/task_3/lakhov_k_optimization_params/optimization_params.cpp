@@ -12,11 +12,12 @@ point sequentialCalc(double left_x, double right_x, double left_y, double right_
     double r = 2;
 
     point result;
-    point last_result;
+    point last_result = {0, 0, 0};
     std::set<doubleDimensionChar> set;
 
     result = singleDimensionMin(left_x, right_x, left_y, ptr);
     set.insert(doubleDimensionChar(result.x, result.y, result.z));
+    last_result = result;
 
     result = singleDimensionMin(left_x, right_x, right_y, ptr);
     set.insert(doubleDimensionChar(result.x, result.y, result.z));
@@ -69,10 +70,12 @@ point sequentialCalc(double left_x, double right_x, double left_y, double right_
             i_value++; i_previous_value++;
         }
         k++;
+        // std::cout<<maxRiter->y<<" "<<r_i_value_previous_max->y<<std::endl;
         double new_y = 0.5 * (maxRiter->y + r_i_value_previous_max->y) -
         ((maxRiter->functionValue - r_i_value_previous_max->functionValue) / (2 * M));
         result = singleDimensionMin(left_x, right_x, new_y, ptr);
         set.insert(doubleDimensionChar(result.x, result.y, result.z));
+        // std::cout<<new_y<<std::endl;
         if (result.z < last_result.z) {
             last_result = result;
         }
@@ -132,7 +135,11 @@ point singleDimensionMin(double left_x, double right_x, double const_y, double(*
         } else {
             M = 1;
         }
-
+        // std::cout<<k<<" rank 0 total points  ";
+        // for(auto &i : set){
+        //         std::cout<<" "<<i.x;
+        // }
+        // std::cout<<std::endl;
         // calc R(i)
         // R(i) = m(x(i) - x(i-1)) + (z(i) - z(i-1))^2/ m(x(i)-x(i-1)) - 2(z(i)-z(i-1))
         i_value = set.begin();
@@ -156,6 +163,7 @@ point singleDimensionMin(double left_x, double right_x, double const_y, double(*
         k++;
         double new_x = 0.5 * (maxRiter->x + r_i_value_previous_max->x) -
         ((maxRiter->functionValue - r_i_value_previous_max->functionValue) / (2 * M));
+        // std::cout<<"rank 0 sent biggest R "<<R<<" on interval ["<<r_i_value_previous_max->x<<" "<<maxRiter->x<<"]"<<" with x="<<new_x<<std::endl;
         double new_func_value = func(new_x, const_y);
         set.insert(singleDimensionChar(new_x, new_func_value));
         if (result.z > new_func_value) {
@@ -167,6 +175,7 @@ point singleDimensionMin(double left_x, double right_x, double const_y, double(*
         }
 
     }
+    // std::cout<<" :("<<result.x<<" "<<result.y<<" "<<result.z<<")";
     return result;
 }
 
@@ -235,18 +244,32 @@ point singleDimensionMinParallel(double left_x, double right_x, double const_y, 
                 set_iter++;
             }
 
-
+            // std::cout<<k<<" rank 0 total points  to send";
+            // for(auto &i : set){
+            //     std::cout<<" "<<i.x;
+            // }
+            // std::cout<<std::endl;
             int intervals_count = set.size() - 1;
             int excess_intervals =  intervals_count % proc_count;
+            int intervals_per_proc = intervals_count / proc_count;
             send_counts.clear();
             send_offsets.clear();
-            send_counts.assign(proc_count, intervals_count*2);
+            send_counts.assign(proc_count, intervals_per_proc*2 + 2);
             send_offsets.assign(proc_count, 0);
             for (int i = 0; i < excess_intervals; i++)
                 send_counts[i] += 2;
             for (int i = 1; i < proc_count; i++)
                 send_offsets[i] = send_offsets[i - 1] - 2 + send_counts[i - 1];
-
+            // std::cout<<k<<" rank 0 send counts  ";
+            // for(auto &i : send_counts){
+            //     std::cout<<" "<<i;
+            // }
+            // std::cout<<std::endl;
+            // std::cout<<k<<" rank 0 send offsets  ";
+            // for(auto &i : send_offsets){
+            //     std::cout<<" "<<i;
+            // }
+            // std::cout<<std::endl;
             for (int i = 1; i < proc_count; i++){
                 int send_size = send_counts[i];
                 MPI_Send(&send_size, 1, MPI_INT, i,0, MPI_COMM_WORLD);
@@ -261,12 +284,17 @@ point singleDimensionMinParallel(double left_x, double right_x, double const_y, 
             for(int i=0; i<(int)(proc_data.size()); i+=2){
                 proc_set.insert(pointSender(proc_data[i], proc_data[i+1]));
             }
-
+            // std::cout<<k<<" rank 0 got points  ";
+            // for(auto &i : proc_set){
+            //     std::cout<<" "<<i.variable;
+            // }
+            // std::cout<<std::endl;
             auto proc_set_iter = proc_set.begin();
             proc_set_iter++;
             auto proc_set_iter_previous = proc_set.begin();
             double R, current_r;
             auto local_r_iter = proc_set.begin();
+            auto local_r_prev_iter = proc_set.begin();
             R = std::numeric_limits<double>::lowest();
             while (proc_set_iter != proc_set.end()) {
                 double delta_x = (proc_set_iter->variable - proc_set_iter_previous->variable);
@@ -277,30 +305,35 @@ point singleDimensionMinParallel(double left_x, double right_x, double const_y, 
                 if (current_r > R) {
                     R = current_r;
                     local_r_iter = proc_set_iter;
+                    local_r_prev_iter = proc_set_iter_previous;
                 }
                 proc_set_iter++; proc_set_iter_previous++;
             }
-
+            // std::cout<<"rank 0 sent biggest R "<<R<<" on interval ["<<local_r_prev_iter->variable<<" "<<local_r_iter->variable<<"]"<<std::endl;
             std::vector<double> send_v;
             send_v.push_back(R);
+            send_v.push_back(local_r_prev_iter->variable);
+            send_v.push_back(local_r_prev_iter->functionValue);
             send_v.push_back(local_r_iter->variable);
             send_v.push_back(local_r_iter->functionValue);
-            proc_characteristics.assign(3*proc_count, 0);
-            MPI_Gather(send_v.data(), 3, MPI_DOUBLE, proc_characteristics.data(), 3, MPI_DOUBLE, 0,
+            send_v.push_back(0);
+            // std::cout<<R<<" "<<local_r_prev_iter->variable<<" "<<local_r_prev_iter->functionValue<<" "<<local_r_iter->variable<<" "<<local_r_iter->functionValue<<" "<<0<<std::endl;
+            proc_characteristics.assign(6*proc_count, 0);
+            MPI_Gather(send_v.data(), 6, MPI_DOUBLE, proc_characteristics.data(), 6, MPI_DOUBLE, 0,
                      MPI_COMM_WORLD);
-
+            // std::cout<<"in 0 from 0"<<proc_characteristics[0]<<" "<<proc_characteristics[1]<<" "<<proc_characteristics[2]<<" "<<proc_characteristics[3]<<" "<<proc_characteristics[4]<<std::endl;
+            // std::cout<<"in 0 from 1"<<proc_characteristics[6]<<" "<<proc_characteristics[7]<<" "<<proc_characteristics[8]<<" "<<proc_characteristics[9]<<" "<<proc_characteristics[10]<<std::endl;
             std::set<singleDimensionR> total_r_set;
-            for(int i=0; i<(int)(proc_characteristics.size()); i+=3){
-                total_r_set.insert(singleDimensionR(proc_characteristics[i], proc_characteristics[i+1], proc_characteristics[i+2]));
+            for(int i=0; i<(int)(proc_characteristics.size()); i+=6){
+                total_r_set.insert(singleDimensionR(proc_characteristics[i], proc_characteristics[i+1], proc_characteristics[i+2],
+                    proc_characteristics[i+3], proc_characteristics[i+4], proc_characteristics[i+5]));
             }
 
             auto maxRiter = total_r_set.begin();
-            maxRiter++;
-            auto r_i_value_previous_max = maxRiter;
             k++;
-
-            double new_x = 0.5 * (maxRiter->variable + r_i_value_previous_max->variable) -
-            ((maxRiter->functionValue - r_i_value_previous_max->functionValue) / (2 * M));
+            double new_x = 0.5 * (maxRiter->variableFirst + maxRiter->variableSecond) -
+            ((maxRiter->functionValueSecond - maxRiter->functionValueFirst) / (2 * M));
+            // std::cout<<"total biggest R "<<R<<" on interval ["<<maxRiter->variableFirst<<" "<<maxRiter->variableSecond<<"]"<<" with x="<<new_x<<" proc="<<maxRiter->rank<<std::endl;
 
             double new_func_value = func(new_x, const_y);
             set.insert(singleDimensionChar(new_x, new_func_value));
@@ -309,9 +342,11 @@ point singleDimensionMinParallel(double left_x, double right_x, double const_y, 
                 result.x = new_x;
                 result.z = new_func_value;
             }
-
-            if (maxRiter->variable - r_i_value_previous_max->variable <= eps_in_func) {
+            // std::cout<<k<<" ("<<result.x<<" "<<result.y<<" "<<result.z<<")"<<" on variables "<<maxRiter->variable <<" "<<r_i_value_previous_max->variable<<std::endl;
+            if (maxRiter->variableSecond - maxRiter->variableFirst <= eps_in_func) {
                 st_flag = true;
+                // int flag = 111;
+                // MPI_Bcast(&flag, 1, MPI_INT, 0, MPI_COMM_WORLD);
             }
         }else{
             set_iter = set.begin();
