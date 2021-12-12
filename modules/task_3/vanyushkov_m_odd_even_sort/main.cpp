@@ -1,7 +1,7 @@
 // Copyright 2021 Vanyushkov Maxim
-#include "./odd_even_sort.h"
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
+#include "./odd_even_sort.h"
 
 bool checkEQ(int* parallel, int* sequence, int len) {
     for (int i = 0; i < len; i++) {
