@@ -1,6 +1,6 @@
 // Copyright 2021 Abuyassen Albara
 
-#include "min_vec.h"
+#include "../../../modules/task_1/Abuyassen_A_min_vec/min_vec.h"
 
 #include <mpi.h>
 
@@ -47,8 +47,7 @@ int getParallelOperations(std::vector < int > global_vec,
     if (ProcRank == 0) {
         loc_vec = std::vector < int >(global_vec.begin(),
             global_vec.begin() + delta + temp);
-    }
-    else {
+    } else {
         MPI_Status status;
         MPI_Recv(&loc_vec[0], delta, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
