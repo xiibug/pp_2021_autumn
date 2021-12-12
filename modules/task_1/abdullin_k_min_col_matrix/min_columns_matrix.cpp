@@ -4,6 +4,7 @@
 #include "../../../modules/task_1/abdullin_k_min_col_matrix/min_columns_matrix.h"
 
 int* random_matrix(int n, int m) {
+  if (n <= 0 || m <= 0) throw - 1;
   int* array;
   array = new int[n*m];
 
@@ -18,6 +19,7 @@ int* random_matrix(int n, int m) {
 }
 
 int array_min(int* array, int n) {
+  if (n <= 0) throw - 1;
   int min = array[0];
 
   for (int i = 1; i < n; i++)
@@ -28,6 +30,7 @@ int array_min(int* array, int n) {
 }
 
 int* sequential_min(int* matrix, int n, int m) {
+  if (n <= 0 || m <= 0) throw - 1;
   int* result;
   result = new int[m];
   for (int i = 0; i < m; i++)
@@ -45,6 +48,7 @@ const int Tag = 0;
 const int root = 0;
 
 int* parallel_min(int* matrix, int n, int m) {
+  if (n <= 0 || m <= 0) throw - 1;
   int rank, commSize;
 
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -90,8 +94,6 @@ int* parallel_min(int* matrix, int n, int m) {
 
     for (int i = 0; i < partSize; i++)
       buffer[i] = array_min(tmp + i * n, n);
-
-    cout << endl;
 
     MPI_Send(buffer, partSize, MPI_INT, root, Tag, MPI_COMM_WORLD);
   }
