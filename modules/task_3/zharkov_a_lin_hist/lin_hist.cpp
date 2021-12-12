@@ -4,7 +4,6 @@
 #include <mpi.h>
 #include <ctime>
 #include <random>
-#include <iostream>
 
 int* getRandomArr(int width, int height) {
     std::random_device dev;
@@ -29,24 +28,6 @@ int get_local_max(int* local_img, int width, int height) {
     for (int i = 0; i < width * height; i++) {
         if (local_img[i] > max) {
             max = local_img[i];
-        }
-    }
-    return max;
-}
-int get_global_min(int* arr, int size) {
-    int min = arr[0];
-    for (int i = 0; i < size; i++) {
-        if (arr[i] < min) {
-            min = arr[i];
-        }
-    }
-    return min;
-}
-int get_global_max(int* arr, int size) {
-    int max = arr[0];
-    for (int i = 0; i < size; i++) {
-        if (arr[i] > max) {
-            max = arr[i];
         }
     }
     return max;
@@ -85,47 +66,38 @@ int* get_Parallel_lin_hist(int* image, int width, int height) {
             }
         }
         int* local_img = nullptr;
-        int* local_min_arr = new int[size];
-        int* local_max_arr = new int[size];
         if (rank == 0) {
             local_img = new int[(delta + rem) * width];
-            for (int i = 0; i < (delta + rem) * width; i++) local_img[i] = image[i];
+
+            for (int i = 0; i < (delta + rem) * width; i++) {
+                local_img[i] = image[i];
+            }
 
             local_min = get_local_min(local_img, width, delta + rem);
             local_max = get_local_max(local_img, width, delta + rem);
-            local_min_arr[rank] = local_min;
-            local_max_arr[rank] = local_max;
+
         } else {
             local_img = new int[delta * width];
             MPI_Status status;
             MPI_Recv(local_img, delta * width, MPI_INT, 0, 0, MPI_COMM_WORLD,
                 &status);
+
             local_min = get_local_min(local_img, width, delta);
             local_max = get_local_max(local_img, width, delta);
-            local_min_arr[rank] = local_min;
-            local_max_arr[rank] = local_max;
         }
         int min;
         int max;
-        if (rank == 0) {
-            min = get_global_min(local_min_arr, size);
-            max = get_global_max(local_max_arr, size);
-        }
+        MPI_Reduce(&local_max, &max, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
+        MPI_Reduce(&local_min, &min, 1, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
+
+        MPI_Bcast(&min, 1, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Bcast(&max, 1, MPI_INT, 0, MPI_COMM_WORLD);
         int* global_img = nullptr;
         int temp = 0;
         if (rank == 0) {
             temp = rem;
         }
-        /*for (int i = 0; i < width * height; i++) {
-            std::cout << local_img[i] << " ";
-        }
-        std::cout << std::endl;*/
         local_img = get_Sequential_lin_hist(local_img, width, delta + temp, min, max);
-        /*for (int i = 0; i < width * height; i++) {
-            std::cout << local_img[i] << " ";
-        }
-        std::cout << std::endl;*/
-
         int* counts = new int[size], * displs = new int[size];
         if (rank == 0) {
             global_img = new int[width * height];
@@ -139,16 +111,9 @@ int* get_Parallel_lin_hist(int* image, int width, int height) {
                 }
             }
         }
-        /*for (int i = 0; i < width * height; i++) {
-            std::cout << global_img[i] << " ";
-        }
-        std::cout << std::endl;*/
         MPI_Gatherv(local_img, (delta + temp) * width, MPI_INT, global_img,
             counts, displs, MPI_INT, 0, MPI_COMM_WORLD);
-        /*for (int i = 0; i < width * height; i++) {
-            std::cout << global_img[i] << " ";
-        }
-        std::cout << std::endl;*/
+
         return global_img;
     } else {
         if (rank == 0) {
