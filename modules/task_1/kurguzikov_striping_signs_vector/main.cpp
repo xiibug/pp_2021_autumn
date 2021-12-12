@@ -4,8 +4,6 @@
 #include "./kurguzikov_striping_signs_vector.h"
 #include <./gtest-mpi-listener.hpp>
 
-#include <iostream>
-
 TEST(Tets_parallel_and_sequential, sequential_test) {
   int procRank;
   std::vector<int> vec;
@@ -21,7 +19,6 @@ TEST(Tets_parallel_and_sequential, sequential_test) {
 
 TEST(Tets_parallel_and_sequential, parallel_test) {
   int procRank;
-  const int vecLen = 50;
   std::vector<int> vec;
 
   MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
@@ -96,7 +93,7 @@ TEST(Tets_parallel_and_sequential, vec_size_100) {
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
-    MPI_Init(&argc, &argv);  
+    MPI_Init(&argc, &argv);
 
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
     ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners();

@@ -3,12 +3,12 @@
 #include "../../../modules/task_1/kurguzikov_striping_signs_vector/kurguzikov_striping_signs_vector.h"
 #include <mpi.h>
 #include <random>
-#include <iostream>
 
 int sequentialCount(std::vector<int> sequent_vec) {
   int count = 0;
 
   if (sequent_vec.size() != 0) {
+
     for (int i = 1; i < sequent_vec.size(); i++)
       if ((sequent_vec[i - 1] > 0 && sequent_vec[i] < 0) ||
         (sequent_vec[i - 1] < 0 && sequent_vec[i] > 0))
@@ -41,7 +41,8 @@ int parallelCount(std::vector<int> vect) {
   int size_vect = vect.size();
   MPI_Bcast(&size_vect, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  if (size_vect < procCount) {
+  if (size_vect < procCount)
+  {
     return sequentialCount(vect);
   }  
 
