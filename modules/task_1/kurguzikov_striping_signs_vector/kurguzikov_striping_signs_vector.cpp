@@ -53,7 +53,7 @@ int parallelCount(int* vect, int size) {
   }
 
   int* local_vect = new int[sendcounts[procRank]];
-  MPI_Scatterv(&vect[0], sendcounts, displs, MPI_INT, &local_vect[0], 
+  MPI_Scatterv(&vect[0], sendcounts, displs, MPI_INT, &local_vect[0],
     sendcounts[procRank], MPI_INT, 0, MPI_COMM_WORLD);
   local_res = sequentialCount(local_vect, sendcounts[procRank]);
   MPI_Reduce(&local_res, &global_res, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);

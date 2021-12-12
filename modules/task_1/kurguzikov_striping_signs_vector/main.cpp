@@ -6,7 +6,6 @@
 
 TEST(Tets_parallel_and_sequential, sequential_test) {
   int procRank;
-  
   MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
 
   if (procRank == 0) {
@@ -103,8 +102,7 @@ TEST(Tets_parallel_and_sequential, vec_size_100) {
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
-    MPI_Init(&argc, &argv);  
-
+    MPI_Init(&argc, &argv);
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
     ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners();
 
