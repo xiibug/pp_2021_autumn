@@ -52,18 +52,32 @@ TEST(radix_sort_check, check_parallel_radix_sort_small_vector) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
 
-    std::vector<int> vector(150);
+    std::vector<int> vector(1500);
     std::vector<int> p_s_vector, l_s_vector;
+
+    double linear_time;
+    double parallel_time;
     if (proc_rank == 0) {
         get_random_vector(&vector);
         l_s_vector = vector;
+        linear_time = MPI_Wtime();
         linear_radix_sort(&l_s_vector);
+        linear_time = MPI_Wtime() - linear_time;
     }
 
+    if (proc_rank == 0) {
+        parallel_time = MPI_Wtime();
+    }
     p_s_vector = parallel_radix_sort(vector);
+    if (proc_rank == 0) {
+        parallel_time = MPI_Wtime() - parallel_time;
+    }
 
     if (proc_rank == 0) {
         ASSERT_EQ(l_s_vector, p_s_vector);
+        std::cout << "linear_time: " << linear_time << std::endl;
+        std::cout << "parallel_time: " << parallel_time << std::endl;
+        std::cout << "ratio: " << 100 - parallel_time / linear_time * 100 << "%" << std::endl;
     }
 }
 
@@ -72,18 +86,32 @@ TEST(radix_sort_check, check_parallel_radix_sort_medium_vector) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
 
-    std::vector<int> vector(1000);
+    std::vector<int> vector(10000);
     std::vector<int> p_s_vector, l_s_vector;
+
+    double linear_time;
+    double parallel_time;
     if (proc_rank == 0) {
         get_random_vector(&vector);
         l_s_vector = vector;
+        linear_time = MPI_Wtime();
         linear_radix_sort(&l_s_vector);
+        linear_time = MPI_Wtime() - linear_time;
     }
 
+    if (proc_rank == 0) {
+        parallel_time = MPI_Wtime();
+    }
     p_s_vector = parallel_radix_sort(vector);
+    if (proc_rank == 0) {
+        parallel_time = MPI_Wtime() - parallel_time;
+    }
 
     if (proc_rank == 0) {
         ASSERT_EQ(l_s_vector, p_s_vector);
+        std::cout << "linear_time: " << linear_time << std::endl;
+        std::cout << "parallel_time: " << parallel_time << std::endl;
+        std::cout << "ratio: " << 100 - parallel_time / linear_time * 100 << "%" << std::endl;
     }
 }
 
@@ -92,18 +120,32 @@ TEST(radix_sort_check, check_parallel_radix_sort_big_vector) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
 
-    std::vector<int> vector(100000);
+    std::vector<int> vector(1000000);
     std::vector<int> p_s_vector, l_s_vector;
+
+    double linear_time;
+    double parallel_time;
     if (proc_rank == 0) {
         get_random_vector(&vector);
         l_s_vector = vector;
+        linear_time = MPI_Wtime();
         linear_radix_sort(&l_s_vector);
+        linear_time = MPI_Wtime() - linear_time;
     }
 
+    if (proc_rank == 0) {
+        parallel_time = MPI_Wtime();
+    }
     p_s_vector = parallel_radix_sort(vector);
+    if (proc_rank == 0) {
+        parallel_time = MPI_Wtime() - parallel_time;
+    }
 
     if (proc_rank == 0) {
         ASSERT_EQ(l_s_vector, p_s_vector);
+        std::cout << "linear_time: " << linear_time<< std::endl;
+        std::cout << "parallel_time: " << parallel_time<< std::endl;
+        std::cout << "ratio: " << 100 - parallel_time / linear_time * 100 << "%" << std::endl;
     }
 }
 
