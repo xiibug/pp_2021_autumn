@@ -10,12 +10,18 @@ TEST(Parallel_Operations_MPI, test_sequential) {
   int n = 0;
   int h = 6;
   int w = 3;
+  int** matrix = 0;
+  int* realResult = 0;
+  int* result = 0;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  int realResult[10] = {0, 3, 6, 9, 12, 15};
-  int* result = new int[h];
-  int** matrix = getRandomMatrix(w, h);
+  if (rank == 0) {
+    realResult = new int[h];
+    result = new int[h];
+    matrix = getRandomMatrix(w, h);
+  }
   if (rank == 0) {
     for (int i = 0; i < h; i++) {
+      realResult[i] = i * w;
       for (int j = 0; j < w; j++) {
         matrix[i][j] = n;
         n += 1;
@@ -36,12 +42,17 @@ TEST(Parallel_Operations_MPI, test_parallel) {
   int h = 6;
   int w = 3;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  int realResult[10] = {0, 3, 6, 9, 12, 15};
-  int* result = new int[h];
-  int* _matrix = new int[h * w];
-  int** matrix = getRandomMatrix(w, h);
+  int* realResult = 0;
+  int* result = 0;
+  int* _matrix = 0;
+  int** matrix = 0;
   if (rank == 0) {
+    realResult = new int[h];
+    result = new int[h];
+    _matrix = new int[h * w];
+    matrix = getRandomMatrix(w, h);
     for (int i = 0; i < h; i++) {
+      realResult[i] = i * w;
       for (int j = 0; j < w; j++) {
         matrix[i][j] = n;
         n += 1;
@@ -66,11 +77,14 @@ TEST(Parallel_Operations_MPI, test_sequential_and_parallel) {
   int h = 50;
   int w = 50;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  int* parallelResult = new int[h];
-  int* sequentialResult = new int[h];
-  int** matrix;
-  int* _matrix = new int[h * w];
+  int* parallelResult = 0;
+  int* sequentialResult = 0;
+  int** matrix = 0;
+  int* _matrix = 0;
   if (rank == 0) {
+    parallelResult = new int[h];
+    sequentialResult = new int[h];
+    _matrix = new int[h * w];
     matrix = getRandomMatrix(w, h);
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < w; j++) {
@@ -92,11 +106,14 @@ TEST(Parallel_Operations_MPI, test_big_height) {
   int h = 1000;
   int w = 50;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  int* parallelResult = new int[h];
-  int* sequentialResult = new int[h];
-  int** matrix;
-  int* _matrix = new int[h * w];
+  int* parallelResult = 0;
+  int* sequentialResult = 0;
+  int** matrix = 0;
+  int* _matrix = 0;
   if (rank == 0) {
+    parallelResult = new int[h];
+    sequentialResult = new int[h];
+    _matrix = new int[h * w];
     matrix = getRandomMatrix(w, h);
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < w; j++) {
@@ -118,11 +135,14 @@ TEST(Parallel_Operations_MPI, test_big_width) {
   int h = 50;
   int w = 1000;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  int* parallelResult = new int[h];
-  int* sequentialResult = new int[h];
-  int** matrix;
-  int* _matrix = new int[h * w];
+  int* parallelResult = 0;
+  int* sequentialResult = 0;
+  int** matrix = 0;
+  int* _matrix = 0;
   if (rank == 0) {
+    parallelResult = new int[h];
+    sequentialResult = new int[h];
+    _matrix = new int[h * w];
     matrix = getRandomMatrix(w, h);
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < w; j++) {
