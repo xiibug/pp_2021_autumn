@@ -18,7 +18,6 @@ private:
     const size_t prod(std::vector<size_t>::const_iterator begin, std::vector<size_t>::const_iterator end) {
         return std::accumulate(begin, end, 1, std::multiplies<size_t>{});
     }
-
 public:
 	Tensor() = default;
     Tensor(const std::vector<size_t> _shape): shape(_shape) {
@@ -86,8 +85,7 @@ Tensor<T> matmul2D(const Tensor<T>& t1, const Tensor<T>& t2) {
 		throw std::logic_error("Incorrect shapes");
 	}
 
-	size_t h = t1_shape[0], w = t2_shape[1];
-	Tensor<T> result({ h, w });
+	Tensor<T> result({t1_shape[0], t2_shape[1]});
 	std::vector<size_t> t1_strides(t1.get_strides()), t2_strides(t2.get_strides()), result_strides(result.get_strides());
 
 	for (size_t i = 0; i < t1_shape[0]; i++) {
@@ -101,6 +99,7 @@ Tensor<T> matmul2D(const Tensor<T>& t1, const Tensor<T>& t2) {
 			result[i * result_strides[0] + j * result_strides[1]] = local_sum;
 		}
 	}
+
     return result;
 }
 

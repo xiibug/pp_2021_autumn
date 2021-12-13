@@ -33,34 +33,33 @@ float dist(Tensor<float> t1, Tensor<float> t2) {
 
 
 Tensor<float> LinearSystem::solve(const float accuracy) {
-    auto shape = A.get_shape();
-    auto strides = A.get_strides();
-    Tensor<float> B(shape);
-    for (size_t d1 = 0; d1 < shape[0]; d1++) {
-        float a_ii = A[d1 * strides[0] + d1 * strides[1]];
-        for (size_t d2 = 0; d2 < shape[1]; d2++) {
-            size_t offset = d1 * strides[0] + d2 * strides[1];
-            if (d1 == d2) {
-                B[offset] = 0;
-            }
-            else {
-                B[offset] = - A[offset] / a_ii;
-            }
+    Tensor<float> B(A.get_shape());
+    Tensor<float> d(b.get_shape());
+
+    std::memcpy(B.get_data(), A.get_data(), A.get_size() * sizeof(float));
+    std::memcpy(d.get_data(), b.get_data(), b.get_size() * sizeof(float));
+
+    std::vector<size_t> shape = B.get_shape();
+    std::vector<size_t> strides = B.get_strides();
+    // normalize A -> B, b -> d
+    for (size_t i = 0; i < shape[0]; i++) {
+        size_t diag_idx = i * strides[0] + i * strides[1];
+        float a_ii = B[diag_idx];
+        B[diag_idx] = 0;
+        d[i] /= a_ii;
+        for (size_t j = 0; j < shape[1]; j++) {
+            B[i * strides[0] + j * strides[1]] *= -1 / a_ii;
         }
     }
-    Tensor<float> d(b.get_shape());
-    for (size_t i = 0; i < b.get_size(); i++) {
-        d[i] = b[i] / A[i * strides[0] + i * strides[1]];
-    }
 
-    Tensor<float> _x0(x0.get_shape());
-    std::memcpy(_x0.get_data(), x0.get_data(), x0.get_size() * sizeof(float));
-    Tensor<float> x(_x0.get_shape());
+    Tensor<float> current_x(x0.get_shape());
+    std::memcpy(current_x.get_data(), x0.get_data(), x0.get_size() * sizeof(float));
+    Tensor<float> x;
     float diff;
     do {
-        x = matmul2D(B, _x0) + d;
-        diff = dist(x, _x0);
-        _x0 = x;
+        x = matmul2D(B, current_x) + d;
+        diff = dist(x, current_x);
+        current_x = x;
     } while (diff > accuracy);
     return x;
 }
@@ -87,9 +86,12 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
     size_t d1, d2 = sys.A.get_shape()[1];
     MPI_Bcast(&d2, 1, my_MPI_SIZE_T, 0, NEW_WORLD);
 
-    Tensor<float> B_local({0});
-    Tensor<float> d_local({0});
+    Tensor<float> B_local;
+    Tensor<float> d_local;
     Tensor<float> x0({d2, 1});
+
+    MPI_Bcast(x0.get_data(), x0.get_size(), MPI_FLOAT, 0, NEW_WORLD);
+
     int diag = 0;
 
     if (rank == 0) {
@@ -101,27 +103,21 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
         B_local = Tensor<float>({d1, d2});
         d_local = Tensor<float>({d1, 1});
 
-        float* buffer_A = sys.A.get_data();
-        float* buffer_b = sys.b.get_data();
-        float* buffer_x0 = sys.x0.get_data();
-        std::memcpy(B_local.get_data(), buffer_A, B_local.get_size() * sizeof(float));
-        std::memcpy(d_local.get_data(), buffer_b, d_local.get_size() * sizeof(float));
-        std::memcpy(x0.get_data(), buffer_x0, x0.get_size() * sizeof(float));
+        std::memcpy(B_local.get_data(), sys.A.get_data(), B_local.get_size() * sizeof(float));
+        std::memcpy(d_local.get_data(), sys.b.get_data(), d_local.get_size() * sizeof(float));
+        std::memcpy(x0.get_data(), sys.x0.get_data(), x0.get_size() * sizeof(float));
 
-        buffer_A += B_local.get_size();
-        buffer_b += d_local.get_size();
-
-        int count;
+        size_t offset_A = B_local.get_size();
+        size_t offset_b = d_local.get_size();
         for (int pid = 1; pid < size; pid++) {
             size_t _d1 = (pid < last_rows) ? row_per_process + 1 : row_per_process;
-            count = _d1 * d2;
+            size_t count = _d1 * d2;
             MPI_Send(&_d1, 1, my_MPI_SIZE_T, pid, 0, NEW_WORLD);
-            MPI_Send(buffer_A, count, MPI_FLOAT, pid, 1, NEW_WORLD);
-            MPI_Send(buffer_b, _d1, MPI_FLOAT, pid, 2, NEW_WORLD);
-            MPI_Send(buffer_x0, d2, MPI_FLOAT, pid, 3, NEW_WORLD);
-            MPI_Send(&_diag_idx, 1, my_MPI_SIZE_T, pid, 4, NEW_WORLD);
-            buffer_A += count;
-            buffer_b += _d1;
+            MPI_Send(sys.A.get_data() + offset_A, count, MPI_FLOAT, pid, 1, NEW_WORLD);
+            MPI_Send(sys.b.get_data() + offset_b, _d1, MPI_FLOAT, pid, 2, NEW_WORLD);
+            MPI_Send(&_diag_idx, 1, my_MPI_SIZE_T, pid, 3, NEW_WORLD);
+            offset_A += count;
+            offset_b += _d1;
             _diag_idx += _d1;
         }
     }
@@ -132,11 +128,11 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
         d_local = Tensor<float>({d1, 1});
         MPI_Recv(B_local.get_data(), B_local.get_size(), MPI_FLOAT, 0, 1, NEW_WORLD, &status);
         MPI_Recv(d_local.get_data(), d_local.get_size(), MPI_FLOAT, 0, 2, NEW_WORLD, &status);
-        MPI_Recv(x0.get_data(), x0.get_size(), MPI_FLOAT, 0, 3, NEW_WORLD, &status);
-        MPI_Recv(&diag, 1, my_MPI_SIZE_T, 0, 4, NEW_WORLD, &status);
+        MPI_Recv(&diag, 1, my_MPI_SIZE_T, 0, 3, NEW_WORLD, &status);
     }
 
     size_t stride1 = B_local.get_strides()[0], stride2 = B_local.get_strides()[1];
+    // normalize A -> B, b -> d
     for (size_t i = 0; i < d1; i++) {
         size_t diag_idx = i * stride1 + i * stride2 + diag;
         float a_ii = B_local[diag_idx];
@@ -146,7 +142,6 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
             B_local[i * stride1 + j * stride2] *= - 1 / a_ii;
         }
     }
-
 
     Tensor<float> x(x0.get_shape());
     bool solved = false;
@@ -173,6 +168,8 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
         MPI_Bcast(x.get_data(), x.get_size(), MPI_FLOAT, 0, NEW_WORLD);
         std::memcpy(x0.get_data(), x.get_data(), x.get_size() * sizeof(float));
    }
+
    MPI_Comm_free(&NEW_WORLD);
+
    return x;
 }
