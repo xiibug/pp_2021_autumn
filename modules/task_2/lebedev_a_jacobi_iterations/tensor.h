@@ -10,53 +10,49 @@
 template <typename T>
 class Tensor {
  private:
-	 std::shared_ptr<T[]> data;
-	 std::vector<size_t> shape;
-	 std::vector<size_t> strides;
-	 size_t size;
+     std::shared_ptr<T[]> data;
+     std::vector<size_t> shape;
+     std::vector<size_t> strides;
+     size_t size;
      const size_t prod(std::vector<size_t>::const_iterator begin, std::vector<size_t>::const_iterator end) {
          return std::accumulate(begin, end, 1, std::multiplies<size_t>{});
      }
  public:
-	 Tensor() = default;
+     Tensor() = default;
      Tensor(const std::vector<size_t>& _shape): shape(_shape) {
          size = prod(shape.begin(), shape.end());
-	     data = std::shared_ptr<T[]>(new T[size], std::default_delete<T[]>{});
-	     for (size_t i = 1; i < shape.size(); i++) {
-		     strides.push_back(prod(shape.begin() + i, shape.end()));
-	     }
-	     strides.push_back(1);
+         data = std::shared_ptr<T[]>(new T[size], std::default_delete<T[]>{});
+         for (size_t i = 1; i < shape.size(); i++) {
+             strides.push_back(prod(shape.begin() + i, shape.end()));
+         }
+         strides.push_back(1);
      }
      Tensor(const Tensor<T>& t) = default;
      ~Tensor() = default;
 
-	 bool is_allocated() {
-		 return data != nullptr;
-	 }
+     bool is_allocated() {
+         return data != nullptr;
+     }
 
      T* get_data() const {
          return data.get();
      };
-
      size_t get_size() const {
          return size;
      };
-
      std::vector<size_t> get_shape() const {
          return shape;
      };
-
      std::vector<size_t> get_strides() const {
          return strides;
      };
 
-	 T& operator [] (const size_t offset) {
-		 return data.get()[offset];
-	 }
-
-	 T operator [] (const size_t offset) const {
-		 return data.get()[offset];
-	 }
+     T& operator [] (const size_t offset) {
+         return data.get()[offset];
+     }
+     T operator [] (const size_t offset) const {
+         return data.get()[offset];
+     }
 };
 
 
