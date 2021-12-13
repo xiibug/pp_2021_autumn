@@ -2,7 +2,7 @@
 #include <mpi.h>
 #include "../../../modules/task_1/labinskaya_m_counting_words_in_line/counting_words_in_line.h"
 
-int sequential_counting_words(std::string str){
+int sequential_counting_words(std::string str) {
     int creating_word = 0;
     int count = 0;
 
@@ -11,10 +11,11 @@ int sequential_counting_words(std::string str){
     for (size_t i = 0; i < str.size(); ++i) {
         if (str[i] != ' ' && str[i] != '-') {
             ++creating_word;
-        }
-        else if (creating_word > 0) {
-            ++count;
-            creating_word = 0;
+        } else {
+			 if (creating_word > 0) {
+                 ++count;
+                 creating_word = 0;
+             }
         }
     }
     return count;
@@ -38,13 +39,13 @@ int parallel_counting_words(std::string str) {
     MPI_Bcast(&len_proc_str, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     if (len_proc_str != 0) {
-
         int res_count = 0;
 
         std::string temp_str;
         temp_str.resize(len_proc_str);
 
-        MPI_Scatter(str.c_str(), len_proc_str, MPI_CHAR, const_cast<char *>(temp_str.data()), len_proc_str, MPI_CHAR, 0, MPI_COMM_WORLD);
+        MPI_Scatter(str.c_str(), len_proc_str, MPI_CHAR, const_cast<char *>(temp_str.data()),
+        len_proc_str, MPI_CHAR, 0, MPI_COMM_WORLD);
 
         int count = sequential_counting_words(temp_str);
 
@@ -59,5 +60,7 @@ int parallel_counting_words(std::string str) {
             return res_count;
         }
         return 0;
-    } else return 0;
+	} else {
+        return 0;
+    }
 }
