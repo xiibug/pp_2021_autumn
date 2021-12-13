@@ -20,7 +20,7 @@ private:
     }
 public:
 	Tensor() = default;
-    Tensor(const std::vector<size_t> _shape): shape(_shape) {
+    Tensor(const std::vector<size_t>& _shape): shape(_shape) {
         size = prod(shape.begin(), shape.end());
 	    data = std::shared_ptr<T[]>(new T[size], std::default_delete<T[]>{});
 	    for (size_t i = 1; i < shape.size(); i++) {
@@ -62,7 +62,7 @@ public:
 
 
 template<typename T>
-Tensor<T> operator + (const Tensor<T>& t1, const Tensor<T> t2) {
+Tensor<T> operator + (const Tensor<T>& t1, const Tensor<T>& t2) {
 	if (t1.get_shape() != t2.get_shape()) {
 		throw std::logic_error("Tensor shapes must be equal for sum operation!");
 	}

@@ -20,7 +20,7 @@
 #endif
 
 
-float dist(Tensor<float> t1, Tensor<float> t2) {
+float dist(const Tensor<float>& t1, const Tensor<float>& t2) {
     if (t1.get_shape() != t2.get_shape()){
         throw std::logic_error("Can't measure distance beetwen tensor with different shapes!");
     }

@@ -12,7 +12,7 @@ public:
 	const Tensor<float> A;
     const Tensor<float> b;
     const Tensor<float> x0;
-    LinearSystem(const size_t _n_dims): n_dims(_n_dims), A({_n_dims, _n_dims}), b({_n_dims, 1}), x0({_n_dims, 1}) {};
+    LinearSystem(const size_t& _n_dims): n_dims(_n_dims), A({_n_dims, _n_dims}), b({_n_dims, 1}), x0({_n_dims, 1}) {};
     Tensor<float> solve(const float accuracy);
 };
 
