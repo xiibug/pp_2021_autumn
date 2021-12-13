@@ -82,19 +82,21 @@ Tensor<T> matmul2D(const Tensor<T>& t1, const Tensor<T>& t2) {
 		throw std::logic_error("Incorrect shapes");
 	}
 
-	Tensor<T> result({ t1_shape[0], t2_shape[1] });
+	size_t h = t1_shape[0], w = t2_shape[1];
+	Tensor<T> result({ h, w });
 	std::vector<size_t> t1_strides(t1.get_strides()), t2_strides(t2.get_strides()), result_strides(result.get_strides());
 
-	for (size_t h1 = 0; h1 < t1_shape[0]; h1++) {
-		for (size_t w2 = 0; w2 < t2_shape[1]; w2++) {
+	for (size_t i = 0; i < t1_shape[0]; i++) {
+		for (size_t j = 0; j < t2_shape[1]; j ++) {
 			T local_sum = 0;
-			for (size_t w1 = 0, h2 = 0; w1 < t1_shape[1]; w1++, h2++) {
-				local_sum += t1[h1 * t1_strides[0] + w1 * t1_strides[1]] * t2[h2 * t2_strides[0] + w2 * t2_strides[1]];
+			for (size_t k = 0; k < t1_shape[1]; k++) {
+				T aij = t1[i * t1_strides[0] + k * t1_strides[1]];
+				T bji = t2[j * t2_strides[1] + k * t2_strides[0]];
+				local_sum += aij * bji;
 			}
-			result[h1 * result_strides[0] + w2 * result_strides[1]] = local_sum;
+			result[i * result_strides[0] + j * result_strides[1]] = local_sum;
 		}
 	}
-
     return result;
 }
 

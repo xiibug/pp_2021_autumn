@@ -6,6 +6,7 @@
 
 #define eps 0.0001
 
+
 TEST(Jacobi_iterations_MPI, Test_matmul2D) {
     Tensor<int> t1({2,4});
     Tensor<int> t2({4,3});
@@ -60,7 +61,6 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Sequential) {
 
 TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel) {
     size_t n_dims = 0;
-
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
@@ -107,7 +107,32 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel) {
 }
 
 
-TEST(Jacobi_iterations_MPI, Test_Parallel_Random_Data_Different_Size) {
+TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel_4D) {
+    size_t n_dims = 0;
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if (rank == 0) {
+        n_dims = 4;
+    }
+
+    LinearSystem sys(n_dims);
+    if (rank == 0) {
+        std::vector<float> A = {20.9, 1.2, 2.1, 0.9, 1.2, 21.2, 1.5, 2.5, 2.1, 1.5, 19.8, 1.3, 0.9, 2.5, 1.3, 32.1};
+        std::vector<float> b = {21.7, 27.46, 28.76, 49.72};
+        std::vector<float> x0 = {0, 0, 0, 0};
+        std::memcpy(sys.A.get_data(), A.data(), sys.A.get_size() * sizeof(float));
+        std::memcpy(sys.b.get_data(), b.data(), sys.b.get_size() * sizeof(float));
+        std::memcpy(sys.x0.get_data(), x0.data(), sys.x0.get_size() * sizeof(float));
+    }
+
+    Tensor<float> x = solve_parallel(sys, eps);
+
+    if (rank == 0) {
+        Tensor<float> expected = sys.solve(eps);
+        for (size_t i = 0; i < x.get_size(); i++) {
+            EXPECT_NEAR(x[i], expected[i], eps);
+        }
+    }
 }
 
 TEST(Jacobi_iterations_MPI, Test_Parallel_Random_Data_Random_Size) {
