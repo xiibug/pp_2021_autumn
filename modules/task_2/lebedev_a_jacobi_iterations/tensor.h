@@ -29,6 +29,7 @@ public:
 	    strides.push_back(1);
     }
     Tensor(const Tensor<T>& t) = default;
+	//Tensor(const Tensor<T>& t): data(t.data), shape(t.shape), strides(t.strides), size(t.size) {}
     ~Tensor() = default;
 
     T* get_data() const {

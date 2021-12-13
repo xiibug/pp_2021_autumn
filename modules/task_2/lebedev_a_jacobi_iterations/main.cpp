@@ -1,7 +1,6 @@
 // Copyright 2021 Lebedev Alexey
 #include <gtest/gtest.h>
-#include <string>
-#include <random>
+#include <cstring>
 #include "./jacobi_iterations.h"
 #include <gtest-mpi-listener.hpp>
 
@@ -33,34 +32,80 @@ TEST(Jacobi_iterations_MPI, Test_matmul2D) {
     }
 }
 
-TEST(Jacobi_iterations_MPI, Test_Sequential) {
-    LinearSystem<int> lin_sys_int(3);
-    std::vector<int> A1 = {10, 1, -1, 1, 10, -1, -1, 1, 10};
-    std::vector<int> b1 = {11, 10, 10};
-    std::vector<int> x1 = {11, 10, 10};
-    std::memcpy(lin_sys_int.A.get_data(), A1.data(), lin_sys_int.A.get_size() * sizeof(int));
-    std::memcpy(lin_sys_int.b.get_data(), b1.data(), lin_sys_int.b.get_size() * sizeof(int));
-    std::memcpy(lin_sys_int.x0.get_data(), x1.data(), lin_sys_int.x0.get_size() * sizeof(int));
-    Tensor<double> x = jacobi_iterations_sequential(lin_sys_int, eps);
+TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Sequential) {
+    LinearSystem sys1(3);
+    std::vector<float> A1 = {10, 1, -1, 1, 10, -1, -1, 1, 10};
+    std::vector<float> b1 = {11, 10, 10};
+    std::vector<float> x1 = {11, 10, 10};
+    std::memcpy(sys1.A.get_data(), A1.data(), sys1.A.get_size() * sizeof(float));
+    std::memcpy(sys1.b.get_data(), b1.data(), sys1.b.get_size() * sizeof(float));
+    std::memcpy(sys1.x0.get_data(), x1.data(), sys1.x0.get_size() * sizeof(float));
+    Tensor<float> x = sys1.solve(eps);
     EXPECT_NEAR(x[0], 1.10202, eps);
     EXPECT_NEAR(x[1], 0.99091, eps);
     EXPECT_NEAR(x[2], 1.01111, eps);
 
-    LinearSystem<double> lin_sys_double(3);
-    std::vector<double> A2 = {9.2, 2.5, -3.7, 0.9, 9, 0.2, 4.5, -1.6, -10.3};
-    std::vector<double> b2 = {-17.5, 4.4, -22.1};
-    std::vector<double> x2 = {0, 0, 0};
-    std::memcpy(lin_sys_double.A.get_data(), A2.data(), lin_sys_double.A.get_size() * sizeof(double));
-    std::memcpy(lin_sys_double.b.get_data(), b2.data(), lin_sys_double.b.get_size() * sizeof(double));
-    std::memcpy(lin_sys_double.x0.get_data(), x2.data(), lin_sys_double.x0.get_size() * sizeof(double));
-    x = jacobi_iterations_sequential(lin_sys_double, eps);
+    LinearSystem sys2(3);
+    std::vector<float> A2 = {9.2, 2.5, -3.7, 0.9, 9, 0.2, 4.5, -1.6, -10.3};
+    std::vector<float> b2 = {-17.5, 4.4, -22.1};
+    std::vector<float> x2 = {0, 0, 0};
+    std::memcpy(sys2.A.get_data(), A2.data(), sys2.A.get_size() * sizeof(float));
+    std::memcpy(sys2.b.get_data(), b2.data(), sys2.b.get_size() * sizeof(float));
+    std::memcpy(sys2.x0.get_data(), x2.data(), sys2.x0.get_size() * sizeof(float));
+    x = sys2.solve(eps);
     EXPECT_NEAR(x[0], -1.50757, eps);
     EXPECT_NEAR(x[1], 0.60870, eps);
     EXPECT_NEAR(x[2], 1.39242, eps);
 }
 
-TEST(Jacobi_iterations_MPI, Test_Parallel_Random_Data_Same_Size) {
+TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel) {
+    size_t n_dims = 0;
+
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if (rank == 0) {
+        n_dims = 3;
+    }
+
+    LinearSystem sys1(n_dims);
+
+    if (rank == 0) {
+        std::vector<float> A1 = {10, 1, -1, 1, 10, -1, -1, 1, 10};
+        std::vector<float> b1 = {11, 10, 10};
+        std::vector<float> x1 = {11, 10, 10};
+        std::memcpy(sys1.A.get_data(), A1.data(), sys1.A.get_size() * sizeof(float));
+        std::memcpy(sys1.b.get_data(), b1.data(), sys1.b.get_size() * sizeof(float));
+        std::memcpy(sys1.x0.get_data(), x1.data(), sys1.x0.get_size() * sizeof(float));
+    }
+
+    Tensor<float> x = solve_parallel(sys1, eps);
+
+    if (rank == 0) {
+        EXPECT_NEAR(x[0], 1.10202, eps);
+        EXPECT_NEAR(x[1], 0.99091, eps);
+        EXPECT_NEAR(x[2], 1.01111, eps);
+    }
+
+    LinearSystem sys2(n_dims);
+
+    if (rank == 0) {
+        std::vector<float> A2 = {9.2, 2.5, -3.7, 0.9, 9, 0.2, 4.5, -1.6, -10.3};
+        std::vector<float> b2 = {-17.5, 4.4, -22.1};
+        std::vector<float> x2 = {0, 0, 0};
+        std::memcpy(sys2.A.get_data(), A2.data(), sys2.A.get_size() * sizeof(float));
+        std::memcpy(sys2.b.get_data(), b2.data(), sys2.b.get_size() * sizeof(float));
+        std::memcpy(sys2.x0.get_data(), x2.data(), sys2.x0.get_size() * sizeof(float));
+    }
+
+    x = solve_parallel(sys2, eps);
+
+    if (rank == 0) {
+        EXPECT_NEAR(x[0], -1.50757, eps);
+        EXPECT_NEAR(x[1], 0.60870, eps);
+        EXPECT_NEAR(x[2], 1.39242, eps);
+    }
 }
+
 
 TEST(Jacobi_iterations_MPI, Test_Parallel_Random_Data_Different_Size) {
 }
