@@ -60,14 +60,14 @@ class Tensor {
 
 template<typename T>
 Tensor<T> operator + (const Tensor<T>& t1, const Tensor<T>& t2) {
-	if (t1.get_shape() != t2.get_shape()) {
-	    throw std::logic_error("Tensor shapes must be equal for sum operation!");
-	}
-	Tensor<T> sum(t1.get_shape());
-	for (size_t i = 0; i < t1.get_size(); i++) {
-		sum[i] = t1[i] + t2[i];
-	}
-	return sum;
+    if (t1.get_shape() != t2.get_shape()) {
+        throw std::logic_error("Tensor shapes must be equal for sum operation!");
+    }
+    Tensor<T> sum(t1.get_shape());
+    for (size_t i = 0; i < t1.get_size(); i++) {
+        sum[i] = t1[i] + t2[i];
+    }
+    return sum;
 }
 
 
@@ -83,7 +83,9 @@ Tensor<T> matmul2D(const Tensor<T>& t1, const Tensor<T>& t2) {
     }
 
     Tensor<T> result({t1_shape[0], t2_shape[1]});
-    std::vector<size_t> t1_strides(t1.get_strides()), t2_strides(t2.get_strides()), result_strides(result.get_strides());
+    std::vector<size_t> t1_strides(t1.get_strides()),
+                        t2_strides(t2.get_strides()),
+                        result_strides(result.get_strides());
 
     for (size_t i = 0; i < t1_shape[0]; i++) {
         for (size_t j = 0; j < t2_shape[1]; j ++) {
