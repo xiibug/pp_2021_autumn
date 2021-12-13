@@ -7,52 +7,44 @@
 #include <limits>
 #include <vector>
 
-struct point {
+double f1(double x, double y);
+double f2(double x, double y);
+double f3(double x, double y);
+double f4(double x, double y);
+double f5(double x, double y);
+
+
+class Point {
+ public:
     double x;
     double y;
     double z;
+    Point(double x_value=0, double y_value=0, double z_value=0) : x(x_value), y(y_value), z(z_value) {}
+    friend bool operator==(const Point& left, const Point& right) {
+        const double eps = 0.01;
+        double dx = std::abs(left.x - right.x) <= eps;
+        double dy = std::abs(left.y - right.y) <= eps;
+        double dz = std::abs(left.z - right.z) <= eps;
+        return dx && dy && dz;
+    }
 };
 
-double f1(double x, double y);
-
-// std::vector<double> getRandomVector(int sz, int min, int max);
-
-// std::vector<std::vector<double>> getRandomMatrix(int size);
-
-point sequentialCalc(double left_x, double right_x,
-                     double left_y, double right_y,
+Point sequentialCalc(double left_x, double right_x, double left_y, double right_y,
                      double(*func)(double x, double y));
 
-// std::vector<double> parallelCalc(std::vector<std::vector<double>> matrix,
-//                                  std::vector<double> free_members, int size);
+Point parralelCalc(double left_x, double right_x, double left_y, double right_y,
+                   double(*func)(double x, double y));
 
-class singleDimensionChar {
- public:
-    const double x;
-    const double functionValue;
-    singleDimensionChar(double x_value, double f_value) : x(x_value), functionValue(f_value) {}
-    friend bool operator<(const singleDimensionChar& left, const singleDimensionChar& right) {return left.x < right.x;}
-};
-
-class pointSender {
- public:
-    const double variable;
-    const double functionValue;
-    pointSender(double variable_value, double f_value) : variable(variable_value), functionValue(f_value) {}
-    friend bool operator<(const pointSender& left, const pointSender& right) {return left.variable < right.variable;}
-};
-
-class singleDimensionR {
+class Interval {
  public:
     const double r;
     const double variableFirst;
     const double functionValueFirst;
     const double variableSecond;
     const double functionValueSecond;
-    const int rank;
-    singleDimensionR(double r_value, double variable_f, double f_f, double variable_s, double f_s, int r)
-    : r(r_value), variableFirst(variable_f), functionValueFirst(f_f), variableSecond(variable_s),  functionValueSecond(f_s), rank(r) {}
-    friend bool operator<(const singleDimensionR& left, const singleDimensionR& right) {return left.r > right.r;}
+    Interval(double r_value, double variable_f, double f_f, double variable_s, double f_s)
+    : r(r_value), variableFirst(variable_f), functionValueFirst(f_f), variableSecond(variable_s),  functionValueSecond(f_s) {}
+    friend bool operator<(const Interval& left, const Interval& right) {return left.r > right.r;}
 };
 
 class doubleDimensionChar {
@@ -64,16 +56,14 @@ class doubleDimensionChar {
     friend bool operator<(const doubleDimensionChar& left, const doubleDimensionChar& right) {return left.y < right.y;}
 };
 
-// class DimensionChar{
-//     public:
-//         double variable();
-//         double functionValue();
-// }
+class singleDimensionChar {
+ public:
+    const double x;
+    const double functionValue;
+    singleDimensionChar(double x_value, double f_value) : x(x_value), functionValue(f_value) {}
+    friend bool operator<(const singleDimensionChar& left, const singleDimensionChar& right) {return left.x < right.x;}
+};
 
-point singleDimensionMin(double left_x, double right_x, double const_y, double(*func)(double x, double y));
-
-point singleDimensionMinParallel(double left_x, double right_x, double const_y, double(*func)(double x, double y), int proc_count);
-
-
+Point singleDimensionMin(double left_x, double right_x, double const_y, double(*func)(double x, double y));
 
 #endif  // MODULES_TASK_3_LAKHOV_K_OPTIMIZATION_PARAMS_OPTIMIZATION_PARAMS_H_
