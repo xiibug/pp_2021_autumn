@@ -12,7 +12,7 @@ int sequential_counting_words(std::string str) {
         if (str[i] != ' ' && str[i] != '-') {
             ++creating_word;
         } else {
-			 if (creating_word > 0) {
+             if (creating_word > 0) {
                  ++count;
                  creating_word = 0;
              }
@@ -60,7 +60,7 @@ int parallel_counting_words(std::string str) {
             return res_count;
         }
         return 0;
-	} else {
+    } else {
         return 0;
     }
 }
