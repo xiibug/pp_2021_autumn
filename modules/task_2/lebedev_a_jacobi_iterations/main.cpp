@@ -7,9 +7,30 @@
 #define eps 0.0001
 
 
+TEST(Jacobi_iterations_MPI, Test_Tensor) {
+    std::vector<size_t> shape = {1, 3, 28, 28};
+    std::vector<size_t> strides = {2352, 784, 28, 1};
+    size_t size = 2352;
+    Tensor<int> t(shape);
+    ASSERT_EQ(t.get_shape(), shape);
+    ASSERT_EQ(t.get_strides(), strides);
+    ASSERT_EQ(t.get_size(), size);
+    ASSERT_TRUE(t.is_allocated());
+
+    Tensor<int> t_copy = t;
+    t_copy[0] = 1;
+    // shares memory
+    ASSERT_EQ(t[0], 1);
+
+    Tensor<int> empty_t;
+    ASSERT_FALSE(empty_t.is_allocated());
+}
+
+
 TEST(Jacobi_iterations_MPI, Test_matmul2D) {
     Tensor<int> t1({2,4});
     Tensor<int> t2({4,3});
+
     for (size_t i = 0; i < t1.get_size(); i++) {
         t1[i] = i + 1;
     }
@@ -21,6 +42,7 @@ TEST(Jacobi_iterations_MPI, Test_matmul2D) {
     // 1 2 3 4   X   4  5  6   =    70  80  90
     // 5 6 7 8       7  8  9       158 184 210
     //               10 11 12
+
     Tensor<int> expected({2,3});
     expected[0] = 70, expected[1] = 80, expected[2] = 90;
     expected[3] = 158, expected[4] = 184; expected[5] = 210;
@@ -32,6 +54,7 @@ TEST(Jacobi_iterations_MPI, Test_matmul2D) {
         ASSERT_EQ(result[i], expected[i]);
     }
 }
+
 
 TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Sequential) {
     LinearSystem sys1(3);
@@ -59,10 +82,13 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Sequential) {
     EXPECT_NEAR(x[2], 1.39242, eps);
 }
 
+
 TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel) {
-    size_t n_dims = 0;
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    size_t n_dims = 0;
+
     if (rank == 0) {
         n_dims = 3;
     }
@@ -85,6 +111,9 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel) {
         EXPECT_NEAR(x[1], 0.99091, eps);
         EXPECT_NEAR(x[2], 1.01111, eps);
     }
+    else if (rank >= 3) {
+        ASSERT_FALSE(x.is_allocated());
+    }
 
     LinearSystem sys2(n_dims);
 
@@ -104,13 +133,18 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel) {
         EXPECT_NEAR(x[1], 0.60870, eps);
         EXPECT_NEAR(x[2], 1.39242, eps);
     }
+    else if (rank >= 3) {
+        ASSERT_FALSE(x.is_allocated());
+    }
 }
 
 
 TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel_4D) {
-    size_t n_dims = 0;
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    size_t n_dims = 0;
+
     if (rank == 0) {
         n_dims = 4;
     }
@@ -133,9 +167,9 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel_4D) {
             EXPECT_NEAR(x[i], expected[i], eps);
         }
     }
-}
-
-TEST(Jacobi_iterations_MPI, Test_Parallel_Random_Data_Random_Size) {
+    else if (rank >= 4) {
+        ASSERT_FALSE(x.is_allocated());
+    }
 }
 
 

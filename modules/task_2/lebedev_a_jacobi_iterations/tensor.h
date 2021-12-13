@@ -20,6 +20,7 @@ private:
     }
 
 public:
+	Tensor() = default;
     Tensor(const std::vector<size_t> _shape): shape(_shape) {
         size = prod(shape.begin(), shape.end());
 	    data = std::shared_ptr<T[]>(new T[size], std::default_delete<T[]>{});
@@ -29,8 +30,11 @@ public:
 	    strides.push_back(1);
     }
     Tensor(const Tensor<T>& t) = default;
-	//Tensor(const Tensor<T>& t): data(t.data), shape(t.shape), strides(t.strides), size(t.size) {}
     ~Tensor() = default;
+
+	bool is_allocated() {
+		return data != nullptr;
+	}
 
     T* get_data() const {
         return data.get();

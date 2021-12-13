@@ -7,10 +7,8 @@
 
 
 class LinearSystem {
-//private:
-    //void normalize(double* buffer, size_t size, double d);
 public:
-    size_t n_dims;
+    const size_t n_dims;
 	const Tensor<float> A;
     const Tensor<float> b;
     const Tensor<float> x0;

@@ -81,7 +81,7 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
     int color = (rank < size) ? 0 : MPI_UNDEFINED;
     MPI_Comm_split(MPI_COMM_WORLD, color, rank, &NEW_WORLD);
     if (NEW_WORLD == MPI_COMM_NULL) {
-        return Tensor<float>({0});
+        return Tensor<float>();
     }
 
     size_t d1, d2 = sys.A.get_shape()[1];
