@@ -1,10 +1,10 @@
 // Copyright 2021 Lebedev Alexey
+#include "../../../modules/task_2/lebedev_a_jacobi_iterations/jacobi_iterations.h"
 #include <cstring>
 #include <mpi.h>
 #include <stdint.h>
 #include <limits.h>
 #include <math.h>
-#include "../../../modules/task_2/lebedev_a_jacobi_iterations/jacobi_iterations.h"
 
 
 #if SIZE_MAX == UCHAR_MAX
