@@ -1,6 +1,6 @@
 // Copyright 2021 Lebedev Alexey
-#include <mpi.h>
 #include <cstring>
+#include <mpi.h>
 #include <stdint.h>
 #include <limits.h>
 #include <math.h>
@@ -8,20 +8,20 @@
 
 
 #if SIZE_MAX == UCHAR_MAX
-   #define my_MPI_SIZE_T MPI_UNSIGNED_CHAR
+    #define my_MPI_SIZE_T MPI_UNSIGNED_CHAR
 #elif SIZE_MAX == USHRT_MAX
-   #define my_MPI_SIZE_T MPI_UNSIGNED_SHORT
+    #define my_MPI_SIZE_T MPI_UNSIGNED_SHORT
 #elif SIZE_MAX == UINT_MAX
-   #define my_MPI_SIZE_T MPI_UNSIGNED
+    #define my_MPI_SIZE_T MPI_UNSIGNED
 #elif SIZE_MAX == ULONG_MAX
-   #define my_MPI_SIZE_T MPI_UNSIGNED_LONG
+    #define my_MPI_SIZE_T MPI_UNSIGNED_LONG
 #elif SIZE_MAX == ULLONG_MAX
-   #define my_MPI_SIZE_T MPI_UNSIGNED_LONG_LONG
+    #define my_MPI_SIZE_T MPI_UNSIGNED_LONG_LONG
 #endif
 
 
 float dist(const Tensor<float>& t1, const Tensor<float>& t2) {
-    if (t1.get_shape() != t2.get_shape()){
+    if (t1.get_shape() != t2.get_shape()) {
         throw std::logic_error("Can't measure distance beetwen tensor with different shapes!");
     }
     float d = 0;
@@ -71,7 +71,7 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
 
     if (rank == 0) {
         MPI_Comm_size(MPI_COMM_WORLD, &size);
-        size = std::min(size, int(sys.n_dims));
+        size = std::min(size, static_cast<int>(sys.n_dims));
     }
 
     MPI_Bcast(&size, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -120,8 +120,7 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
             offset_b += _d1;
             _diag_idx += _d1;
         }
-    }
-    else {
+    } else {
         MPI_Status status;
         MPI_Recv(&d1, 1, my_MPI_SIZE_T, 0, 0, NEW_WORLD, &status);
         B_local = Tensor<float>({d1, d2});
@@ -167,9 +166,9 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
         MPI_Bcast(&solved, 1, MPI_CXX_BOOL, 0, NEW_WORLD);
         MPI_Bcast(x.get_data(), x.get_size(), MPI_FLOAT, 0, NEW_WORLD);
         std::memcpy(x0.get_data(), x.get_data(), x.get_size() * sizeof(float));
-   }
+    }
 
-   MPI_Comm_free(&NEW_WORLD);
+    MPI_Comm_free(&NEW_WORLD);
 
-   return x;
+    return x;
 }

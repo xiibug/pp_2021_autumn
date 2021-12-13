@@ -28,8 +28,8 @@ TEST(Jacobi_iterations_MPI, Test_Tensor) {
 
 
 TEST(Jacobi_iterations_MPI, Test_matmul2D) {
-    Tensor<int> t1({2,4});
-    Tensor<int> t2({4,3});
+    Tensor<int> t1({2, 4});
+    Tensor<int> t2({4, 3});
 
     for (size_t i = 0; i < t1.get_size(); i++) {
         t1[i] = i + 1;
@@ -43,7 +43,7 @@ TEST(Jacobi_iterations_MPI, Test_matmul2D) {
     // 5 6 7 8       7  8  9       158 184 210
     //               10 11 12
 
-    Tensor<int> expected({2,3});
+    Tensor<int> expected({2, 3});
     expected[0] = 70, expected[1] = 80, expected[2] = 90;
     expected[3] = 158, expected[4] = 184; expected[5] = 210;
 
@@ -110,8 +110,7 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel) {
         EXPECT_NEAR(x[0], 1.10202, eps);
         EXPECT_NEAR(x[1], 0.99091, eps);
         EXPECT_NEAR(x[2], 1.01111, eps);
-    }
-    else if (rank >= 3) {
+    } else if (rank >= 3) {
         ASSERT_FALSE(x.is_allocated());
     }
 
@@ -132,8 +131,7 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel) {
         EXPECT_NEAR(x[0], -1.50757, eps);
         EXPECT_NEAR(x[1], 0.60870, eps);
         EXPECT_NEAR(x[2], 1.39242, eps);
-    }
-    else if (rank >= 3) {
+    } else if (rank >= 3) {
         ASSERT_FALSE(x.is_allocated());
     }
 }
@@ -166,8 +164,7 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel_4D) {
         for (size_t i = 0; i < x.get_size(); i++) {
             EXPECT_NEAR(x[i], expected[i], eps);
         }
-    }
-    else if (rank >= 4) {
+    } else if (rank >= 4) {
         ASSERT_FALSE(x.is_allocated());
     }
 }
