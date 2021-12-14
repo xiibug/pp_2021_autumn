@@ -56,8 +56,7 @@ std::vector<std::vector<char>> gaussianFilter(std::vector<std::vector<char>> ima
         if (i < rem) {
             offset += lineBlocksPerProc + 1;
             scounts[i] = lineBlocksPerProc + 1;
-        }
-        else {
+        } else {
             offset += lineBlocksPerProc;
             scounts[i] = lineBlocksPerProc;
         }
@@ -83,8 +82,9 @@ std::vector<std::vector<char>> gaussianFilter(std::vector<std::vector<char>> ima
     //  std::cout << rank << " 3" << std::endl;
     if (rank == 0) {
         for (int i = 0; i < procs; i++) {
-            char* _p = new char[scounts[i] * (X - 2)];
+            char* _p = nullptr;
             if (i != 0) {
+                _p = new char[scounts[i] * (X - 2)];
                 MPI_Recv(_p, scounts[i] * (X - 2), MPI_CHAR, i, i, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
             }
             for (int y = displs[i]; y < displs[i] + scounts[i]; y++) {
@@ -92,14 +92,15 @@ std::vector<std::vector<char>> gaussianFilter(std::vector<std::vector<char>> ima
                 for (int x = 1; x < X - 1; x++) {
                     if (i != 0) {
                         line[x - 1] = _p[(y - displs[i]) * (X - 2) + (x - 1)];
-                    }
-                    else {
+                    } else {
                         line[x - 1] = pixels[(y - displs[i]) * (X - 2) + (x - 1)];
                     }
                 }
                 res.push_back(line);
             }
-            delete[] _p;
+            if (i != 0) {
+                delete[] _p;
+            }
         }
     }
     //  std::cout << rank << " 4" << std::endl;
