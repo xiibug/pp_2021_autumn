@@ -29,9 +29,9 @@ float dist(const Tensor<float>& t1, const Tensor<float>& t2) {
     }
     float d = 0;
     for (size_t i = 0; i < t1.get_size(); i++) {
-        d += std::pow(t1[i] - t2[i], 2);
+        d += pow(t1[i] - t2[i], 2);
     }
-    return std::sqrt(d);
+    return sqrt(d);
 }
 
 
@@ -146,7 +146,7 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
     }
 
     Tensor<float> x(x0.get_shape());
-    bool solved = false;
+    short solved = 0;
     while (!solved) {
         Tensor<float> x_local = matmul2D(B_local, x0) + d_local;
         MPI_Send(x_local.get_data(), x_local.get_size(), MPI_FLOAT, 0, 0, NEW_WORLD);
@@ -162,11 +162,11 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
             }
             float diff = dist(x, x0);
             if (diff <= accuracy) {
-                solved = true;
+                solved = 1;
             }
         }
         MPI_Barrier(NEW_WORLD);
-        MPI_Bcast(&solved, 1, MPI_CXX_BOOL, 0, NEW_WORLD);
+        MPI_Bcast(&solved, 1, MPI_SHORT, 0, NEW_WORLD);
         MPI_Bcast(x.get_data(), x.get_size(), MPI_FLOAT, 0, NEW_WORLD);
         std::memcpy(x0.get_data(), x.get_data(), x.get_size() * sizeof(float));
     }
