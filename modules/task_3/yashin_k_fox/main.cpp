@@ -34,7 +34,7 @@ TEST(fox, Test_on_Matrix_size_4) {
       t_fox_start = MPI_Wtime();
     }
     int result = fox(A, B, C_fox, size);
-    ASSERT_EQ(result, 0); 
+    ASSERT_EQ(result, 0);
     if (rank == 0) {
       t_fox_end = MPI_Wtime() - t_fox_start;
       for (int i = 0; i < size * size; ++i) {
@@ -83,7 +83,7 @@ TEST(fox, Test_on_Matrix_size_16) {
       t_fox_start = MPI_Wtime();
     }
     int result = fox(A, B, C_fox, size);
-    ASSERT_EQ(result, 0); 
+    ASSERT_EQ(result, 0);
     if (rank == 0) {
       t_fox_end = MPI_Wtime() - t_fox_start;
       for (int i = 0; i < size * size; ++i) {
@@ -132,7 +132,7 @@ TEST(fox, Test_on_Matrix_size_64) {
       t_fox_start = MPI_Wtime();
     }
     int result = fox(A, B, C_fox, size);
-    ASSERT_EQ(result, 0); 
+    ASSERT_EQ(result, 0);
     if (rank == 0) {
       t_fox_end = MPI_Wtime() - t_fox_start;
       for (int i = 0; i < size * size; ++i) {
@@ -181,7 +181,7 @@ TEST(fox, Test_on_Matrix_size_100) {
       t_fox_start = MPI_Wtime();
     }
     int result = fox(A, B, C_fox, size);
-    ASSERT_EQ(result, 0); 
+    ASSERT_EQ(result, 0);
     if (rank == 0) {
       t_fox_end = MPI_Wtime() - t_fox_start;
       for (int i = 0; i < size * size; ++i) {
@@ -230,7 +230,7 @@ TEST(fox, Test_on_Matrix_size_256) {
       t_fox_start = MPI_Wtime();
     }
     int result = fox(A, B, C_fox, size);
-    ASSERT_EQ(result, 0); 
+    ASSERT_EQ(result, 0);
     if (rank == 0) {
       t_fox_end = MPI_Wtime() - t_fox_start;
       for (int i = 0; i < size * size; ++i) {
