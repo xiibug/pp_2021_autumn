@@ -148,8 +148,7 @@ std::vector<int> getParallelOperations(const std::vector<int>& matrix,
                 local_matrix[i * column_count + j] = matrix[local_step + global_step];
             }
         }
-    }
-    else {
+    } else {
         MPI_Status status;
         MPI_Recv(local_matrix.data(), static_cast<int>(row_count * column_count),
             MPI_INT, 0, 1, MPI_ACTUAL_PROC, &status);
