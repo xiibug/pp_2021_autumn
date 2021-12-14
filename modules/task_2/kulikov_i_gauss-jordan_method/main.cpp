@@ -70,7 +70,7 @@ TEST(MPIGaussJordanMethod, RandomVecExample_50x50) {
 
     if (rank == 0) {
         for (int i = 0; i < sz; i++) {
-            ASSERT_NEAR(vec[i], result[i], 0.0001);
+            ASSERT_NEAR(vec[i], result[i], 0.001);
         }
     }
 
@@ -109,7 +109,7 @@ TEST(MPIGaussJordanMethod, RandomVecExample_250x250) {
 
     if (rank == 0) {
         for (int i = 0; i < sz; i++) {
-            ASSERT_NEAR(vec[i], result[i], 0.0001);
+            ASSERT_NEAR(vec[i], result[i], 0.001);
         }
     }
 
@@ -148,7 +148,7 @@ TEST(MPIGaussJordanMethod, RandomVecExample_500x500) {
 
     if (rank == 0) {
         for (int i = 0; i < sz; i++) {
-            ASSERT_NEAR(vec[i], result[i], 0.0001);
+            ASSERT_NEAR(vec[i], result[i], 0.001);
         }
     }
 
@@ -187,7 +187,7 @@ TEST(MPIGaussJordanMethod, RandomVecExample_1000x1000) {
 
     if (rank == 0) {
         for (int i = 0; i < sz; i++) {
-            ASSERT_NEAR(vec[i], result[i], 0.0001);
+            ASSERT_NEAR(vec[i], result[i], 0.001);
         }
     }
 
