@@ -7,11 +7,10 @@
 
 TEST(fox, Test_on_Matrix_size_4) {
   int size = 4;
-  double tmp = 0;
-  double* A = &tmp;
-  double* B = &tmp;
-  double* C = &tmp;
-  double* C_fox = &tmp;
+  double* A = nullptr;
+  double* B = nullptr;
+  double* C = nullptr;
+  double* C_fox = nullptr;
   double t_fox_end, t_fox_start, t_seq_end, t_seq_start;
   int rank, procNum;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -56,11 +55,10 @@ TEST(fox, Test_on_Matrix_size_4) {
 
 TEST(fox, Test_on_Matrix_size_16) {
   int size = 16;
-  double tmp = 0;
-  double* A = &tmp;
-  double* B = &tmp;
-  double* C = &tmp;
-  double* C_fox = &tmp;
+  double* A = nullptr;
+  double* B = nullptr;
+  double* C = nullptr;
+  double* C_fox = nullptr;
   double t_fox_end, t_fox_start, t_seq_end, t_seq_start;
   int rank, procNum;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -105,11 +103,10 @@ TEST(fox, Test_on_Matrix_size_16) {
 
 TEST(fox, Test_on_Matrix_size_64) {
   int size = 64;
-  double tmp = 0;
-  double* A = &tmp;
-  double* B = &tmp;
-  double* C = &tmp;
-  double* C_fox = &tmp;
+  double* A = nullptr;
+  double* B = nullptr;
+  double* C = nullptr;
+  double* C_fox = nullptr;
   double t_fox_end, t_fox_start, t_seq_end, t_seq_start;
   int rank, procNum;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -154,11 +151,10 @@ TEST(fox, Test_on_Matrix_size_64) {
 
 TEST(fox, Test_on_Matrix_size_100) {
   int size = 100;
-  double tmp = 0;
-  double* A = &tmp;
-  double* B = &tmp;
-  double* C = &tmp;
-  double* C_fox = &tmp;
+  double* A = nullptr;
+  double* B = nullptr;
+  double* C = nullptr;
+  double* C_fox = nullptr;
   double t_fox_end, t_fox_start, t_seq_end, t_seq_start;
   int rank, procNum;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -203,11 +199,10 @@ TEST(fox, Test_on_Matrix_size_100) {
 
 TEST(fox, Test_on_Matrix_size_256) {
   int size = 256;
-  double tmp = 0;
-  double* A = &tmp;
-  double* B = &tmp;
-  double* C = &tmp;
-  double* C_fox = &tmp;
+  double* A = nullptr;
+  double* B = nullptr;
+  double* C = nullptr;
+  double* C_fox = nullptr;
   double t_fox_end, t_fox_start, t_seq_end, t_seq_start;
   int rank, procNum;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
