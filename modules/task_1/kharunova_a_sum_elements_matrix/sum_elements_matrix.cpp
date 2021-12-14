@@ -30,7 +30,7 @@ int* createRandomMatrix(int size) {
 
 int paralSum(int* matrix, int row, int column) {
   int number = 0, rank = 0;
-  int part, remain, append = 0;
+  int part, remain;
   int *buffer = nullptr, *sendCounts = nullptr, *disp = nullptr;
   int sum = 0, allSum = 0;
 
