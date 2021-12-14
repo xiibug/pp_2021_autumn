@@ -1,5 +1,4 @@
 // Copyright 2021 Lakhov Kirill
-#define _USE_MATH_DEFINES
 
 #include <gtest/gtest.h>
 #include <iostream>
