@@ -25,7 +25,7 @@ double* random_matrix(int size) {
 }
 
 void fox_alg(double* A_block, double* A_mblock,
-            double* B_block, double* С_block) {
+            double* B_block, double* C_block) {
   for (int it = 0; it < cart_size; it++) {
     int root = (coords[0] + it) % cart_size;
     if (coords[1] == root) {
@@ -42,7 +42,7 @@ void fox_alg(double* A_block, double* A_mblock,
         for (int k = 0; k < block_size; k++) {
           temp += A_block[i * block_size + k] * B_block[k * block_size + j];
         }
-        С_block[i * block_size + j] += temp;
+        C_block[i * block_size + j] += temp;
       }
 
     int dest = coords[0] - 1;
@@ -67,7 +67,7 @@ int fox(double* A, double* B, double* C, int size) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   if (procNum == 1) {
-    sequential_alg(A, B, C, size);
+    return sequential_alg(A, B, C, size);
   } else {
     cart_size = static_cast<int>(std::sqrt(procNum));
     if (cart_size * cart_size != procNum) {
@@ -81,10 +81,10 @@ int fox(double* A, double* B, double* C, int size) {
     int elem_in_block = block_size * block_size;
     double* A_block = new double[elem_in_block];
     double* B_block = new double[elem_in_block];
-    double* С_block = new double[elem_in_block];
+    double* C_block = new double[elem_in_block];
     double* A_mblock = new double[elem_in_block];
     for (int i = 0; i < elem_in_block; i++) {
-      С_block[i] = 0;
+      C_block[i] = 0;
     }
 
     int dim_size[2] = {cart_size, cart_size};
@@ -112,11 +112,11 @@ int fox(double* A, double* B, double* C, int size) {
     }
     delete[] rowbuff;
 
-    fox_alg(A_block, A_mblock, B_block, С_block);
+    fox_alg(A_block, A_mblock, B_block, C_block);
 
     rowbuff = new double[size * block_size];
     for (int i = 0; i < block_size; i++) {
-      MPI_Gather(&С_block[i * block_size], block_size, MPI_DOUBLE,
+      MPI_Gather(&C_block[i * block_size], block_size, MPI_DOUBLE,
                 &rowbuff[i * size], block_size, MPI_DOUBLE, 0, row_communicator);
     }
     if (coords[1] == 0) {
@@ -127,7 +127,7 @@ int fox(double* A, double* B, double* C, int size) {
     delete[] rowbuff;
     delete[] A_block;
     delete[] B_block;
-    delete[] С_block;
+    delete[] C_block;
     delete[] A_mblock;
 
     return 0;
