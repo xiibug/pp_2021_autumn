@@ -149,11 +149,11 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
     short solved = 0;
     while (!solved) {
         Tensor<float> x_local = matmul2D(B_local, x0) + d_local;
-        MPI_Send(x_local.get_data(), x_local.get_size(), MPI_FLOAT, 0, 0, NEW_WORLD);
         if (rank == 0) {
-            size_t offset = 0;
+            std::memcpy(x.get_data(), x_local.get_data(), x_local.get_size() * sizeof(float));
+            size_t offset = x_local.get_size();
             int count;
-            for (int i = 0; i < size; i++) {
+            for (int i = 1; i < size; i++) {
                 MPI_Status status;
                 MPI_Probe(i, 0, NEW_WORLD, &status);
                 MPI_Get_count(&status, MPI_FLOAT, &count);
@@ -164,6 +164,8 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
             if (diff <= accuracy) {
                 solved = 1;
             }
+        } else {
+            MPI_Send(x_local.get_data(), x_local.get_size(), MPI_FLOAT, 0, 0, NEW_WORLD);
         }
         MPI_Barrier(NEW_WORLD);
         MPI_Bcast(&solved, 1, MPI_SHORT, 0, NEW_WORLD);
