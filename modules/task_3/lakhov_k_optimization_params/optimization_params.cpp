@@ -6,7 +6,7 @@ double f1(double x, double y) {
 }
 
 double f2(double x, double y) {
-    return 4 + pow(std::pow(x, 2) + pow(y, 2), 2.0 / 3);
+    return 4 + pow(pow(x, 2) + pow(y, 2), 2.0 / 3);
 }
 
 double f3(double x, double y) {
@@ -204,6 +204,10 @@ Point parralelCalc(double left_x, double right_x,
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    if (size <= 1) {
+        return sequentialCalc(left_x, right_x, left_y, right_y, func);
+    }
 
     double eps = 0.01;
     double r = 2;
