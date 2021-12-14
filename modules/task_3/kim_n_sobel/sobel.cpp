@@ -115,6 +115,15 @@ std::vector<std::vector<int>> getSobelImageParall(const std::vector<std::vector<
     end = size;
   else
     end = start + range;
+  std::vector<int> recvcounts(proc_num);
+  std::vector<int> displs(proc_num);
+  if (proc_rank == 0) {
+    for (int i = 0; i < proc_num; i++) {
+      recvcounts[i] = range * size;
+      displs[i] = i * range * size;
+    }
+    recvcounts[proc_num - 1] = (size - (proc_num - 1) * range) * size;
+  }
   std::vector<int> local_sobel((end - start) * size);
   std::vector<int> global_sobel(size * size);
   std::vector<std::vector<int>> vectomat(size, std::vector<int>(size));
@@ -133,22 +142,12 @@ std::vector<std::vector<int>> getSobelImageParall(const std::vector<std::vector<
   for (int i = start; i < end; i++)
     for (int j = 0; j < size; j++)
       local_sobel[(i-start) * size + j] = calcNewPixelColor(local_image, i, j, size, kernel);
-  // наверно тут надо апать производительность, больше негде
+  MPI_Gatherv(local_sobel.data(), (end - start) * size, MPI_INT,
+    global_sobel.data(), recvcounts.data(), displs.data(), MPI_INT, 0, MPI_COMM_WORLD);
   if (proc_rank == 0) {
-    for (int i = start; i < end; i++)
-      for (int j = 0; j < size; j++)
-        global_sobel[(i-start) * size + j] = local_sobel[(i-start) * size + j];
-    MPI_Status status;
-    int i = 1;
-    for (; i < proc_num - 1; i++)
-      MPI_Recv(global_sobel.data() + range * size * i, range * size, MPI_INT, i, 1, MPI_COMM_WORLD, &status);
-    MPI_Recv(global_sobel.data() + range * size * i, (size - range * i) * size,
-      MPI_INT, proc_num - 1, 1, MPI_COMM_WORLD, &status);
     for (int i = 0; i < size; i++)
       for (int j = 0; j < size; j++)
         vectomat[i][j] = global_sobel[i * size + j];
-  } else {
-    MPI_Send(local_sobel.data(), (end - start) * size, MPI_INT, 0, 1, MPI_COMM_WORLD);
   }
   return vectomat;
 }
