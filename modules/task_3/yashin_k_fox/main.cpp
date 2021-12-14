@@ -12,6 +12,7 @@ TEST(fox, Test_on_Matrix_size_4) {
   double* B = &tmp;
   double* C = &tmp;
   double* C_fox = &tmp;
+  double t_fox_end, t_fox_start, t_seq_end, t_seq_start;
   int rank, procNum;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &procNum);
@@ -25,11 +26,17 @@ TEST(fox, Test_on_Matrix_size_4) {
       B = random_matrix(size);
       C = new double[size * size];
       C_fox = new double[size * size];
+      t_seq_start = MPI_Wtime();
       sequential_alg(A, B, C, size);
+      t_seq_end = MPI_Wtime() - t_seq_start;
+    }
+    if (rank == 0) {
+      t_fox_start = MPI_Wtime();
     }
     int result = fox(A, B, C_fox, size);
-
+    ASSERT_EQ(result, 0); 
     if (rank == 0) {
+      t_fox_end = MPI_Wtime() - t_fox_start;
       for (int i = 0; i < size * size; ++i) {
         ASSERT_NEAR(C_fox[i], C[i], 0.0001);
       }
@@ -40,6 +47,9 @@ TEST(fox, Test_on_Matrix_size_4) {
       delete[] B;
       delete[] C;
       delete[] C_fox;
+      std::cout << "Seq time (sec)" << t_seq_end << "\n"
+                << " Parallel time (sec) " << t_fox_end << std::endl;
+      std::cout << " Acceleration " << t_seq_end / t_fox_end << std::endl;
     }
   }
 }
@@ -51,6 +61,7 @@ TEST(fox, Test_on_Matrix_size_16) {
   double* B = &tmp;
   double* C = &tmp;
   double* C_fox = &tmp;
+  double t_fox_end, t_fox_start, t_seq_end, t_seq_start;
   int rank, procNum;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &procNum);
@@ -64,11 +75,17 @@ TEST(fox, Test_on_Matrix_size_16) {
       B = random_matrix(size);
       C = new double[size * size];
       C_fox = new double[size * size];
+      t_seq_start = MPI_Wtime();
       sequential_alg(A, B, C, size);
+      t_seq_end = MPI_Wtime() - t_seq_start;
+    }
+    if (rank == 0) {
+      t_fox_start = MPI_Wtime();
     }
     int result = fox(A, B, C_fox, size);
-
+    ASSERT_EQ(result, 0); 
     if (rank == 0) {
+      t_fox_end = MPI_Wtime() - t_fox_start;
       for (int i = 0; i < size * size; ++i) {
         ASSERT_NEAR(C_fox[i], C[i], 0.0001);
       }
@@ -79,17 +96,21 @@ TEST(fox, Test_on_Matrix_size_16) {
       delete[] B;
       delete[] C;
       delete[] C_fox;
+      std::cout << "Seq time (sec)" << t_seq_end << "\n"
+                << " Parallel time (sec) " << t_fox_end << std::endl;
+      std::cout << " Acceleration " << t_seq_end / t_fox_end << std::endl;
     }
   }
 }
 
 TEST(fox, Test_on_Matrix_size_64) {
   int size = 64;
-  double temp;
-  double* A = &temp;
-  double* B = &temp;
-  double* C = &temp;
-  double* C_fox = &temp;
+  double tmp;
+  double* A = &tmp;
+  double* B = &tmp;
+  double* C = &tmp;
+  double* C_fox = &tmp;
+  double t_fox_end, t_fox_start, t_seq_end, t_seq_start;
   int rank, procNum;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &procNum);
@@ -103,11 +124,17 @@ TEST(fox, Test_on_Matrix_size_64) {
       B = random_matrix(size);
       C = new double[size * size];
       C_fox = new double[size * size];
+      t_seq_start = MPI_Wtime();
       sequential_alg(A, B, C, size);
+      t_seq_end = MPI_Wtime() - t_seq_start;
+    }
+    if (rank == 0) {
+      t_fox_start = MPI_Wtime();
     }
     int result = fox(A, B, C_fox, size);
-
+    ASSERT_EQ(result, 0); 
     if (rank == 0) {
+      t_fox_end = MPI_Wtime() - t_fox_start;
       for (int i = 0; i < size * size; ++i) {
         ASSERT_NEAR(C_fox[i], C[i], 0.0001);
       }
@@ -118,17 +145,21 @@ TEST(fox, Test_on_Matrix_size_64) {
       delete[] B;
       delete[] C;
       delete[] C_fox;
+      std::cout << "Seq time (sec)" << t_seq_end << "\n"
+                << " Parallel time (sec) " << t_fox_end << std::endl;
+      std::cout << " Acceleration " << t_seq_end / t_fox_end << std::endl;
     }
   }
 }
 
 TEST(fox, Test_on_Matrix_size_100) {
   int size = 100;
-  double temp;
-  double* A = &temp;
-  double* B = &temp;
-  double* C = &temp;
-  double* C_fox = &temp;
+  double tmp;
+  double* A = &tmp;
+  double* B = &tmp;
+  double* C = &tmp;
+  double* C_fox = &tmp;
+  double t_fox_end, t_fox_start, t_seq_end, t_seq_start;
   int rank, procNum;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &procNum);
@@ -142,11 +173,17 @@ TEST(fox, Test_on_Matrix_size_100) {
       B = random_matrix(size);
       C = new double[size * size];
       C_fox = new double[size * size];
+      t_seq_start = MPI_Wtime();
       sequential_alg(A, B, C, size);
+      t_seq_end = MPI_Wtime() - t_seq_start;
+    }
+    if (rank == 0) {
+      t_fox_start = MPI_Wtime();
     }
     int result = fox(A, B, C_fox, size);
-
+    ASSERT_EQ(result, 0); 
     if (rank == 0) {
+      t_fox_end = MPI_Wtime() - t_fox_start;
       for (int i = 0; i < size * size; ++i) {
         ASSERT_NEAR(C_fox[i], C[i], 0.0001);
       }
@@ -157,17 +194,21 @@ TEST(fox, Test_on_Matrix_size_100) {
       delete[] B;
       delete[] C;
       delete[] C_fox;
+      std::cout << "Seq time (sec)" << t_seq_end << "\n"
+                << " Parallel time (sec) " << t_fox_end << std::endl;
+      std::cout << " Acceleration " << t_seq_end / t_fox_end << std::endl;
     }
   }
 }
 
 TEST(fox, Test_on_Matrix_size_256) {
   int size = 256;
-  double temp;
-  double* A = &temp;
-  double* B = &temp;
-  double* C = &temp;
-  double* C_fox = &temp;
+  double tmp;
+  double* A = &tmp;
+  double* B = &tmp;
+  double* C = &tmp;
+  double* C_fox = &tmp;
+  double t_fox_end, t_fox_start, t_seq_end, t_seq_start;
   int rank, procNum;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &procNum);
@@ -181,11 +222,17 @@ TEST(fox, Test_on_Matrix_size_256) {
       B = random_matrix(size);
       C = new double[size * size];
       C_fox = new double[size * size];
+      t_seq_start = MPI_Wtime();
       sequential_alg(A, B, C, size);
+      t_seq_end = MPI_Wtime() - t_seq_start;
+    }
+    if (rank == 0) {
+      t_fox_start = MPI_Wtime();
     }
     int result = fox(A, B, C_fox, size);
-
+    ASSERT_EQ(result, 0); 
     if (rank == 0) {
+      t_fox_end = MPI_Wtime() - t_fox_start;
       for (int i = 0; i < size * size; ++i) {
         ASSERT_NEAR(C_fox[i], C[i], 0.0001);
       }
@@ -196,6 +243,9 @@ TEST(fox, Test_on_Matrix_size_256) {
       delete[] B;
       delete[] C;
       delete[] C_fox;
+      std::cout << "Seq time (sec)" << t_seq_end << "\n"
+                << " Parallel time (sec) " << t_fox_end << std::endl;
+      std::cout << " Acceleration " << t_seq_end / t_fox_end << std::endl;
     }
   }
 }
