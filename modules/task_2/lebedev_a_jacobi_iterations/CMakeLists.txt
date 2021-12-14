@@ -47,7 +47,7 @@ if( USE_MPI )
                 COMMAND ${CPPCHECK}
                 --enable=warning,performance,portability,information,missingInclude
                 --language=c++
-                --std=c++11
+                --std=c++17
                 --error-exitcode=1
                 --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
                 --verbose
