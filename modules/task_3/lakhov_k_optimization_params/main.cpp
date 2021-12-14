@@ -14,9 +14,9 @@ TEST(Global_Optimization_MPI, Test_1) {
     double left_y = -2;
     double right_y = 2;
     Point parallel_result = parralelCalc(left_x, right_x, left_y, right_y, f1);
-    if(rank == 0){
+    if (rank == 0) {
         Point seq_result = sequentialCalc(left_x, right_x, left_y, right_y, f1);
-        EXPECT_EQ(seq_result, parallel_result);
+        ASSERT_TRUE(parallel_result == seq_result);
     }
 }
 
@@ -28,23 +28,23 @@ TEST(Global_Optimization_MPI, Test_2) {
     double left_y = -2;
     double right_y = 2;
     Point parallel_result = parralelCalc(left_x, right_x, left_y, right_y, f2);
-    if(rank == 0){
+    if (rank == 0) {
         Point seq_result = sequentialCalc(left_x, right_x, left_y, right_y, f2);
-        EXPECT_EQ(seq_result, parallel_result);
+        ASSERT_TRUE(parallel_result == seq_result);
     }
 }
 
 TEST(Global_Optimization_MPI, Test_3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    double left_x = -0.5;
-    double right_x = 0.5;
-    double left_y = -0.75;
-    double right_y = 1;
+    double left_x = 0.5;
+    double right_x = 2;
+    double left_y = 0.5;
+    double right_y = 2;
     Point parallel_result = parralelCalc(left_x, right_x, left_y, right_y, f3);
-    if(rank == 0){
+    if (rank == 0) {
         Point seq_result = sequentialCalc(left_x, right_x, left_y, right_y, f3);
-        EXPECT_EQ(seq_result, parallel_result);
+        ASSERT_TRUE(parallel_result == seq_result);
     }
 }
 
@@ -56,51 +56,53 @@ TEST(Global_Optimization_MPI, Test_4) {
     double left_y = 0;
     double right_y = 2;
     Point parallel_result = parralelCalc(left_x, right_x, left_y, right_y, f4);
-    if(rank == 0){
+    if (rank == 0) {
         Point seq_result = sequentialCalc(left_x, right_x, left_y, right_y, f4);
-        EXPECT_EQ(seq_result, parallel_result);
+        ASSERT_TRUE(parallel_result == seq_result);
     }
 }
 
 TEST(Global_Optimization_MPI, Test_5) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    double left_x = 1;
-    double right_x = -1.5;
+    double left_x = -1.5;
+    double right_x = 1;
     double left_y = 0;
     double right_y = 1.5;
     Point parallel_result = parralelCalc(left_x, right_x, left_y, right_y, f5);
-    if(rank == 0){
+    if (rank == 0) {
         Point seq_result = sequentialCalc(left_x, right_x, left_y, right_y, f5);
-        EXPECT_EQ(seq_result, parallel_result);
+        ASSERT_TRUE(parallel_result == seq_result);
     }
 }
 
 // Test for time measure
 // TEST(Global_Optimization_MPI, Test_6) {
-    // int rank;
-    // MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    // double left_x = -1;
-    // double right_x = 1;
-    // double left_y = -1.5;
-    // double right_y = 2;
-    // double time1, time2, delta1, delta2;
-    // if(rank == 0){
-    //     time1 = MPI_Wtime();
-    // }
-    // Point parallel_result = parralelCalc(left_x, right_x, left_y, right_y, f3);
-    // if(rank == 0){
-    //     time2 = MPI_Wtime();
-    //     delta1 = time2 - time1;
-    //     std::cout<<"Parallel time "<<delta1<<std::endl;
-    //     time1 = MPI_Wtime();
-    //     Point seq_result = sequentialCalc(left_x, right_x, left_y, right_y, f3);
-    //     time2 = MPI_Wtime();
-    //     delta2 = time2 - time1;
-    //     std::cout<<"Sequental time "<<delta2<<std::endl;
-    //     std::cout<<"sequental/parallel ratio "<<delta2/delta1<<std::endl;
-    //     EXPECT_EQ(seq_result, parallel_result);
-    // }
+//     int rank;
+//     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+//     double left_x = -1;
+//     double right_x = 2;
+//     double left_y = -2;
+//     double right_y = 2;
+//     double time1, time2, delta1, delta2;
+//     if(rank == 0){
+//         time1 = MPI_Wtime();
+//     }
+//     Point parallel_result = parralelCalc(left_x, right_x,
+//     left_y, right_y, f1);
+//     if(rank == 0){
+//         time2 = MPI_Wtime();
+//         delta1 = time2 - time1;
+//         std::cout<<"Parallel time "<<delta1<<std::endl;
+//         time1 = MPI_Wtime();
+//         Point seq_result = sequentialCalc(left_x, right_x,
+//         left_y, right_y, f1);
+//         time2 = MPI_Wtime();
+//         delta2 = time2 - time1;
+//         std::cout<<"Sequental time "<<delta2<<std::endl;
+//         std::cout<<"sequental/parallel ratio "<<delta2/delta1<<std::endl;
+//         ASSERT_TRUE(parallel_result == seq_result);
+//     }
 // }
 
 int main(int argc, char** argv) {
@@ -116,15 +118,11 @@ int main(int argc, char** argv) {
     listeners.Release(listeners.default_xml_generator());
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
     return RUN_ALL_TESTS();
-
-    // double time1, time2, delta;
-
-
-
-    // double(*func)(double, double) = f1;
-    // parralelCalc(left_x, right_x, left_y, right_y, func);
-    // Point result = sequentialCalc(left_x, right_x, left_y, right_y, func);
-    // std::cout<<" :("<<result.x<<" "<<result.y<<" "<<result.z<<")";
-
-    MPI_Finalize();
+    // double left_x = 0.5;
+    // double right_x = 2;
+    // double left_y = 0.5;
+    // double right_y = 2;
+    // parralelCalc(left_x, right_x, left_y, right_y, f3);
+    // MPI_Finalize();
+    return 0;
 }
