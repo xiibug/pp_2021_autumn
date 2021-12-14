@@ -2,8 +2,8 @@
 
 #include <gtest/gtest.h>
 #include "./fox.h"
-#include <cmath>
 #include <gtest-mpi-listener.hpp>
+#include <cmath>
 
 TEST(fox, Test_on_Matrix_size_4) {
   int size = 4;
