@@ -60,7 +60,6 @@ TEST(fox, Test_on_Matrix_size_16) {
     if (rank == 0) {
       A = new double[size * size];
       B = new double[size * size];
-      //RandomOperandMatrix(A, B, size);
       A = random_matrix(size);
       B = random_matrix(size);
       C = new double[size * size];
@@ -100,7 +99,6 @@ TEST(fox, Test_on_Matrix_size_64) {
     if (rank == 0) {
       A = new double[size * size];
       B = new double[size * size];
-      //RandomOperandMatrix(A, B, size);
       A = random_matrix(size);
       B = random_matrix(size);
       C = new double[size * size];
@@ -140,7 +138,6 @@ TEST(fox, Test_on_Matrix_size_100) {
     if (rank == 0) {
       A = new double[size * size];
       B = new double[size * size];
-      //RandomOperandMatrix(A, B, size);
       A = random_matrix(size);
       B = random_matrix(size);
       C = new double[size * size];
@@ -180,7 +177,6 @@ TEST(fox, Test_on_Matrix_size_256) {
     if (rank == 0) {
       A = new double[size * size];
       B = new double[size * size];
-      //RandomOperandMatrix(A, B, size);
       A = random_matrix(size);
       B = random_matrix(size);
       C = new double[size * size];
