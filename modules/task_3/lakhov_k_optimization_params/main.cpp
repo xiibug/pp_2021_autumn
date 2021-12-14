@@ -16,6 +16,10 @@ TEST(Global_Optimization_MPI, Test_1) {
     Point parallel_result = parralelCalc(left_x, right_x, left_y, right_y, f1);
     if (rank == 0) {
         Point seq_result = sequentialCalc(left_x, right_x, left_y, right_y, f1);
+        std::cout<<"Parallel result: ("<<parallel_result.x<<" "<<
+        parallel_result.y<<" "<<parallel_result.z<<")"<<std::endl;
+        std::cout<<"Sequental result: ("<<seq_result.x<<" "<<
+        seq_result.y<<" "<<seq_result.z<<")"<<std::endl;
         ASSERT_TRUE(parallel_result == seq_result);
     }
 }
@@ -30,6 +34,10 @@ TEST(Global_Optimization_MPI, Test_2) {
     Point parallel_result = parralelCalc(left_x, right_x, left_y, right_y, f2);
     if (rank == 0) {
         Point seq_result = sequentialCalc(left_x, right_x, left_y, right_y, f2);
+        std::cout<<"Parallel result: ("<<parallel_result.x<<" "<<
+        parallel_result.y<<" "<<parallel_result.z<<")"<<std::endl;
+        std::cout<<"Sequental result: ("<<seq_result.x<<" "<<
+        seq_result.y<<" "<<seq_result.z<<")"<<std::endl;
         ASSERT_TRUE(parallel_result == seq_result);
     }
 }
@@ -44,6 +52,10 @@ TEST(Global_Optimization_MPI, Test_3) {
     Point parallel_result = parralelCalc(left_x, right_x, left_y, right_y, f3);
     if (rank == 0) {
         Point seq_result = sequentialCalc(left_x, right_x, left_y, right_y, f3);
+        std::cout<<"Parallel result: ("<<parallel_result.x<<" "<<
+        parallel_result.y<<" "<<parallel_result.z<<")"<<std::endl;
+        std::cout<<"Sequental result: ("<<seq_result.x<<" "<<
+        seq_result.y<<" "<<seq_result.z<<")"<<std::endl;
         ASSERT_TRUE(parallel_result == seq_result);
     }
 }
@@ -58,6 +70,10 @@ TEST(Global_Optimization_MPI, Test_4) {
     Point parallel_result = parralelCalc(left_x, right_x, left_y, right_y, f4);
     if (rank == 0) {
         Point seq_result = sequentialCalc(left_x, right_x, left_y, right_y, f4);
+        std::cout<<"Parallel result: ("<<parallel_result.x<<" "<<
+        parallel_result.y<<" "<<parallel_result.z<<")"<<std::endl;
+        std::cout<<"Sequental result: ("<<seq_result.x<<" "<<
+        seq_result.y<<" "<<seq_result.z<<")"<<std::endl;
         ASSERT_TRUE(parallel_result == seq_result);
     }
 }
@@ -72,6 +88,10 @@ TEST(Global_Optimization_MPI, Test_5) {
     Point parallel_result = parralelCalc(left_x, right_x, left_y, right_y, f5);
     if (rank == 0) {
         Point seq_result = sequentialCalc(left_x, right_x, left_y, right_y, f5);
+        std::cout<<"Parallel result: ("<<parallel_result.x<<" "<<
+        parallel_result.y<<" "<<parallel_result.z<<")"<<std::endl;
+        std::cout<<"Sequental result: ("<<seq_result.x<<" "<<
+        seq_result.y<<" "<<seq_result.z<<")"<<std::endl;
         ASSERT_TRUE(parallel_result == seq_result);
     }
 }

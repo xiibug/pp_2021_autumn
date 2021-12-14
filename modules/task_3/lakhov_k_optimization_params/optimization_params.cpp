@@ -6,7 +6,7 @@ double f1(double x, double y) {
 }
 
 double f2(double x, double y) {
-    return 4 + std::pow(std::pow(x, 2) + std::pow(y, 2), 2.0 / 3);
+    return 4 + pow(std::pow(x, 2) + pow(y, 2), 2.0 / 3);
 }
 
 double f3(double x, double y) {
@@ -14,11 +14,11 @@ double f3(double x, double y) {
 }
 
 double f4(double x, double y) {
-    return std::pow(x, 2) - 2*x*y + std::pow(y, 3);
+    return pow(x, 2) - 2*x*y + pow(y, 3);
 }
 
 double f5(double x, double y) {
-    return std::pow(x, 2) + 3*x*y + 4*std::pow(y, 2);
+    return pow(x, 2) + 3*x*y + 4*pow(y, 2);
 }
 
 Point singleDimensionMin(double left_x, double right_x, double const_y,
