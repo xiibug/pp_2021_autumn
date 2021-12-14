@@ -11,7 +11,7 @@
 template <typename T>
 class Tensor {
  private:
-     std::shared_ptr<T[]> data;
+     std::shared_ptr<std::vector<T>> data;
      std::vector<size_t> shape;
      std::vector<size_t> strides;
      size_t size;
@@ -23,7 +23,7 @@ class Tensor {
      Tensor() = default;
      explicit Tensor(const std::vector<size_t>& _shape): shape(_shape) {
          size = prod(shape.begin(), shape.end());
-         data = std::shared_ptr<T[]>(new T[size], std::default_delete<T[]>{});
+         data = std::make_shared<std::vector<T>>(size);
          for (size_t i = 1; i < shape.size(); i++) {
              strides.push_back(prod(shape.begin() + i, shape.end()));
          }
@@ -37,7 +37,7 @@ class Tensor {
      }
 
      T* get_data() const {
-         return data.get();
+         return data.get()->data();
      }
      size_t get_size() const {
          return size;
@@ -50,10 +50,10 @@ class Tensor {
      }
 
      T& operator[] (const size_t offset) {
-         return data.get()[offset];
+         return (*data.get())[offset];
      }
      T operator[] (const size_t offset) const {
-         return data.get()[offset];
+         return (*data.get())[offset];
      }
 };
 
