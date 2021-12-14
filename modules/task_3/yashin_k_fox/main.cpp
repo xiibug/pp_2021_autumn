@@ -7,7 +7,7 @@
 
 TEST(fox, Test_on_Matrix_size_4) {
   int size = 4;
-  double tmp;
+  double tmp = 0;
   double* A = &tmp;
   double* B = &tmp;
   double* C = &tmp;
@@ -56,7 +56,7 @@ TEST(fox, Test_on_Matrix_size_4) {
 
 TEST(fox, Test_on_Matrix_size_16) {
   int size = 16;
-  double tmp;
+  double tmp = 0;
   double* A = &tmp;
   double* B = &tmp;
   double* C = &tmp;
@@ -105,7 +105,7 @@ TEST(fox, Test_on_Matrix_size_16) {
 
 TEST(fox, Test_on_Matrix_size_64) {
   int size = 64;
-  double tmp;
+  double tmp = 0;
   double* A = &tmp;
   double* B = &tmp;
   double* C = &tmp;
@@ -154,7 +154,7 @@ TEST(fox, Test_on_Matrix_size_64) {
 
 TEST(fox, Test_on_Matrix_size_100) {
   int size = 100;
-  double tmp;
+  double tmp = 0;
   double* A = &tmp;
   double* B = &tmp;
   double* C = &tmp;
@@ -203,7 +203,7 @@ TEST(fox, Test_on_Matrix_size_100) {
 
 TEST(fox, Test_on_Matrix_size_256) {
   int size = 256;
-  double tmp;
+  double tmp = 0;
   double* A = &tmp;
   double* B = &tmp;
   double* C = &tmp;
@@ -250,9 +250,9 @@ TEST(fox, Test_on_Matrix_size_256) {
   }
 }
 
-TEST(Fox, Throw_Matrix_size_17) {
+TEST(fox, Throw_Matrix_size_17) {
   int size = 17;
-  double tmp;
+  double tmp = 0;
   double* matrix = &tmp;
   int procNum;
   MPI_Comm_size(MPI_COMM_WORLD, &procNum);
@@ -263,7 +263,7 @@ TEST(Fox, Throw_Matrix_size_17) {
 
 TEST(fox, Throw_Matrix_size_0) {
   int size = 0;
-  double tmp;
+  double tmp = 0;
   double* matrix = &tmp;
   ASSERT_EQ(fox(matrix, matrix, matrix, size), -1);
   ASSERT_EQ(sequential_alg(matrix, matrix, matrix, size), -1);
