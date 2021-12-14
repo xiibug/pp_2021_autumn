@@ -146,7 +146,7 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
     }
 
     Tensor<float> x(x0.get_shape());
-    short solved = 0;
+    uint8_t solved = 0;
     while (!solved) {
         Tensor<float> x_local = matmul2D(B_local, x0) + d_local;
         if (rank == 0) {
@@ -168,7 +168,7 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
             MPI_Send(x_local.get_data(), x_local.get_size(), MPI_FLOAT, 0, 0, NEW_WORLD);
         }
         MPI_Barrier(NEW_WORLD);
-        MPI_Bcast(&solved, 1, MPI_SHORT, 0, NEW_WORLD);
+        MPI_Bcast(&solved, 1, MPI_UNSIGNED_CHAR, 0, NEW_WORLD);
         MPI_Bcast(x.get_data(), x.get_size(), MPI_FLOAT, 0, NEW_WORLD);
         std::memcpy(x0.get_data(), x.get_data(), x.get_size() * sizeof(float));
     }
