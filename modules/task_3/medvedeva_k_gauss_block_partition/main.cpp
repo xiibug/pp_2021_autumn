@@ -57,7 +57,7 @@ TEST(Parallel_Operations_MPI, getParallelOperations_works_correctly) {
     }
 }
 
-TEST(Parallel_Operations_MPI, boost_test) {
+TEST(DISABLED_Parallel_Operations_MPI, boost_test) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int>::size_type matrix_size = 4096;
