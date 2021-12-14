@@ -1,9 +1,9 @@
 // Copyright 2021 Kharunova Alina
 #include <gtest/gtest.h>
 
-#include <gtest-mpi-listener.hpp>
-
 #include "../../../modules/task_1/kharunova_a_sum_elements_matrix/sum_elements_matrix.h"
+
+#include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, parallel_sum_in_100_elements_matrix) {
   int ProcRank;

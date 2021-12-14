@@ -1,10 +1,10 @@
 // Copyright 2021 Kharunova Alina
 
-#include "../../../modules/task_1/kharunova_a_sum_elements_matrix/sum_elements_matrix.h"
-
 #include <mpi.h>
 
 #include <random>
+
+#include "../../../modules/task_1/kharunova_a_sum_elements_matrix/sum_elements_matrix.h"
 
 int linSum(int* matrix, int len) {
   int sum = 0;
