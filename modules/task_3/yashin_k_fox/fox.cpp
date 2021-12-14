@@ -5,7 +5,6 @@
 #include <iostream>
 #include <ctime>
 #include <random>
-#include <stdexcept>
 #include "../../../modules/task_3/yashin_k_fox/fox.h"
 
 #define ndims 2
@@ -55,7 +54,7 @@ void fox_alg(double* A_block, double* A_mblock,
       source = 0;
     }
     MPI_Sendrecv_replace(B_block, block_size * block_size, MPI_DOUBLE, dest, 0,
-                        source, 0, column_communicator, MPI_STATUS_IGNORE);  
+                        source, 0, column_communicator, MPI_STATUS_IGNORE);
   }
 }
 
@@ -124,7 +123,7 @@ int fox(double* A, double* B, double* C, int size) {
       MPI_Gather(rowbuff, block_size * size, MPI_DOUBLE, C, block_size * size,
                 MPI_DOUBLE, 0, column_communicator);
     }
-    
+
     delete[] rowbuff;
     delete[] A_block;
     delete[] B_block;

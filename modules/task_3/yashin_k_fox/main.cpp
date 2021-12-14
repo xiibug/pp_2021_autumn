@@ -1,9 +1,9 @@
 // Copyright 2021 Yashin Kirill
 
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
-#include <cmath>
 #include "./fox.h"
+#include <cmath>
+#include <gtest-mpi-listener.hpp>
 
 TEST(fox, Test_on_Matrix_size_4) {
   int size = 4;
