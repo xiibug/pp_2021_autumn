@@ -164,8 +164,6 @@ TEST(MPIGaussJordanMethod, RandomVecExample_1000x1000) {
     std::random_device dev;
     std::mt19937 gen(dev());
 
-    double start, end;
-
     const int sz = 1000;
     int rank;
     int* vec = nullptr;
