@@ -5,6 +5,6 @@
 
 int fox(double* A, double* B, double* C, int size);
 int sequential_alg(double* A, double* B, double* C, int size);
-double* random_matrix(int size);
+void random_matrix(double* matrix, int size);
 
 #endif  // MODULES_TASK_3_YASHIN_K_FOX_FOX_H_

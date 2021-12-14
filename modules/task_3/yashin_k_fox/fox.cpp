@@ -14,14 +14,12 @@ int procNum, rank, cart_size, block_size;
 int coords[2];
 MPI_Comm cart_communicator, row_communicator, column_communicator;
 
-double* random_matrix(int size) {
+void random_matrix(double* matrix, int size) {
   std::mt19937 gen;
-  double* matrix = new double[size*size];
   gen.seed(static_cast<unsigned int>(time(0)));
   for (int i = 0; i < size * size; i++) {
     matrix[i] = static_cast<float>(gen() % 100) / 10;
   }
-  return matrix;
 }
 
 void fox_alg(double* A_block, double* A_mblock,

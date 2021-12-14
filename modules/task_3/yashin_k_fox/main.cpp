@@ -22,8 +22,8 @@ TEST(fox, Test_on_Matrix_size_4) {
     if (rank == 0) {
       A = new double[size * size];
       B = new double[size * size];
-      A = random_matrix(size);
-      B = random_matrix(size);
+      random_matrix(A, size);
+      random_matrix(B, size);
       C = new double[size * size];
       C_fox = new double[size * size];
       t_seq_start = MPI_Wtime();
@@ -71,8 +71,8 @@ TEST(fox, Test_on_Matrix_size_16) {
     if (rank == 0) {
       A = new double[size * size];
       B = new double[size * size];
-      A = random_matrix(size);
-      B = random_matrix(size);
+      random_matrix(A, size);
+      random_matrix(B, size);
       C = new double[size * size];
       C_fox = new double[size * size];
       t_seq_start = MPI_Wtime();
@@ -120,8 +120,8 @@ TEST(fox, Test_on_Matrix_size_64) {
     if (rank == 0) {
       A = new double[size * size];
       B = new double[size * size];
-      A = random_matrix(size);
-      B = random_matrix(size);
+      random_matrix(A, size);
+      random_matrix(B, size);
       C = new double[size * size];
       C_fox = new double[size * size];
       t_seq_start = MPI_Wtime();
@@ -169,8 +169,8 @@ TEST(fox, Test_on_Matrix_size_100) {
     if (rank == 0) {
       A = new double[size * size];
       B = new double[size * size];
-      A = random_matrix(size);
-      B = random_matrix(size);
+      random_matrix(A, size);
+      random_matrix(B, size);
       C = new double[size * size];
       C_fox = new double[size * size];
       t_seq_start = MPI_Wtime();
@@ -218,8 +218,8 @@ TEST(fox, Test_on_Matrix_size_256) {
     if (rank == 0) {
       A = new double[size * size];
       B = new double[size * size];
-      A = random_matrix(size);
-      B = random_matrix(size);
+      random_matrix(A, size);
+      random_matrix(B, size);
       C = new double[size * size];
       C_fox = new double[size * size];
       t_seq_start = MPI_Wtime();
