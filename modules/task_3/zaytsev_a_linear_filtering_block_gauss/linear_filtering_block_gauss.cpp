@@ -30,7 +30,7 @@ void Gauss_Core(/*double sigma*/) {
       norm += gauss_core[i * 3 + j];
     }
   }
-  for (int i = 0; i < gauss_core.size(); i++) {
+  for (int i = 0; i < 9; i++) {
     if ((i != 7) && (i != 4) && (i != 1)) gauss_core[i] = 0.f;
     gauss_core[i] /= norm;
   }
@@ -66,7 +66,7 @@ vector<double> ParallelOp(const vector<double>& image, int matrix_size) {
   int size, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  unsigned int square_root = 0;
+  int square_root = 0;
   for (square_root = static_cast<int>(sqrt(size));
        matrix_size % square_root != 0; square_root--) {
   }
