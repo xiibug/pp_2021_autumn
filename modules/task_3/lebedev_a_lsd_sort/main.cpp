@@ -24,7 +24,7 @@ TEST(LSD_SORT_MPI, TEST_SORT_SEQENTUAL) {
 }
 
 
-TEST(LSD_SORT_MPI, Test_PARALLEL) {
+TEST(LSD_SORT_MPI, Test_SIGNED_VALUES) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -42,7 +42,7 @@ TEST(LSD_SORT_MPI, Test_PARALLEL) {
 }
 
 
-TEST(LSD_SORT_MPI, Test_PARALLEL_NEGATIVE_VALUES) {
+TEST(LSD_SORT_MPI, Test_NEGATIVE_VALUES_ONLY) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -60,7 +60,7 @@ TEST(LSD_SORT_MPI, Test_PARALLEL_NEGATIVE_VALUES) {
 }
 
 
-TEST(LSD_SORT_MPI, Test_PARALLEL_POSITIVE_VALUES) {
+TEST(LSD_SORT_MPI, Test_POSITIVE_VALUES_ONLY) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -78,7 +78,7 @@ TEST(LSD_SORT_MPI, Test_PARALLEL_POSITIVE_VALUES) {
 }
 
 
-TEST(LSD_SORT_MPI, Test_PARALLEL_EMPTY_ARRAY) {
+TEST(LSD_SORT_MPI, Test_EMPTY_ARRAY) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -96,7 +96,7 @@ TEST(LSD_SORT_MPI, Test_PARALLEL_EMPTY_ARRAY) {
 }
 
 
-TEST(LSD_SORT_MPI, Test_PARALLEL_SORTED_ARRAY) {
+TEST(LSD_SORT_MPI, Test_SORTED_ARRAY) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -111,6 +111,27 @@ TEST(LSD_SORT_MPI, Test_PARALLEL_SORTED_ARRAY) {
 
     if (rank == 0) {
         ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
+    }
+}
+
+
+TEST(LSD_SORT_MPI, Test_RANGE) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    std::vector<int> v;
+
+    if (rank == 0) {
+        v = get_random_vector(1000, -1000, 1000);
+        std::sort(v.begin(), v.end());
+    } else {
+        v.resize(1000);
+    }
+
+    lsd_sort(v.begin() + 100, v.end() - 500);
+
+    if (rank == 0) {
+        ASSERT_TRUE(std::is_sorted(v.begin() + 100, v.end() - 500));
     }
 }
 
