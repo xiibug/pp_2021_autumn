@@ -19,7 +19,7 @@ std::vector<int> get_random_vector(size_t size, int low, int high) {
 
 TEST(LSD_SORT_MPI, TEST_SORT_SEQENTUAL) {
     std::vector<int> v = get_random_vector(10000, -10000, 10000);
-    lsd_sort(v);
+    lsd_sort(v.begin(), v.end());
     ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
 }
 
@@ -34,7 +34,7 @@ TEST(LSD_SORT_MPI, Test_PARALLEL) {
         v = get_random_vector(10000, -10000, 10000);
     }
 
-    lsd_sort(v);
+    lsd_sort(v.begin(), v.end());
 
     if (rank == 0) {
         ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
@@ -52,7 +52,7 @@ TEST(LSD_SORT_MPI, Test_PARALLEL_NEGATIVE_VALUES) {
         v = get_random_vector(10000, -1000000, 0);
     }
 
-    lsd_sort(v);
+    lsd_sort(v.begin(), v.end());
 
     if (rank == 0) {
         ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
@@ -70,7 +70,7 @@ TEST(LSD_SORT_MPI, Test_PARALLEL_POSITIVE_VALUES) {
         v = get_random_vector(10000, 0, 1000000);
     }
 
-    lsd_sort(v);
+    lsd_sort(v.begin(), v.end());
 
     if (rank == 0) {
         ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
@@ -88,7 +88,7 @@ TEST(LSD_SORT_MPI, Test_PARALLEL_EMPTY_ARRAY) {
         v = get_random_vector(0, -1000000, 1000000);
     }
 
-    lsd_sort(v);
+    lsd_sort(v.begin(), v.end());
 
     if (rank == 0) {
         ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
@@ -107,7 +107,7 @@ TEST(LSD_SORT_MPI, Test_PARALLEL_SORTED_ARRAY) {
         std::sort(v.begin(), v.end());
     }
 
-    lsd_sort(v);
+    lsd_sort(v.begin(), v.end());
 
     if (rank == 0) {
         ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));

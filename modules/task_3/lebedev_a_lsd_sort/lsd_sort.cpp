@@ -11,10 +11,10 @@
 
 #define MIN_JOB 100
 
-size_t get_max_digits(const std::vector<int>& v) {
+size_t get_max_digits(std::vector<int>::iterator first, std::vector<int>::iterator last) {
     size_t max_digit = 0;
-    for(const int& num: v) {
-        size_t digit = (num < 0) ? std::to_string(num).size() - 1 : std::to_string(num).size();
+    for (auto iter = first; iter != last; iter++) {
+        size_t digit = (*iter < 0) ? std::to_string(*iter).size() - 1 : std::to_string(*iter).size();
         if (digit > max_digit) {
             max_digit = digit;
         }
@@ -22,17 +22,20 @@ size_t get_max_digits(const std::vector<int>& v) {
     return max_digit;
 }
 
-void lsd_sort(std::vector<int>& v) {
+void lsd_sort(std::vector<int>::iterator first, std::vector<int>::iterator last) {
+    if (first == last) {
+        return;
+    }
     const static size_t range = 19;
     std::vector<int> containers[range];
-    size_t max_digits = get_max_digits(v);
+    size_t max_digits = get_max_digits(first, last);
     int ten_pow_dig = 1;
     for (size_t cur_dig = 0; cur_dig < max_digits; cur_dig++) {
-        for (int& num: v) {
-            containers[num / ten_pow_dig % 10 + 9].push_back(num);
+        for (auto iter = first; iter != last; iter++) {
+            containers[*iter / ten_pow_dig % 10 + 9].push_back(*iter);
         }
         ten_pow_dig *= 10;
-        int* write_it = v.data();
+        int* write_it = &(*first);
         for (size_t i = 0; i < range; i++) {
             std::memcpy(write_it, containers[i].data(), containers[i].size() * sizeof(int));
             write_it += containers[i].size();
@@ -41,14 +44,17 @@ void lsd_sort(std::vector<int>& v) {
     }
 }
 
-void lsd_sort_parallel(std::vector<int>& v) {
+void lsd_sort_parallel(std::vector<int>::iterator first, std::vector<int>::iterator last) {
     int size, rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     if (rank == 0) {
         MPI_Comm_size(MPI_COMM_WORLD, &size);
-        int max_size = (v.size() % MIN_JOB == 0) ? v.size() / MIN_JOB : v.size() / MIN_JOB + 1;
+        int max_size = ((last - first) % MIN_JOB == 0) ? (last - first) / MIN_JOB : (last - first) / MIN_JOB + 1;
         size = std::min(size, max_size);
+        if (first == last) {
+            size = 0;
+        }
     }
 
     MPI_Bcast(&size, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -63,14 +69,15 @@ void lsd_sort_parallel(std::vector<int>& v) {
     std::vector<int> local_v{0};
 
     if (rank == 0) {
-        int jobs_per_proc = v.size() / size;
-        int last_jobs = v.size() % size;
+        int jobs_per_proc = (last - first) / size;
+        int last_jobs = (last - first) % size;
         int local_size = (last_jobs == 0) ? jobs_per_proc : jobs_per_proc + 1;
         local_v.resize(local_size);
+        std::memcpy(&local_v[0], &(*last), local_size);
         int offset = local_size;
         for (int pid = 1; pid < size; pid++) {
             int count = (pid < last_jobs) ? jobs_per_proc + 1 : jobs_per_proc;
-            MPI_Send(v.data() + offset, count, MPI_INT, pid, 0, NEW_WORLD);
+            MPI_Send(&(*last) + offset, count, MPI_INT, pid, 0, NEW_WORLD);
             offset += count;
         }
     } else {
@@ -82,21 +89,22 @@ void lsd_sort_parallel(std::vector<int>& v) {
         MPI_Recv(local_v.data(), local_size, MPI_INT, 0, 0, NEW_WORLD, &status);
     }
 
-    lsd_sort(local_v);
+    lsd_sort(local_v.begin(), local_v.end());
 
     if (rank == 0) {
-        std::vector<int> tmp(v.size());
+        std::vector<int> tmp(last - first);
         std::memcpy(tmp.data(), local_v.data(), local_v.size() * sizeof(int));
-        auto last_merged = tmp.begin() + local_v.size();
+        int offset = local_v.size();
         for (int i = 1; i < size; i++) {
             int count;
             MPI_Status status;
             MPI_Probe(i, 0, NEW_WORLD, &status);
             MPI_Get_count(&status, MPI_FLOAT, &count);
-            MPI_Recv(last_merged.base(), count, MPI_INT, i, 0, NEW_WORLD, &status);
-            std::merge(tmp.begin(), last_merged, last_merged, last_merged + count, v.begin());
-            tmp = v;
-            last_merged += count;
+            MPI_Recv(&tmp[offset], count, MPI_INT, i, 0, NEW_WORLD, &status);
+            auto last_merged = tmp.begin() + offset;
+            std::merge(tmp.begin(), last_merged, last_merged, last_merged + count, first);
+            offset += count;
+            std::memcpy(&tmp[0], &(*first), offset * sizeof(int));
         }
     } else {
         MPI_Send(local_v.data(), local_v.size(), MPI_INT, 0, 0, NEW_WORLD);
