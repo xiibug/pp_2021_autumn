@@ -26,7 +26,7 @@ void lsd_sort(std::vector<int>::iterator first, std::vector<int>::iterator last)
     if (first == last) {
         return;
     }
-    const static size_t range = 19;
+    static const size_t range = 19;
     std::vector<int> containers[range];
     size_t max_digits = get_max_digits(first, last);
     int ten_pow_dig = 1;
