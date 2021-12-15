@@ -28,9 +28,8 @@ int len = 5;
 
 TEST(MPIunicSymbols, identical) {
   int procRank = 0;
-  char* string1 = "qwerty";
-  char* string2 = "qwerty";
-
+  char const* string1 = "qwerty";
+  char const* string2 = "qwerty";
   MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
   int result = Mpi_compare(string1, string2, 6);
   if (procRank == 0) {
@@ -40,8 +39,8 @@ TEST(MPIunicSymbols, identical) {
 
 TEST(MPIunicSymbols, space) {
   int procRank = 0;
-  char* string1 = " ";
-  char* string2 = " ";
+  char const* string1 = " ";
+  char const* string2 = " ";
 
   MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
   int result = Mpi_compare(string1, string2, 1);
@@ -50,10 +49,23 @@ TEST(MPIunicSymbols, space) {
   }
 }
 
+TEST(MPIunicSymbols, spaceBetweenWords) {
+  int procRank = 0;
+  char const* string1 = "qwerty asdfg";
+  char const* string2 = "qwarty asabg";
+
+  MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
+  int result = Mpi_compare(string1, string2, 12);
+  if (procRank == 0) {
+    EXPECT_EQ(result, 3);
+  }
+}
+
+
 TEST(MPIunicSymbols, FirstLonger) {
   int procRank = 0;
-  char* string1 = "qwe";
-  char* string2 = "qwerty";
+  char const* string1 = "qwe";
+  char const* string2 = "qwerty";
 
   MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
   int result = Mpi_compare(string1, string2, 9);
@@ -64,8 +76,8 @@ TEST(MPIunicSymbols, FirstLonger) {
 
 TEST(MPIunicSymbols, SecondLonger) {
   int procRank = 0;
-  char* string1 = "qwerty";
-  char* string2 = "qwe";
+  char const* string1 = "qwerty";
+  char const* string2 = "qwe";
 
   MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
   int result = Mpi_compare(string1, string2, 6);
@@ -76,8 +88,8 @@ TEST(MPIunicSymbols, SecondLonger) {
 
 TEST(MPIunicSymbols, NotIdentical) {
   int procRank = 0;
-  char* string1 = "bzxcb";
-  char* string2 = "rwerq";
+  char const* string1 = "bzxcb";
+  char const* string2 = "rwerq";
 
   MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
   int result = Mpi_compare(string1, string2, 5);
