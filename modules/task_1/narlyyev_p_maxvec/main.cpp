@@ -1,6 +1,6 @@
-// Copyright 2021 Narlyyev Parahat 
-#include <gtest-mpi-listener.hpp>
+// Copyright 2021 Narlyyev Parahat
 #include <gtest/gtest.h>
+#include <gtest-mpi-listener.hpp>
 #include <vector>
 #include "./narlyyev_p_maxvec.h"
 
