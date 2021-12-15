@@ -2,10 +2,8 @@
 #ifndef MODULES_TASK_3_LAKHOV_K_OPTIMIZATION_PARAMS_OPTIMIZATION_PARAMS_H_
 #define MODULES_TASK_3_LAKHOV_K_OPTIMIZATION_PARAMS_OPTIMIZATION_PARAMS_H_
 #include <mpi.h>
-#include <math.h>
+#include <cmath>
 #include <set>
-#include <limits>
-#include <vector>
 
 double f1(double x, double y);
 double f2(double x, double y);

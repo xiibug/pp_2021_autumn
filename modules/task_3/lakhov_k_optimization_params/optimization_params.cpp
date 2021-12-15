@@ -75,7 +75,7 @@ Point singleDimensionMin(double left_x, double right_x, double const_y,
         i_value++;
         i_previous_value = set.begin();
         double R, current_r;
-        R = std::numeric_limits<double>::lowest();
+        R = -400000000;
         while (i_value != set.end()) {
             double delta_x = (i_value->x - i_previous_value->x);
             double a = M * delta_x;
@@ -161,7 +161,7 @@ Point sequentialCalc(double left_x, double right_x,
         i_value++;
         i_previous_value = set.begin();
         double R, current_r;
-        R = std::numeric_limits<double>::lowest();
+        R = -400000000;
 
         auto maxRiter = set.begin();
         auto r_i_value_previous_max = set.begin();
