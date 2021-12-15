@@ -117,8 +117,8 @@ Point sequentialCalc(double left_x, double right_x,
     double(*ptr)(double, double) = func;
     double r = 2;
 
-    Point result;
-    Point last_result;
+    Point result = {0, 0, 0};
+    Point last_result = {0, 0, 0};
     std::set<doubleDimensionChar> set;
 
     result = singleDimensionMin(left_x, right_x, left_y, ptr);
@@ -212,7 +212,8 @@ Point parralelCalc(double left_x, double right_x,
     double eps = 0.01;
     double r = 2;
     int max_iterations = 1000;
-    Point result, last_result;
+    Point result = {0, 0, 0};
+    Point last_result = {0, 0, 0};
     std::vector<double> result_sender(3);
 
     if (rank == 0) {
