@@ -1,7 +1,7 @@
 // Copyright 2021 Narlyyev Parahat
+#include <vector>
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
-#include <vector>
 #include "./narlyyev_p_maxvec.h"
 
 TEST(Parallel_Operations_MPI, Test_Search_Max_50_50) {
