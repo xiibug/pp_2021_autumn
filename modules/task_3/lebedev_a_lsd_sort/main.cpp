@@ -5,16 +5,6 @@
 #include <gtest-mpi-listener.hpp>
 
 
-bool is_sorted(const std::vector<int>& v) {
-    bool sorted = true;
-    for (size_t i = 0; i < v.size() - 1; i++) {
-        if (v[i] > v[i + 1]) {
-            return false;
-        }
-    }
-    return sorted;
-}
-
 std::vector<int> get_random_vector(size_t size, int low, int high) {
     std::vector<int> random_vector(size);
     std::random_device rd;
@@ -30,23 +20,98 @@ std::vector<int> get_random_vector(size_t size, int low, int high) {
 TEST(LSD_SORT_MPI, TEST_SORT_SEQENTUAL) {
     std::vector<int> v = get_random_vector(10000, -10000, 10000);
     lsd_sort(v);
-    ASSERT_TRUE(is_sorted(v));
+    ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
 }
 
 
-TEST(LSD_SORT_MPI, Test_2) {
+TEST(LSD_SORT_MPI, Test_PARALLEL) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    std::vector<int> v;
+
+    if (rank == 0) {
+        v = get_random_vector(10000, -10000, 10000);
+    }
+
+    lsd_sort(v);
+
+    if (rank == 0) {
+        ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
+    }
 }
 
 
-TEST(LSD_SORT_MPI, Test_3) {
+TEST(LSD_SORT_MPI, Test_PARALLEL_NEGATIVE_VALUES) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    std::vector<int> v;
+
+    if (rank == 0) {
+        v = get_random_vector(10000, -1000000, 0);
+    }
+
+    lsd_sort(v);
+
+    if (rank == 0) {
+        ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
+    }
 }
 
 
-TEST(LSD_SORT_MPI, Test_4) {
+TEST(LSD_SORT_MPI, Test_PARALLEL_POSITIVE_VALUES) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    std::vector<int> v;
+
+    if (rank == 0) {
+        v = get_random_vector(10000, 0, 1000000);
+    }
+
+    lsd_sort(v);
+
+    if (rank == 0) {
+        ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
+    }
 }
 
 
-TEST(LSD_SORT_MPI, Test_5) {
+TEST(LSD_SORT_MPI, Test_PARALLEL_EMPTY_ARRAY) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    std::vector<int> v;
+
+    if (rank == 0) {
+        v = get_random_vector(0, -1000000, 1000000);
+    }
+
+    lsd_sort(v);
+
+    if (rank == 0) {
+        ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
+    }
+}
+
+
+TEST(LSD_SORT_MPI, Test_PARALLEL_SORTED_ARRAY) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    std::vector<int> v;
+
+    if (rank == 0) {
+        v = get_random_vector(1000, -1000, 1000);
+        std::sort(v.begin(), v.end());
+    }
+
+    lsd_sort(v);
+
+    if (rank == 0) {
+        ASSERT_TRUE(std::is_sorted(v.begin(), v.end()));
+    }
 }
 
 
