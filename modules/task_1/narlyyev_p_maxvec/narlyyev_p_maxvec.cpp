@@ -1,5 +1,5 @@
 // Copyright 2021 Narlyyev Parahat
-#include "./narlyyev_p_maxvec.h"
+#include "../../modules/task_1/narlyyev_p_maxvec/narlyyev_p_maxvec.h"
 #include <mpi.h>
 #include <random>
 #include <ctime>
