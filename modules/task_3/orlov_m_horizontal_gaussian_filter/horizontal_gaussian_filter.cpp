@@ -1,6 +1,6 @@
 //  Copyright 2021 Maksim Orlov
 
-#define _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES 
 #include <mpi.h>
 #include <vector>
 #include <ctime>
