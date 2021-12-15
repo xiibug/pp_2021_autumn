@@ -91,9 +91,13 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
 
     Tensor<float> B_local;
     Tensor<float> d_local;
-    Tensor<float> x0({d2, 1});
+    Tensor<float> x({d2, 1});
 
-    MPI_Bcast(x0.get_data(), x0.get_size(), MPI_FLOAT, 0, NEW_WORLD);
+    if (rank == 0) {
+        std::memcpy(x.get_data(), sys.x0.get_data(), x.get_size() * sizeof(float));
+    }
+
+    MPI_Bcast(x.get_data(), x.get_size(), MPI_FLOAT, 0, NEW_WORLD);
 
     int diag = 0;
 
@@ -108,7 +112,6 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
 
         std::memcpy(B_local.get_data(), sys.A.get_data(), B_local.get_size() * sizeof(float));
         std::memcpy(d_local.get_data(), sys.b.get_data(), d_local.get_size() * sizeof(float));
-        std::memcpy(x0.get_data(), sys.x0.get_data(), x0.get_size() * sizeof(float));
 
         size_t offset_A = B_local.get_size();
         size_t offset_b = d_local.get_size();
@@ -145,32 +148,32 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
         }
     }
 
-    Tensor<float> x(x0.get_shape());
     uint8_t solved = 0;
     while (!solved) {
-        Tensor<float> x_local = matmul2D(B_local, x0) + d_local;
+        Tensor<float> x_local = matmul2D(B_local, x) + d_local;
         if (rank == 0) {
-            std::memcpy(x.get_data(), x_local.get_data(), x_local.get_size() * sizeof(float));
+            Tensor<float> new_x(x.get_shape());
+            std::memcpy(new_x.get_data(), x_local.get_data(), x_local.get_size() * sizeof(float));
             size_t offset = x_local.get_size();
             int count;
             for (int i = 1; i < size; i++) {
                 MPI_Status status;
                 MPI_Probe(i, 0, NEW_WORLD, &status);
                 MPI_Get_count(&status, MPI_FLOAT, &count);
-                MPI_Recv(x.get_data() + offset, count, MPI_FLOAT, i, 0, NEW_WORLD, &status);
+                MPI_Recv(new_x.get_data() + offset, count, MPI_FLOAT, i, 0, NEW_WORLD, &status);
                 offset += count;
             }
-            float diff = dist(x, x0);
+            float diff = dist(new_x, x);
             if (diff <= accuracy) {
                 solved = 1;
             }
+            x = new_x;
         } else {
             MPI_Send(x_local.get_data(), x_local.get_size(), MPI_FLOAT, 0, 0, NEW_WORLD);
         }
         MPI_Barrier(NEW_WORLD);
         MPI_Bcast(&solved, 1, MPI_UNSIGNED_CHAR, 0, NEW_WORLD);
         MPI_Bcast(x.get_data(), x.get_size(), MPI_FLOAT, 0, NEW_WORLD);
-        std::memcpy(x0.get_data(), x.get_data(), x.get_size() * sizeof(float));
     }
 
     MPI_Comm_free(&NEW_WORLD);
