@@ -4,6 +4,7 @@
 #include <mpi.h>
 #include <cmath>
 #include <set>
+#include <vector>
 
 double f1(double x, double y);
 double f2(double x, double y);
@@ -12,20 +13,10 @@ double f4(double x, double y);
 double f5(double x, double y);
 
 
-class Point {
- public:
+struct Point {
     double x;
     double y;
     double z;
-    explicit Point(double x_value = 0, double y_value = 0, double z_value = 0)
-    : x(x_value), y(y_value), z(z_value) {}
-    friend bool operator==(const Point& left, const Point& right) {
-        const double eps = 0.01;
-        double dx = std::abs(left.x - right.x) <= eps;
-        double dy = std::abs(left.y - right.y) <= eps;
-        double dz = std::abs(left.z - right.z) <= eps;
-        return dx && dy && dz;
-    }
 };
 
 Point sequentialCalc(double left_x, double right_x,
@@ -79,5 +70,7 @@ class singleDimensionChar {
 
 Point singleDimensionMin(double left_x, double right_x, double const_y,
                          double(*func)(double x, double y));
+
+bool comparePoints(const Point& left, const Point& right);
 
 #endif  // MODULES_TASK_3_LAKHOV_K_OPTIMIZATION_PARAMS_OPTIMIZATION_PARAMS_H_

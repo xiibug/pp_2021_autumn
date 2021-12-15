@@ -30,7 +30,7 @@ TEST(Global_Params_Optimization_MPI, Test_Func1) {
         delta2 = time2 - time1;
         std::cout << "Sequental time " << delta2 << std::endl;
         std::cout << "sequental/parallel ratio " << delta2/delta1 << std::endl;
-        bool r = parallel_result == seq_result;
+        bool r = comparePoints(parallel_result, seq_result);
         EXPECT_TRUE(r);
     }
 }
@@ -60,7 +60,7 @@ TEST(Global_Params_Optimization_MPI, Test_Func2) {
         delta2 = time2 - time1;
         std::cout << "Sequental time " << delta2 <<std::endl;
         std::cout << "sequental/parallel ratio " << delta2/delta1 <<std::endl;
-        bool r = parallel_result == seq_result;
+        bool r = comparePoints(parallel_result, seq_result);
         EXPECT_TRUE(r);
     }
 }
@@ -90,7 +90,7 @@ TEST(Global_Params_Optimization_MPI, Test_Func3) {
         delta2 = time2 - time1;
         std::cout << "Sequental time " << delta2 << std::endl;
         std::cout << "sequental/parallel ratio " << delta2/delta1 << std::endl;
-        bool r = parallel_result == seq_result;
+        bool r = comparePoints(parallel_result, seq_result);
         EXPECT_TRUE(r);
     }
 }
@@ -120,7 +120,7 @@ TEST(Global_Params_Optimization_MPI, Test_Func4) {
         delta2 = time2 - time1;
         std::cout << "Sequental time " << delta2 << std::endl;
         std::cout << "sequental/parallel ratio " << delta2/delta1 << std::endl;
-        bool r = parallel_result == seq_result;
+        bool r = comparePoints(parallel_result, seq_result);
         EXPECT_TRUE(r);
     }
 }
@@ -150,7 +150,7 @@ TEST(Global_Params_Optimization_MPI, Test_Func5) {
         delta2 = time2 - time1;
         std::cout << "Sequental time " << delta2 << std::endl;
         std::cout << "sequental/parallel ratio " << delta2/delta1 << std::endl;
-        bool r = parallel_result == seq_result;
+        bool r = comparePoints(parallel_result, seq_result);
         EXPECT_TRUE(r);
     }
 }
@@ -181,17 +181,14 @@ TEST(Global_Params_Optimization_MPI, Test_Func6) {
         delta2 = time2 - time1;
         std::cout << "Sequental time " << delta2 << std::endl;
         std::cout << "sequental/parallel ratio "<< delta2/delta1 << std::endl;
-        bool r = parallel_result == seq_result;
+        bool r = comparePoints(parallel_result, seq_result);
         EXPECT_TRUE(r);
     }
 }
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
-
     MPI_Init(&argc, &argv);
-
-
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
     ::testing::TestEventListeners& listeners =
         ::testing::UnitTest::GetInstance()->listeners();

@@ -213,23 +213,24 @@ Point parralelCalc(double left_x, double right_x,
     double r = 2;
     int max_iterations = 1000;
     Point result, last_result;
+    std::vector<double> result_sender(3);
 
     if (rank == 0) {
-        int stop_signal = 0;
         int should_stop = 0;
         std::set<doubleDimensionChar> set;
         double len_of_part = (right_y - left_y) / (size-1);
         for (int i = 1; i < size; i++) {
             double y_value_send = left_y + i*len_of_part;
-            MPI_Send(&stop_signal, 1, MPI_INT, i, 1, MPI_COMM_WORLD);
             MPI_Send(&y_value_send, 1, MPI_DOUBLE, i, 1, MPI_COMM_WORLD);
         }
         result = singleDimensionMin(left_x, right_x, left_y, func);
         set.insert(doubleDimensionChar(result.x, result.y, result.z));
         last_result = result;
         for (int i = 1; i < size ; i++) {
-            MPI_Recv(&result, 3, MPI_DOUBLE, MPI_ANY_SOURCE, 1,
+            MPI_Recv(result_sender.data(), 3, MPI_DOUBLE, MPI_ANY_SOURCE, 1,
                      MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            result.x = result_sender[0]; result.y = result_sender[1];
+            result.z = result_sender[2];
             if (result.z < last_result.z) { last_result = result; }
             set.insert(doubleDimensionChar(result.x, result.y, result.z));
         }
@@ -283,7 +284,6 @@ Point parralelCalc(double left_x, double right_x,
                     (r_iter->variableFirst + r_iter->variableSecond) -
                     ((r_iter->functionValueSecond - r_iter->functionValueFirst)
                     / (2 * M));
-                MPI_Send(&stop_signal, 1, MPI_INT, i, 1, MPI_COMM_WORLD);
                 MPI_Send(&new_y, 1, MPI_DOUBLE, i, 1, MPI_COMM_WORLD);
                 if (r_iter->variableSecond - r_iter->variableFirst <= eps) {
                     should_stop = 1;
@@ -291,30 +291,41 @@ Point parralelCalc(double left_x, double right_x,
                 r_iter++;
             }
             for (int i = 1; i < size; i++) {
-                MPI_Recv(&result, 3, MPI_DOUBLE, MPI_ANY_SOURCE, 1,
+                MPI_Recv(result_sender.data(), 3, MPI_DOUBLE, MPI_ANY_SOURCE, 1,
                          MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-                if (result.z < last_result.z) { last_result = result;}
+                result.x = result_sender[0]; result.y = result_sender[1];
+                result.z = result_sender[2];
+                if (result.z < last_result.z) { last_result = result; }
                 set.insert(doubleDimensionChar(result.x, result.y, result.z));
             }
         }
-        stop_signal = should_stop || k >= max_iterations;
+        double stop_signal = 0.00001;
         for (int i = 1; i < size; ++i) {
-            MPI_Send(&stop_signal, 1, MPI_INT, i, 1, MPI_COMM_WORLD);
+            MPI_Send(&stop_signal, 1, MPI_DOUBLE, i, 1, MPI_COMM_WORLD);
         }
     } else {
-        bool stop_signal = 0;
         while (true) {
-            MPI_Recv(&stop_signal, 1, MPI_INT, 0, 1,
-                     MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-            if (stop_signal) {
-                break;
-            }
             double const_y;
             MPI_Recv(&const_y, 1, MPI_DOUBLE, 0, 1,
                      MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-            result = singleDimensionMin(left_x, right_x, const_y, func);
-            MPI_Send(&result, 3, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD);
+            if (const_y == 0.00001) {
+                break;
+            } else {
+                result = singleDimensionMin(left_x, right_x, const_y, func);
+                result_sender[0] = result.x; result_sender[1] = result.y;
+                result_sender[2] = result.z;
+                MPI_Send(result_sender.data(), 3, MPI_DOUBLE,
+                                               0, 1, MPI_COMM_WORLD);
+            }
         }
     }
     return last_result;
+}
+
+bool comparePoints(const Point& left, const Point& right) {
+    const double eps = 0.01;
+    bool dx = std::abs(left.x - right.x) <= eps;
+    bool dy = std::abs(left.y - right.y) <= eps;
+    bool dz = std::abs(left.z - right.z) <= eps;
+    return dx && dy && dz;
 }
