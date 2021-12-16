@@ -24,6 +24,8 @@ TEST(Jacobi_iterations_MPI, Test_Tensor) {
 
     Tensor<int> empty_t;
     ASSERT_FALSE(empty_t.is_allocated());
+    empty_t.resize({1, 5});
+    ASSERT_TRUE(empty_t.is_allocated());
 }
 
 

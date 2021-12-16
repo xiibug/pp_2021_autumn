@@ -18,19 +18,34 @@ class Tensor {
      const size_t prod(std::vector<size_t>::const_iterator begin, std::vector<size_t>::const_iterator end) {
          return std::accumulate(begin, end, 1, std::multiplies<size_t>{});
      }
-
- public:
-     Tensor() = default;
-     explicit Tensor(const std::vector<size_t>& _shape): shape(_shape) {
-         size = prod(shape.begin(), shape.end());
-         data = std::make_shared<std::vector<T>>(size);
+     void init_strides() {
+         strides.clear();
          for (size_t i = 1; i < shape.size(); i++) {
              strides.push_back(prod(shape.begin() + i, shape.end()));
          }
          strides.push_back(1);
      }
+
+ public:
+     Tensor(): size(0) {}
+     explicit Tensor(const std::vector<size_t>& _shape): shape(_shape) {
+         size = prod(shape.begin(), shape.end());
+         data = std::make_shared<std::vector<T>>(size);
+         init_strides();
+     }
      Tensor(const Tensor<T>& t) = default;
      ~Tensor() = default;
+
+     void resize(const std::vector<size_t>& _shape) {
+         size = prod(_shape.begin(), _shape.end());
+         if (data == nullptr) {
+             data = std::make_shared<std::vector<T>>(size);
+         } else {
+             data->resize(size);
+         }
+         shape = _shape;
+         init_strides();
+     }
 
      bool is_allocated() {
          return data != nullptr;

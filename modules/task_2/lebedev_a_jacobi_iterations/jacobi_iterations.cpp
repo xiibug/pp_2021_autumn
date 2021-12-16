@@ -86,7 +86,10 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
         return Tensor<float>();
     }
 
-    size_t d1, d2 = sys.A.get_shape()[1];
+    size_t d1, d2;
+    if (rank == 0) {
+        d2 = sys.n_dims;
+    }
     MPI_Bcast(&d2, 1, my_MPI_SIZE_T, 0, NEW_WORLD);
 
     Tensor<float> B_local;
@@ -107,8 +110,8 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
 
         d1 = (last_rows == 0) ? row_per_process : row_per_process + 1;
         size_t _diag_idx = d1;
-        B_local = Tensor<float>({d1, d2});
-        d_local = Tensor<float>({d1, 1});
+        B_local.resize({d1, d2});
+        d_local.resize({d1, 1});
 
         std::memcpy(B_local.get_data(), sys.A.get_data(), B_local.get_size() * sizeof(float));
         std::memcpy(d_local.get_data(), sys.b.get_data(), d_local.get_size() * sizeof(float));
@@ -129,8 +132,8 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
     } else {
         MPI_Status status;
         MPI_Recv(&d1, 1, my_MPI_SIZE_T, 0, 0, NEW_WORLD, &status);
-        B_local = Tensor<float>({d1, d2});
-        d_local = Tensor<float>({d1, 1});
+        B_local.resize({d1, d2});
+        d_local.resize({d1, 1});
         MPI_Recv(B_local.get_data(), B_local.get_size(), MPI_FLOAT, 0, 1, NEW_WORLD, &status);
         MPI_Recv(d_local.get_data(), d_local.get_size(), MPI_FLOAT, 0, 2, NEW_WORLD, &status);
         MPI_Recv(&diag, 1, my_MPI_SIZE_T, 0, 3, NEW_WORLD, &status);
