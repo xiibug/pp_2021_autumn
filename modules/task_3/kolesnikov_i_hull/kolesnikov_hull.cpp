@@ -3,10 +3,9 @@
 #include "../../../modules/task_3/kolesnikov_i_hull/kolesnikov_hull.h"
 
 void swap_p(Point* a, Point* b) {
-    Point* a_tmp = new Point(0, 0);
-    a_tmp = a;
-    a = b;
-    b = a_tmp;
+    Point a_tmp = *a;
+    *a = *b;
+    *b = a_tmp;
 }
 
 std::vector<Point> sort_vec(std::vector<Point> vec) {
