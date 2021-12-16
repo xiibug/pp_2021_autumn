@@ -24,7 +24,6 @@ int* generateMatrixRandom(int k, int l) {
 
 
 int findingMaxInParallel(int* arr, int k, int l) {
-
     int size, rank;
 
     MPI_Comm_size(MPI_COMM_WORLD, &size);
