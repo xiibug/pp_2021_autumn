@@ -27,12 +27,11 @@ class Point {
     }
     bool operator != (Point* other) {
         bool check1 = other->returnX()!= this->x && other->returnY()!= this->y;
-        bool check2 = other->returnX() == this->x) (&&) (other->returnY() != this->y);
-        bool check3 = other->returnX() != this->x) (&&) (other->returnY() == this->y;
+        bool check2 = other->returnX() == this->x && other->returnY() != this->y;
+        bool check3 = other->returnX() != this->x && other->returnY() == this->y;
         if(check1 && check2 && check3) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
