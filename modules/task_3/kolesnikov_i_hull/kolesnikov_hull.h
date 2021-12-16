@@ -2,6 +2,7 @@
 #ifndef MODULES_TASK_3_KOLESNIKOV_I_HULL_KOLESNIKOV_HULL_H_
 #define MODULES_TASK_3_KOLESNIKOV_I_HULL_KOLESNIKOV_HULL_H_
 #include <vector>
+#include <mpi.h>
 #include <string>
 #include <fstream>
 #include <ctime>
