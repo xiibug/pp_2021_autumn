@@ -1,5 +1,4 @@
 // Copyright 2021 Kolesnikov Ilya
-#include <iostream>
 #include <mpi.h>
 #include "../../../modules/task_3/kolesnikov_i_hull/kolesnikov_hull.h"
 

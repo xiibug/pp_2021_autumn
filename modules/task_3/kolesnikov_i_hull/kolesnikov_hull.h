@@ -29,7 +29,7 @@ class Point {
         bool check1 = other->returnX()!= this->x && other->returnY()!= this->y;
         bool check2 = other->returnX() == this->x && other->returnY() != this->y;
         bool check3 = other->returnX() != this->x && other->returnY() == this->y;
-        if(check1 && check2 && check3) {
+        if (check1 && check2 && check3) {
             return true;
         } else {
             return false;
