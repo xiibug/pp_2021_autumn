@@ -68,7 +68,7 @@ TEST(MPIunicSymbols, FirstLonger) {
   char const* string2 = "qwerty";
 
   MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-  int result = Mpi_compare(string1, string2, 9);
+  int result = Mpi_compare(string1, string2, 6);
   if (procRank == 0) {
     EXPECT_EQ(result, 3);
   }
