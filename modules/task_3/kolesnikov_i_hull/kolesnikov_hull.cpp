@@ -10,7 +10,7 @@ void swap_p(Point* a, Point* b) {
 }
 
 std::vector<Point> sort_vec(std::vector<Point> vec) {
-	int vec_size = vec.size();
+    int vec_size = vec.size();
     for (int i(0); i < vec_size; ++i) {
         for (int j(0); j < vec_size - 1; ++j) {
             if ((vec[j].returnX() > vec[j + 1].returnX())) {
