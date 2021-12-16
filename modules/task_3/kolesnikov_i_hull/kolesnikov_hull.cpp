@@ -19,7 +19,7 @@ std::vector<Point> sort_vec(std::vector<Point> vec) {
         }
     }
     for (int i(0); i < vec_size; ++i) {
-        for (int j(0); j < vec_size) - 1; ++j) {
+        for (int j(0); j < vec_size - 1; ++j) {
             if ((vec[j].returnX() == vec[j + 1].returnX()) && (vec[j].returnY() > vec[j + 1].returnY())) {
                 swap_p(&vec[j], &vec[j + 1]);
             }
