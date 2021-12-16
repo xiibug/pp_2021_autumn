@@ -10,15 +10,15 @@ void swap_p(Point* a, Point* b) {
 }
 
 std::vector<Point> sort_vec(std::vector<Point> vec) {
-    for (long unsigned int i(0); i < vec.size(); ++i) {
-        for (long unsigned int j(0); j < vec.size() - 1; ++j) {
+    for (int64 i(0); i < vec.size(); ++i) {
+        for (int64 j(0); j < vec.size() - 1; ++j) {
             if ((vec[j].returnX() > vec[j + 1].returnX())) {
                 swap_p(&vec[j], &vec[j + 1]);
             }
         }
     }
-    for (long unsigned int i(0); i < vec.size(); ++i) {
-        for (long unsigned int j(0); j < vec.size() - 1; ++j) {
+    for (int64 i(0); i < vec.size(); ++i) {
+        for (int64 j(0); j < vec.size() - 1; ++j) {
             if ((vec[j].returnX() == vec[j + 1].returnX()) && (vec[j].returnY() > vec[j + 1].returnY())) {
                 swap_p(&vec[j], &vec[j + 1]);
             }
@@ -38,7 +38,7 @@ int get_pre_last(std::vector<Point> vec) {
     bool check = false;
     int x = vec[1].returnX() - vec[0].returnX();
     int y = vec[1].returnY() - vec[0].returnY();
-    for (long unsigned int i(2); i < vec.size(); ++i) {
+    for (int64 i(2); i < vec.size(); ++i) {
         if (vec[i].returnX() - vec[i - 1].returnX() == x && vec[i].returnY() - vec[i - 1].returnY() == y) {
             check = true;
         } else {
@@ -49,7 +49,7 @@ int get_pre_last(std::vector<Point> vec) {
     if (check) {
         return vec.size() - 1;
     }
-    for (long unsigned int i(1); i < vec.size(); ++i) {
+    for (int64 i(1); i < vec.size(); ++i) {
         if (vec[0].returnX() == vec[i].returnX()) {
             return i;
         }
@@ -76,7 +76,7 @@ std::vector<int> point_to_int(std::vector<Point> vec) {
 
 std::vector<Point> int_to_point(std::vector<int> vec) {
     std::vector<Point> res;
-    for (long unsigned int i(0); i < vec.size()-1; i+=2) {
+    for (int64 i(0); i < vec.size()-1; i+=2) {
          res.push_back(Point(vec[i], vec[i + 1]));
     }
 
@@ -190,7 +190,7 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
     std::vector<Point>steps_to_send2 = int_to_point(steps_to_send);
     std::vector<Point>steps_to_send3;
     steps_to_send3.push_back(steps_to_send2[0]);
-    for (long unsigned int i(1); i < steps_to_send2.size(); ++i) {
+    for (int64 i(1); i < steps_to_send2.size(); ++i) {
         if (&steps_to_send2[i] == &steps_to_send2[0]) {
             steps_to_send3.push_back(steps_to_send2[i]);
             break;
@@ -236,10 +236,10 @@ std::vector<Point> convexHull_jarvis(std::vector<Point> vec) {
     if (&steps[0] != &steps[steps.size() - 1]) {
         steps.push_back(vec[0]);
     }
-    for (long unsigned int i(0); i < vec.size(); ++i) {
+    for (int64 i(0); i < vec.size(); ++i) {
         points << vec[i].returnX() << " " << vec[i].returnY() << "\n";
     }
-    for (long unsigned int i(0); i < steps.size(); ++i) {
+    for (int64 i(0); i < steps.size(); ++i) {
         hull << steps[i].returnX() << " " << steps[i].returnY() << "\n";
     }
     points.close();
