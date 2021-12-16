@@ -26,12 +26,18 @@ class Point {
         return this->y;
     }
     bool operator != (Point* other) {
-        return ((other->returnX()!= this->x)(&&)(other->returnY()!= this->y)
-        || (other->returnX() == this->x) (&&) (other->returnY() != this->y)
-        || (other->returnX() != this->x) (&&) (other->returnY() == this->y))?true:false;
+        bool check1 = other->returnX()!= this->x && other->returnY()!= this->y;
+        bool check2 = other->returnX() == this->x) (&&) (other->returnY() != this->y);
+        bool check3 = other->returnX() != this->x) (&&) (other->returnY() == this->y;
+        if(check1 && check2 && check3) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     bool operator == (Point* other) {
-        return (other->returnX() == this->x) (&&) (other->returnY() == this->y)?true:false;
+        return (other->returnX() == this->x) && (other->returnY() == this->y)?true:false;
     }
     Point operator - (Point* p) {
         return Point(this->x - p->returnX(), this->y - p->returnY());

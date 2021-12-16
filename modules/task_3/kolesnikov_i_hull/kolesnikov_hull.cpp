@@ -20,7 +20,7 @@ std::vector<Point> sort_vec(std::vector<Point> vec) {
     }
     for (auto i(0); i < vec.size(); ++i) {
         for (auto j(0); j < vec.size() - 1; ++j) {
-            if ((vec[j].returnX() == vec[j + 1].returnX()) (&&) (vec[j].returnY() > vec[j + 1].returnY())) {
+            if ((vec[j].returnX() == vec[j + 1].returnX()) && (vec[j].returnY() > vec[j + 1].returnY())) {
                 swap_p(&vec[j], &vec[j + 1]);
             }
         }
@@ -40,7 +40,7 @@ int get_pre_last(std::vector<Point> vec) {
     int x = vec[1].returnX() - vec[0].returnX();
     int y = vec[1].returnY() - vec[0].returnY();
     for (auto i(2); i < vec.size(); ++i) {
-        if (vec[i].returnX() - vec[i - 1].returnX() == x (&&) vec[i].returnY() - vec[i - 1].returnY() == y) {
+        if (vec[i].returnX() - vec[i - 1].returnX() == x && vec[i].returnY() - vec[i - 1].returnY() == y) {
             check = true;
         } else {
             check = false;
@@ -118,7 +118,7 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
             if (x == pre_last) {
                 break;
             }
-            if (rank != size - 1 (&&) &vec[x] == &vec[0] (&&) cnt > 0) {
+            if (rank != size - 1 && &vec[x] == &vec[0] && cnt > 0) {
                 break;
             }
             if (cnt == range - 1) {
