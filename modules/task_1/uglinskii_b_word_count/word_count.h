@@ -7,7 +7,7 @@
 
 int ParallelWordCount(std::string input);
 
-int CountWordsSubstr(char* substr, int size);
+int CountWordsSubstr(std::string substr);
 
 std::string GenStr(int length, int max_size = 2);
 

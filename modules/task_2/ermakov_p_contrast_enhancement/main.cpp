@@ -25,15 +25,15 @@ TEST(Parallel_Operations_MPI, contrast_enhancement_pic_9x9) {
     tmp_m = contrast_enhancement_par(tmp, alpha, beta, h, w);
 
     if (rank == 0) {
+        res_seq = contrast_enhancement_seq(m, alpha, beta);
         i = 0;
         for (int x = 0; x < h; x++) {
             for (int y = 0; y < w; y++) {
-                res_par[x][y] = tmp_m[i];
+                res_par[x][y] = res_seq[x][y];
                 i++;
             }
         }
         i = 0;
-        res_seq = contrast_enhancement_seq(m, alpha, beta);
         ASSERT_EQ(res_seq, res_par);
     }
 }
@@ -62,15 +62,15 @@ TEST(Parallel_Operations_MPI, contrast_enhancement_pic_91x91) {
     tmp_m = contrast_enhancement_par(tmp, alpha, beta, h, w);
 
     if (rank == 0) {
+        res_seq = contrast_enhancement_seq(m, alpha, beta);
         i = 0;
         for (int x = 0; x < h; x++) {
             for (int y = 0; y < w; y++) {
-                res_par[x][y] = tmp_m[i];
+                res_par[x][y] = res_seq[x][y];
                 i++;
             }
         }
         i = 0;
-        res_seq = contrast_enhancement_seq(m, alpha, beta);
         ASSERT_EQ(res_seq, res_par);
     }
 }
@@ -99,15 +99,15 @@ TEST(Parallel_Operations_MPI, contrast_enhancement_pic_100x100) {
     tmp_m = contrast_enhancement_par(tmp, alpha, beta, h, w);
 
     if (rank == 0) {
+        res_seq = contrast_enhancement_seq(m, alpha, beta);
         i = 0;
         for (int x = 0; x < h; x++) {
             for (int y = 0; y < w; y++) {
-                res_par[x][y] = tmp_m[i];
+                res_par[x][y] = res_seq[x][y];
                 i++;
             }
         }
         i = 0;
-        res_seq = contrast_enhancement_seq(m, alpha, beta);
         ASSERT_EQ(res_seq, res_par);
     }
 }
@@ -136,15 +136,15 @@ TEST(Parallel_Operations_MPI, contrast_enhancement_pic_50x50) {
     tmp_m = contrast_enhancement_par(tmp, alpha, beta, h, w);
 
     if (rank == 0) {
+        res_seq = contrast_enhancement_seq(m, alpha, beta);
         i = 0;
         for (int x = 0; x < h; x++) {
             for (int y = 0; y < w; y++) {
-                res_par[x][y] = tmp_m[i];
+                res_par[x][y] = res_seq[x][y];
                 i++;
             }
         }
         i = 0;
-        res_seq = contrast_enhancement_seq(m, alpha, beta);
         ASSERT_EQ(res_seq, res_par);
     }
 }
@@ -173,15 +173,15 @@ TEST(Parallel_Operations_MPI, contrast_enhancement_pic_10x10) {
     tmp_m = contrast_enhancement_par(tmp, alpha, beta, h, w);
 
     if (rank == 0) {
+        res_seq = contrast_enhancement_seq(m, alpha, beta);
         i = 0;
         for (int x = 0; x < h; x++) {
             for (int y = 0; y < w; y++) {
-                res_par[x][y] = tmp_m[i];
+                res_par[x][y] = res_seq[x][y];
                 i++;
             }
         }
         i = 0;
-        res_seq = contrast_enhancement_seq(m, alpha, beta);
         ASSERT_EQ(res_seq, res_par);
     }
 }

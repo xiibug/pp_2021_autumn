@@ -35,7 +35,7 @@ int ParallelWordCount(std::string input_str) {
     }
     chunck_size = (str_size) / ProcNum;
 
-    substr_word_count = CountWordsSubstr(&input_str[0], chunck_size);
+    substr_word_count = CountWordsSubstr(input_str.substr(0, chunck_size));
 
   } else {
     if (ProcNum > 1) {
@@ -49,8 +49,7 @@ int ParallelWordCount(std::string input_str) {
 
       chunck_size = str_size / ProcNum;
       index = chunck_size * ProcRank;
-
-      substr_word_count = CountWordsSubstr(&input_str[index], chunck_size);
+      substr_word_count = CountWordsSubstr(input_str.substr(index, chunck_size));
     }
   }
 
@@ -79,22 +78,20 @@ int ParallelWordCount(std::string input_str) {
   return 0;
 }
 
-int CountWordsSubstr(char* substr, int size) {
+int CountWordsSubstr(std::string substr) {
   int count = 0;
   int i = 0;
-  int chr = substr[0];
-
+  int size = substr.size();
   while ((substr[i] == '-' || substr[i] == ' ') && i < size) {
     i++;
   }
   int word = 0;
 
   while (i < size) {
-    chr = substr[i];
-    if ((chr != ' ' && chr != '-') && word == 0) {
+    if ((substr[i] != ' ' && substr[i] != '-') && word == 0) {
       word = 1;
       count++;
-    } else if (chr == ' ') {
+    } else if (substr[i] == ' ') {
       word = 0;
     }
     i++;

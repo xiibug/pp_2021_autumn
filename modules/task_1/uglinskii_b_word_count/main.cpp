@@ -11,7 +11,7 @@ TEST(Sequential_Word_Count_MPI, Sirus_speech_seq) {
     std::string str =
         "Feel the thrill of THE VOID! Rain of Stars! Glorious Flames! "
         "Obliteration. You will long for NONEXISTENCE";
-    int count = CountWordsSubstr(&str[0], str.size());
+    int count = CountWordsSubstr(str);
     ASSERT_EQ(count, 17);
   }
 }
@@ -22,7 +22,7 @@ TEST(Sequential_Word_Count_MPI, One_word_seq) {
 
   if (ProcRank == 0) {
     std::string str = "DIE!";
-    int count = CountWordsSubstr(&str[0], str.size());
+    int count = CountWordsSubstr(str);
     ASSERT_EQ(count, 1);
   }
 }
@@ -69,7 +69,7 @@ TEST(Parallel_Word_Count_MPI, Generated_small_String_parallel) {
   int par_count = ParallelWordCount(str);
 
   if (ProcRank == 0) {
-    int seq_count = CountWordsSubstr(&str[0], str.size());
+    int seq_count = CountWordsSubstr(str);
     ASSERT_EQ(seq_count, par_count);
   }
 }
@@ -85,7 +85,7 @@ TEST(Parallel_Word_Count_MPI, Generated_big_String_parallel) {
   int par_count = ParallelWordCount(str);
 
   if (ProcRank == 0) {
-    int seq_count = CountWordsSubstr(&str[0], str.size());
+    int seq_count = CountWordsSubstr(str);
     ASSERT_EQ(seq_count, par_count);
   }
 }
