@@ -1,8 +1,8 @@
 // Copyright 2021 Narlyyev Parahat
 #include <mpi.h>
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <vector>
+#include <gtest-mpi-listener.hpp>
 #include "./narlyyev_scheme.h"
 
 TEST(Parallel_matrix_product, 17x17) {

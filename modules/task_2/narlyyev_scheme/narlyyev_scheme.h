@@ -14,4 +14,4 @@ std::vector<double> matrix_product_sequential(const std::vector<double>& matrix_
 std::vector<double> matrix_product_parallel(const std::vector<double>& matrix_A,
   const std::vector<double>& matrix_B, int size);
 
-#endif  // MODULES_TASK_2_NARLYYEV_SCHEME_NARLYYEW_SCHEME_H_
+#endif  // MODULES_TASK_2_NARLYYEV_SCHEME_NARLYYEV_SCHEME_H_
