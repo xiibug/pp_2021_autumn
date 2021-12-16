@@ -36,8 +36,8 @@ class Point {
     Point operator - (Point* p) {
         return Point(this->x - p->returnX(), this->y - p->returnY());
     }
- private:
 
+ private:
     int x, y;
 };
 

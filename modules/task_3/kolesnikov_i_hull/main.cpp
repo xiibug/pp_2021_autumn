@@ -11,19 +11,13 @@ TEST(hull, last_hull_is_equal_with_first_point) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     std::vector<Point> vec;
-    srand(time(NULL));
-    for (int i(0); i < 100; ++i) {
-        int x = rand() % 100 + 1, y = rand() % 100 + 1;
-        for (auto p : vec) {
-            while (x == p.returnX() && y == p.returnY()) {
-                x = rand() % 100 + 1, y = rand() % 100 + 1;
-            }
-        }
-        Point pt(x, y);
-        vec.push_back(pt);
-    }
-
-    vec = sort_vec(vec);
+    vec.push_back(Point(1, 2));
+    vec.push_back(Point(2, 4));
+    vec.push_back(Point(2, 6));
+    vec.push_back(Point(4, 5));
+    vec.push_back(Point(7, 8));
+    vec.push_back(Point(8, 2));
+    vec.push_back(Point(10, 12));
 
     std::vector<Point> res = convexHull_jarvis_parallel(vec);
 
@@ -39,18 +33,13 @@ TEST(hull, single_parallel_2_nd_item) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     std::vector<Point> vec;
-    srand(time(NULL));
-    for (int i(0); i < 10; ++i) {
-        int x = rand() % 10 + 1, y = rand() % 10 + 1;
-        for (auto p : vec) {
-            while (x == p.returnX() && y == p.returnY()) {
-                x = rand() % 10 + 1, y = rand() % 10 + 1;
-            }
-        }
-        Point pt(x, y);
-        vec.push_back(pt);
-    }
-    vec = sort_vec(vec);
+    vec.push_back(Point(1, 2));
+    vec.push_back(Point(2, 4));
+    vec.push_back(Point(2, 6));
+    vec.push_back(Point(4, 5));
+    vec.push_back(Point(7, 8));
+    vec.push_back(Point(8, 2));
+    vec.push_back(Point(10, 12));
 
     std::vector<Point> res = convexHull_jarvis_parallel(vec);
     std::vector<Point> res_single = convexHull_jarvis_parallel(vec);
@@ -67,18 +56,13 @@ TEST(hull, single_parallel_3_d_item) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     std::vector<Point> vec;
-    srand(time(NULL));
-    for (int i(0); i < 10; ++i) {
-        int x = rand() % 10 + 1, y = rand() % 10 + 1;
-        for (auto p : vec) {
-            while (x == p.returnX() && y == p.returnY()) {
-                x = rand() % 10 + 1, y = rand() % 10 + 1;
-            }
-        }
-        Point pt(x, y);
-        vec.push_back(pt);
-    }
-    vec = sort_vec(vec);
+    vec.push_back(Point(1, 2));
+    vec.push_back(Point(2, 4));
+    vec.push_back(Point(2, 6));
+    vec.push_back(Point(4, 5));
+    vec.push_back(Point(7, 8));
+    vec.push_back(Point(8, 2));
+    vec.push_back(Point(10, 12));
 
     std::vector<Point> res = convexHull_jarvis_parallel(vec);
     std::vector<Point> res_single = convexHull_jarvis_parallel(vec);
@@ -95,18 +79,13 @@ TEST(hull, last_is_equal_with_first) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     std::vector<Point> vec;
-    srand(time(NULL));
-    for (int i(0); i < 10; ++i) {
-        int x = rand() % 10 + 1, y = rand() % 10 + 1;
-        for (auto p : vec) {
-            while (x == p.returnX() && y == p.returnY()) {
-                x = rand() % 10 + 1, y = rand() % 10 + 1;
-            }
-        }
-        Point pt(x, y);
-        vec.push_back(pt);
-    }
-    vec = sort_vec(vec);
+    vec.push_back(Point(1, 2));
+    vec.push_back(Point(2, 4));
+    vec.push_back(Point(2, 6));
+    vec.push_back(Point(4, 5));
+    vec.push_back(Point(7, 8));
+    vec.push_back(Point(8, 2));
+    vec.push_back(Point(10, 12));
 
     std::vector<Point> res = convexHull_jarvis_parallel(vec);
 
@@ -116,24 +95,24 @@ TEST(hull, last_is_equal_with_first) {
     }
 }
 
-TEST(hull, all_points) {
+TEST(hull, last_is_equal_with_first2) {
     int rank = 0, size = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     std::vector<Point> vec;
-    for (int i(0); i < 10; ++i) {
-        int x = i, y = i;
-        Point pt(x, y);
-        vec.push_back(pt);
-    }
-    vec = sort_vec(vec);
+    vec.push_back(Point(1, 2));
+    vec.push_back(Point(2, 4));
+    vec.push_back(Point(2, 6));
+    vec.push_back(Point(4, 5));
+    vec.push_back(Point(7, 8));
+    vec.push_back(Point(8, 2));
+    vec.push_back(Point(10, 12));
 
-    std::vector<Point> res = convexHull_jarvis(vec);
+    std::vector<Point> res = convexHull_jarvis_parallel(vec);
 
-
-    if (rank == 0) {
-        ASSERT_EQ(res.size(), vec.size()+1);
+    if (rank == 0 && res.size() > 2) {
+        ASSERT_EQ(res[0].returnY(), res[res.size() - 1].returnY());
     }
 }
 

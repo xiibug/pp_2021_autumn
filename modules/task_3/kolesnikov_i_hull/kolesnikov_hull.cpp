@@ -3,7 +3,7 @@
 #include "../../../modules/task_3/kolesnikov_i_hull/kolesnikov_hull.h"
 
 void swap_p(Point* a, Point* b) {
-    Point a_tmp(0, 0);
+    Point a_tmp = new Point(0, 0);
     a_tmp = a;
     a = b;
     b = a_tmp;
@@ -13,14 +13,14 @@ std::vector<Point> sort_vec(std::vector<Point> vec) {
     for (int i(0); i < vec.size(); ++i) {
         for (int j(0); j < vec.size() - 1; ++j) {
             if ((vec[j].returnX() > vec[j + 1].returnX())) {
-                swap_p(vec[j], vec[j + 1]);
+                swap_p(&vec[j], &vec[j + 1]);
             }
         }
     }
     for (int i(0); i < vec.size(); ++i) {
         for (int j(0); j < vec.size() - 1; ++j) {
             if ((vec[j].returnX() == vec[j + 1].returnX()) && (vec[j].returnY() > vec[j + 1].returnY())) {
-                swap_p(vec[j], vec[j + 1]);
+                swap_p(&vec[j], &vec[j + 1]);
             }
         }
     }
@@ -28,7 +28,7 @@ std::vector<Point> sort_vec(std::vector<Point> vec) {
 }
 
 int orientation(Point p, Point q, Point r) {
-    int res = (q.returnY() - p.returnY()) * 
+    int res = (q.returnY() - p.returnY()) *
     (r.returnX() - q.returnX()) - (r.returnY() - q.returnY()) * (q.returnX() - p.returnX());
     return res;
 }
@@ -54,7 +54,7 @@ int get_pre_last(std::vector<Point> vec) {
             return i;
         }
     }
-    Point pt (0,0);
+    Point pt(0, 0);
     if (orientation(vec[0], vec[1], vec[2]) <= 0) {
         if (vec[1].returnY() >= vec[0].returnY()) {
             return 1;
