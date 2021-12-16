@@ -7,7 +7,7 @@ TEST(Parallel_Matrix_Multiplication_MPI, A_2x2_B_2x2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int* A = nullptr, * B = nullptr, * C = nullptr, * Cs = nullptr;
-    int Astring = 2, Acolumn = 2, Bstring = 2, Bcolumn = 2;
+    int Astring = 2, ACols = 2, Bstring = 2, Bcolumn = 2;
     if (rank == 0) {
         A = getRandomMatrix(Astring, Acolumn);
         B = getRandomMatrix(Bstring, Bcolumn);

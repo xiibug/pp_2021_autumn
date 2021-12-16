@@ -4,19 +4,19 @@
 #include "../../../modules/task_2/kurguzikov_ribbon_horizontal_layout/kurguzikov_ribbon_horizontal_layout.h"
 
 
-int* initEmptyMatrix(int string, int column) {
-    int* matrix = new int[string * column];
-    for (int i = 0; i < string * column; i++) {
+int* initEmptyMatrix(int str, int column) {
+    int* matrix = new int[str * column];
+    for (int i = 0; i < str * column; i++) {
         matrix[i] = 0;
     }
     return matrix;
 }
 
-int* getRandomMatrix(int string, int column) {
+int* getRandomMatrix(int str, int column) {
     std::random_device dev;
     std::mt19937 gen(dev());
-    int* matrix = new int[string * column];
-    for (int i = 0; i < string * column; i++) {
+    int* matrix = new int[str * column];
+    for (int i = 0; i < str * column; i++) {
         matrix[i] = gen() % 20;
     }
     return matrix;
