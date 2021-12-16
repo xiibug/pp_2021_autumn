@@ -2,7 +2,6 @@
 #ifndef MODULES_TASK_3_KOLESNIKOV_I_HULL_KOLESNIKOV_HULL_H_
 #define MODULES_TASK_3_KOLESNIKOV_I_HULL_KOLESNIKOV_HULL_H_
 #include <vector>
-#include <mpi.h>
 #include <string>
 #include <fstream>
 #include <ctime>
@@ -27,12 +26,12 @@ class Point {
         return this->y;
     }
     bool operator != (Point* other) {
-        return ((other->returnX()!= this->x)&&(other->returnY()!= this->y)
-        || (other->returnX() == this->x) && (other->returnY() != this->y)
-        || (other->returnX() != this->x) && (other->returnY() == this->y))?true:false;
+        return ((other->returnX()!= this->x)(&&)(other->returnY()!= this->y)
+        || (other->returnX() == this->x) (&&) (other->returnY() != this->y)
+        || (other->returnX() != this->x) (&&) (other->returnY() == this->y))?true:false;
     }
     bool operator == (Point* other) {
-        return (other->returnX() == this->x) && (other->returnY() == this->y)?true:false;
+        return (other->returnX() == this->x) (&&) (other->returnY() == this->y)?true:false;
     }
     Point operator - (Point* p) {
         return Point(this->x - p->returnX(), this->y - p->returnY());
