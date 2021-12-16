@@ -75,7 +75,7 @@ Point singleDimensionMin(double left_x, double right_x, double const_y,
         i_value++;
         i_previous_value = set.begin();
         double R, current_r;
-        R = -400000000;
+        R = std::numeric_limits<double>::lowest();;
         while (i_value != set.end()) {
             double delta_x = (i_value->x - i_previous_value->x);
             double a = M * delta_x;
@@ -161,7 +161,7 @@ Point sequentialCalc(double left_x, double right_x,
         i_value++;
         i_previous_value = set.begin();
         double R, current_r;
-        R = -400000000;
+        R = std::numeric_limits<double>::lowest();;
 
         auto maxRiter = set.begin();
         auto r_i_value_previous_max = set.begin();
@@ -218,10 +218,12 @@ Point parralelCalc(double left_x, double right_x,
 
     if (rank == 0) {
         int should_stop = 0;
+        int stop_signal = 0;
         std::set<doubleDimensionChar> set;
         double len_of_part = (right_y - left_y) / (size-1);
         for (int i = 1; i < size; i++) {
             double y_value_send = left_y + i*len_of_part;
+            MPI_Send(&stop_signal, 1, MPI_INT, i, 1, MPI_COMM_WORLD);
             MPI_Send(&y_value_send, 1, MPI_DOUBLE, i, 1, MPI_COMM_WORLD);
         }
         result = singleDimensionMin(left_x, right_x, left_y, func);
@@ -285,6 +287,7 @@ Point parralelCalc(double left_x, double right_x,
                     (r_iter->variableFirst + r_iter->variableSecond) -
                     ((r_iter->functionValueSecond - r_iter->functionValueFirst)
                     / (2 * M));
+                MPI_Send(&stop_signal, 1, MPI_INT, i, 1, MPI_COMM_WORLD);
                 MPI_Send(&new_y, 1, MPI_DOUBLE, i, 1, MPI_COMM_WORLD);
                 if (r_iter->variableSecond - r_iter->variableFirst <= eps) {
                     should_stop = 1;
@@ -300,24 +303,26 @@ Point parralelCalc(double left_x, double right_x,
                 set.insert(doubleDimensionChar(result.x, result.y, result.z));
             }
         }
-        double stop_signal = 0.00001;
+        stop_signal = 1;
         for (int i = 1; i < size; ++i) {
-            MPI_Send(&stop_signal, 1, MPI_DOUBLE, i, 1, MPI_COMM_WORLD);
+            MPI_Send(&stop_signal, 1, MPI_INT, i, 1, MPI_COMM_WORLD);
         }
     } else {
         while (true) {
+            int stop_signal;
+            MPI_Recv(&stop_signal, 1, MPI_INT, 0, 1,
+                     MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            if (stop_signal) {
+                break;
+            }
             double const_y;
             MPI_Recv(&const_y, 1, MPI_DOUBLE, 0, 1,
                      MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-            if (const_y == 0.00001) {
-                break;
-            } else {
-                result = singleDimensionMin(left_x, right_x, const_y, func);
-                result_sender[0] = result.x; result_sender[1] = result.y;
-                result_sender[2] = result.z;
-                MPI_Send(result_sender.data(), 3, MPI_DOUBLE,
-                                               0, 1, MPI_COMM_WORLD);
-            }
+            result = singleDimensionMin(left_x, right_x, const_y, func);
+            result_sender[0] = result.x; result_sender[1] = result.y;
+            result_sender[2] = result.z;
+            MPI_Send(result_sender.data(), 3, MPI_DOUBLE,
+                                           0, 1, MPI_COMM_WORLD);
         }
     }
     return last_result;

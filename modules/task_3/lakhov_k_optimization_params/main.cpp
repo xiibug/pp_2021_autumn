@@ -156,35 +156,36 @@ TEST(Global_Params_Optimization_MPI, Test_Func5) {
 }
 
 // Test for time measure
-TEST(Global_Params_Optimization_MPI, Test_Func6) {
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    double left_x = -1;
-    double right_x = 2;
-    double left_y = -2;
-    double right_y = 2;
-    double(*func1)(double, double) = f1;
-    double time1, time2, delta1, delta2;
-    if (rank == 0) {
-        time1 = MPI_Wtime();
-    }
-    Point parallel_result = parralelCalc(left_x, right_x,
-                                                 left_y, right_y, func1);
-    if (rank == 0) {
-        time2 = MPI_Wtime();
-        delta1 = time2 - time1;
-        std::cout << "Parallel time " << delta1 << std::endl;
-        time1 = MPI_Wtime();
-        Point seq_result = sequentialCalc(left_x, right_x,
-                                                  left_y, right_y, func1);
-        time2 = MPI_Wtime();
-        delta2 = time2 - time1;
-        std::cout << "Sequental time " << delta2 << std::endl;
-        std::cout << "sequental/parallel ratio "<< delta2/delta1 << std::endl;
-        bool r = comparePoints(parallel_result, seq_result);
-        EXPECT_TRUE(r);
-    }
-}
+// TEST(Global_Params_Optimization_MPI, Test_Func6) {
+//     int rank;
+//     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+//     double left_x = -1;
+//     double right_x = 2;
+//     double left_y = -2;
+//     double right_y = 2;
+//     double(*func1)(double, double) = f1;
+//     double time1, time2, delta1, delta2;
+//     if (rank == 0) {
+//         time1 = MPI_Wtime();
+//     }
+//     Point parallel_result = parralelCalc(left_x, right_x,
+//                                                  left_y, right_y, func1);
+//     if (rank == 0) {
+//         time2 = MPI_Wtime();
+//         delta1 = time2 - time1;
+//         std::cout << "Parallel time " << delta1 << std::endl;
+//         time1 = MPI_Wtime();
+//         Point seq_result = sequentialCalc(left_x, right_x,
+//                                                   left_y, right_y, func1);
+//         time2 = MPI_Wtime();
+//         delta2 = time2 - time1;
+//         std::cout << "Sequental time " << delta2 << std::endl;
+//         std::cout << "sequental/parallel ratio "<< delta2/delta1
+// << std::endl;
+//         bool r = comparePoints(parallel_result, seq_result);
+//         EXPECT_TRUE(r);
+//     }
+// }
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
