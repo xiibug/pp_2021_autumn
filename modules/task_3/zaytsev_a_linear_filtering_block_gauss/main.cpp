@@ -1,10 +1,8 @@
 // Copyright 2021 Zaytsev Alexander
 #include <gtest/gtest.h>
 #include <vector>
-#include <iostream>
 #include "./linear_filtering_block_gauss.h"
 #include <gtest-mpi-listener.hpp>
-
 using std::vector;
 TEST(Test1, 1) { ASSERT_NO_THROW(RandomMatrix(152, 152)); }
 TEST(Test2, 2) { ASSERT_NO_THROW(RandomMatrix(152, 203)); }

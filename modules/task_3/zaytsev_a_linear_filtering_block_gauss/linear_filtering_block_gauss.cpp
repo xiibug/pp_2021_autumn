@@ -3,10 +3,8 @@
 
 #include <mpi.h>
 
-#include <iostream>
 #include <random>
-#include <vector>
-using std::vector;
+
 static vector<double> gauss_core(9, 0.000);
 vector<double> RandomMatrix(int matrix_rows, int matrix_columns) {
   std::random_device dev;
@@ -70,7 +68,7 @@ vector<double> ParallelOp(const vector<double>& image, int matrix_size) {
   for (square_root = static_cast<int>(sqrt(size));
        matrix_size % square_root != 0; square_root--) {
   }
-  unsigned int block_size = square_root * square_root;
+  int block_size = square_root * square_root;
   if (block_size < 4 || matrix_size < 4) {
     return rank == 0 ? SequentialOp(image, matrix_size, matrix_size)
                      : vector<double>{};
