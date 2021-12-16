@@ -54,7 +54,7 @@ int get_pre_last(std::vector<Point> vec) {
             return i;
         }
     }
-    Point pt(0,0);
+    Point pt (0,0);
     if (orientation(vec[0], vec[1], vec[2]) <= 0) {
         if (vec[1].returnY() >= vec[0].returnY()) {
             return 1;
@@ -105,8 +105,7 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
     if (rank != 0) {
         range = 6;
         MPI_Recv(&x, 1, MPI_INT, MPI_ANY_SOURCE, 1, MPI_COMM_WORLD, &status);
-    }
-    else if (size == 1) {
+    } else if (size == 1) {
         range = vec.size();
     }
     int cnt = 0;
@@ -132,9 +131,7 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
             if (cnt > range) {
                 break;
             }
-
             y = (x + 1) % n;
-
             for (int i = 0; i < n; i++) {
                 if (i + 1 < n) {
                     if (&vec[i] == &vec[i + 1]) {
@@ -145,10 +142,8 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
                     y = i;
                 }
             }
-
             x = y;
             cnt++;
-
         } while (x != l);
     } else {
         do {
@@ -172,7 +167,6 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
             }
         } while (x != l);
     }
-
     if (rank != size - 1) {
         MPI_Send(&x_tmp, 1, MPI_INT, rank + 1, 1, MPI_COMM_WORLD);
     } else {
@@ -185,7 +179,6 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
     std::vector<int> send_counts(size);
     int size_to_send = real_points.size();
     MPI_Gather(&size_to_send, 1, MPI_INT, send_counts.data(), 1, MPI_INT, 0, MPI_COMM_WORLD);
-
     MPI_Bcast(send_counts.data(), size, MPI_INT, 0, MPI_COMM_WORLD);
     std::vector <int> dspls;
     int sum_p = 0;
@@ -206,7 +199,6 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
         }
         steps_to_send3.push_back(steps_to_send2[i]);
     }
-
     return steps_to_send3;
 }
 

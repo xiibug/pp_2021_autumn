@@ -14,20 +14,20 @@ int parallel_find_symbol(char symbol, std::string str);
 class Point {
  public:
     Point(int k, int l) {
-        x = k; y = l; 
+        x = k; y = l;
     }
     explicit Point(Point* pt) {
         x = pt->returnX(); y = pt->returnY();
     }
     int returnX() {
-        return this->x; 
+        return this->x;
     }
     int returnY() {
-        return this->y; 
+        return this->y;
     }
     bool operator != (Point* other) {
-        return ((other->returnX()!=this->x)&&(other->returnY()!=this->y) 
-        || (other->returnX() == this->x) && (other->returnY() != this->y) 
+        return ((other->returnX()!= this->x)&&(other->returnY()!= this->y)
+        || (other->returnX() == this->x) && (other->returnY() != this->y)
         || (other->returnX() != this->x) && (other->returnY() == this->y))?true:false;
     }
     bool operator == (Point* other) {
@@ -37,6 +37,7 @@ class Point {
         return Point(this->x - p->returnX(), this->y - p->returnY());
     }
  private:
+
     int x, y;
 };
 
