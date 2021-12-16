@@ -23,8 +23,9 @@ TEST(MPI_parallel, my_scatter_gather_int_test) {
             0, MPI_COMM_WORLD);
     MPI_Gather(loc_src.data(), 5, MPI_INT, dest.data(), 5, MPI_INT,
             0, MPI_COMM_WORLD);
-    if (proc_rank == 0)
+    if (proc_rank == 0) {
         EXPECT_EQ(src, dest);
+    }
 }
 
 TEST(MPI_parallel, my_scatter_gather_double_test) {
@@ -44,8 +45,9 @@ TEST(MPI_parallel, my_scatter_gather_double_test) {
             0, MPI_COMM_WORLD);
     MPI_Gather(loc_src.data(), 5, MPI_DOUBLE, dest.data(), 5, MPI_DOUBLE,
             0, MPI_COMM_WORLD);
-    if (proc_rank == 0)
+    if (proc_rank == 0) {
         EXPECT_EQ(src, dest);
+    }
 }
 
 TEST(MPI_parallel, my_scatter_gather_float_test) {
@@ -65,8 +67,9 @@ TEST(MPI_parallel, my_scatter_gather_float_test) {
             0, MPI_COMM_WORLD);
     MPI_Gather(loc_src.data(), 5, MPI_FLOAT, dest.data(), 5, MPI_FLOAT,
             0, MPI_COMM_WORLD);
-    if (proc_rank == 0)
+    if (proc_rank == 0) {
         EXPECT_EQ(src, dest);
+    }
 }
 
 TEST(MPI_parallel, my_scatter_error_with_different_sizes) {
