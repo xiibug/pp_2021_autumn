@@ -2,14 +2,14 @@
 #include <iostream>
 #include "../../../modules/task_3/kolesnikov_i_hull/kolesnikov_hull.h"
 
-void swap_p(Point& a, Point& b) {
+void swap_p(Point* a, Point* b) {
     Point a_tmp(0, 0);
     a_tmp = a;
     a = b;
     b = a_tmp;
 }
 
-std::vector<Point> sort_vec(std::vector<Point>& vec) {
+std::vector<Point> sort_vec(std::vector<Point> vec) {
     for (int i(0); i < vec.size(); ++i) {
         for (int j(0); j < vec.size() - 1; ++j) {
             if ((vec[j].returnX() > vec[j + 1].returnX())) {
@@ -17,7 +17,6 @@ std::vector<Point> sort_vec(std::vector<Point>& vec) {
             }
         }
     }
-
     for (int i(0); i < vec.size(); ++i) {
         for (int j(0); j < vec.size() - 1; ++j) {
             if ((vec[j].returnX() == vec[j + 1].returnX()) && (vec[j].returnY() > vec[j + 1].returnY())) {
@@ -25,12 +24,12 @@ std::vector<Point> sort_vec(std::vector<Point>& vec) {
             }
         }
     }
-
     return vec;
 }
 
 int orientation(Point p, Point q, Point r) {
-    int res = (q.returnY() - p.returnY()) * (r.returnX() - q.returnX()) - (r.returnY() - q.returnY()) * (q.returnX() - p.returnX());
+    int res = (q.returnY() - p.returnY()) * 
+    (r.returnX() - q.returnX()) - (r.returnY() - q.returnY()) * (q.returnX() - p.returnX());
     return res;
 }
 
@@ -42,11 +41,10 @@ int get_pre_last(std::vector<Point> vec) {
     for (int i(2); i < vec.size(); ++i) {
         if (vec[i].returnX() - vec[i - 1].returnX() == x && vec[i].returnY() - vec[i - 1].returnY() == y) {
             check = true;
-        }
-        else {
+        } else {
             check = false;
             break;
-        }
+          }
     }
     if (check) {
         return vec.size() - 1;
@@ -96,25 +94,20 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
     int l = 0;
     int n = vec.size();
     for (int i = 0; i < n; i++) {
-
         if (vec[i].returnX() < vec[l].returnX()) {
             l = i;
         }
     }
     int  vec_size = vec.size();
-    
     int x = l, y;
     int range = 6;
     int size_s = 0;
-
     if (rank != 0) {
         range = 6;
         MPI_Recv(&x, 1, MPI_INT, MPI_ANY_SOURCE, 1, MPI_COMM_WORLD, &status);
     }
     else if (size == 1) {
         range = vec.size();
-    }
-    else {
     }
     int cnt = 0;
     int pre_last = get_pre_last(vec);
@@ -125,7 +118,7 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
             if (x == pre_last) {
                 break;
             }
-            if (rank != size - 1 && vec[x] == vec[0] && cnt > 0) {
+            if (rank != size - 1 && &vec[x] == &vec[0] && cnt > 0) {
                 break;
             }
             if (cnt == range - 1) {
@@ -144,7 +137,7 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
 
             for (int i = 0; i < n; i++) {
                 if (i + 1 < n) {
-                    if (vec[i] == vec[i + 1]) {
+                    if (&vec[i] == &vec[i + 1]) {
                         continue;
                     }
                 }
@@ -157,14 +150,13 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
             cnt++;
 
         } while (x != l);
-    }
-    else {
+    } else {
         do {
             steps.push_back(vec[x]);
             y = (x + 1) % n;
             for (int i = 0; i < n; i++) {
                 if (i + 1 < n) {
-                    if (vec[i] == vec[i + 1]) {
+                    if (&vec[i] == &vec[i + 1]) {
                         continue;
                     }
                 }
@@ -183,8 +175,7 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
 
     if (rank != size - 1) {
         MPI_Send(&x_tmp, 1, MPI_INT, rank + 1, 1, MPI_COMM_WORLD);
-    }
-    else {
+    } else {
         if (steps[0] != steps[steps.size() - 1]) {
             steps.push_back(vec[0]);
         }
@@ -196,7 +187,6 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
     MPI_Gather(&size_to_send, 1, MPI_INT, send_counts.data(), 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     MPI_Bcast(send_counts.data(), size, MPI_INT, 0, MPI_COMM_WORLD);
-    
     std::vector <int> dspls;
     int sum_p = 0;
     for (int i(0); i < size; ++i) {
@@ -204,12 +194,13 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
         sum_p += send_counts[i];
     }
     std::vector<int> steps_to_send(sum_p);
-    MPI_Gatherv(real_points.data(), real_points.size(), MPI_INT, steps_to_send.data(), send_counts.data(), dspls.data(), MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Gatherv(real_points.data(), real_points.size(), MPI_INT, steps_to_send.data(),
+    send_counts.data(), dspls.data(), MPI_INT, 0, MPI_COMM_WORLD);
     std::vector<Point>steps_to_send2 = int_to_point(steps_to_send);
     std::vector<Point>steps_to_send3;
     steps_to_send3.push_back(steps_to_send2[0]);
     for (int i(1); i < steps_to_send2.size(); ++i) {
-        if (steps_to_send2[i] == steps_to_send2[0]) {
+        if (&steps_to_send2[i] == &steps_to_send2[0]) {
             steps_to_send3.push_back(steps_to_send2[i]);
             break;
         }
@@ -220,31 +211,25 @@ std::vector<Point> convexHull_jarvis_parallel(std::vector<Point> vec) {
 }
 
 std::vector<Point> convexHull_jarvis(std::vector<Point> vec) {
-    auto t1 = std::chrono::high_resolution_clock::now();
     std::ofstream points, hull;
     points.open("points.txt");
     hull.open("hull.txt");
-
     std::vector<Point> steps;
-
     int l = 0;
     int n = vec.size();
     for (int i = 0; i < n; i++) {
-
         if (vec[i].returnX() < vec[l].returnX()) {
             l = i;
         }
     }
-
     int x = l, y;
     int pre_last = get_pre_last(vec);
     do {
         steps.push_back(vec[x]);
         y = (x + 1) % n;
-
         for (int i = 0; i < n; i++) {
             if (i + 1 < n) {
-                if (vec[i] == vec[i + 1]) {
+                if (&vec[i] == &vec[i + 1]) {
                     continue;
                 }
             }
@@ -252,18 +237,15 @@ std::vector<Point> convexHull_jarvis(std::vector<Point> vec) {
                 y = i;
             }
         }
-
         x = y;
         if (x == pre_last) {
             steps.push_back(vec[x]);
             break;
         }
-
     } while (x != l);
-    if (steps[0] != steps[steps.size() - 1]) {
+    if (&steps[0] != &steps[steps.size() - 1]) {
         steps.push_back(vec[0]);
     }
-
     for (int i(0); i < vec.size(); ++i) {
         points << vec[i].returnX() << " " << vec[i].returnY() << "\n";
     }
@@ -272,8 +254,5 @@ std::vector<Point> convexHull_jarvis(std::vector<Point> vec) {
     }
     points.close();
     hull.close();
-    auto t2 = std::chrono::high_resolution_clock::now();
-    auto dt = ((std::chrono::nanoseconds)(t2 - t1)).count();
-
     return steps;
 }
