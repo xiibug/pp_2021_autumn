@@ -8,7 +8,7 @@
 
 TEST(MPI_parallel, my_scatter_gather_int_test) {
     int proc_rank;
-    int proc_count; 
+    int proc_count;
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
     int size = 5 * proc_count;
@@ -29,7 +29,7 @@ TEST(MPI_parallel, my_scatter_gather_int_test) {
 
 TEST(MPI_parallel, my_scatter_gather_double_test) {
     int proc_rank;
-    int proc_count; 
+    int proc_count;
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
     int size = 5 * proc_count;
@@ -50,7 +50,7 @@ TEST(MPI_parallel, my_scatter_gather_double_test) {
 
 TEST(MPI_parallel, my_scatter_gather_float_test) {
     int proc_rank;
-    int proc_count; 
+    int proc_count;
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
     int size = 5 * proc_count;
@@ -71,13 +71,23 @@ TEST(MPI_parallel, my_scatter_gather_float_test) {
 
 TEST(MPI_parallel, my_scatter_error_with_different_sizes) {
     int proc_rank;
-    int proc_count; 
+    int proc_count;
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
     std::vector<int> a(5);
     std::vector<int> b(3);
     EXPECT_EQ(my_scatter(a.data(), 5, MPI_INT, b.data(), 10, MPI_INT,
                 0, MPI_COMM_WORLD), MPI_ERR_COUNT);
+}
+
+TEST(MPI_parallel, my_scatter_negative_root) {
+    int proc_rank;
+    int proc_count;
+    MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
+    std::vector<int> a(5);
+    std::vector<int> b(5);
+    EXPECT_EQ(my_scatter(a.data(), 5, MPI_INT, b.data(), 5, MPI_INT, -1, MPI_COMM_WORLD), MPI_ERR_COUNT);
 }
 
 
