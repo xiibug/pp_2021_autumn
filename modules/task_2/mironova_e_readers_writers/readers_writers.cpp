@@ -1,5 +1,5 @@
 // Copyright 2021 Mironova Ekaterina
-#include "./readers_writers.h"
+#include "../../../modules/task_2/mironova_e_readers_writers/readers_writers.h"
 #include <mpi.h>
 #include <string>
 #include <random>
@@ -28,7 +28,6 @@ void write() {
 int wait_for_access(int request_tag, int response_tag) {
     int buff = 0;
     MPI_Status status;
-
     while (true) {
         MPI_Send(&buff, 1, MPI_INT, 0, request_tag, MPI_COMM_WORLD);
         MPI_Recv(&buff, 1, MPI_INT, 0, response_tag, MPI_COMM_WORLD, &status);
@@ -37,7 +36,6 @@ int wait_for_access(int request_tag, int response_tag) {
         }
         wait();
     }
-
     return buff;
 }
 
@@ -48,12 +46,9 @@ void release_access(int request_tag, int buff = 0) {
 void reader(int rank) {
     int RC = 0;
     wait();
-
     wait_for_access(S_REQUEST, S_RESPONSE);
     release_access(S_RELEASE);
-
     RC = wait_for_access(RC_REQUEST, RC_RESPONSE);
-
     RC++;
     if (RC == 1) {
         wait_for_access(ACCESS_REQUEST, ACCESS_RESPONSE);
@@ -72,8 +67,7 @@ void reader(int rank) {
 void writer(int rank) {
     wait();
     wait_for_access(S_REQUEST, S_RESPONSE);
-    wait_for_access(ACCESS_REQUEST, ACCESS_RESPONSE);   
-
+    wait_for_access(ACCESS_REQUEST, ACCESS_RESPONSE);
     release_access(S_RELEASE);
     write();
     release_access(ACCESS_RELEASE);
@@ -104,60 +98,51 @@ void manager(int rank, int procs) {
                     out_buff = 1;
                     MPI_Send(&out_buff, 1, MPI_INT, status.MPI_SOURCE,
                         S_RESPONSE, MPI_COMM_WORLD);
-                } 
-                else {
+                } else {
                     out_buff = -1;
                     MPI_Send(&out_buff, 1, MPI_INT, status.MPI_SOURCE,
                         S_RESPONSE, MPI_COMM_WORLD);
                 }
                 break;
-
             case (S_RELEASE):
                 if (S == false) {
                     S = true;
                 }
                 break;
-
             case (RC_REQUEST):
                 if (RC == true) {
                     RC = false;
                     MPI_Send(&ReadCount, 1, MPI_INT, status.MPI_SOURCE,
                         RC_RESPONSE, MPI_COMM_WORLD);
-                } 
-                else {
+                } else {
                     out_buff = -1;
                     MPI_Send(&out_buff, 1, MPI_INT, status.MPI_SOURCE,
                         RC_RESPONSE, MPI_COMM_WORLD);
                 }
                 break;
-            
             case (RC_RELEASE):
                 if (RC == false) {
                     RC = true;
                     ReadCount = in_buff;
                 }
                 break;
-
             case (ACCESS_REQUEST):
                 if (Access == true) {
                     Access = false;
                     out_buff = 1;
                     MPI_Send(&out_buff, 1, MPI_INT, status.MPI_SOURCE,
                         ACCESS_RESPONSE, MPI_COMM_WORLD);
-                } 
-                else {
+                } else {
                     out_buff = -1;
                     MPI_Send(&out_buff, 1, MPI_INT, status.MPI_SOURCE,
                         ACCESS_RESPONSE, MPI_COMM_WORLD);
                 }
                 break;
-
             case (ACCESS_RELEASE):
                 if (Access == false) {
                     Access = true;
                 }
                 break;
-                
             case (FINISH):
                 active_procs--;
                 break;
