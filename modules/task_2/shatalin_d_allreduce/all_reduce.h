@@ -1,8 +1,8 @@
 // Copyright 2021 Shatalin Dmitriy
 #include <mpi.h>
 #include <gtest/gtest.h>
-#include <vector>
 #include <random>
+#include <vector>
 #include <ctime>
 #include <vector>
 #include <gtest-mpi-listener.hpp>
