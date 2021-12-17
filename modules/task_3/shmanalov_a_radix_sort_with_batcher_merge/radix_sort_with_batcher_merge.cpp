@@ -19,14 +19,14 @@ std::vector<int> generationRandomVector(int size) {
 std::vector<int> sequentialRadixSort(std::vector<int> array) {
     int maxElement = 0, position = 1;
     std::vector<int> result(array.size());
-    for (int i = 1; i < array.size(); i++) {
+    for (size_t i = 1; i < array.size(); i++) {
         if (maxElement < array[i]) {
             maxElement = array[i];
         }
     }
     while (maxElement / position > 0) {
         int counter[10] = { 0 };
-        for (int i = 0; i < array.size(); i++) {
+        for (size_t i = 0; i < array.size(); i++) {
             counter[array[i] / position % 10]++;
         }
         for (int i = 1; i < 10; i++) {
@@ -35,7 +35,7 @@ std::vector<int> sequentialRadixSort(std::vector<int> array) {
         for (int i = array.size() - 1; i >= 0; i--) {
             result[--counter[array[i] / position % 10]] = array[i];
         }
-        for (int i = 0; i < array.size(); i++) {
+        for (size_t i = 0; i < array.size(); i++) {
             array[i] = result[i];
         }
         position *= 10;
@@ -45,7 +45,7 @@ std::vector<int> sequentialRadixSort(std::vector<int> array) {
 
 std::vector<int> vectorShuffle(std::vector<int> array) {
     std::vector<int> shuffleArr(array.size());
-    for (int i = 0; i < array.size(); i++) {
+    for (size_t i = 0; i < array.size(); i++) {
         if (i % 2 == 0) {
             shuffleArr[i] = array[i];
         } else {
@@ -58,7 +58,7 @@ std::vector<int> vectorShuffle(std::vector<int> array) {
 std::vector<int> OddMerge(const std::vector<int>& arr1,
     const std::vector<int>& arr2) {
     std::vector<int> result(arr1.size() / 2 + arr2.size());
-    int i = arr1.size() / 2 + arr1.size() % 2, j = 0, k = 0, m = arr1.size();
+    size_t i = arr1.size() / 2 + arr1.size() % 2, j = 0, k = 0, m = arr1.size();
     while ((i < m) && (j < arr2.size())) {
         if (arr1[i] < arr2[j]) {
             result[k++] = arr1[i++];
@@ -76,7 +76,7 @@ std::vector<int> OddMerge(const std::vector<int>& arr1,
 std::vector<int> EvenMerge(const std::vector<int>& arr1,
     const std::vector<int>& arr2) {
     std::vector<int> result(arr1.size() / 2 + arr1.size() % 2 + arr2.size());
-    int i = 0, j = 0, k = 0, m = arr1.size() / 2 + arr1.size() % 2;
+    size_t i = 0, j = 0, k = 0, m = arr1.size() / 2 + arr1.size() % 2;
     while ((i < m) && (j < arr2.size())) {
         if (arr1[i] < arr2[j]) {
             result[k++] = arr1[i++];
