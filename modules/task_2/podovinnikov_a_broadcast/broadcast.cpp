@@ -42,6 +42,7 @@ int Broadcast(
     }
     return 0;
   }
+  return 0;
 }
 
 int randInt(int min, int max) {
