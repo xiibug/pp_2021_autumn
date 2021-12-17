@@ -86,12 +86,10 @@ void manager(int rank, int procs) {
         if (procs != 1) {
             MPI_Recv(&in_buff, 1, MPI_INT, MPI_ANY_SOURCE,
                 MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        }
-        else {
+        } else {
             return;
         }
-        switch (status.MPI_TAG)
-        {
+        switch (status.MPI_TAG) {
             case (S_REQUEST):
                 if (S == true) {
                     S = false;
