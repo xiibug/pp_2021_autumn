@@ -35,9 +35,10 @@ std::vector<std::pair<int, int>> jarvis_seq(const std::vector<std::pair<int, int
     _indxs.erase(_indxs.begin());
     _indxs.push_back(res_indx[0]);
 
+    int _indxsSize = _indxs.size();
     while (true) {
-        int right = 0;
-        for (int i = 1; i < _indxs.size(); i++) {
+        int right = 0;    
+        for (int i = 1; i < _indxsSize; i++) {
             if (rotation(dots[res_indx[res_indx.size() - 1]],
                     dots[_indxs[right]],
                     dots[_indxs[i]])
@@ -84,7 +85,6 @@ std::vector<std::pair<int, int>> jarvis_par(const std::vector<std::pair<int, int
     std::vector<int> displs(num_of_proc);
     std::vector<int> displs1(num_of_proc);
     std::vector<int> size_of_parts(num_of_proc);
-    int rest = 0;
     int sum = 0;
 
     int* index_i = NULL;
@@ -108,7 +108,8 @@ std::vector<std::pair<int, int>> jarvis_par(const std::vector<std::pair<int, int
     std::vector<std::pair<int, int>> res;
     int res_size = 0;
 
-    MPI_Scatterv(dots.data(), num_of_dots.data(), displs.data(), mytype, vec_part.data(), num_of_dots[proc_num], mytype, 0, MPI_COMM_WORLD);
+    MPI_Scatterv(dots.data(), num_of_dots.data(), displs.data(), mytype, vec_part.data(),
+        num_of_dots[proc_num], mytype, 0, MPI_COMM_WORLD);
 
     part_res = jarvis_seq(vec_part);
 
@@ -118,14 +119,14 @@ std::vector<std::pair<int, int>> jarvis_par(const std::vector<std::pair<int, int
     MPI_Reduce(&size_of_parts[proc_num], &res_size, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     MPI_Bcast(&res_size, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-    rest = 0;
     sum = 0;
     for (int i = 0; i < num_of_proc; i++) {
         displs1[i] = sum;
         sum += size_of_parts[i];
     }
     std::vector<std::pair<int, int>> tmp_res(res_size);
-    MPI_Gatherv(part_res.data(), size_of_parts[proc_num], mytype, tmp_res.data(), size_of_parts.data(), displs1.data(), mytype, 0, MPI_COMM_WORLD); // zapolnenie v tmp_res chastami rezultata
+    MPI_Gatherv(part_res.data(), size_of_parts[proc_num], mytype, tmp_res.data(),
+        size_of_parts.data(), displs1.data(), mytype, 0, MPI_COMM_WORLD);
     res = jarvis_seq(tmp_res);
     return res;
 }
