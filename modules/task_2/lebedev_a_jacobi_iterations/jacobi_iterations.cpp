@@ -77,6 +77,7 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
         size = std::min(size, static_cast<int>(sys.n_dims));
     }
 
+    MPI_Barrier(MPI_COMM_WORLD);
     MPI_Bcast(&size, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     MPI_Comm NEW_WORLD;
@@ -90,6 +91,8 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
     if (rank == 0) {
         d2 = sys.n_dims;
     }
+
+    MPI_Barrier(NEW_WORLD);
     MPI_Bcast(&d2, 1, my_MPI_SIZE_T, 0, NEW_WORLD);
 
     Tensor<float> B_local;
@@ -100,15 +103,23 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
         std::memcpy(x.get_data(), sys.x0.get_data(), x.get_size() * sizeof(float));
     }
 
+    MPI_Barrier(NEW_WORLD);
     MPI_Bcast(x.get_data(), x.get_size(), MPI_FLOAT, 0, NEW_WORLD);
 
     int diag = 0;
+    std::vector<int> recvcounts(0);
+    std::vector<int> displs(0);
 
     if (rank == 0) {
+        recvcounts.resize(size);
+        displs.resize(size);
+
         size_t row_per_process = sys.n_dims / size;
         int last_rows = sys.n_dims % size;
 
         d1 = (last_rows == 0) ? row_per_process : row_per_process + 1;
+        recvcounts[0] = d1;
+        displs[0] = 0;
         size_t _diag_idx = d1;
         B_local.resize({d1, d2});
         d_local.resize({d1, 1});
@@ -125,6 +136,8 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
             MPI_Send(sys.A.get_data() + offset_A, count, MPI_FLOAT, pid, 1, NEW_WORLD);
             MPI_Send(sys.b.get_data() + offset_b, _d1, MPI_FLOAT, pid, 2, NEW_WORLD);
             MPI_Send(&_diag_idx, 1, my_MPI_SIZE_T, pid, 3, NEW_WORLD);
+            recvcounts[pid] = _d1;
+            displs[pid] = displs[pid - 1] + recvcounts[pid - 1];
             offset_A += count;
             offset_b += _d1;
             _diag_idx += _d1;
@@ -151,11 +164,18 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
         }
     }
 
+    Tensor<float> x_tmp;
+    if (rank == 0) {
+        x_tmp.resize(x.get_shape());
+    }
     uint8_t solved = 0;
     while (!solved) {
         Tensor<float> x_local = matmul2D(B_local, x) + d_local;
+        MPI_Gatherv(x_local.get_data(), x_local.get_size(), MPI_FLOAT,
+                    x_tmp.get_data(), recvcounts.data(), displs.data(),
+                    MPI_FLOAT, 0, NEW_WORLD);
         if (rank == 0) {
-            Tensor<float> new_x(x.get_shape());
+            /*Tensor<float> new_x(x.get_shape());
             std::memcpy(new_x.get_data(), x_local.get_data(), x_local.get_size() * sizeof(float));
             size_t offset = x_local.get_size();
             int count;
@@ -165,15 +185,15 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
                 MPI_Get_count(&status, MPI_FLOAT, &count);
                 MPI_Recv(new_x.get_data() + offset, count, MPI_FLOAT, i, 0, NEW_WORLD, &status);
                 offset += count;
-            }
-            float diff = dist(new_x, x);
+            }*/
+            float diff = dist(x_tmp, x);
             if (diff <= accuracy) {
                 solved = 1;
             }
-            x = new_x;
-        } else {
-            MPI_Send(x_local.get_data(), x_local.get_size(), MPI_FLOAT, 0, 0, NEW_WORLD);
-        }
+            x = x_tmp;
+        } //else {
+            //MPI_Send(x_local.get_data(), x_local.get_size(), MPI_FLOAT, 0, 0, NEW_WORLD);
+        //}
         MPI_Barrier(NEW_WORLD);
         MPI_Bcast(&solved, 1, MPI_UNSIGNED_CHAR, 0, NEW_WORLD);
         MPI_Bcast(x.get_data(), x.get_size(), MPI_FLOAT, 0, NEW_WORLD);
