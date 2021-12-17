@@ -4,7 +4,6 @@
 #include <random>
 #include <vector>
 #include <ctime>
-#include <vector>
 #include <gtest-mpi-listener.hpp>
 
 #ifndef MODULES_TASK_2_SHATALIN_D_ALLREDUCE_ALL_REDUCE_H_
