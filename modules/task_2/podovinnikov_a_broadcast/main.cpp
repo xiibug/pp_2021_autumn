@@ -74,10 +74,10 @@ TEST(Broadcast_Tests, Another_procces_test) {
   MPI_Comm_size(MPI_COMM_WORLD, &commSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (commSize > 1) {
-    if (rank == 2) {
+    if (rank == 1) {
       F = 6.88f;
     }
-    Broadcast(&F, 1, MPI_FLOAT, 2, MPI_COMM_WORLD);
+    Broadcast(&F, 1, MPI_FLOAT, 1, MPI_COMM_WORLD);
     for (int i = 0; i < commSize; i++) {
       // std::cout << "Int " << F << " rank " << rank;
     }
