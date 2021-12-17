@@ -35,9 +35,10 @@ std::vector<std::pair<int, int>> jarvis_seq(const std::vector<std::pair<int, int
     _indxs.erase(_indxs.begin());
     _indxs.push_back(res_indx[0]);
 
-    int _indxsSize = _indxs.size();
+    int _indxsSize;
     while (true) {
         int right = 0;
+        _indxsSize = _indxs.size();
         for (int i = 1; i < _indxsSize; i++) {
             if (rotation(dots[res_indx[res_indx.size() - 1]],
                     dots[_indxs[right]],
