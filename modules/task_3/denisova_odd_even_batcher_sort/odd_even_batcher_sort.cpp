@@ -56,16 +56,14 @@ void odd_even_merge(std::vector<int> l, std::vector<int> r) {
     for (unsigned int i = 0; i < l.size(); i++) {
         if (i % 2) {
             l_odd.push_back(l[i]);
-        }
-        else {
+        } else {
             l_even.push_back(l[i]);
         }
     }
     for (unsigned int i = 0; i < r.size(); i++) {
         if (i % 2) {
             r_odd.push_back(r[i]);
-        }
-        else {
+        } else {
             r_even.push_back(r[i]);
         }
     }
@@ -120,8 +118,7 @@ void q_sort_batcher(std::vector<int>* v) {
             if (v->size() % procCount) {
                 count++;
                 v->push_back(1337);
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -148,15 +145,13 @@ void q_sort_batcher(std::vector<int>* v) {
                 if (curr > nearby) {
                     tmp[j] = curr;
                     curr_pos--;
-                }
-                else {
+                } else {
                     tmp[j] = nearby;
                     nearby_pos--;
                 }
             }
             part = tmp;
-        }
-        else if (procRank == proc_allocation[i].first) {
+        } else if (procRank == proc_allocation[i].first) {
             MPI_Status status;
             MPI_Send(&part[0], size_of_part, MPI_INT, proc_allocation[i].second, 0, MPI_COMM_WORLD);
             MPI_Recv(&near_part[0], size_of_part, MPI_INT, proc_allocation[i].second, 0, MPI_COMM_WORLD, &status);
@@ -168,8 +163,7 @@ void q_sort_batcher(std::vector<int>* v) {
                 if (curr < nearby) {
                     tmp[j] = curr;
                     curr_pos++;
-                }
-                else {
+                } else {
                     tmp[j] = nearby;
                     nearby_pos++;
                 }
