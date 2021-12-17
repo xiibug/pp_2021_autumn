@@ -4,8 +4,8 @@
 #include <string>
 #include <random>
 #include <algorithm>
-#include <chrono>
-#include <thread>
+#include <chrono> // NOLINT [build/c++11]
+#include <thread> // NOLINT [build/c++11]
 
 void read() {
     std::random_device dev;
@@ -25,24 +25,23 @@ void write() {
     std::this_thread::sleep_for(std::chrono::milliseconds(10 + gen() % 10));
 }
 
-int wait_for_access(int request_tag, int response_tag)
-{
+int wait_for_access(int request_tag, int response_tag) {
     int buff = 0;
     MPI_Status status;
 
     while (true) {
         MPI_Send(&buff, 1, MPI_INT, 0, request_tag, MPI_COMM_WORLD);
         MPI_Recv(&buff, 1, MPI_INT, 0, response_tag, MPI_COMM_WORLD, &status);
-        if (buff != -1)
+        if (buff != -1) {
             break;
+        }
         wait();
     }
 
     return buff;
 }
 
-void release_access(int request_tag, int buff = 0)
-{
+void release_access(int request_tag, int buff = 0) {
     MPI_Send(&buff, 1, MPI_INT, 0, request_tag, MPI_COMM_WORLD);
 }
 
@@ -89,15 +88,15 @@ void manager(int rank, int procs) {
     int ReadCount = 0;
     bool S = true;
     int active_procs = procs - 1;
-
     while (true) {
-        if (procs != 1)
+        if (procs != 1) {
             MPI_Recv(&in_buff, 1, MPI_INT, MPI_ANY_SOURCE,
                 MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        else
+        }
+        else {
             return;
-
-        switch(status.MPI_TAG)
+        }
+        switch (status.MPI_TAG)
         {
             case (S_REQUEST):
                 if (S == true) {
@@ -105,7 +104,8 @@ void manager(int rank, int procs) {
                     out_buff = 1;
                     MPI_Send(&out_buff, 1, MPI_INT, status.MPI_SOURCE,
                         S_RESPONSE, MPI_COMM_WORLD);
-                } else {
+                } 
+                else {
                     out_buff = -1;
                     MPI_Send(&out_buff, 1, MPI_INT, status.MPI_SOURCE,
                         S_RESPONSE, MPI_COMM_WORLD);
@@ -113,8 +113,9 @@ void manager(int rank, int procs) {
                 break;
 
             case (S_RELEASE):
-                if (S == false)
+                if (S == false) {
                     S = true;
+                }
                 break;
 
             case (RC_REQUEST):
@@ -122,7 +123,8 @@ void manager(int rank, int procs) {
                     RC = false;
                     MPI_Send(&ReadCount, 1, MPI_INT, status.MPI_SOURCE,
                         RC_RESPONSE, MPI_COMM_WORLD);
-                } else {
+                } 
+                else {
                     out_buff = -1;
                     MPI_Send(&out_buff, 1, MPI_INT, status.MPI_SOURCE,
                         RC_RESPONSE, MPI_COMM_WORLD);
@@ -142,7 +144,8 @@ void manager(int rank, int procs) {
                     out_buff = 1;
                     MPI_Send(&out_buff, 1, MPI_INT, status.MPI_SOURCE,
                         ACCESS_RESPONSE, MPI_COMM_WORLD);
-                } else {
+                } 
+                else {
                     out_buff = -1;
                     MPI_Send(&out_buff, 1, MPI_INT, status.MPI_SOURCE,
                         ACCESS_RESPONSE, MPI_COMM_WORLD);
@@ -150,16 +153,18 @@ void manager(int rank, int procs) {
                 break;
 
             case (ACCESS_RELEASE):
-                if (Access == false)
+                if (Access == false) {
                     Access = true;
+                }
                 break;
                 
             case (FINISH):
                 active_procs--;
                 break;
         }
-        if (active_procs == 0)
+        if (active_procs == 0) {
             break;
+        }
     }
     return;
 }

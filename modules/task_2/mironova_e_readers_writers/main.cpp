@@ -90,7 +90,7 @@ TEST(readers_writers_MPI, equal_readers_writers) {
         if (rank % 2 == 0)
             reader(rank);
         else
-            writer(rank);   
+            writer(rank);
     MPI_Barrier(MPI_COMM_WORLD);
 
     ASSERT_NO_THROW();

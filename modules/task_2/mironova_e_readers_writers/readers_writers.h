@@ -1,6 +1,6 @@
 // Copyright 2021 Mironova Ekaterina
 #ifndef MODULES_TASK_2_MIRONOVA_E_READER_WRITER_READER_WRITER_MPI_H_
-#define MODULES_TASK_2_MIRONOVA_E_WRITER_READER_WRITER_MPI_H_
+#define MODULES_TASK_2_MIRONOVA_E_READER_WRITER_READER_WRITER_MPI_H_
 
 #include <string>
 
@@ -24,4 +24,4 @@ void manager(int rank, int procs);
 
 #define FINISH 99
 
-#endif  
+#endif  // MODULES_TASK_2_MIRONOVA_E_READER_WRITER_READER_WRITER_MPI_H_
