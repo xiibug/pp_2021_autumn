@@ -8,9 +8,9 @@
 
 
 TEST(Jacobi_iterations_MPI, Test_Tensor) {
-    std::vector<size_t> shape = {1, 3, 28, 28};
-    std::vector<size_t> strides = {2352, 784, 28, 1};
-    size_t size = 2352;
+    std::vector<int> shape = {1, 3, 28, 28};
+    std::vector<int> strides = {2352, 784, 28, 1};
+    int size = 2352;
     Tensor<int> t(shape);
     ASSERT_EQ(t.get_shape(), shape);
     ASSERT_EQ(t.get_strides(), strides);
@@ -33,10 +33,10 @@ TEST(Jacobi_iterations_MPI, Test_matmul2D) {
     Tensor<int> t1({2, 4});
     Tensor<int> t2({4, 3});
 
-    for (size_t i = 0; i < t1.get_size(); i++) {
+    for (int i = 0; i < t1.get_size(); i++) {
         t1[i] = i + 1;
     }
-    for (size_t i = 0; i < t2.get_size(); i++) {
+    for (int i = 0; i < t2.get_size(); i++) {
         t2[i] = i + 1;
     }
 
@@ -52,7 +52,7 @@ TEST(Jacobi_iterations_MPI, Test_matmul2D) {
     Tensor<int> result = matmul2D(t1, t2);
 
     ASSERT_EQ(result.get_shape(), expected.get_shape());
-    for (size_t i = 0; i < result.get_size(); i++) {
+    for (int i = 0; i < result.get_size(); i++) {
         ASSERT_EQ(result[i], expected[i]);
     }
 }
@@ -89,7 +89,7 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    size_t n_dims = 0;
+    int n_dims = 0;
 
     if (rank == 0) {
         n_dims = 3;
@@ -143,7 +143,7 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel_4D) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    size_t n_dims = 0;
+    int n_dims = 0;
 
     if (rank == 0) {
         n_dims = 4;
@@ -163,7 +163,7 @@ TEST(Jacobi_iterations_MPI, Test_Jacobi_Iterations_Parallel_4D) {
 
     if (rank == 0) {
         Tensor<float> expected = sys.solve(eps);
-        for (size_t i = 0; i < x.get_size(); i++) {
+        for (int i = 0; i < x.get_size(); i++) {
             EXPECT_NEAR(x[i], expected[i], eps);
         }
     } else if (rank >= 4) {
