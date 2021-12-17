@@ -1,8 +1,8 @@
 // Copyright 2021 Shabunin Vladislav
 #include <gtest/gtest.h>
 
-#include <gtest-mpi-listener.hpp>
 #include <vector>
+#include <gtest-mpi-listener.hpp>
 
 #include "./shell_sort.h"
 
