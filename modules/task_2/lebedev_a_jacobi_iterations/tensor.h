@@ -47,12 +47,16 @@ class Tensor {
          init_strides();
      }
 
-     bool is_allocated() {
+     bool is_allocated() const {
          return data != nullptr;
      }
 
      T* get_data() const {
-         return data.get()->data();
+         if (is_allocated()) {
+             return data.get()->data();
+         } else {
+             return nullptr;
+         }
      }
      size_t get_size() const {
          return size;
@@ -65,10 +69,18 @@ class Tensor {
      }
 
      T& operator[] (const size_t offset) {
-         return (*data.get())[offset];
+         if (is_allocated()) {
+             return (*data.get())[offset];
+         } else {
+             throw std::length_error("Offset is out of range!");
+         }
      }
      T operator[] (const size_t offset) const {
-         return (*data.get())[offset];
+         if (is_allocated()) {
+             return (*data.get())[offset];
+         } else {
+             throw std::length_error("Offset is out of range!");
+         }
      }
 };
 

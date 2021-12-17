@@ -175,25 +175,12 @@ Tensor<float> solve_parallel(const LinearSystem& sys, const float accuracy) {
                     x_tmp.get_data(), recvcounts.data(), displs.data(),
                     MPI_FLOAT, 0, NEW_WORLD);
         if (rank == 0) {
-            /*Tensor<float> new_x(x.get_shape());
-            std::memcpy(new_x.get_data(), x_local.get_data(), x_local.get_size() * sizeof(float));
-            size_t offset = x_local.get_size();
-            int count;
-            for (int i = 1; i < size; i++) {
-                MPI_Status status;
-                MPI_Probe(i, 0, NEW_WORLD, &status);
-                MPI_Get_count(&status, MPI_FLOAT, &count);
-                MPI_Recv(new_x.get_data() + offset, count, MPI_FLOAT, i, 0, NEW_WORLD, &status);
-                offset += count;
-            }*/
             float diff = dist(x_tmp, x);
             if (diff <= accuracy) {
                 solved = 1;
             }
-            x = x_tmp;
-        } //else {
-            //MPI_Send(x_local.get_data(), x_local.get_size(), MPI_FLOAT, 0, 0, NEW_WORLD);
-        //}
+            std::memcpy(x.get_data(), x_tmp.get_data(), x_tmp.get_size() * sizeof(float));
+        }
         MPI_Barrier(NEW_WORLD);
         MPI_Bcast(&solved, 1, MPI_UNSIGNED_CHAR, 0, NEW_WORLD);
         MPI_Bcast(x.get_data(), x.get_size(), MPI_FLOAT, 0, NEW_WORLD);
