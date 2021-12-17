@@ -9,7 +9,6 @@ int searchMaxSequentially(int* arr, int k, int l) {
         if (max < arr[i]) {
             max = arr[i];
         }
-
     return max;
 }
 
