@@ -7,12 +7,12 @@
 #include <string>
 #include <vector>
 
-void add_edge(std::vector<edge>& e, int x, int y, int w) {
+void add_edge(std::vector<edge>* e, int x, int y, int w) {
   edge e_n;
   e_n.x = x;
   e_n.y = y;
   e_n.w = w;
-  e.push_back(e_n);
+  (*e).push_back(e_n);
 }
 
 std::vector<std::vector<int>> mure(std::vector<edge> e, int v, int rootv) {

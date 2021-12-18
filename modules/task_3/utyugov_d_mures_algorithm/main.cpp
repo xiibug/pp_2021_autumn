@@ -10,13 +10,13 @@ TEST(Parallel_Operations_MPI, Test_Alg) {
   std::vector<edge> e;
   // if (rank == 0) {
   for (int i = 0; i < 7; i++) {
-    add_edge(e, i, i + 1, i + 1);
+    add_edge(&e, i, i + 1, i + 1);
   }
 
-  add_edge(e, 0, 7, 6);
-  add_edge(e, 6, 7, 6);
-  add_edge(e, 7, 3, 5);
-  add_edge(e, 7, 5, -2);
+  add_edge(&e, 0, 7, 6);
+  add_edge(&e, 6, 7, 6);
+  add_edge(&e, 7, 3, 5);
+  add_edge(&e, 7, 5, -2);
   std::vector<std::vector<int>> a = mure(e, 8, 0);
 
   std::vector<int> b;
@@ -34,13 +34,13 @@ TEST(Parallel_Operations_MPI, EQ_Road) {
   std::vector<edge> e;
   // if (rank == 0) {
   for (int i = 0; i < 7; i++) {
-    add_edge(e, i, i + 1, i + 1);
+    add_edge(&e, i, i + 1, i + 1);
   }
 
-  add_edge(e, 0, 7, 6);
-  add_edge(e, 6, 7, 6);
-  add_edge(e, 7, 3, 5);
-  add_edge(e, 7, 5, -2);
+  add_edge(&e, 0, 7, 6);
+  add_edge(&e, 6, 7, 6);
+  add_edge(&e, 7, 3, 5);
+  add_edge(&e, 7, 5, -2);
   std::vector<std::vector<int>> a = mure(e, 8, 0);
 
   std::vector<int> b;
@@ -57,18 +57,18 @@ TEST(Parallel_Operations_MPI, Try_Wheel_graph) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::vector<edge> e;
   for (int i = 0; i < 9; i++) {
-    add_edge(e, i, i + 1, i + 1);
+    add_edge(&e, i, i + 1, i + 1);
   }
 
-  add_edge(e, 0, 9, 10);
-  add_edge(e, 1, 9, 5);
-  add_edge(e, 2, 9, 5);
-  add_edge(e, 3, 9, 5);
-  add_edge(e, 4, 9, 5);
-  add_edge(e, 5, 9, 5);
-  add_edge(e, 6, 9, -100);
-  add_edge(e, 7, 9, 5);
-  add_edge(e, 8, 9, 5);
+  add_edge(&e, 0, 9, 10);
+  add_edge(&e, 1, 9, 5);
+  add_edge(&e, 2, 9, 5);
+  add_edge(&e, 3, 9, 5);
+  add_edge(&e, 4, 9, 5);
+  add_edge(&e, 5, 9, 5);
+  add_edge(&e, 6, 9, -100);
+  add_edge(&e, 7, 9, 5);
+  add_edge(&e, 8, 9, 5);
 
   std::vector<int> b;
   for (int i = 6; i >= 0; i--) {
@@ -85,18 +85,18 @@ TEST(Parallel_Operations_MPI, Try_another_start) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::vector<edge> e;
   for (int i = 0; i < 9; i++) {
-    add_edge(e, i, i + 1, i + 1);
+    add_edge(&e, i, i + 1, i + 1);
   }
 
-  add_edge(e, 0, 9, 10);
-  add_edge(e, 1, 9, 5);
-  add_edge(e, 2, 9, 5);
-  add_edge(e, 3, 9, 5);
-  add_edge(e, 4, 9, 5);
-  add_edge(e, 5, 9, 5);
-  add_edge(e, 6, 9, -100);
-  add_edge(e, 7, 9, 5);
-  add_edge(e, 8, 9, 5);
+  add_edge(&e, 0, 9, 10);
+  add_edge(&e, 1, 9, 5);
+  add_edge(&e, 2, 9, 5);
+  add_edge(&e, 3, 9, 5);
+  add_edge(&e, 4, 9, 5);
+  add_edge(&e, 5, 9, 5);
+  add_edge(&e, 6, 9, -100);
+  add_edge(&e, 7, 9, 5);
+  add_edge(&e, 8, 9, 5);
 
   std::vector<int> b;
   for (int i = 6; i >= 3; i--) {
@@ -113,7 +113,7 @@ TEST(Parallel_Operations_MPI, Try_graph_with_100_v) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::vector<edge> e;
   for (int i = 0; i < 40; i++) {
-    add_edge(e, i, i + 1, i + 1);
+    add_edge(&e, i, i + 1, i + 1);
   }
   std::vector<int> b;
   for (int i = 38; i >= 0; i--) {
