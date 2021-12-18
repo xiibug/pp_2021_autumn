@@ -1,16 +1,17 @@
 // Copyright 2021 Burdukov Mikhail
 
 #include "../../../modules/task_3/burdukov_m_moore_algo/moore_algo.hpp"
+
 #include <list>
 
 #define EXIT_PROCESS -1
 
-std::vector<int> update(const std::vector<int>& dist, const int size,
+std::vector<int> update(std::vector<int>* dist, const int size,
                         const std::vector<int>& range, const int d) {
   std::vector<int> update;
   for (int i = 0; i < size; i++) {
-    if (d + range[i] < dist[i] && range[i] != INF) {
-      dist[i] = d + range[i];
+    if (d + range[i] < dist->at(i) && range[i] != INF) {
+      dist->at(i) = d + range[i];
       update.push_back(i);
     }
   }
@@ -29,7 +30,7 @@ void side_process_work(int prank) {
     MPI_Recv(range.data(), size, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     int d;
     MPI_Recv(&d, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
-    std::vector<int> updated = update(dist, size, range, d);
+    std::vector<int> updated = update(&dist, size, range, d);
     int up_size = updated.size();
     MPI_Send(&up_size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
     if (up_size != 0)
@@ -65,7 +66,7 @@ int moore_algorithm(const int start, const int end,
                MPI_COMM_WORLD);
       MPI_Send(&dist[current], 1, MPI_INT, i, 0, MPI_COMM_WORLD);
     }
-    std::vector<int> upd = update(dist, block + size % pcount,
+    std::vector<int> upd = update(&dist, block + size % pcount,
                                   adjacency_matrix[current], dist[current]);
     for (auto v : upd) {
       v = v + start;
