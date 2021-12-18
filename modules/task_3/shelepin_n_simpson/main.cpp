@@ -1,7 +1,6 @@
 // Copyright 2021 Shelepin Nikita
 #include <gtest/gtest.h>
 
-#include <cmath>
 #include <gtest-mpi-listener.hpp>
 
 #include "./simpson.h"

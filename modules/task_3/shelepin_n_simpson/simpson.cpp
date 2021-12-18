@@ -2,6 +2,7 @@
 #include "../../../modules/task_3/shelepin_n_simpson/simpson.h"
 
 #include <mpi.h>
+#include <cmath>
 
 double getSequentialSimpson(
     const std::function<double(std::vector<double>)>& f,
