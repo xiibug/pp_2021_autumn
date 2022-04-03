@@ -1,5 +1,6 @@
 // Copyright 2021 Kolosova Alena
 #include <mpi.h>
+#include <cmath>
 #include <cstring>
 #include <ctime>
 #include <climits>
@@ -20,7 +21,7 @@ char* generateString(int sz, int spread) {
     return str;
 }
 
-bool parCompareString(const char* str1, const char* str2) { 
+int parCompareString(const char* str1, const char* str2) { 
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -32,24 +33,24 @@ bool parCompareString(const char* str1, const char* str2) {
     char* rbuf1 = new char[blocksize];
     char* rbuf2 = new char[blocksize];
 
-    bool* results = new bool[size + 1];
-    for (int i = 0; i <= size; i++)
-        results[i] = false;
+    int* results = new int[size + 1];
+    /*for (int i = 0; i <= size; i++)
+        results[i] = 0;*/
 
     MPI_Scatter(str1 + leftover, blocksize, MPI_CHAR, 
         rbuf1, blocksize, MPI_CHAR, 0, MPI_COMM_WORLD);
     MPI_Scatter(str2 + leftover, blocksize, MPI_CHAR, 
         rbuf2, blocksize, MPI_CHAR, 0, MPI_COMM_WORLD);
 
-    bool local_res = seqCompareString(rbuf1, rbuf2);
+    int local_res = seqCompareString(rbuf1, rbuf2);
 
     if(rank != 0)
-        MPI_Send(&local_res, 1, MPI_CXX_BOOL, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(&local_res, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
 
     if(rank==0) {
         for (int i = 1; i < size; i++) {
             MPI_Status stat;
-            MPI_Recv(results + 1 + i, 1, MPI_CXX_BOOL, i, 0, MPI_COMM_WORLD, &stat);
+            MPI_Recv(results + 1 + i, 1, MPI_INT, i, 0, MPI_COMM_WORLD, &stat);
         }
         results[1] = local_res;
 
@@ -61,18 +62,24 @@ bool parCompareString(const char* str1, const char* str2) {
         results[0]= seqCompareString(strlft1, strlft2);
     }
 
+    bool ans[3] = { true, true, true };
+
     for (int i = 0; i <= size; i++) {
-        if (!results[i]) return false;
+        if (!results[i]) ans[1]=false;
+        if (results[i] > -1) ans[2] = false;
+        if (results[i] < 1) ans[0] = false;
     }
-    return true;
+    for (int i = 0; i < 3; i++) {
+        if (ans[i] == 0) return i - 1;
+    }
+    return 2;
 }
 
-bool seqCompareString(const char* str1, const char* str2) {
-    int len = (strlen(str1) < strlen(str2)) ? strlen(str1) : strlen(str2);
-    for (int i = 0; i < len; i++) {
-        if (str1[i] > str2[i]) return false;
+int seqCompareString(const char* str1, const char* str2) {
+    int ans = strcmp(str1, str2);
+    if (ans) {
+        ans /= abs(ans);
     }
-    if (strlen(str1) > strlen(str2)) return false;
-    return true;
+    return ans;
 }
 
