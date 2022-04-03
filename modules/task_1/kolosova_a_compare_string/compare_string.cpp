@@ -2,7 +2,7 @@
 #include <mpi.h>
 #include <cstring>
 #include <ctime>
-#include <climi>
+#include <climits>
 #include <vector>
 #include <algorithm>
 #include "../../../modules/task_1/kolosova_a_compare_string/compare_string.h"
