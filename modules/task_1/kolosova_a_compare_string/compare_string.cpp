@@ -10,7 +10,7 @@
 char* generateString(int sz, int spread) {
     std::srand(std::time(0));
     //add random component to str length
-    sz = sz + rand() % spread];
+    sz = sz + rand() % spread;
     char* str = new char[sz];
     for (int i = 0; i < sz - 1; i++) {
         str[i] = std::rand() % CHAR_MAX;
@@ -33,7 +33,7 @@ bool parCompareString(const char* str1, const char* str2) {
 
     bool* results = new bool[size + 1];
     for (int i = 0; i <= size; i++)
-        results[i] = 0;
+        results[i] = false;
 
     MPI_Scatter(str1 + leftover, blocksize, MPI_CHAR, 
         rbuf1, blocksize, MPI_CHAR, 0, MPI_COMM_WORLD);
