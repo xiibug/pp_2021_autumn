@@ -10,8 +10,8 @@
 char* generateString(int sz, int spread) {
     std::srand(std::time(0));
     //add random component to str length
-    char* str = new char[sz + rand() % spread];
-    sz = strlen(str);
+    sz = sz + rand() % spread];
+    char* str = new char[sz];
     for (int i = 0; i < sz - 1; i++) {
         str[i] = std::rand() % CHAR_MAX;
     }

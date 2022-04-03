@@ -12,11 +12,8 @@ TEST(Parallel_Operations_MPI, parallel_small_string_comparison_same_size) {
     if (rank == 0) {
         str1 = generateString(size_string);
         str2 = generateString(size_string);
-    }
 
-    bool glob_res = parCompareString(str1, str2);
-
-    if (rank == 0) {
+        bool glob_res = parCompareString(str1, str2);
         bool ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, glob_res);
     }
@@ -31,11 +28,8 @@ TEST(Parallel_Operations_MPI, parallel_medium_string_comparison_same_size) {
     if (rank == 0) {
         str1 = generateString(size_string);
         str2 = generateString(size_string);
-    }
 
-    bool glob_res = parCompareString(str1, str2);
-
-    if (rank == 0) {
+        bool glob_res = parCompareString(str1, str2);
         bool ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, glob_res);
     }
@@ -50,11 +44,8 @@ TEST(Parallel_Operations_MPI, parallel_large_string_comparison_same_size) {
     if (rank == 0) {
         str1 = generateString(size_string);
         str2 = generateString(size_string);
-    }
-
-    bool glob_res = parCompareString(str1, str2);
-
-    if (rank == 0) {
+    
+        bool glob_res = parCompareString(str1, str2);
         bool ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, glob_res);
     }
@@ -69,11 +60,8 @@ TEST(Parallel_Operations_MPI, parallel_medium_string_comparison_diff_size) {
     if (rank == 0) {
         str1 = generateString(size_string, size_string / 10);
         str2 = generateString(size_string, size_string / 10);
-    }
 
-    bool glob_res = parCompareString(str1, str2);
-
-    if (rank == 0) {
+        bool glob_res = parCompareString(str1, str2);
         bool ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, glob_res);
     }
@@ -88,11 +76,8 @@ TEST(Parallel_Operations_MPI, parallel_large_string_comparison_diff_size) {
     if (rank == 0) {
         str1 = generateString(size_string, size_string / 10);
         str2 = generateString(size_string, size_string / 10);
-    }
 
-    bool glob_res = parCompareString(str1, str2);
-
-    if (rank == 0) {
+        bool glob_res = parCompareString(str1, str2);
         bool ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, glob_res);
     }
