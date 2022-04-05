@@ -1,5 +1,6 @@
 build
 mpich
+test_tasks
 cmake-build-release
 cmake-build-debug
 .idea/
