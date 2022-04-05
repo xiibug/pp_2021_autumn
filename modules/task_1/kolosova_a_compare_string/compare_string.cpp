@@ -13,7 +13,7 @@
 
 char* generateString(int sz, int spread) {
     std::random_device dev;
-    std::mt19937 rgen(dev);
+    std::mt19937 rgen(dev());
     // add random component to str length
     if (spread)
         sz = sz + rgen() % spread;
