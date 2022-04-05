@@ -10,9 +10,10 @@
 
 
 char* generateString(int sz, int spread) {
-    unsigned int seed = std::time(0);
+    int seed = std::time(0);
     // add random component to str length
-    sz = sz + rand_r(&seed) % spread;
+    if (spread)
+        sz = sz + rand_r(&seed) % spread;
     char* str = new char[sz];
     for (int i = 0; i < sz - 1; i++) {
         str[i] = rand_r(&seed) % CHAR_MAX;
