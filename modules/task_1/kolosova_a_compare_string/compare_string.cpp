@@ -10,7 +10,7 @@
 
 
 char* generateString(int sz, int spread) {
-    int seed = std::time(0);
+    unsigned int seed = std::time(0);
     // add random component to str length
     if (spread)
         sz = sz + rand_r(&seed) % spread;
