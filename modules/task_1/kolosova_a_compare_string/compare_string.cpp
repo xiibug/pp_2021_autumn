@@ -5,8 +5,8 @@
 #include <climits>
 #include <algorithm>
 #include <random>
-#include <gtest/gtest.h>
 #include "../../../modules/task_1/kolosova_a_compare_string/compare_string.h"
+#include <gtest/gtest.h>
 
 
 char* generateString(int sz, int spread) {
