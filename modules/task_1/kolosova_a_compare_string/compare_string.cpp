@@ -16,7 +16,7 @@ char* generateString(int sz, int spread) {
         sz = sz + rgen() % spread;
     char* str = new char[sz];
     for (int i = 0; i < sz - 1; i++) {
-        str[i] = rgen() % (CHAR_MAX-1) + 1;
+        str[i] = rgen() % 52 + 'A';
     }
     str[sz - 1] = 0;
     return str;
