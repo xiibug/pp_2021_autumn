@@ -57,18 +57,21 @@ int parCompareString(const char* str1, const char* str2) {
         memcpy(strlft1, str1, leftover * sizeof(char));
         memcpy(strlft2, str2, leftover * sizeof(char));
 
-        results[0]= seqCompareString(strlft1, strlft2);
-    }
+        results[0] = seqCompareString(strlft1, strlft2);
 
-    bool ans[3] = { true, true, true };
 
-    for (int i = 0; i <= size; i++) {
-        if (!results[i]) ans[1]=false;
-        if (results[i] > -1) ans[2] = false;
-        if (results[i] < 1) ans[0] = false;
-    }
-    for (int i = 0; i < 3; i++) {
-        if (ans[i] == 0) return i - 1;
+        bool ans[3] = { true, true, true };
+
+        for (int i = 0; i <= size; i++) {
+            if (!results[i]) ans[1] = false;
+            if (results[i] > -1) ans[2] = false;
+            if (results[i] < 1) ans[0] = false;
+        }
+        if (ans[1] == 0 && strlen(str1) < strlen(str2)) return -1;
+        else if (ans[1] == 0 && strlen(str1) > strlen(str2)) return 1;
+        for (int i = 0; i < 3; i++) {
+            if (ans[i] == 0) return i - 1;
+        }
     }
     return 2;
 }
