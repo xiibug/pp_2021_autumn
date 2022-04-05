@@ -6,17 +6,20 @@
 #include <climits>
 #include <cstdlib>
 #include <algorithm>
+#include <random>
 #include <gtest/gtest.h>
 #include "../../../modules/task_1/kolosova_a_compare_string/compare_string.h"
 
 
 char* generateString(int sz, int spread) {
+    std::random_device dev;
+    std::mt19937 rgen(dev);
     // add random component to str length
     if (spread)
-        sz = sz + rand_r(std::time(0)) % spread;
+        sz = sz + rgen() % spread;
     char* str = new char[sz];
     for (int i = 0; i < sz - 1; i++) {
-        str[i] = rand_r(std::time(0)) % (CHAR_MAX-1) + 1;
+        str[i] = rgen() % (CHAR_MAX-1) + 1;
     }
     str[sz - 1] = 0;
     return str;
