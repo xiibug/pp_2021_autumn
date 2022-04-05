@@ -1,8 +1,8 @@
 // Copyright 2021 Kolosova Alena
 #include <gtest/gtest.h>
+#include <climits>
 #include "./compare_string.h"
 #include <gtest-mpi-listener.hpp>
-#include <climits>
 
 TEST(Parallel_Operations_MPI, seq_string_comparison_test_1) {
     int rank;
