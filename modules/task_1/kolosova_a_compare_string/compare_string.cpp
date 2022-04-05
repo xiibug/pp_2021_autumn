@@ -28,6 +28,8 @@ int parCompareString(const char* str1, const char* str2) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+    std::cerr << "[          ] comm_size = " << size << std::endl;
+
     int len = (strlen(str1) < strlen(str2)) ? strlen(str1) : strlen(str2);
     int blocksize = len / size;
     int leftover = len % size;
@@ -42,8 +44,8 @@ int parCompareString(const char* str1, const char* str2) {
     MPI_Scatter(str2 + leftover, blocksize, MPI_CHAR,
         rbuf2, blocksize, MPI_CHAR, 0, MPI_COMM_WORLD);
 
-    std::cerr << "[          ] rank = " << rank << "rbuf1 = " << rbuf1 << std::endl;
-    std::cerr << "[          ] rank = " << rank << "rbuf2 = " << rbuf2 << std::endl;
+    //std::cerr << "[          ] rank = " << rank << "rbuf1 = " << rbuf1 << std::endl;
+    //std::cerr << "[          ] rank = " << rank << "rbuf2 = " << rbuf2 << std::endl;
 
     int local_res = seqCompareString(rbuf1, rbuf2);
 
