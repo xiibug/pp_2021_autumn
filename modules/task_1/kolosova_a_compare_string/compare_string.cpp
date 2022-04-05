@@ -66,9 +66,6 @@ int parCompareString(const char* str1, const char* str2) {
 
         results[0] = seqCompareString(strlft1, strlft2);
 
-
-        bool ans[3] = { true, true, true };
-
         for (int i = 0; i <= size; i++) {
             if (!results[i]) return results[i];
         }
