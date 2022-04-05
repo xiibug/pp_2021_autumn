@@ -5,6 +5,7 @@
 #include <climits>
 #include <algorithm>
 #include <random>
+#include "gtest/gtest.h"
 #include "../../../modules/task_1/kolosova_a_compare_string/compare_string.h"
 
 
@@ -40,6 +41,9 @@ int parCompareString(const char* str1, const char* str2) {
         rbuf1, blocksize, MPI_CHAR, 0, MPI_COMM_WORLD);
     MPI_Scatter(str2 + leftover, blocksize, MPI_CHAR,
         rbuf2, blocksize, MPI_CHAR, 0, MPI_COMM_WORLD);
+
+    std::cerr << "[          ] rank = " << rank << "rbuf1 = " << rbuf1 << std::endl;
+    std::cerr << "[          ] rank = " << rank << "rbuf2 = " << rbuf2 << std::endl;
 
     int local_res = seqCompareString(rbuf1, rbuf2);
 
