@@ -13,7 +13,7 @@ TEST(Parallel_Operations_MPI, seq_string_comparison_test_1) {
         std::cerr << "[          ] str1 = " << str1 << std::endl;
         std::cerr << "[          ] str2 = " << str2 << std::endl;
 
-        bool ref_res = seqCompareString(str1, str2);
+        int ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, 0);
     }
 }
@@ -28,7 +28,7 @@ TEST(Parallel_Operations_MPI, seq_string_comparison_test_2) {
         std::cerr << "[          ] str1 = " << str1 << std::endl;
         std::cerr << "[          ] str2 = " << str2 << std::endl;
 
-        bool ref_res = seqCompareString(str1, str2);
+        int ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, -1);
     }
 }
@@ -43,7 +43,7 @@ TEST(Parallel_Operations_MPI, seq_string_comparison_test_3) {
         std::cerr << "[          ] str1 = " << str1 << std::endl;
         std::cerr << "[          ] str2 = " << str2 << std::endl;
 
-        bool ref_res = seqCompareString(str1, str2);
+        int ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, 1);
     }
 }
@@ -61,8 +61,8 @@ TEST(Parallel_Operations_MPI, parallel_small_string_comparison_same_size) {
         std::cerr << "[          ] str1 = " << str1 << std::endl;
         std::cerr << "[          ] str2 = " << str2 << std::endl;
 
-        bool glob_res = parCompareString(str1, str2);
-        bool ref_res = seqCompareString(str1, str2);
+        int glob_res = parCompareString(str1, str2);
+        int ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, glob_res);
     }
 }
@@ -80,8 +80,8 @@ TEST(Parallel_Operations_MPI, parallel_medium_string_comparison_same_size) {
         std::cerr << "[          ] str1 = " << str1 << std::endl;
         std::cerr << "[          ] str2 = " << str2 << std::endl;
 
-        bool glob_res = parCompareString(str1, str2);
-        bool ref_res = seqCompareString(str1, str2);
+        int glob_res = parCompareString(str1, str2);
+        int ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, glob_res);
     }
 }
@@ -96,8 +96,8 @@ TEST(Parallel_Operations_MPI, parallel_large_string_comparison_same_size) {
         str1 = generateString(size_string);
         str2 = generateString(size_string);
 
-        bool glob_res = parCompareString(str1, str2);
-        bool ref_res = seqCompareString(str1, str2);
+        int glob_res = parCompareString(str1, str2);
+        int ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, glob_res);
     }
 }
@@ -115,8 +115,8 @@ TEST(Parallel_Operations_MPI, parallel_medium_string_comparison_diff_size) {
         std::cerr << "[          ] str1 = " << str1 << std::endl;
         std::cerr << "[          ] str2 = " << str2 << std::endl;
 
-        bool glob_res = parCompareString(str1, str2);
-        bool ref_res = seqCompareString(str1, str2);
+        int glob_res = parCompareString(str1, str2);
+        int ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, glob_res);
     }
 }
@@ -131,8 +131,8 @@ TEST(Parallel_Operations_MPI, parallel_large_string_comparison_diff_size) {
         str1 = generateString(size_string, size_string / 10);
         str2 = generateString(size_string, size_string / 10);
 
-        bool glob_res = parCompareString(str1, str2);
-        bool ref_res = seqCompareString(str1, str2);
+        int glob_res = parCompareString(str1, str2);
+        int ref_res = seqCompareString(str1, str2);
         ASSERT_EQ(ref_res, glob_res);
     }
 }
