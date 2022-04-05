@@ -58,18 +58,23 @@ int parCompareString(const char* str1, const char* str2) {
             MPI_Recv(results + 1 + i, 1, MPI_INT, i, 0, MPI_COMM_WORLD, &stat);
         }
         results[1] = local_res;
+        
+        int i = 1;
 
-        char* strlft1 = new char[leftover];
-        char* strlft2 = new char[leftover];
-        memcpy(strlft1, str1, leftover * sizeof(char));
-        memcpy(strlft2, str2, leftover * sizeof(char));
+        if (leftover) {
+            i = 0;
+            char* strlft1 = new char[leftover];
+            char* strlft2 = new char[leftover];
+            memcpy(strlft1, str1, leftover * sizeof(char));
+            memcpy(strlft2, str2, leftover * sizeof(char));
 
-        results[0] = seqCompareString(strlft1, strlft2);
+            results[0] = seqCompareString(strlft1, strlft2);
+        }
 
-        for (int i = 0; i <= size; i++) {
+        for (; i <= size; i++) {
             if (!results[i]) return results[i];
         }
-        if (strlen(str1) < strlen(str2)) 
+        if (strlen(str1) < strlen(str2))
             return -1;
         if (strlen(str1) > strlen(str2))
             return 1;

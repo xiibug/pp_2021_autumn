@@ -6,7 +6,6 @@
 
 TEST(Parallel_Operations_MPI, seq_string_comparison_test_1) {
     int rank;
-    for (char i = 0; i < CHAR_MAX; i++) std::cerr << i << std::endl;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     char str1[] = "aaaaaaaaaaaa";
     char str2[] = "aaaaaaaaaaaa";
