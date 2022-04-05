@@ -4,18 +4,18 @@
 #include <cstring>
 #include <ctime>
 #include <climits>
-#include <vector>
+#include <cstdlib>
 #include <algorithm>
 #include "../../../modules/task_1/kolosova_a_compare_string/compare_string.h"
 
 
 char* generateString(int sz, int spread) {
-    std::srand(std::time(0));
+    unsigned int seed = std::time(0);
     // add random component to str length
-    sz = sz + rand() % spread;
+    sz = sz + rand_r(&seed) % spread;
     char* str = new char[sz];
     for (int i = 0; i < sz - 1; i++) {
-        str[i] = std::rand() % CHAR_MAX;
+        str[i] = rand_r(&seed) % CHAR_MAX;
     }
     str[sz - 1] = 0;
     return str;
