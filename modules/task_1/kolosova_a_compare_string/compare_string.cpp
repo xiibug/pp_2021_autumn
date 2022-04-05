@@ -70,15 +70,11 @@ int parCompareString(const char* str1, const char* str2) {
         bool ans[3] = { true, true, true };
 
         for (int i = 0; i <= size; i++) {
-            if (!results[i]) ans[1] = false;
-            if (results[i] > -1) ans[0] = false;
-            if (results[i] < 1) ans[2] = false;
+            if (!results[i]) return results[i];
         }
-        if (ans[1] && strlen(str1) < strlen(str2)) return -1;
-        else if (ans[1] && strlen(str1) > strlen(str2)) return 1;
-        for (int i = 0; i < 3; i++) {
-            if (ans[i]) return i - 1;
-        }
+        if (strlen(str1) < strlen(str2)) return -1;
+        else if (strlen(str1) > strlen(str2)) return 1;
+        else return 0;
     }
     return 2;
 }
