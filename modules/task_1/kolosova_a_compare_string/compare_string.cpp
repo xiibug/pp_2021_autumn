@@ -70,7 +70,8 @@ int parCompareString(const char* str1, const char* str2) {
             if (!results[i]) return results[i];
         }
         if (strlen(str1) < strlen(str2)) return -1;
-        else if (strlen(str1) > strlen(str2)) return 1;
+        else 
+            if (strlen(str1) > strlen(str2)) return 1;
         else return 0;
     }
     return 2;
