@@ -3,6 +3,51 @@
 #include "./compare_string.h"
 #include <gtest-mpi-listener.hpp>
 
+TEST(Parallel_Operations_MPI, seq_string_comparison_test_1) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    char str1[] = "aaaaaaaaaaaa";
+    char str2[] = "aaaaaaaaaaaa";
+
+    if (rank == 0) {
+        std::cerr << "[          ] str1 = " << str1 << std::endl;
+        std::cerr << "[          ] str2 = " << str2 << std::endl;
+
+        bool ref_res = seqCompareString(str1, str2);
+        ASSERT_EQ(ref_res, 0);
+    }
+}
+
+TEST(Parallel_Operations_MPI, seq_string_comparison_test_2) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    char str1[] = "aaaaaaaaaaaa";
+    char str2[] = "b";
+
+    if (rank == 0) {
+        std::cerr << "[          ] str1 = " << str1 << std::endl;
+        std::cerr << "[          ] str2 = " << str2 << std::endl;
+
+        bool ref_res = seqCompareString(str1, str2);
+        ASSERT_EQ(ref_res, -1);
+    }
+}
+
+TEST(Parallel_Operations_MPI, seq_string_comparison_test_3) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    char str1[] = "bbb";
+    char str2[] = "aaaaaaaaaaaa";
+
+    if (rank == 0) {
+        std::cerr << "[          ] str1 = " << str1 << std::endl;
+        std::cerr << "[          ] str2 = " << str2 << std::endl;
+
+        bool ref_res = seqCompareString(str1, str2);
+        ASSERT_EQ(ref_res, 1);
+    }
+}
+
 TEST(Parallel_Operations_MPI, parallel_small_string_comparison_same_size) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
